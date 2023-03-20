@@ -11,8 +11,7 @@ api.interceptors.request.use(
     config.headers = {
       ...config.headers,
       "Content-Type": "application/json",
-      Authorization:
-        `Bearer ${localStorage.getItem(LStorage.accessToken)}` || "",
+      Authorization: `Bearer ${localStorage.getItem(LStorage.AUTH)}` || "",
     };
     return config;
   },
@@ -23,7 +22,7 @@ api.interceptors.response.use(
   (response) => response.data,
   (err) => {
     if (err.response.status === 401) {
-      localStorage.removeItem(LStorage.accessToken);
+      localStorage.removeItem(LStorage.AUTH);
       window.location.href = "/login";
     }
     return new Promise(async (_, reject) => {

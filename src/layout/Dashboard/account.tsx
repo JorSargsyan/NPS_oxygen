@@ -6,11 +6,18 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { LStorage } from "store/config/constants";
+import { signOut } from "store/slicers/auth";
 
 const AccountPopover = (props) => {
+  const dispatch = useAsyncDispatch();
   const { anchorEl, onClose, open } = props;
 
-  const handleSignOut = () => {};
+  const handleSignOut = () => {
+    localStorage.removeItem(LStorage.AUTH);
+    dispatch(signOut());
+  };
 
   return (
     <Popover

@@ -6,8 +6,10 @@ import { Authorize } from "store/slicers/auth";
 import { ERequestStatus } from "store/enums/index.enum";
 import TextInput from "shared/ui/TextInput";
 import Checkbox from "shared/ui/Checkbox";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
   const form = useForm({
     defaultValues: {
@@ -23,6 +25,7 @@ const Login = () => {
     }
 
     localStorage.setItem("authorized", payload.accessToken);
+    navigate("/overview");
   };
 
   return (
@@ -62,8 +65,8 @@ const Login = () => {
             <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
               <FormProvider {...form}>
                 <Stack spacing={3}>
-                  <TextInput label="Email Address" name="email" type="email" />
-                  <TextInput label="Password" name="password" type="password" />
+                  <TextInput label="Email Address" name="email" />
+                  <TextInput label="Password" name="password" />
                   <Checkbox name="isRemember" label="Remember me" />
                 </Stack>
 

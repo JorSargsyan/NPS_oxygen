@@ -8,11 +8,12 @@ import {
   IAuthState,
 } from "../interfaces/auth";
 import { api } from "../services/apiService";
+import { IState } from "store/interfaces/main";
 
 const name = "AUTH";
 
 const initialState: IAuthState = {
-  isAuth: false,
+  isAuth: !!localStorage.getItem(LStorage.AUTH),
 };
 
 export const Authorize = createAsyncThunk<
@@ -45,10 +46,11 @@ const authSlicer = createSlice({
   extraReducers: (builder) => {
     builder.addCase(Authorize.fulfilled, (state, { payload }) => {
       state.isAuth = true;
-      localStorage.setItem(LStorage.accessToken, payload.token);
+      localStorage.setItem(LStorage.AUTH, payload.token);
     });
   },
 });
 
 export const { signOut, setAuth } = authSlicer.actions;
+export const selectAuth = (state: IState) => state.auth.isAuth;
 export default authSlicer.reducer;

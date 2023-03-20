@@ -6,7 +6,7 @@ export const EBaseUrl = {
 };
 
 export const LStorage = {
-  accessToken: "accessToken",
+  AUTH: "authorized",
 };
 
 export enum ETheme {
