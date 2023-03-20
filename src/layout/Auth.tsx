@@ -12,6 +12,7 @@ export const Layout = (props: any) => {
       sx={{
         display: "flex",
         flex: "1 1 auto",
+        height: "100vh",
       }}
     >
       <Grid container sx={{ flex: "1 1 auto" }}>

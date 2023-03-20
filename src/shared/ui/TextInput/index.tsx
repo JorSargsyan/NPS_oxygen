@@ -101,7 +101,7 @@ const InputField = ({
             type={invisible && isSecure ? "password" : type || "text"}
             label={label}
             multiline={multiline}
-            variant="outlined"
+            variant="filled"
             disabled={disabled}
             InputProps={{
               endAdornment: getEndAdornment(field),

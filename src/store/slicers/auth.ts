@@ -18,15 +18,17 @@ const initialState: IAuthState = {
 export const Authorize = createAsyncThunk<
   IAuthorizeResponse,
   IAuthorizeRequest
->(`${name}/Authorize`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/admin/auth/login`, formData)).data;
+>(`${name}/Login`, async (formData) => {
+  return (await api.post(`${EBaseUrl.API}/login`, formData)).data;
 });
 
-export const ForgetPassword =createAsyncThunk<
-IAuthChangePasswordResponse,
-IAuthChangePasswordRequest
+export const ForgetPassword = createAsyncThunk<
+  IAuthChangePasswordResponse,
+  IAuthChangePasswordRequest
 >(`${name}/ForgetPassword`, async (formData) => {
-return (await api.post(`${EBaseUrl.API}/admin/auth/forget-password`, formData)).data;
+  return (
+    await api.post(`${EBaseUrl.API}/admin/auth/forget-password`, formData)
+  ).data;
 });
 
 const authSlicer = createSlice({

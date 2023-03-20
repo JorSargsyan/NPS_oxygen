@@ -1,5 +1,8 @@
 export const EBaseUrl = {
-  API: "https://api.clothery.io",
+  API: "https://npsapi.verifie.ai/Api",
+  MediaTemplateURL: "https://npsapi.verifie.ai/media/template",
+  BaseURL: "https://npsapi.verifie.ai",
+  MediaUserURL: "https://npsapi.verifie.ai/media/user",
 };
 
 export const LStorage = {
@@ -53,10 +56,10 @@ export enum EPermissions {
   post_subscription_plans = "post:subscription-plans",
   put_subscription_plans = "put:subscription-plans",
 
-  delete_categories= "delete:categories",
-  get_categories="get:categories", 
-  post_categories="post:categories", 
-  put_categories="put:categories"
+  delete_categories = "delete:categories",
+  get_categories = "get:categories",
+  post_categories = "post:categories",
+  put_categories = "put:categories",
 }
 
 export enum ERequestStatus {

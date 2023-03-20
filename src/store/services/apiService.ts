@@ -20,7 +20,7 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => response.data,
   (err) => {
     if (err.response.status === 401) {
       localStorage.removeItem(LStorage.accessToken);

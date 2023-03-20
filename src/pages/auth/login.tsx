@@ -1,16 +1,14 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Link,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Link, Stack, Typography } from "@mui/material";
 import { Layout as AuthLayout } from "../../layout/Auth";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { Authorize } from "store/slicers/auth";
+import { ERequestStatus } from "store/enums/index.enum";
+import TextInput from "shared/ui/TextInput";
+import Checkbox from "shared/ui/Checkbox";
 
 const Login = () => {
+  const dispatch = useAsyncDispatch();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -18,8 +16,13 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (values) => {
-    console.log(values);
+  const onSubmit = async (formData) => {
+    const { meta, payload } = await dispatch(Authorize(formData));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+
+    localStorage.setItem("authorized", payload.accessToken);
   };
 
   return (
@@ -57,36 +60,29 @@ const Login = () => {
             </Stack>
 
             <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  type="email"
-                />
-                <TextField
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  type="password"
-                />
-              </Stack>
+              <FormProvider {...form}>
+                <Stack spacing={3}>
+                  <TextInput label="Email Address" name="email" type="email" />
+                  <TextInput label="Password" name="password" type="password" />
+                  <Checkbox name="isRemember" label="Remember me" />
+                </Stack>
 
-              <Button
-                fullWidth
-                size="large"
-                sx={{ mt: 3 }}
-                type="submit"
-                variant="contained"
-              >
-                Continue
-              </Button>
+                <Button
+                  fullWidth
+                  size="large"
+                  sx={{ mt: 3 }}
+                  type="submit"
+                  variant="contained"
+                >
+                  Continue
+                </Button>
 
-              <Alert severity="info" sx={{ mt: 3 }}>
-                <div>
-                  You can use <b>demo@nps.io</b> and password <b>123456</b>
-                </div>
-              </Alert>
+                <Alert severity="info" sx={{ mt: 3 }}>
+                  <div>
+                    You can use <b>demo@nps.io</b> and password <b>123456</b>
+                  </div>
+                </Alert>
+              </FormProvider>
             </form>
           </div>
         </Box>
