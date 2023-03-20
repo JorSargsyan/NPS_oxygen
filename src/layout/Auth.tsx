@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Box, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 import { Logo } from "../components/logo";
+import Ill from "assets/icons/auth-illustration.svg";
 
 export const Layout = (props: any) => {
   const { children } = props;
@@ -80,7 +81,7 @@ export const Layout = (props: any) => {
             <Typography align="center" sx={{ mb: 3 }} variant="subtitle1">
               A professional kit that comes with ready-to-use MUI components.
             </Typography>
-            <img alt="" src="/assets/auth-illustration.svg" />
+            <img alt="" src={Ill} />
           </Box>
         </Grid>
       </Grid>

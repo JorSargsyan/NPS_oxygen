@@ -15,8 +15,17 @@
     "isolatedModules": true,
     "noEmit": false,
     "noEmitOnError": false,
+    "baseUrl": "src",
+    "paths": {
+      "pages/*": ["pages/*"],
+      "layout/*": ["layout/*"],
+      "shared/*": ["shared/*"],
+      "store/*": ["store/*"],
+      "components/*": ["components/*"],
+      "assets/*": ["assets/*"]
+    },
     "ignoreBuildErrors": false,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src", "index.d.ts"]
 }

@@ -1,0 +1,39 @@
+import axios, { AxiosRequestConfig } from "axios";
+import toast from "react-hot-toast";
+import { LStorage } from "../config/constants";
+
+export const api = axios.create({
+  responseType: "json",
+});
+
+api.interceptors.request.use(
+  async (config: AxiosRequestConfig) => {
+    config.headers = {
+      "Content-Type": "application/json",
+      Authorization:
+        `Bearer ${localStorage.getItem(LStorage.accessToken)}` || "",
+    };
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  (err) => {
+    if (err.response.status === 401) {
+      localStorage.removeItem(LStorage.accessToken);
+      window.location.href = "/login";
+    }
+    return new Promise(async (_, reject) => {
+      if (err?.response?.data?.message) {
+        toast.error(
+          `${err.response?.data?.error}: ${err.response?.data?.message}`
+        );
+      } else {
+        toast.error("SMT Went Wrong");
+      }
+      return reject(err);
+    });
+  }
+);

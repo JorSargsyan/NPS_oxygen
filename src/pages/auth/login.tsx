@@ -13,13 +13,14 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const form = useForm({
     defaultValues: {
-      email: "demo@devias.io",
-      password: "Password123!",
-      submit: null,
+      email: "",
+      password: "",
     },
   });
 
-  const onSubmit = async (values) => {};
+  const onSubmit = async (values) => {
+    console.log(values);
+  };
 
   return (
     <AuthLayout>
