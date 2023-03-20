@@ -149,7 +149,6 @@ const BasicTable = <T extends unknown>({
   const columnsData = useMemo(() => {
     const hasActions = !!getActions;
 
-
     return hasActions && hasOtherPermissionButGet(permList, section)
       ? [...columns, getActionColumn()]
       : columns;
@@ -190,8 +189,9 @@ const BasicTable = <T extends unknown>({
   };
 
   const generateRowsPaginated = () => {
-    return paginatedData?.items.map((row, rowIndex) => (
+    return paginatedData?.displayData?.map((row, rowIndex) => (
       <TableRow
+        hover
         key={rowIndex}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       >
@@ -212,10 +212,11 @@ const BasicTable = <T extends unknown>({
   };
 
   const getPagination = (component: any = "td") => {
-    return paginatedData?.items?.length && enablePagination ? (
+    console.log(paginatedData);
+    return paginatedData?.displayData?.length && enablePagination ? (
       <TablePagination
         component={component}
-        count={paginatedData.meta.totalItems}
+        count={paginatedData?.totalRecords}
         rowsPerPage={filters?.limit}
         rowsPerPageOptions={rowsPerPageOptions}
         page={filters?.page - 1}
@@ -229,9 +230,7 @@ const BasicTable = <T extends unknown>({
   return (
     <>
       <TableContainer component={Paper}>
-        <Box display={"flex"} justifyContent="flex-end">
-          {getPagination("div")}
-        </Box>
+        <Box mt={4} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>{generateColumns}</TableRow>

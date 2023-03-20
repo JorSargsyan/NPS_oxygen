@@ -18,13 +18,13 @@
     "baseUrl": "src",
     "paths": {
       "pages/*": ["pages/*"],
-      "layout/*": ["layout/*"],
       "shared/*": ["shared/*"],
       "store/*": ["store/*"],
-      "components/*": ["components/*"],
+      "routes/*": ["routes/*"],
       "assets/*": ["assets/*"]
     },
+    "ignoreBuildErrors": false,
     "jsx": "react-jsx"
   },
-  "include": ["src", "index.d.ts"]
+  "include": ["src"]
 }

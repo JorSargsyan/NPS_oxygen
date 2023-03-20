@@ -7,6 +7,7 @@ import { ERequestStatus } from "store/enums/index.enum";
 import TextInput from "shared/ui/TextInput";
 import Checkbox from "shared/ui/Checkbox";
 import { useNavigate } from "react-router-dom";
+import { LStorage } from "store/config/constants";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Login = () => {
       return;
     }
 
-    localStorage.setItem("authorized", payload.accessToken);
+    localStorage.setItem(LStorage.AUTH, payload.accessToken);
     navigate("/overview");
   };
 

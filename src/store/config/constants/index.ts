@@ -6,7 +6,7 @@ export const EBaseUrl = {
 };
 
 export const LStorage = {
-  AUTH: "authorized",
+  AUTH: "authorization",
 };
 
 export enum ETheme {
@@ -68,14 +68,10 @@ export enum ERequestStatus {
 }
 
 export const defaultTableData = {
-  meta: {
-    totalItems: 0,
-    itemCount: 0,
-    itemsPerPage: 0,
-    totalPages: 0,
-    currentPage: 0,
-  },
-  items: [],
+  allIds: [],
+  displayData: [],
+  totalDisplayRecords: 0,
+  totalRecords: 0,
 };
 
 export const DATE_FORMAT = "dd/MM/yyyy";

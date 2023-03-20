@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
-import { IPaginated, IState } from "store/interfaces/main";
+import { IPaginated, IState, IGridRequest } from "store/interfaces/main";
 import { api } from "store/services/apiService";
 import {
   IUser,
@@ -16,10 +16,10 @@ const initialState: IUsersState = {
   userInfo: null,
 };
 
-export const GetUsers = createAsyncThunk<IPaginated<IUser>, string>(
+export const GetUsers = createAsyncThunk<IPaginated<IUser>, IGridRequest>(
   `${name}/GetUsers`,
-  async (params) => {
-    return (await api.get(`${EBaseUrl.API}/admin/users?${params}`)).data;
+  async (data) => {
+    return (await api.post(`${EBaseUrl.API}/User/Grid`, data)).data;
   }
 );
 

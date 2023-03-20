@@ -7,15 +7,13 @@ export interface IUsersState {
 
 export interface IUser {
   id: number;
-  name: string;
-  surname: string;
   email: string;
-  phone: string;
-  status: string;
-  roleId: number;
-  roleName: string;
-  createdAt: string;
-  updatedAt: string;
+  status: boolean;
+  department: string;
+  fullName: string;
+  personalNumber: string;
+  role: string;
+  title: string;
 }
 
 export interface IChangePasswordRequest {
