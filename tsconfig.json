@@ -24,7 +24,6 @@
       "components/*": ["components/*"],
       "assets/*": ["assets/*"]
     },
-    "ignoreBuildErrors": false,
     "jsx": "react-jsx"
   },
   "include": ["src", "index.d.ts"]

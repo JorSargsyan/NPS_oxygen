@@ -1,8 +1,11 @@
 import { common } from "@mui/material/colors";
-import { alpha } from "@mui/material/styles";
+import { PaletteOptions, alpha } from "@mui/material/styles";
 import { error, indigo, info, neutral, success, warning } from "./colors";
 
-export function createPalette() {
+interface ICreatePalette extends PaletteOptions {
+  neutral: { [key: number]: string };
+}
+export function createPalette(): ICreatePalette {
   return {
     action: {
       active: neutral[500],

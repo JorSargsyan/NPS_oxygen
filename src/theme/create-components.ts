@@ -1,4 +1,6 @@
 import {
+  Components,
+  Theme,
   createTheme,
   filledInputClasses,
   inputLabelClasses,
@@ -9,7 +11,9 @@ import {
 
 const muiTheme = createTheme();
 
-export function createComponents(config) {
+export function createComponents(
+  config
+): Components<Omit<Theme, "components">> {
   const { palette } = config;
 
   return {

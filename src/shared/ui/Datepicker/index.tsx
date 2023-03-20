@@ -1,8 +1,6 @@
 import { TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { Controller, useFormContext } from "react-hook-form";
-import { DATE_FORMAT } from "store/config/constants";
 
 export interface IDatePickerProps {
   name: string;
@@ -21,9 +19,9 @@ const BasicDatePicker = ({ name, label, rules }: IDatePickerProps) => {
       render={({ field }) => (
         <DatePicker
           label={label}
-          inputFormat={DATE_FORMAT}
+          // inputFormat={DATE_FORMAT}
           {...field}
-          renderInput={(params) => <TextField fullWidth {...params} />}
+          slots={{ textField: (params) => <TextField fullWidth {...params} /> }}
         />
       )}
     />

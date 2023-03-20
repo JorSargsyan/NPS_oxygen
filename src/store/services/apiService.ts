@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { LStorage } from "../config/constants";
 
@@ -7,8 +7,9 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(
-  async (config: AxiosRequestConfig) => {
+  async (config: any) => {
     config.headers = {
+      ...config.headers,
       "Content-Type": "application/json",
       Authorization:
         `Bearer ${localStorage.getItem(LStorage.accessToken)}` || "",
