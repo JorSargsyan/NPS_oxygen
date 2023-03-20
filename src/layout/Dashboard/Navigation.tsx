@@ -41,15 +41,6 @@ export const SideNav = (props) => {
         <Box sx={{ p: 3 }}>
           <Box
             sx={{
-              display: "inline-flex",
-              height: 32,
-              width: 32,
-            }}
-          >
-            <Logo />
-          </Box>
-          <Box
-            sx={{
               alignItems: "center",
               backgroundColor: "rgba(255, 255, 255, 0.04)",
               borderRadius: 1,
@@ -60,14 +51,30 @@ export const SideNav = (props) => {
               p: "12px",
             }}
           >
-            <div>
-              <Typography color="inherit" variant="subtitle1">
-                NPS
-              </Typography>
-              <Typography color="neutral.400" variant="body2">
-                OXYGEN
-              </Typography>
-            </div>
+            <Box
+              flexDirection={"row"}
+              width="100%"
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems="center"
+            >
+              <Box>
+                <Typography color="inherit" variant="subtitle1">
+                  NPS
+                </Typography>
+                <Typography color="neutral.400" variant="body2">
+                  OXYGEN
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  height: 32,
+                  width: 32,
+                }}
+              >
+                <Logo />
+              </Box>
+            </Box>
           </Box>
         </Box>
         <Divider sx={{ borderColor: "neutral.700" }} />
