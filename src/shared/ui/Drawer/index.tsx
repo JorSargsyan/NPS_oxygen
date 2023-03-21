@@ -30,7 +30,7 @@ const RightDrawer = ({
       <Box p={2} width={width}>
         <Box mt={2} mb={4} display="flex" justifyContent={"space-between"}>
           <Typography variant="h6">{title}</Typography>
-          <Box zIndex={100} sx={{ cursor: "pointer" }}>
+          <Box sx={{ cursor: "pointer" }}>
             <CloseIcon onClick={handleClose} />
           </Box>
         </Box>

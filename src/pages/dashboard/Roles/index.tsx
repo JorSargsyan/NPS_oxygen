@@ -12,12 +12,11 @@ import {
 } from "resources/constants";
 import SharedDialog from "shared/ui/Dialog";
 import { GetPermissionGroups, setLoading } from "store/slicers/common";
-import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditRoles from "./components/AddEditRoles";
-import { DeleteRole, GetRoles, selectRoles } from "store/slicers/roles";
+import { GetRoles, selectRoles } from "store/slicers/roles";
 import { IRole } from "store/interfaces/roles";
 import { GetUserGroups } from "store/slicers/users";
 

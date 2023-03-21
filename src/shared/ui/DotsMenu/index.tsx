@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { nanoid } from "@reduxjs/toolkit";
 import { Fragment, useCallback, useState } from "react";
-import { IAction } from "../Table";
+import { IAction } from "../Table/constants";
 import MoreIcon from "@mui/icons-material/More";
 
 export interface IDotMenuProps<T> {

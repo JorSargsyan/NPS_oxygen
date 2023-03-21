@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   FormControlLabel,
   FormLabel,
   Grid,
@@ -10,13 +9,11 @@ import {
 } from "@mui/material";
 import { Fragment, useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
 import TextInput from "shared/ui/TextInput";
-import { ERequestStatus } from "store/enums/index.enum";
-import { AppDispatch } from "store/index";
 import {
   selectLoadingState,
   selectPermissionGroups,
@@ -24,10 +21,8 @@ import {
 import { IRole } from "store/interfaces/roles";
 import { selectUserGroups } from "store/slicers/users";
 import { IUserGroup } from "store/interfaces/users";
-import {
-  IPermGroupPermission,
-  IPermissionGroup,
-} from "store/interfaces/common";
+import { IPermGroupPermission } from "store/interfaces/common";
+import BasicAutocomplete from "shared/ui/Autocomplete";
 
 interface IFormData {}
 
@@ -38,7 +33,6 @@ const AddEditRoles = ({
   onSuccess: () => void;
   editData?: IRole;
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const permGroups = useSelector(selectPermissionGroups);
   const userGroups = useSelector(selectUserGroups);
   const methods = useForm<IFormData>({
@@ -47,18 +41,7 @@ const AddEditRoles = ({
   const isLoading = useSelector(selectLoadingState);
 
   const onSubmit = async (data: IFormData) => {
-    // dispatch(setLoading(true));
-    // const { meta } = await dispatch(AddTranslation(formData));
-    // if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-    //   dispatch(setLoading(false));
-    //   return;
-    // }
-    // const message = editData
-    //   ? "Country Updated Successfully"
-    //   : "Country Added Successfully";
-    // toast.success(message);
-    // dispatch(setLoading(false));
-    // onSuccess();
+    console.log(data);
   };
 
   const setEditData = useCallback(() => {
@@ -74,8 +57,8 @@ const AddEditRoles = ({
     <Fragment>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
-          <Grid container spacing={4}>
-            <Grid item container xs={12} spacing={3}>
+          <Grid container>
+            <Grid container item xs={12} spacing={3}>
               <Grid item xs={4}>
                 <TextInput<IFormData>
                   label="Role Name"
@@ -126,68 +109,75 @@ const AddEditRoles = ({
                 </RadioGroup>
               </Grid>
             </Grid>
-            <Grid item container xs={12} spacing={3}>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Customer Permissions"
+            <Grid mt={0} container item xs={12} spacing={3}>
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
                   name="customerPermission"
-                  options={permGroups[0].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  options={permGroups[0]?.permissions}
+                  inputLabel={"Customer Permissions"}
+                  multiple
+                  defaultValue={[]}
+                  optionLabel="name"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Feedbacks Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Feedbacks Permissions"
                   name="feedbackPermission"
                   options={permGroups[1].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Dashboard Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Dashboard Permissions"
                   name="dashboardPermission"
                   options={permGroups[2].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Campaign Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Campaign Permissions"
                   name="campaignPermission"
                   options={permGroups[3].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Roles Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Roles Permissions"
                   name="rolePermission"
                   options={permGroups[4].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Users Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Users Permissions"
                   name="userPermission"
                   options={permGroups[5].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
-              <Grid item xs={4}>
-                <BasicSelect<IPermGroupPermission>
-                  label="Translation Permissions"
+              <Grid item xs={6}>
+                <BasicAutocomplete<IPermGroupPermission>
+                  inputLabel="Translation Permissions"
                   name="translationPermission"
                   options={permGroups[6].permissions}
-                  valueProp={"id"}
-                  labelProp="name"
+                  defaultValue={[]}
+                  optionLabel="name"
+                  multiple
                 />
               </Grid>
             </Grid>

@@ -42,7 +42,7 @@ export interface ITableProps<T> {
   enablePagination?: boolean;
   filterOptions?: IFilterOptions;
   section?: string;
-  hasSearchInput: boolean;
+  hasSearchInput?: boolean;
 }
 
 export const rowsPerPageOptions = [5, 10, 20];
