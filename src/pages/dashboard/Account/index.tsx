@@ -43,7 +43,7 @@ const AccountPage = () => {
                       }}
                     >
                       <Avatar
-                        src={`${EBaseUrl.MediaUserURL}/${userInfo.imagePath}`}
+                        src={`${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`}
                         sx={{
                           height: 80,
                           mb: 2,
@@ -51,10 +51,10 @@ const AccountPage = () => {
                         }}
                       />
                       <Typography gutterBottom variant="h5">
-                        {userInfo.name}
+                        {userInfo?.name}
                       </Typography>
                       <Typography color="text.secondary" variant="body2">
-                        {userInfo.position}
+                        {userInfo?.position}
                       </Typography>
                     </Box>
                   </CardContent>
@@ -68,71 +68,43 @@ const AccountPage = () => {
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
                 <Card>
-                  <CardHeader
-                    subheader="The information can be edited"
-                    title="Profile"
-                  />
+                  <CardHeader title="Profile Information" />
                   <CardContent sx={{ pt: 0 }}>
-                    <Box sx={{ m: -1.5 }}>
+                    <Box>
                       <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            helperText="Please specify the first name"
-                            label="First name"
-                            name="firstName"
-                            required
-                          />
+                          <Typography fontSize={14}>Full Name</Typography>
+                          <Typography fontWeight={"bold"}>
+                            {userInfo?.name} {userInfo?.surname}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Last name"
-                            name="lastName"
-                            required
-                          />
+                          <Typography fontSize={14}>Email Address</Typography>
+                          <Typography fontWeight={"bold"}>
+                            {userInfo?.email}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Email Address"
-                            name="email"
-                            required
-                          />
+                          <Typography fontSize={14}>Role</Typography>
+                          <Typography fontWeight={"bold"}>
+                            {userInfo?.role.label}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Phone Number"
-                            name="phone"
-                            type="number"
-                          />
+                          <Typography fontSize={14}>Position</Typography>
+                          <Typography fontWeight={"bold"}>
+                            {userInfo?.position}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Country"
-                            name="country"
-                            required
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Select State"
-                            name="state"
-                            required
-                            select
-                            SelectProps={{ native: true }}
-                          ></TextField>
+                          <Typography fontSize={14}> Department</Typography>
+                          <Typography fontWeight={"bold"}>
+                            {userInfo?.department}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Box>
                   </CardContent>
-                  <Divider />
-                  <CardActions sx={{ justifyContent: "flex-end" }}>
-                    <Button variant="contained">Save details</Button>
-                  </CardActions>
                 </Card>
               </Grid>
             </Grid>
