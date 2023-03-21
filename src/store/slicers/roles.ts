@@ -1,62 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { EBaseUrl } from "store/config/constants";
-import { IState } from "store/interfaces/main";
+import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
-import {
-  IRolesState,
-  IRole,
-  IAddEditRoleRequest,
-  IUserRole,
-  IAttachDeattachRoleRequest,
-} from "../interfaces/roles";
+import { IRolesState, IRole, IAddEditRoleRequest } from "../interfaces/roles";
 
 const name = "ROLES";
 
 const initialState: IRolesState = {
   userRole: null,
-  roles: [],
+  roles: null,
   permissions: {},
 };
 
-export const GetUserRole = createAsyncThunk<IRole>(
-  `${name}/GetUserRole`,
-  async () => {
-    return (await api.get(`${EBaseUrl.API}/admin/user/roles`)).data;
-  }
-);
-
-export const GetPermissions = createAsyncThunk(
-  `${name}/GetPermissions`,
-  async () => {
-    return (await api.get(`${EBaseUrl.API}/admin/permissions`)).data;
-  }
-);
-
-export const AttachRole = createAsyncThunk(
-  `${name}/AttachRole`,
-  async (formData: IAttachDeattachRoleRequest) => {
-    return (await api.post(`${EBaseUrl.API}/admin/user/roles`, formData)).data;
-  }
-);
-
-export const DeattachRole = createAsyncThunk(
-  `${name}/DeattachRole`,
-  async (formData: IAttachDeattachRoleRequest) => {
-    return (await api.put(`${EBaseUrl.API}/admin/user/roles`, formData)).data;
-  }
-);
-
-export const GetRoles = createAsyncThunk<IRole[]>(
+export const GetRoles = createAsyncThunk<IPaginated<IRole>, IGridRequest>(
   `${name}/GetRoles`,
-  async () => {
-    return (await api.get(`${EBaseUrl.API}/admin/roles`)).data;
-  }
-);
-
-export const GetUserRoles = createAsyncThunk<IUserRole>(
-  `${name}/GetUserRoles`,
-  async () => {
-    return (await api.get(`${EBaseUrl.API}/admin/user/roles`)).data;
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Role/Grid`, formData)).data;
   }
 );
 
@@ -86,14 +45,8 @@ const rolesSlice = createSlice({
   name,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(GetUserRole.fulfilled, (state, { payload }) => {
-      state.userRole = payload;
-    });
     builder.addCase(GetRoles.fulfilled, (state, { payload }) => {
       state.roles = payload;
-    });
-    builder.addCase(GetPermissions.fulfilled, (state, { payload }) => {
-      state.permissions = payload.permissions;
     });
   },
 });

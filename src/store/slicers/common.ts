@@ -3,6 +3,7 @@ import { EBaseUrl, ETheme } from "../config/constants";
 import {
   ICommonState,
   IGetPermissionsResponse,
+  IPermissionGroup,
   IGetConfigResponse,
 } from "../interfaces/common";
 import { IState } from "../interfaces/main";
@@ -14,12 +15,20 @@ const initialState: ICommonState = {
   loading: false,
   theme: ETheme.Light,
   permissions: [],
+  permissionGroups: [],
 };
 
 export const GetPermissions = createAsyncThunk<IGetPermissionsResponse>(
   `${name}/GetPermissions`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Permissions`)).data;
+  }
+);
+
+export const GetPermissionGroups = createAsyncThunk<IPermissionGroup[]>(
+  `${name}/GetPermissionGroups`,
+  async () => {
+    return (await api.get(`${EBaseUrl.API}/Permission`)).data;
   }
 );
 
@@ -46,6 +55,9 @@ const commonSlice = createSlice({
     builder.addCase(GetPermissions.fulfilled, (state, { payload }) => {
       state.permissions = payload.permissions;
     });
+    builder.addCase(GetPermissionGroups.fulfilled, (state, { payload }) => {
+      state.permissionGroups = payload;
+    });
     builder.addCase(GetConfig.fulfilled, (state, { payload }) => {
       state.theme = payload.themeColor;
     });
@@ -56,4 +68,6 @@ export const { setLoading, setTheme } = commonSlice.actions;
 export const selectLoadingState = (state: IState) => state.common.loading;
 export const selectTheme = (state: IState) => state.common.theme;
 export const selectPermissions = (state: IState) => state.common.permissions;
+export const selectPermissionGroups = (state: IState) =>
+  state.common.permissionGroups;
 export default commonSlice.reducer;
