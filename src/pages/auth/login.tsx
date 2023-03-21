@@ -1,24 +1,32 @@
-import { Alert, Box, Button, Link, Stack, Typography } from "@mui/material";
-import { Layout as AuthLayout } from "../../layout/Auth";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { Authorize } from "store/slicers/auth";
-import { ERequestStatus } from "store/enums/index.enum";
-import TextInput from "shared/ui/TextInput";
-import Checkbox from "shared/ui/Checkbox";
 import { useNavigate } from "react-router-dom";
+
+import { Alert, Box, Button, Stack, Typography } from "@mui/material";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { emailRegex, requiredRules } from "shared/helpers/validators";
+import Checkbox from "shared/ui/Checkbox";
+import TextInput from "shared/ui/TextInput";
+import { ERequestStatus } from "store/enums/index.enum";
+import { Authorize } from "store/slicers/auth";
+import { Layout as AuthLayout } from "../../layout/Auth";
+
+interface IFormValues {
+  email: string;
+  password: string;
+  remember: boolean;
+}
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
-  const form = useForm({
+  const form = useForm<IFormValues>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async (formData: IFormValues) => {
     const { meta, payload } = await dispatch(Authorize(formData));
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
@@ -50,23 +58,29 @@ const Login = () => {
           <div>
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
-              <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an account? &nbsp;
-                <Link
-                  href="/auth/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Register
-                </Link>
-              </Typography>
             </Stack>
 
             <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
               <FormProvider {...form}>
                 <Stack spacing={3}>
-                  <TextInput label="Email Address" name="email" />
-                  <TextInput label="Password" name="password" />
+                  <TextInput<IFormValues>
+                    label="Email Address"
+                    name="email"
+                    type="email"
+                    rules={{
+                      pattern: {
+                        value: emailRegex,
+                        message: "Please enter a valid email address",
+                      },
+                      ...requiredRules,
+                    }}
+                  />
+                  <TextInput<IFormValues>
+                    label="Password"
+                    name="password"
+                    isSecure
+                    rules={requiredRules}
+                  />
                   <Checkbox name="isRemember" label="Remember me" />
                 </Stack>
 

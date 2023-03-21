@@ -5,6 +5,8 @@ import { createTheme } from "./theme";
 import { CssBaseline } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
 import { CreateRoutes } from "./routes";
+import { Toaster } from "react-hot-toast";
+import { toastOptions } from "resources/constants";
 
 function App() {
   const router = CreateRoutes();
@@ -14,6 +16,7 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <Toaster position="top-center" toastOptions={toastOptions} />
           <RouterProvider router={router} />
         </ThemeProvider>
       </LocalizationProvider>
