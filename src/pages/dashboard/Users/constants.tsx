@@ -1,4 +1,6 @@
+import { Chip } from "@mui/material";
 import { IColumn } from "shared/ui/Table/constants";
+import { IUserCompact } from "store/interfaces/users";
 
 export const userColumns: IColumn[] = [
   {
@@ -18,7 +20,21 @@ export const userColumns: IColumn[] = [
     field: "email",
   },
   {
-    label: "Title",
+    label: "Position",
     field: "title",
+  },
+  {
+    label: "Role",
+    field: "role",
+  },
+  {
+    label: "Status",
+    layout: (row: IUserCompact) => {
+      return row.status ? (
+        <Chip label="Active" color="primary" />
+      ) : (
+        <Chip label="Inactive" color="error" />
+      );
+    },
   },
 ];

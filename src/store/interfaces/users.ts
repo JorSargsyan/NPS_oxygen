@@ -24,6 +24,17 @@ export interface IUser {
   userGroup: number;
 }
 
+export interface IUserCompact {
+  department: string;
+  email: string;
+  fullName: string;
+  id: number;
+  personalNumber: string;
+  role: string;
+  status: boolean;
+  title: string;
+}
+
 export interface IChangePasswordRequest {
   oldPassword: string;
   password: string;

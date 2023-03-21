@@ -26,6 +26,19 @@ const Users = () => {
     console.log(ids);
   };
 
+  const handleView = (rowId: number) => {
+    console.log(rowId);
+  };
+
+  const getActions = (rowData: IUser) => {
+    return [
+      {
+        label: "View",
+        onClick: () => handleView(rowData.id),
+      },
+    ];
+  };
+
   useEffect(() => {
     dispatch(GetUsers(defaultFilterValues));
   }, [dispatch]);
@@ -37,6 +50,7 @@ const Users = () => {
         selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={userColumns}
+        getActions={getActions}
         paginatedData={users}
         onChange={refetchUsers}
         onChangeSelected={handleChangeSelected}

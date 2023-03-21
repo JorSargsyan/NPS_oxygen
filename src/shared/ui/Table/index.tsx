@@ -29,8 +29,6 @@ import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
 import DotsMenu from "../DotsMenu";
 import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
-import useGetUserPermissionsList from "shared/helpers/hooks/usePermissionList";
-import { hasOtherPermissionButGet } from "shared/helpers";
 export interface IAction<T> {
   label: string;
   onClick: (row: T) => any;
@@ -168,7 +166,6 @@ const BasicTable = <T extends { id: number }>({
   section,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
-  const permList = useGetUserPermissionsList();
   const [selectedList, setSelectedList] = useState([]);
 
   const handleCheckAll = useCallback(
@@ -230,8 +227,8 @@ const BasicTable = <T extends { id: number }>({
     const hasActions = !!getActions;
 
     return hasActions ? [...columns, getActionColumn()] : columns;
-  }, [columns, getActionColumn, getActions, permList, section]);
-  console.log(columnsData, "columnsData");
+  }, [columns, getActionColumn, getActions]);
+
   const handlePageChange = (_: any, pageNumber: number) => {
     filterOptions?.reset({
       ...filterOptions.watch(),
@@ -282,8 +279,6 @@ const BasicTable = <T extends { id: number }>({
                   ? filters?.sortDirection
                   : "asc"
               }
-              // disabled={column.withoutSort ? true : false}
-              // className={column.withoutSort ? styles.withoutSortText : ""}
               onClick={handleSort(
                 column.field,
                 filters?.sortDirection === "asc" ? "desc" : "asc"
