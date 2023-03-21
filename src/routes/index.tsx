@@ -15,16 +15,19 @@ export const CreateRoutes = () => {
   const isAuthorized = useSelector(selectAuth);
 
   const fetchDashboardData = useCallback(() => {
-    console.log("fetching dashboard info");
-    Promise.all([
-      dispatch(GetCurrentUser()),
-      dispatch(GetConfig()),
-      dispatch(GetPermissions()),
-    ]);
+    setTimeout(() => {
+      Promise.all([
+        dispatch(GetCurrentUser()),
+        dispatch(GetConfig()),
+        dispatch(GetPermissions()),
+      ]);
+    }, 0);
   }, [dispatch]);
 
   useEffect(() => {
-    fetchDashboardData();
+    if (isAuthorized) {
+      fetchDashboardData();
+    }
   }, [fetchDashboardData, isAuthorized]);
 
   const router = createBrowserRouter([
