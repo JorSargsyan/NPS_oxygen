@@ -5,7 +5,7 @@ import {
 } from "store/enums/translations.enum";
 import { ITranslatedKey, ITranslation } from "store/interfaces/translations";
 
-export const dictionaryColumns: IColumn[] = [
+export const columns: IColumn[] = [
   {
     label: "Translation key",
     field: "key",
