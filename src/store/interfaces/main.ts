@@ -1,5 +1,3 @@
-import { IShopsState } from "./shops";
-import { INotificationState } from "./notifications";
 import { IAuthState } from "./auth";
 import { ICommonState } from "./common";
 import { ICustomersState } from "./customers";
@@ -7,10 +5,6 @@ import { IErrorsState } from "./errors";
 import { IRolesState } from "./roles";
 import { ITranslationsState } from "./translations";
 import { IUsersState } from "./users";
-import { IUserNotificationState } from "./userNotifications";
-import { ISubscriptionPlansState } from "./subscriptionPlans";
-import { IShopCategoriesState } from "./shopCategories";
-
 export interface IPaginated<T> {
   totalDisplayRecords: number;
   totalRecords: number;
@@ -31,8 +25,6 @@ export interface IGridRequest {
 }
 
 export interface IState {
-  notifications: INotificationState;
-  usersNotifications: IUserNotificationState;
   errors: IErrorsState;
   common: ICommonState;
   auth: IAuthState;
@@ -40,7 +32,4 @@ export interface IState {
   roles: IRolesState;
   translations: ITranslationsState;
   customers: ICustomersState;
-  shops: IShopsState;
-  shopCategories: IShopCategoriesState;
-  subscriptionPlans: ISubscriptionPlansState;
 }

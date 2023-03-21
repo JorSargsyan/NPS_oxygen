@@ -10,8 +10,8 @@ export const LStorage = {
 };
 
 export enum ETheme {
-  Light = "light",
-  Dark = "dark",
+  Light = "Light",
+  Dark = "Dark",
 }
 
 export enum EPermissions {
