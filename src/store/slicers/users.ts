@@ -40,7 +40,7 @@ export const EditUser = createAsyncThunk<
 export const GetCurrentUser = createAsyncThunk<IUser>(
   `${name}/GetCurrentUser`,
   async () => {
-    return (await api.get(`${EBaseUrl.API}/admin/users/user`)).data;
+    return (await api.get(`${EBaseUrl.API}/Profile`)).data;
   }
 );
 

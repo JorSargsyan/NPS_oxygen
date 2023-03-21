@@ -15,6 +15,9 @@ import {
 import { alpha } from "@mui/material/styles";
 import { usePopover } from "shared/helpers/hooks/usePopover";
 import AccountPopover from "./account";
+import { EBaseUrl } from "store/config/constants";
+import { useSelector } from "react-redux";
+import { selectUserInfo } from "store/slicers/users";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -23,6 +26,7 @@ export const TopNav = (props) => {
   const { onNavOpen } = props;
   const lgUp = useMediaQuery<any>((theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
+  const userInfo = useSelector(selectUserInfo);
 
   return (
     <>
@@ -61,16 +65,16 @@ export const TopNav = (props) => {
                 </SvgIcon>
               </IconButton>
             )}
-            <Tooltip title="Search">
+            {/* <Tooltip title="Search">
               <IconButton>
                 <SvgIcon fontSize="small">
                   <MagnifyingGlassIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
-            <Tooltip title="Contacts">
+            {/* <Tooltip title="Contacts">
               <IconButton>
                 <SvgIcon fontSize="small">
                   <UsersIcon />
@@ -85,7 +89,7 @@ export const TopNav = (props) => {
                   </SvgIcon>
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
@@ -94,7 +98,11 @@ export const TopNav = (props) => {
                 height: 40,
                 width: 40,
               }}
-              src="/assets/avatars/avatar-anika-visser.png"
+              src={
+                EBaseUrl.MediaUserURL
+                  ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
+                  : "/assets/avatars/avatar-anika-visser.png"
+              }
             />
           </Stack>
         </Stack>

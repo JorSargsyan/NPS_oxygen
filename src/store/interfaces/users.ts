@@ -6,14 +6,22 @@ export interface IUsersState {
 }
 
 export interface IUser {
-  id: number;
-  email: string;
-  status: boolean;
+  ManagerUser: string | null;
+  creationDate: string;
   department: string;
-  fullName: string;
+  directorate: string | null;
+  email: string;
+  id: number;
+  imagePath: string;
+  isActive: boolean;
+  name: string;
+  noImage: boolean;
   personalNumber: string;
-  role: string;
-  title: string;
+  phone: string | null;
+  position: string;
+  role: { id: number; label: string };
+  surname: string;
+  userGroup: number;
 }
 
 export interface IChangePasswordRequest {

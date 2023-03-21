@@ -6,17 +6,26 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { LStorage } from "store/config/constants";
 import { signOut } from "store/slicers/auth";
+import { selectUserInfo } from "store/slicers/users";
 
 const AccountPopover = (props) => {
+  const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
+  const userInfo = useSelector(selectUserInfo);
   const { anchorEl, onClose, open } = props;
 
   const handleSignOut = () => {
     localStorage.removeItem(LStorage.AUTH);
     dispatch(signOut());
+  };
+
+  const handleProfile = () => {
+    navigate("/profile");
   };
 
   return (
@@ -38,7 +47,7 @@ const AccountPopover = (props) => {
       >
         <Typography variant="overline">Account</Typography>
         <Typography color="text.secondary" variant="body2">
-          Anika Visser
+          {userInfo?.name} {userInfo?.surname}
         </Typography>
       </Box>
       <Divider />
@@ -52,6 +61,7 @@ const AccountPopover = (props) => {
           },
         }}
       >
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
         <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
       </MenuList>
     </Popover>
