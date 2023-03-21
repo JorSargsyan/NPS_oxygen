@@ -301,6 +301,7 @@ const BasicTable = <T extends { id: number }>({
     filters?.sortColumn,
     filters?.sortDirection,
     handleCheckAll,
+    handleSort,
     paginatedData?.displayData,
     selectable,
     selectedList?.length,

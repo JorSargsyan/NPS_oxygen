@@ -7,7 +7,7 @@ import { GetUsers, selectUsers } from "store/slicers/users";
 import { userColumns } from "./constants";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { defaultFilterValues } from "resources/constants";
 
 const Users = () => {
