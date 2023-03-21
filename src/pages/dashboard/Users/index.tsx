@@ -22,7 +22,6 @@ const Users = () => {
   });
 
   const refetchUsers = () => {
-    console.log(methods.watch("filters"));
     dispatch(GetUsers(methods.watch("filters")));
   };
 

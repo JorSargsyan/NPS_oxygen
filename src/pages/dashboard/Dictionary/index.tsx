@@ -17,9 +17,9 @@ import SharedDialog from "shared/ui/Dialog";
 import { setLoading } from "store/slicers/common";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
-import { getQueryParams } from "shared/helpers/getQueryParams";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import AddEditTranslations from "./components/AddEditTranslations";
 
 const Users = () => {
   const [activeRow, setActiveRow] = useState<ITranslation>();
@@ -72,6 +72,12 @@ const Users = () => {
     toast.success("Country is deleted");
   };
 
+  const onFormSuccess = () => {
+    setActiveRow(undefined);
+    setDrawerOpen(false);
+    refetchUsers();
+  };
+
   const getActions = (rowData: ITranslation) => {
     return [
       {
@@ -119,7 +125,7 @@ const Users = () => {
         onClose={handleClose}
         title={`${activeRow ? "Edit" : "Add"} Translation`}
       >
-        {/* <AddEditCountries editData={activeRow} onSuccess={onFormSuccess} /> */}
+        <AddEditTranslations editData={activeRow} onSuccess={onFormSuccess} />
       </RightDrawer>
       <SharedDialog
         open={isWarningOpen}

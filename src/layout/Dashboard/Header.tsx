@@ -1,23 +1,18 @@
-import BellIcon from "@heroicons/react/24/solid/BellIcon";
-import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
-import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import {
   Avatar,
-  Badge,
   Box,
   IconButton,
   Stack,
   SvgIcon,
-  Tooltip,
   useMediaQuery,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { usePopover } from "shared/helpers/hooks/usePopover";
-import AccountPopover from "./account";
-import { EBaseUrl } from "store/config/constants";
 import { useSelector } from "react-redux";
+import { usePopover } from "shared/helpers/hooks/usePopover";
+import { EBaseUrl } from "store/config/constants";
 import { selectUserInfo } from "store/slicers/users";
+import AccountPopover from "./account";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;

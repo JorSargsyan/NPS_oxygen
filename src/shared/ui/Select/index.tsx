@@ -22,13 +22,13 @@ const BasicSelect = <T extends unknown>({
     <Controller
       name={name}
       render={({ field }) => (
-        <FormControl fullWidth>
+        <FormControl fullWidth variant="filled">
           <InputLabel>{label}</InputLabel>
           <Select {...field} label={label} disabled={disabled}>
             {options?.map((option: T, index: number) => {
               return (
-                <MenuItem key={index} value={option[valueProp] as string}>
-                  {option[labelProp] as string}
+                <MenuItem key={index} value={option[valueProp as string]}>
+                  {option[labelProp as string]}
                 </MenuItem>
               );
             })}
