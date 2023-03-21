@@ -245,18 +245,21 @@ const BasicTable = <T extends { id: number }>({
     onChange?.();
   };
 
-  const handleSort = (prop: string, direction: string) => (_: any) => {
-    console.log(prop, direction);
-    filterOptions?.reset({
-      ...filterOptions.watch(),
-      filters: {
-        ...filters,
-        sortDirection: direction,
-        sortColumn: prop,
-      },
-    });
-    onChange?.();
-  };
+  const handleSort = useCallback(
+    (prop: string, direction: string) => (_: any) => {
+      console.log(prop, direction);
+      filterOptions?.reset({
+        ...filterOptions.watch(),
+        filters: {
+          ...filters,
+          sortDirection: direction,
+          sortColumn: prop,
+        },
+      });
+      onChange?.();
+    },
+    [filterOptions, filters, onChange]
+  );
 
   const generateColumns = useMemo(() => {
     return (
