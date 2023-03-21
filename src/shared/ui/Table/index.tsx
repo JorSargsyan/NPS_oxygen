@@ -25,10 +25,15 @@ import {
 } from "@mui/material";
 import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { UseFormReset, UseFormWatch } from "react-hook-form";
+import SearchInput from "shared/components/SearchInput";
 import { IPaginated } from "store/interfaces/main";
 import DotsMenu from "../DotsMenu";
-import { IColumn, rowsPerPageOptions } from "./constants";
+import {
+  IColumn,
+  IEnhancedToolbar,
+  IFilterOptions,
+  rowsPerPageOptions,
+} from "./constants";
 export interface IAction<T> {
   label: string;
   onClick: (row: T) => any;
@@ -43,11 +48,9 @@ export interface ITableProps<T> {
   selectable?: boolean;
   getActions?: (row: T) => IAction<T>[];
   enablePagination?: boolean;
-  filterOptions?: {
-    watch: UseFormWatch<any>;
-    reset: UseFormReset<any>;
-  };
+  filterOptions?: IFilterOptions;
   section?: string;
+  hasSearchInput: boolean;
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
@@ -111,11 +114,16 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-const EnhancedToolbar = ({ rowsSelected }: { rowsSelected: number }) => {
+const EnhancedToolbar = ({
+  rowsSelected,
+  filterOptions,
+  fetchData,
+  hasSearchInput,
+}: IEnhancedToolbar) => {
   return (
     <Toolbar
       sx={{
-        pl: { sm: 2 },
+        pl: { sm: 1 },
         pr: { xs: 1, sm: 1 },
         ...(rowsSelected > 0 && {
           bgcolor: (theme) =>
@@ -137,7 +145,9 @@ const EnhancedToolbar = ({ rowsSelected }: { rowsSelected: number }) => {
         </Typography>
       ) : (
         <Box sx={{ flex: "1 1 100%" }}>
-          {/* TODO ADD SEARCH,FILTERS, OTHER STUFF */}
+          {hasSearchInput ? (
+            <SearchInput filterOptions={filterOptions} fetchData={fetchData} />
+          ) : null}
         </Box>
       )}
       {rowsSelected > 0 ? (
@@ -164,6 +174,7 @@ const BasicTable = <T extends { id: number }>({
   filterOptions,
   enablePagination = true,
   section,
+  hasSearchInput = false,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
   const [selectedList, setSelectedList] = useState([]);
@@ -375,7 +386,14 @@ const BasicTable = <T extends { id: number }>({
   return (
     <Box pt={4}>
       <TableContainer component={Paper}>
-        <EnhancedToolbar rowsSelected={selectedList.length} />
+        <Box pb={2}>
+          <EnhancedToolbar
+            rowsSelected={selectedList.length}
+            filterOptions={filterOptions}
+            fetchData={onChange}
+            hasSearchInput={hasSearchInput}
+          />
+        </Box>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>{generateColumns}</TableRow>

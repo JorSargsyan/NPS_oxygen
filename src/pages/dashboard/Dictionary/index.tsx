@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
-import { deleteTranslationWarningConfig, dictionaryColumns } from "./constants";
+import { deleteTranslationWarningConfig, columns } from "./constants";
 import { Box } from "@mui/system";
 import { Button, SvgIcon, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTranslations from "./components/AddEditTranslations";
 
-const Users = () => {
+const Translations = () => {
   const [activeRow, setActiveRow] = useState<ITranslation>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isWarningOpen, setWarningOpen] = useState(false);
@@ -31,7 +31,7 @@ const Users = () => {
     defaultValues: { filters: defaultFilterValues },
   });
 
-  const refetchUsers = () => {
+  const refetchTranslations = () => {
     dispatch(GetTranslations(methods.watch("filters")));
   };
 
@@ -67,15 +67,15 @@ const Users = () => {
       return;
     }
     setActiveRow(undefined);
-    await refetchUsers();
+    await refetchTranslations();
     dispatch(setLoading(false));
-    toast.success("Country is deleted");
+    toast.success("Translation is deleted");
   };
 
   const onFormSuccess = () => {
     setActiveRow(undefined);
     setDrawerOpen(false);
-    refetchUsers();
+    refetchTranslations();
   };
 
   const getActions = (rowData: ITranslation) => {
@@ -113,9 +113,9 @@ const Users = () => {
       </Box>
       <BasicTable<ITranslation>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
-        columns={dictionaryColumns}
+        columns={columns}
         paginatedData={translations}
-        onChange={refetchUsers}
+        onChange={refetchTranslations}
         onChangeSelected={handleChangeSelected}
         getActions={getActions}
       />
@@ -137,4 +137,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Translations;

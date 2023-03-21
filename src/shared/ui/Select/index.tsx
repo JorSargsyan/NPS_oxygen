@@ -1,5 +1,5 @@
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
-import { Controller } from "react-hook-form";
+import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 
 export interface ISelectProps<T> {
   label: string;
@@ -8,6 +8,10 @@ export interface ISelectProps<T> {
   valueProp: keyof T;
   labelProp: keyof T;
   name: string;
+  rules?: Omit<
+    RegisterOptions<T>,
+    "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+  >;
 }
 
 const BasicSelect = <T extends unknown>({
@@ -17,10 +21,15 @@ const BasicSelect = <T extends unknown>({
   labelProp,
   disabled,
   valueProp,
+  rules,
 }: ISelectProps<T>) => {
+  const { control } = useFormContext();
+
   return (
     <Controller
+      control={control}
       name={name}
+      rules={rules}
       render={({ field }) => (
         <FormControl fullWidth variant="filled">
           <InputLabel>{label}</InputLabel>
