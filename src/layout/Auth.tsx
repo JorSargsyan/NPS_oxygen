@@ -76,11 +76,8 @@ export const Layout = (props: any) => {
             >
               Welcome to{" "}
               <Box component="a" sx={{ color: "#15B79E" }} target="_blank">
-                Devias Kit
+                NPS
               </Box>
-            </Typography>
-            <Typography align="center" sx={{ mb: 3 }} variant="subtitle1">
-              A professional kit that comes with ready-to-use MUI components.
             </Typography>
             <img alt="" src={Ill} />
           </Box>

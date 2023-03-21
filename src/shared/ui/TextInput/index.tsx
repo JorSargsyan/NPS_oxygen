@@ -1,11 +1,11 @@
 import { InputAdornment, TextField } from "@mui/material";
 import { Fragment, useCallback, KeyboardEvent, Ref, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 import CrossIcon from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-interface IInputProps {
+interface IInputProps<T> {
   size?: "small" | "medium";
   name: string;
   multiline?: boolean;
@@ -14,14 +14,17 @@ interface IInputProps {
   isSecure?: boolean;
   type?: string;
   clearable?: boolean;
-  rules?: any;
+  rules?: Omit<
+    RegisterOptions<T>,
+    "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+  >;
   onClear?: () => void;
   onKeyPress?: (parameter: KeyboardEvent<HTMLDivElement>) => void;
   disabled?: boolean;
   inputRef?: Ref<HTMLInputElement>;
 }
 
-const InputField = ({
+const InputField = <T extends unknown>({
   size,
   name,
   label,
@@ -35,7 +38,7 @@ const InputField = ({
   onClear,
   inputRef,
   disabled,
-}: IInputProps) => {
+}: IInputProps<T>) => {
   const {
     control,
     formState: { errors },
@@ -57,18 +60,19 @@ const InputField = ({
         <InputAdornment
           position={"end"}
           onClick={() => handleClearInput(field)}
+          sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         >
-          <div style={{ cursor: "pointer" }}>
-            <CrossIcon />
-          </div>
+          <CrossIcon />
         </InputAdornment>
       );
     } else if (isSecure) {
       return (
-        <InputAdornment position={"end"} onClick={toggleVisible}>
-          <div style={{ cursor: "pointer" }}>
-            {invisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-          </div>
+        <InputAdornment
+          position={"end"}
+          onClick={toggleVisible}
+          sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        >
+          {invisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
         </InputAdornment>
       );
     }

@@ -27,9 +27,9 @@ api.interceptors.response.use(
       window.location.href = "/login";
     }
     return new Promise(async (_, reject) => {
-      if (err?.response?.data?.message) {
+      if (err?.response?.data?.error?.message) {
         toast.error(
-          `${err.response?.data?.error}: ${err.response?.data?.message}`
+          `${err.response?.data?.error?.code}: ${err.response?.data?.error?.message}`
         );
       } else {
         toast.error("SMT Went Wrong");
