@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
-import { IPaginated, IState } from "store/interfaces/main";
+import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
 import {
   ICustomer,
   ICustomersState,
   ICustomerExport,
+  IChangeCustomerStatus,
 } from "../interfaces/customers";
 
 const name = "CUSTOMERS";
@@ -14,18 +15,28 @@ const initialState: ICustomersState = {
   listData: defaultTableData,
 };
 
-export const GetCustomers = createAsyncThunk<IPaginated<ICustomer>, string>(
-  `${name}/GetCustomers`,
-  async (params) => {
-    return (await api.get(`${EBaseUrl.API}/admin/customers?${params}`)).data;
-  }
-);
+export const GetCustomers = createAsyncThunk<
+  IPaginated<ICustomer>,
+  IGridRequest
+>(`${name}/GetCustomers`, async (formData: IGridRequest) => {
+  return (await api.post(`${EBaseUrl.API}/Customer/Grid`, formData)).data;
+});
+
+export const ChangeCustomerStatus = createAsyncThunk<
+  unknown,
+  IChangeCustomerStatus
+>(`${name}/ChangeCustomerStatus`, async (data: IChangeCustomerStatus) => {
+  return (
+    await api.put(`${EBaseUrl.API}/Customer/Status/${data.id}`, data.formData)
+  ).data;
+});
 
 export const ExportCustomers = createAsyncThunk<ICustomerExport[], string>(
   `${name}/ExportCustomers`,
   async (params) => {
-    return (await api.get(`${EBaseUrl.API}/admin/customers/export/data?${params}`))
-      .data;
+    return (
+      await api.get(`${EBaseUrl.API}/admin/customers/export/data?${params}`)
+    ).data;
   }
 );
 
