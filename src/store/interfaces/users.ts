@@ -1,7 +1,7 @@
 import { IPaginated } from "./main";
 
 export interface IUsersState {
-  data: IPaginated<IUser>;
+  data: IPaginated<IUserCompact>;
   userInfo: IUser | null;
 }
 
