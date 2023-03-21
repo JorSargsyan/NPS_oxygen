@@ -1,4 +1,5 @@
 import { UseFormWatch, UseFormReset } from "react-hook-form";
+import { IPaginated } from "store/interfaces/main";
 
 export interface IPaginationInfo {
   limit: number;
@@ -22,6 +23,25 @@ export interface IEnhancedToolbar {
   rowsSelected: number;
   filterOptions: IFilterOptions;
   fetchData: () => void;
+  hasSearchInput: boolean;
+}
+
+export interface IAction<T> {
+  label: string;
+  onClick: (row: T) => any;
+}
+
+export interface ITableProps<T> {
+  columns: IColumn[];
+  data?: T[];
+  paginatedData?: IPaginated<T>;
+  onChange?: () => void;
+  onChangeSelected?: (list: number[]) => void;
+  selectable?: boolean;
+  getActions?: (row: T) => IAction<T>[];
+  enablePagination?: boolean;
+  filterOptions?: IFilterOptions;
+  section?: string;
   hasSearchInput: boolean;
 }
 

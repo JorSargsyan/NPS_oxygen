@@ -1,14 +1,6 @@
-import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
-import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
 import {
-  alpha,
   Box,
   Checkbox,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -19,149 +11,12 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Toolbar,
-  Tooltip,
-  Typography,
 } from "@mui/material";
-import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import SearchInput from "shared/components/SearchInput";
-import { IPaginated } from "store/interfaces/main";
 import DotsMenu from "../DotsMenu";
-import {
-  IColumn,
-  IEnhancedToolbar,
-  IFilterOptions,
-  rowsPerPageOptions,
-} from "./constants";
-export interface IAction<T> {
-  label: string;
-  onClick: (row: T) => any;
-}
-
-export interface ITableProps<T> {
-  columns: IColumn[];
-  data?: T[];
-  paginatedData?: IPaginated<T>;
-  onChange?: () => void;
-  onChangeSelected?: (list: number[]) => void;
-  selectable?: boolean;
-  getActions?: (row: T) => IAction<T>[];
-  enablePagination?: boolean;
-  filterOptions?: IFilterOptions;
-  section?: string;
-  hasSearchInput: boolean;
-}
-
-function TablePaginationActions(props: TablePaginationActionsProps) {
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {<FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        <KeyboardArrowLeft />
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        <KeyboardArrowRight />
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        <LastPageIcon />
-      </IconButton>
-    </Box>
-  );
-}
-
-const EnhancedToolbar = ({
-  rowsSelected,
-  filterOptions,
-  fetchData,
-  hasSearchInput,
-}: IEnhancedToolbar) => {
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 1 },
-        pr: { xs: 1, sm: 1 },
-        ...(rowsSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {rowsSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {rowsSelected} selected
-        </Typography>
-      ) : (
-        <Box sx={{ flex: "1 1 100%" }}>
-          {hasSearchInput ? (
-            <SearchInput filterOptions={filterOptions} fetchData={fetchData} />
-          ) : null}
-        </Box>
-      )}
-      {rowsSelected > 0 ? (
-        <Tooltip title="Delete">
-          <DeleteIcon height={24} width={24} />
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <FilterListIcon height={24} width={24} />
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
+import EnhancedToolbar from "./components/EnhancedToolbar";
+import TablePaginationActions from "./components/TablePAginationActions";
+import { IAction, IColumn, ITableProps, rowsPerPageOptions } from "./constants";
 
 const BasicTable = <T extends { id: number }>({
   columns,
