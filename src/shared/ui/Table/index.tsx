@@ -10,8 +10,14 @@ import {
   TablePagination,
   Box,
   IconButton,
+  Checkbox,
+  Toolbar,
+  Tooltip,
+  Typography,
+  alpha,
+  TableSortLabel,
 } from "@mui/material";
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState, Fragment, useEffect } from "react";
 import { UseFormReset, UseFormWatch } from "react-hook-form";
 import { IPaginated } from "store/interfaces/main";
 import { IColumn, rowsPerPageOptions } from "./constants";
@@ -19,7 +25,8 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-
+import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
+import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
 import DotsMenu from "../DotsMenu";
 import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
 import useGetUserPermissionsList from "shared/helpers/hooks/usePermissionList";
@@ -34,13 +41,15 @@ export interface ITableProps<T> {
   data?: T[];
   paginatedData?: IPaginated<T>;
   onChange?: () => void;
+  onChangeSelected?: (list: number[]) => void;
+  selectable?: boolean;
   getActions?: (row: T) => IAction<T>[];
   enablePagination?: boolean;
   filterOptions?: {
     watch: UseFormWatch<any>;
     reset: UseFormReset<any>;
   };
-  section: string;
+  section?: string;
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
@@ -104,9 +113,53 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-const BasicTable = <T extends unknown>({
+const EnhancedToolbar = ({ rowsSelected }: { rowsSelected: number }) => {
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(rowsSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
+        }),
+      }}
+    >
+      {rowsSelected > 0 ? (
+        <Typography
+          sx={{ flex: "1 1 100%" }}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {rowsSelected} selected
+        </Typography>
+      ) : (
+        <Box sx={{ flex: "1 1 100%" }}>
+          {/* TODO ADD SEARCH,FILTERS, OTHER STUFF */}
+        </Box>
+      )}
+      {rowsSelected > 0 ? (
+        <Tooltip title="Delete">
+          <DeleteIcon height={24} width={24} />
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <FilterListIcon height={24} width={24} />
+        </Tooltip>
+      )}
+    </Toolbar>
+  );
+};
+
+const BasicTable = <T extends { id: number }>({
   columns,
   data,
+  selectable = false,
+  onChangeSelected,
   paginatedData,
   onChange,
   getActions,
@@ -114,14 +167,41 @@ const BasicTable = <T extends unknown>({
   enablePagination = true,
   section,
 }: ITableProps<T>): JSX.Element => {
-  const filters = filterOptions?.watch();
+  const filters = filterOptions?.watch("filters");
   const permList = useGetUserPermissionsList();
+  const [selectedList, setSelectedList] = useState([]);
+
+  const handleCheckAll = useCallback(
+    (_, checked) => {
+      if (checked) {
+        setSelectedList(
+          enablePagination
+            ? paginatedData?.displayData?.map((i) => i.id)
+            : data?.map((i) => i.id)
+        );
+      } else {
+        setSelectedList([]);
+      }
+    },
+    [data, enablePagination, paginatedData?.displayData]
+  );
+
+  const handleCheckRow = useCallback((row: T, checked: boolean) => {
+    if (checked) {
+      setSelectedList((state) => [...state, row.id]);
+    } else {
+      setSelectedList((state) => state.filter((i) => i !== row.id));
+    }
+  }, []);
 
   const handleRowsPerPageChange = (e: any) => {
     const value = e.target.value;
     filterOptions?.reset({
-      ...filters,
-      limit: value,
+      ...filterOptions.watch(),
+      filters: {
+        ...filters,
+        length: value,
+      },
     });
     onChange?.();
   };
@@ -156,36 +236,102 @@ const BasicTable = <T extends unknown>({
 
   const handlePageChange = (_: any, pageNumber: number) => {
     filterOptions?.reset({
-      ...filters,
-      page: pageNumber + 1,
+      ...filterOptions.watch(),
+      filters: {
+        ...filters,
+        start: pageNumber * filters?.length,
+      },
+    });
+    onChange?.();
+  };
+
+  const handleSort = (prop: string, direction: string) => (_: any) => {
+    console.log(prop, direction);
+    filterOptions?.reset({
+      ...filterOptions.watch(),
+      filters: {
+        ...filters,
+        sortDirection: direction,
+        sortColumn: prop,
+      },
     });
     onChange?.();
   };
 
   const generateColumns = useMemo(() => {
-    return columnsData?.map((column, index) => (
-      <TableCell key={index} align="left">
-        {column?.label}
-      </TableCell>
-    ));
-  }, [columnsData]);
+    return (
+      <Fragment>
+        {selectable ? (
+          <TableCell align="left">
+            <Checkbox
+              checked={
+                selectedList?.length ===
+                (enablePagination ? paginatedData?.displayData : data).length
+              }
+              onChange={handleCheckAll}
+            />
+          </TableCell>
+        ) : null}
+        {columnsData?.map((column, index) => (
+          <TableCell key={index} align="left">
+            <TableSortLabel
+              active={filters?.sortColumn === column.field}
+              direction={
+                filters?.sortColumn === column.field
+                  ? filters?.sortDirection
+                  : "asc"
+              }
+              // disabled={column.withoutSort ? true : false}
+              // className={column.withoutSort ? styles.withoutSortText : ""}
+              onClick={handleSort(
+                column.field,
+                filters?.sortDirection === "asc" ? "desc" : "asc"
+              )}
+            >
+              {column.label}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </Fragment>
+    );
+  }, [
+    columnsData,
+    data,
+    enablePagination,
+    filters?.sortColumn,
+    filters?.sortDirection,
+    handleCheckAll,
+    paginatedData?.displayData,
+    selectable,
+    selectedList?.length,
+  ]);
 
   const generateSingleRow = (row: any) => {
-    return columnsData?.map((column, index) => {
-      if (column.layout) {
-        return (
-          <TableCell key={index} scope="row">
-            {column.layout(row)}
+    return (
+      <Fragment>
+        {selectable ? (
+          <TableCell scope="row">
+            <Checkbox
+              checked={selectedList.includes(row.id)}
+              onChange={(_, checked) => handleCheckRow(row, checked)}
+            />
           </TableCell>
-        );
-      } else {
-        return (
-          <TableCell key={index} scope="row">
-            {column?.field ? row[column.field] : "-"}
-          </TableCell>
-        );
-      }
-    });
+        ) : null}
+        {columnsData?.map((column, index) => {
+          return (
+            <Fragment key={index}>
+              {column?.layout ? (
+                <TableCell scope="row">{column.layout(row)}</TableCell>
+              ) : (
+                <TableCell scope="row">
+                  {column?.field ? row[column.field] : "-"}
+                </TableCell>
+              )}
+            </Fragment>
+          );
+        })}
+      </Fragment>
+    );
   };
 
   const generateRowsPaginated = () => {
@@ -212,14 +358,13 @@ const BasicTable = <T extends unknown>({
   };
 
   const getPagination = (component: any = "td") => {
-    console.log(paginatedData);
     return paginatedData?.displayData?.length && enablePagination ? (
       <TablePagination
         component={component}
         count={paginatedData?.totalRecords}
-        rowsPerPage={filters?.limit}
+        rowsPerPage={filters?.length}
         rowsPerPageOptions={rowsPerPageOptions}
-        page={filters?.page - 1}
+        page={filters?.start / filters?.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
         ActionsComponent={TablePaginationActions}
@@ -227,10 +372,14 @@ const BasicTable = <T extends unknown>({
     ) : null;
   };
 
+  useEffect(() => {
+    onChangeSelected?.(selectedList);
+  }, [onChangeSelected, selectedList]);
+
   return (
-    <>
+    <Box pt={4}>
       <TableContainer component={Paper}>
-        <Box mt={4} />
+        <EnhancedToolbar rowsSelected={selectedList.length} />
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>{generateColumns}</TableRow>
@@ -243,7 +392,7 @@ const BasicTable = <T extends unknown>({
           </TableFooter>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 };
 

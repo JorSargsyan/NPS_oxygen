@@ -5,4 +5,16 @@ const toastOptions = {
   duration: 3000,
 };
 
-export { toastOptions };
+const defaultFilterValues = {
+  start: 0,
+  length: 5,
+  search: "",
+  sortColumn: "",
+  sortDirection: "",
+  conditionMatch: 1,
+  isArchived: false,
+  filters: [],
+  scoreFilter: [],
+};
+
+export { toastOptions, defaultFilterValues };

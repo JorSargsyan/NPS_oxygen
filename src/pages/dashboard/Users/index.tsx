@@ -7,35 +7,39 @@ import { GetUsers, selectUsers } from "store/slicers/users";
 import { userColumns } from "./constants";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
+import { useForm, useWatch } from "react-hook-form";
+import { defaultFilterValues } from "resources/constants";
 
 const Users = () => {
   const dispatch = useAsyncDispatch();
   const users = useSelector(selectUsers);
+  const methods = useForm({
+    defaultValues: { filters: defaultFilterValues },
+  });
+
+  const refetchUsers = () => {
+    console.log(methods.watch("filters"));
+    dispatch(GetUsers(methods.watch("filters")));
+  };
+
+  const handleChangeSelected = (ids: number[]) => {
+    console.log(ids);
+  };
 
   useEffect(() => {
-    dispatch(
-      GetUsers({
-        start: 0,
-        length: 10,
-        sortColumn: "",
-        sortDirection: "",
-        conditionMatch: 1,
-        search: "",
-        isArchived: false,
-        filters: [],
-        scoreFilter: [],
-      })
-    );
+    dispatch(GetUsers(defaultFilterValues));
   }, [dispatch]);
 
-  console.log(users);
   return (
     <Box p={4}>
       <Typography variant="h3">Users</Typography>
       <BasicTable<IUser>
+        selectable
+        filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={userColumns}
-        section={""}
         paginatedData={users}
+        onChange={refetchUsers}
+        onChangeSelected={handleChangeSelected}
       />
     </Box>
   );

@@ -26,8 +26,8 @@ export interface IGridRequest {
   conditionMatch: number;
   search: string;
   isArchived: boolean;
-  filters: [];
-  scoreFilter: [];
+  filters: any[];
+  scoreFilter: any[];
 }
 
 export interface IState {
