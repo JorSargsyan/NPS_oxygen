@@ -10,12 +10,33 @@ import {
   Typography,
 } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
+import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
 import { selectUserInfo } from "store/slicers/users";
 
 const AccountPage = () => {
   const userInfo = useSelector(selectUserInfo);
+  const fileInputRef = useRef<HTMLInputElement>();
+
+  const handleFileUploadOpen = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileUpload = (event) => {
+    console.log(event);
+    const file = event.target.files[0];
+
+    const reader = new FileReader();
+    reader.onload = function () {
+      console.log(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <Box
       component="main"
@@ -59,9 +80,19 @@ const AccountPage = () => {
                   </CardContent>
                   <Divider />
                   <CardActions>
-                    <Button fullWidth variant="text">
+                    <Button
+                      onClick={handleFileUploadOpen}
+                      fullWidth
+                      variant="text"
+                    >
                       Upload picture
                     </Button>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      hidden
+                    />
                   </CardActions>
                 </Card>
               </Grid>
