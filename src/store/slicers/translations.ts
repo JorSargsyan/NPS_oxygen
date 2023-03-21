@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
-import { IPaginated, IState } from "store/interfaces/main";
+import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
 import {
-  IAddEditTranslationRequest,
+  IAddEditTranslation,
+  IDeleteTranslation,
   ITranslation,
   ITranslationsState,
 } from "../interfaces/translations";
@@ -16,32 +17,28 @@ const initialState: ITranslationsState = {
 
 export const GetTranslations = createAsyncThunk<
   IPaginated<ITranslation>,
-  string
->(`${name}/GetTranslations`, async (params) => {
-  return (await api.get(`${EBaseUrl.API}/admin/translations?${params}`)).data;
+  IGridRequest
+>(`${name}/GetTranslations`, async (data) => {
+  return (await api.post(`${EBaseUrl.API}/Translation/Grid`, data)).data;
 });
 
 export const AddTranslation = createAsyncThunk<
   ITranslation,
-  IAddEditTranslationRequest
+  IAddEditTranslation
 >(`${name}/AddTranslation`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/admin/translations`, formData)).data;
+  return (await api.post(`${EBaseUrl.API}/Translations`, formData)).data;
 });
 
-export const EditTranslation = createAsyncThunk<
+export const DeleteTranslation = createAsyncThunk<
   ITranslation,
-  { formData: IAddEditTranslationRequest; id: number }
->(`${name}/EditTranslation`, async ({ formData, id }) => {
-  return (await api.put(`${EBaseUrl.API}/admin/translations/${id}`, formData))
-    .data;
+  IDeleteTranslation
+>(`${name}/DeleteTranslation`, async (params) => {
+  return (
+    await api.delete(
+      `${EBaseUrl.API}/admin/translations/${params.key}/${params.module}`
+    )
+  ).data;
 });
-
-export const DeleteTranslation = createAsyncThunk<ITranslation, number>(
-  `${name}/DeleteTranslation`,
-  async (id) => {
-    return (await api.delete(`${EBaseUrl.API}/admin/translations/${id}`)).data;
-  }
-);
 
 const translationsSlice = createSlice({
   initialState,

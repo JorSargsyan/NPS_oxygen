@@ -229,11 +229,9 @@ const BasicTable = <T extends { id: number }>({
   const columnsData = useMemo(() => {
     const hasActions = !!getActions;
 
-    return hasActions && hasOtherPermissionButGet(permList, section)
-      ? [...columns, getActionColumn()]
-      : columns;
+    return hasActions ? [...columns, getActionColumn()] : columns;
   }, [columns, getActionColumn, getActions, permList, section]);
-
+  console.log(columnsData, "columnsData");
   const handlePageChange = (_: any, pageNumber: number) => {
     filterOptions?.reset({
       ...filterOptions.watch(),

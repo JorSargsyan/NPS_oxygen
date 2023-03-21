@@ -62,11 +62,6 @@ export enum EPermissions {
   put_categories = "put:categories",
 }
 
-export enum ERequestStatus {
-  fulfilled = "fulfilled",
-  rejected = "rejected",
-}
-
 export const defaultTableData = {
   allIds: [],
   displayData: [],

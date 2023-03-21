@@ -4,24 +4,21 @@ export interface ITranslationsState {
   list: IPaginated<ITranslation>;
 }
 
-export interface ILanguageBase {
-  lang: string;
-  text: string;
-}
-
-export interface IAddEditTranslationRequest {
-  key: string;
-  data: ILanguageBase[];
-}
-
 export interface ITranslation {
   id: number;
   key: string;
-  data: ILanguageBase[];
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
-  updatedBy: string;
+  translationModule: number;
+  captions: ITranslatedKey[];
 }
 
+export interface ITranslatedKey {
+  value: string;
+  languageId: number;
+}
 
+export interface IDeleteTranslation {
+  key: string;
+  module: number;
+}
+
+export type IAddEditTranslation = Omit<ITranslation, "id">;
