@@ -13,7 +13,8 @@ export interface ITranslation {
 
 export interface ITranslatedKey {
   value: string;
-  languageId: number;
+  languageId?: number;
+  languageID?: number;
 }
 
 export interface IDeleteTranslation {

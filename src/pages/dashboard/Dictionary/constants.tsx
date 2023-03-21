@@ -1,5 +1,8 @@
 import { IColumn } from "shared/ui/Table/constants";
-import { ELanguageIds } from "store/enums/translations.enum";
+import {
+  ELanguageIds,
+  ETranslationModules,
+} from "store/enums/translations.enum";
 import { ITranslatedKey, ITranslation } from "store/interfaces/translations";
 
 export const dictionaryColumns: IColumn[] = [
@@ -33,6 +36,42 @@ export const dictionaryColumns: IColumn[] = [
       );
       return <div>{translation.value}</div>;
     },
+  },
+];
+
+export interface ITranslationModuleOptions {
+  value: number;
+  name: String;
+}
+
+export const translationModuleOptions: ITranslationModuleOptions[] = [
+  {
+    value: ETranslationModules.Dashboard,
+    name: "Dashboard",
+  },
+  {
+    value: ETranslationModules.Feedback,
+    name: "Feedback",
+  },
+  {
+    value: ETranslationModules.Campaigns,
+    name: "Campaigns",
+  },
+  {
+    value: ETranslationModules.Customers,
+    name: "Customers",
+  },
+  {
+    value: ETranslationModules.Roles,
+    name: "Roles",
+  },
+  {
+    value: ETranslationModules.Users,
+    name: "Users",
+  },
+  {
+    value: ETranslationModules.Translation,
+    name: "Translations",
   },
 ];
 

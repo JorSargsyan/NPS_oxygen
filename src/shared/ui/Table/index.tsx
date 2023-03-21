@@ -1,36 +1,34 @@
-import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  Box,
-  IconButton,
-  Checkbox,
-  Toolbar,
-  Tooltip,
-  Typography,
-  alpha,
-  TableSortLabel,
-} from "@mui/material";
-import { useMemo, useCallback, useState, Fragment, useEffect } from "react";
-import { UseFormReset, UseFormWatch } from "react-hook-form";
-import { IPaginated } from "store/interfaces/main";
-import { IColumn, rowsPerPageOptions } from "./constants";
+import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
+import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
-import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
-import DotsMenu from "../DotsMenu";
+import {
+  alpha,
+  Box,
+  Checkbox,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { TablePaginationActionsProps } from "@mui/material/TablePagination/TablePaginationActions";
-import useGetUserPermissionsList from "shared/helpers/hooks/usePermissionList";
-import { hasOtherPermissionButGet } from "shared/helpers";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { UseFormReset, UseFormWatch } from "react-hook-form";
+import { IPaginated } from "store/interfaces/main";
+import DotsMenu from "../DotsMenu";
+import { IColumn, rowsPerPageOptions } from "./constants";
 export interface IAction<T> {
   label: string;
   onClick: (row: T) => any;
@@ -168,7 +166,6 @@ const BasicTable = <T extends { id: number }>({
   section,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
-  const permList = useGetUserPermissionsList();
   const [selectedList, setSelectedList] = useState([]);
 
   const handleCheckAll = useCallback(
@@ -230,8 +227,8 @@ const BasicTable = <T extends { id: number }>({
     const hasActions = !!getActions;
 
     return hasActions ? [...columns, getActionColumn()] : columns;
-  }, [columns, getActionColumn, getActions, permList, section]);
-  console.log(columnsData, "columnsData");
+  }, [columns, getActionColumn, getActions]);
+
   const handlePageChange = (_: any, pageNumber: number) => {
     filterOptions?.reset({
       ...filterOptions.watch(),
@@ -245,7 +242,6 @@ const BasicTable = <T extends { id: number }>({
 
   const handleSort = useCallback(
     (prop: string, direction: string) => (_: any) => {
-      console.log(prop, direction);
       filterOptions?.reset({
         ...filterOptions.watch(),
         filters: {

@@ -26,7 +26,7 @@ export const AddTranslation = createAsyncThunk<
   ITranslation,
   IAddEditTranslation
 >(`${name}/AddTranslation`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/Translations`, formData)).data;
+  return (await api.post(`${EBaseUrl.API}/Translation`, formData)).data;
 });
 
 export const DeleteTranslation = createAsyncThunk<
