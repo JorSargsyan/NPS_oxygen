@@ -8,7 +8,7 @@ import { emailRegex, requiredRules } from "shared/helpers/validators";
 import Checkbox from "shared/ui/Checkbox";
 import TextInput from "shared/ui/TextInput";
 import { ERequestStatus } from "store/enums/index.enum";
-import { Authorize } from "store/slicers/auth";
+import { Authorize, setAuth } from "store/slicers/auth";
 import { Layout as AuthLayout } from "../../layout/Auth";
 
 interface IFormValues {
@@ -34,6 +34,7 @@ const Login = () => {
     }
 
     localStorage.setItem(LStorage.AUTH, payload.accessToken);
+    dispatch(setAuth(true));
     navigate("/overview");
   };
 

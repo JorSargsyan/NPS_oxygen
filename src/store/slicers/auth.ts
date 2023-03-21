@@ -43,12 +43,6 @@ const authSlicer = createSlice({
       state.isAuth = false;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(Authorize.fulfilled, (state, { payload }) => {
-      localStorage.setItem(LStorage.AUTH, payload.token);
-      state.isAuth = true;
-    });
-  },
 });
 
 export const { signOut, setAuth } = authSlicer.actions;

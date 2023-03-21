@@ -9,19 +9,18 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { GetConfig, GetPermissions } from "store/slicers/common";
 import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
+import { LStorage } from "store/config/constants";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
   const isAuthorized = useSelector(selectAuth);
 
   const fetchDashboardData = useCallback(() => {
-    setTimeout(() => {
-      Promise.all([
-        dispatch(GetCurrentUser()),
-        dispatch(GetConfig()),
-        dispatch(GetPermissions()),
-      ]);
-    }, 0);
+    Promise.all([
+      dispatch(GetCurrentUser()),
+      dispatch(GetConfig()),
+      dispatch(GetPermissions()),
+    ]);
   }, [dispatch]);
 
   useEffect(() => {

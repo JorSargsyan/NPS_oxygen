@@ -23,8 +23,8 @@ api.interceptors.response.use(
   (response) => response.data,
   (err) => {
     if (err.response.status === 401) {
-      localStorage.removeItem(LStorage.AUTH);
-      window.location.href = "/login";
+      // localStorage.removeItem(LStorage.AUTH);
+      // window.location.href = "/login";
     }
     return new Promise(async (_, reject) => {
       if (err?.response?.data?.error?.message) {
