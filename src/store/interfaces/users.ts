@@ -1,7 +1,7 @@
 import { IPaginated } from "./main";
 
 export interface IUsersState {
-  data: IPaginated<IUser>;
+  data: IPaginated<IUserCompact>;
   userInfo: IUser | null;
 }
 
@@ -22,6 +22,17 @@ export interface IUser {
   role: { id: number; label: string };
   surname: string;
   userGroup: number;
+}
+
+export interface IUserCompact {
+  department: string;
+  email: string;
+  fullName: string;
+  id: number;
+  personalNumber: string;
+  role: string;
+  status: boolean;
+  title: string;
 }
 
 export interface IChangePasswordRequest {

@@ -278,8 +278,6 @@ const BasicTable = <T extends { id: number }>({
                   ? filters?.sortDirection
                   : "asc"
               }
-              // disabled={column.withoutSort ? true : false}
-              // className={column.withoutSort ? styles.withoutSortText : ""}
               onClick={handleSort(
                 column.field,
                 filters?.sortDirection === "asc" ? "desc" : "asc"

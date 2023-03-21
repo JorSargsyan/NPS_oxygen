@@ -7,6 +7,7 @@ import {
   IUsersState,
   IChangePasswordRequest,
   IAddEditUserRequest,
+  IUserCompact,
 } from "../interfaces/users";
 
 const name = "USERS";
@@ -16,10 +17,17 @@ const initialState: IUsersState = {
   userInfo: null,
 };
 
-export const GetUsers = createAsyncThunk<IPaginated<IUser>, IGridRequest>(
-  `${name}/GetUsers`,
-  async (data) => {
-    return (await api.post(`${EBaseUrl.API}/User/Grid`, data)).data;
+export const GetUsers = createAsyncThunk<
+  IPaginated<IUserCompact>,
+  IGridRequest
+>(`${name}/GetUsers`, async (data) => {
+  return (await api.post(`${EBaseUrl.API}/User/Grid`, data)).data;
+});
+
+export const GetUserById = createAsyncThunk<IUser, number>(
+  `${name}/GetUserById`,
+  async (userId: number) => {
+    return (await api.get(`${EBaseUrl.API}/User/${userId}`)).data;
   }
 );
 

@@ -5,28 +5,31 @@ export interface ICustomersState {
 }
 
 export interface ICustomer {
+  creationDate: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerStatus: { id: number; value: string };
+  fullName: string;
   id: number;
-  phone: number;
-  password: number;
-  gender: string;
-  birthday: string;
-  lastLoginAt: string;
-  createdAt: string;
-  email: string;
-  weight: string;
-  height: string;
-  status: string;
+  quarantineEndDate: string;
 }
 
 export interface ICustomerExport {
-  id: number,
-  phone: number,
-  gender: string,
-  birthday: string,
-  weight: string,
-  height: string,
-  createdAt: string,
-  lastLoginAt: string
-  status: string,
-  email: string,
+  id: number;
+  phone: number;
+  gender: string;
+  birthday: string;
+  weight: string;
+  height: string;
+  createdAt: string;
+  lastLoginAt: string;
+  status: string;
+  email: string;
+}
+
+export interface IChangeCustomerStatus {
+  id: number;
+  formData: {
+    state: number;
+  };
 }
