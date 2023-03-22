@@ -85,7 +85,6 @@ const AddEditRoles = ({
 
   const setEditData = useCallback(() => {
     if (editData) {
-      console.log(permGroups);
       const permGroupData = {};
 
       permGroups.forEach((perm) => {

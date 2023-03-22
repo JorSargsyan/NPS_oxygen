@@ -11,6 +11,7 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -24,13 +25,14 @@ const BasicTable = <T extends { id: number }>({
   columns,
   data,
   selectable = false,
+  sortable = true,
   onChangeSelected,
   paginatedData,
+  toolbar = true,
   onChange,
   getActions,
   filterOptions,
   enablePagination = true,
-  section,
   hasSearchInput = false,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
@@ -140,20 +142,26 @@ const BasicTable = <T extends { id: number }>({
         ) : null}
         {columnsData?.map((column, index) => (
           <TableCell key={index} align="left">
-            <TableSortLabel
-              active={filters?.sortColumn === column.field}
-              direction={
-                filters?.sortColumn === column.field
-                  ? filters?.sortDirection
-                  : "asc"
-              }
-              onClick={handleSort(
-                column.field,
-                filters?.sortDirection === "asc" ? "desc" : "asc"
-              )}
-            >
-              {column.label}
-            </TableSortLabel>
+            {sortable ? (
+              <TableSortLabel
+                active={filters?.sortColumn === column.field}
+                direction={
+                  filters?.sortColumn === column.field
+                    ? filters?.sortDirection
+                    : "asc"
+                }
+                onClick={handleSort(
+                  column.field,
+                  filters?.sortDirection === "asc" ? "desc" : "asc"
+                )}
+              >
+                {column.label}
+              </TableSortLabel>
+            ) : (
+              <Typography fontSize={12} fontWeight={500}>
+                {column.label}
+              </Typography>
+            )}
           </TableCell>
         ))}
       </Fragment>
@@ -169,6 +177,7 @@ const BasicTable = <T extends { id: number }>({
     paginatedData?.displayData,
     selectable,
     selectedList?.length,
+    sortable,
   ]);
 
   const generateSingleRow = (row: any) => {
@@ -252,14 +261,16 @@ const BasicTable = <T extends { id: number }>({
   return (
     <Box pt={4}>
       <TableContainer component={Paper}>
-        <Box pb={2}>
-          <EnhancedToolbar
-            rowsSelected={selectedList.length}
-            filterOptions={filterOptions}
-            fetchData={onChange}
-            hasSearchInput={hasSearchInput}
-          />
-        </Box>
+        {toolbar && (
+          <Box pb={2}>
+            <EnhancedToolbar
+              rowsSelected={selectedList.length}
+              filterOptions={filterOptions}
+              fetchData={onChange}
+              hasSearchInput={hasSearchInput}
+            />
+          </Box>
+        )}
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>{generateColumns}</TableRow>

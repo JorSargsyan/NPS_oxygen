@@ -33,7 +33,9 @@ export interface IAction<T> {
 
 export interface ITableProps<T> {
   columns: IColumn[];
+  toolbar?: boolean;
   data?: T[];
+  sortable?: boolean;
   paginatedData?: IPaginated<T>;
   onChange?: () => void;
   onChangeSelected?: (list: number[]) => void;

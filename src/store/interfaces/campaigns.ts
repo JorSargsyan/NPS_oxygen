@@ -4,6 +4,13 @@ export interface ICampaignState {
   campaigns: IPaginated<ICampaign> | null;
 }
 
+export interface ICampaignLog {
+  creationDate: string;
+  state: string;
+  userId: number;
+  username: string;
+}
+
 export interface ICampaign {
   bounced: number;
   creationDate: string;
