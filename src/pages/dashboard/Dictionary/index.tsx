@@ -37,10 +37,6 @@ const Translations = () => {
     await dispatch(setTableLoading(false));
   };
 
-  const handleChangeSelected = (ids: number[]) => {
-    console.log(ids);
-  };
-
   const handleEdit = (row: ITranslation) => {
     setActiveRow(row);
     setDrawerOpen(true);
@@ -115,7 +111,6 @@ const Translations = () => {
         columns={columns}
         paginatedData={translations}
         onChange={refetchTranslations}
-        onChangeSelected={handleChangeSelected}
         getActions={getActions}
         hasSearchInput
       />
