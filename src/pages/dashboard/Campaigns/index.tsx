@@ -158,6 +158,7 @@ const CampaignsPage = () => {
       <BasicTable<ICampaign>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={columns}
+        toolbar={false}
         getActions={getActions}
         paginatedData={campaigns}
         onChange={refetchData}

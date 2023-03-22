@@ -118,6 +118,7 @@ const RolesPage = () => {
         </Button>
       </Box>
       <BasicTable<IRole>
+        toolbar={false}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={roleColumns}
         paginatedData={roles}

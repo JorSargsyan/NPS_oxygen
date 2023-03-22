@@ -87,6 +87,7 @@ const Customers = () => {
       <Typography variant="h3">Customers</Typography>
       <BasicTable<ICustomer>
         selectable
+        hasSearchInput
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={[...customerColumns, statusColumn]}
         paginatedData={customers}
