@@ -17,13 +17,13 @@ import {
   selectLoadingState,
   selectPermissionGroups,
 } from "store/slicers/common";
-import { IRole } from "store/interfaces/roles";
+import { IRoleDetailed } from "store/interfaces/roles";
 import { selectUserGroups } from "store/slicers/users";
 import { IUserGroup } from "store/interfaces/users";
 import { IPermGroupPermission } from "store/interfaces/common";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { CreateRole } from "store/slicers/roles";
+import { CreateRole, UpdateRole } from "store/slicers/roles";
 import { ERequestStatus } from "store/enums/index.enum";
 
 interface IFormData {
@@ -39,9 +39,11 @@ interface IFormData {
 const AddEditRoles = ({
   onSuccess,
   editData,
+  rowId,
 }: {
   onSuccess: () => void;
-  editData?: IRole;
+  editData?: IRoleDetailed;
+  rowId: number;
 }) => {
   const permGroups = useSelector(selectPermissionGroups);
   const userGroups = useSelector(selectUserGroups);
@@ -63,18 +65,39 @@ const AddEditRoles = ({
       permissionIds,
     };
 
-    const { meta } = await dispatch(CreateRole(formData));
-
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
+    if (editData) {
+      const { meta } = await dispatch(UpdateRole({ formData, id: rowId }));
+      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        return;
+      }
+    } else {
+      const { meta } = await dispatch(CreateRole(formData));
+      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        return;
+      }
     }
+
     onSuccess?.();
   };
 
   const setEditData = useCallback(() => {
     if (editData) {
+      console.log(permGroups);
+      const permGroupData = {};
+
+      permGroups.forEach((perm) => {
+        permGroupData[perm.group.replace("bk_pm_gr_", "")] =
+          perm.permissions.filter((i) =>
+            editData?.permissionIds.includes(i.id)
+          );
+      });
+
+      methods.reset({
+        ...editData,
+        permissions: permGroupData,
+      });
     }
-  }, [editData]);
+  }, [editData, methods, permGroups]);
 
   useEffect(() => {
     setEditData();
@@ -155,7 +178,7 @@ const AddEditRoles = ({
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Feedbacks Permissions"
-                  name="permissions.feedback"
+                  name="permissions.feedbacks"
                   options={permGroups[1].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -188,7 +211,7 @@ const AddEditRoles = ({
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Roles Permissions"
-                  name="permissions.role"
+                  name="permissions.roles"
                   options={permGroups[4].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -199,7 +222,7 @@ const AddEditRoles = ({
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Users Permissions"
-                  name="permissions.user"
+                  name="permissions.users"
                   options={permGroups[5].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -210,7 +233,7 @@ const AddEditRoles = ({
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Translation Permissions"
-                  name="permissions.translation"
+                  name="permissions.translations"
                   options={permGroups[6].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -231,9 +254,10 @@ const AddEditRoles = ({
                 fullWidth
                 onClick={methods.handleSubmit(onSubmit)}
                 isLoading={isLoading}
+                disabled={!Object.keys(methods.formState.touchedFields).length}
                 type="submit"
               >
-                <Typography>Save</Typography>
+                <Typography>{editData ? "Update" : "Save"}</Typography>
               </ButtonLoader>
             </Box>
           </Box>

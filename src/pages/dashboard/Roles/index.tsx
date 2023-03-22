@@ -16,12 +16,13 @@ import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditRoles from "./components/AddEditRoles";
-import { GetRoles, selectRoles } from "store/slicers/roles";
-import { IRole } from "store/interfaces/roles";
+import { GetRoleById, GetRoles, selectRoles } from "store/slicers/roles";
+import { IRole, IRoleDetailed } from "store/interfaces/roles";
 import { GetUserGroups } from "store/slicers/users";
+import { ERequestStatus } from "store/enums/index.enum";
 
 const RolesPage = () => {
-  const [activeRow, setActiveRow] = useState<IRole>();
+  const [activeRow, setActiveRow] = useState<IRoleDetailed>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isWarningOpen, setWarningOpen] = useState(false);
   const dispatch = useAsyncDispatch();
@@ -34,13 +35,17 @@ const RolesPage = () => {
     dispatch(GetRoles(methods.watch("filters")));
   };
 
-  const handleEdit = (row: IRole) => {
-    setActiveRow(row);
+  const handleEdit = async (row: IRole) => {
+    const { meta, payload } = await dispatch(GetRoleById(row.id));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    setActiveRow({ ...payload, id: row.id });
     setDrawerOpen(true);
   };
 
   const handleOpenWarning = (row: IRole) => {
-    setActiveRow(row);
+    setActiveRow(row as IRoleDetailed);
     setWarningOpen(true);
   };
 
@@ -122,7 +127,11 @@ const RolesPage = () => {
         width={RIGHT_SIDEBAR_WIDTH_EXTENDED}
         title={`${activeRow ? "Edit" : "Add"} Role`}
       >
-        <AddEditRoles editData={activeRow} onSuccess={onFormSuccess} />
+        <AddEditRoles
+          editData={activeRow}
+          rowId={activeRow?.id}
+          onSuccess={onFormSuccess}
+        />
       </RightDrawer>
       <SharedDialog
         open={isWarningOpen}

@@ -19,6 +19,13 @@ export const GetRoles = createAsyncThunk<IPaginated<IRole>, IGridRequest>(
   }
 );
 
+export const GetRoleById = createAsyncThunk<IPaginated<IRole>, number>(
+  `${name}/GetRoleById`,
+  async (roleId) => {
+    return (await api.get(`${EBaseUrl.API}/Role/${roleId}`)).data;
+  }
+);
+
 export const CreateRole = createAsyncThunk<IRole, IAddEditRoleRequest>(
   `${name}/CreateRole`,
   async (formData) => {
@@ -30,7 +37,7 @@ export const UpdateRole = createAsyncThunk<
   IRole,
   { formData: IAddEditRoleRequest; id: number }
 >(`${name}/UpdateRole`, async ({ formData, id }) => {
-  return (await api.put(`${EBaseUrl.API}/admin/roles/${id}`, formData)).data;
+  return (await api.put(`${EBaseUrl.API}/Role/${id}`, formData)).data;
 });
 
 export const DeleteRole = createAsyncThunk<IRole, number>(
