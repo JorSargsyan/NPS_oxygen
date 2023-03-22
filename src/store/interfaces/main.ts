@@ -5,6 +5,7 @@ import { IErrorsState } from "./errors";
 import { IRolesState } from "./roles";
 import { ITranslationsState } from "./translations";
 import { IUsersState } from "./users";
+import { IFeedbacksState } from "./feedback";
 export interface IPaginated<T> {
   totalDisplayRecords: number;
   totalRecords: number;
@@ -32,4 +33,5 @@ export interface IState {
   roles: IRolesState;
   translations: ITranslationsState;
   customers: ICustomersState;
+  feedbacks: IFeedbacksState;
 }

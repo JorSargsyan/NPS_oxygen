@@ -71,7 +71,6 @@ const Customers = () => {
   });
 
   const refetchCustomers = () => {
-    console.log(methods.watch("filters"));
     dispatch(GetCustomers(methods.watch("filters")));
   };
 
