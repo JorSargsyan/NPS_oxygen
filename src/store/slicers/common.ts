@@ -14,6 +14,7 @@ const name = "COMMON";
 const initialState: ICommonState = {
   loading: false,
   theme: ETheme.Light,
+  tableLoading: false,
   permissions: [],
   permissionGroups: [],
 };
@@ -46,9 +47,11 @@ const commonSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
-
     setTheme(state, { payload }) {
       state.theme = payload;
+    },
+    setTableLoading(state, { payload }) {
+      state.tableLoading = payload;
     },
   },
   extraReducers: (builder) => {
@@ -64,8 +67,10 @@ const commonSlice = createSlice({
   },
 });
 
-export const { setLoading, setTheme } = commonSlice.actions;
+export const { setLoading, setTheme, setTableLoading } = commonSlice.actions;
 export const selectLoadingState = (state: IState) => state.common.loading;
+export const selectTableLoadingState = (state: IState) =>
+  state.common.tableLoading;
 export const selectTheme = (state: IState) => state.common.theme;
 export const selectPermissions = (state: IState) => state.common.permissions;
 export const selectPermissionGroups = (state: IState) =>

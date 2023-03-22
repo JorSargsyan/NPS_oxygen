@@ -14,7 +14,7 @@ import {
 } from "store/slicers/translations";
 import { ITranslation } from "store/interfaces/translations";
 import SharedDialog from "shared/ui/Dialog";
-import { setLoading } from "store/slicers/common";
+import { setTableLoading } from "store/slicers/common";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
@@ -31,8 +31,10 @@ const Translations = () => {
     defaultValues: { filters: defaultFilterValues },
   });
 
-  const refetchTranslations = () => {
-    dispatch(GetTranslations(methods.watch("filters")));
+  const refetchTranslations = async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetTranslations(methods.watch("filters")));
+    await dispatch(setTableLoading(false));
   };
 
   const handleChangeSelected = (ids: number[]) => {
@@ -58,17 +60,14 @@ const Translations = () => {
       return;
     }
     const { key, translationModule } = activeRow;
-    dispatch(setLoading(true));
     const { meta } = await dispatch(
       DeleteTranslation({ key, module: translationModule })
     );
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
       return;
     }
     setActiveRow(undefined);
     await refetchTranslations();
-    dispatch(setLoading(false));
     toast.success("Translation is deleted");
   };
 
@@ -118,6 +117,7 @@ const Translations = () => {
         onChange={refetchTranslations}
         onChangeSelected={handleChangeSelected}
         getActions={getActions}
+        hasSearchInput
       />
       <RightDrawer
         open={isDrawerOpen}

@@ -13,6 +13,8 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectTableLoadingState } from "store/slicers/common";
 import DotsMenu from "../DotsMenu";
 import EnhancedToolbar from "./components/EnhancedToolbar";
 import TablePaginationActions from "./components/TablePAginationActions";
@@ -33,6 +35,7 @@ const BasicTable = <T extends { id: number }>({
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
   const [selectedList, setSelectedList] = useState([]);
+  const tableLoading = useSelector(selectTableLoadingState);
 
   const handleCheckAll = useCallback(
     (_, checked) => {
@@ -201,7 +204,10 @@ const BasicTable = <T extends { id: number }>({
       <TableRow
         hover
         key={rowIndex}
-        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        sx={{
+          "&:last-child td, &:last-child th": { border: 0 },
+          "&:hover": { transform: "scale(1.02)", transition: "0.4s ease" },
+        }}
       >
         {generateSingleRow(row)}
       </TableRow>
@@ -212,7 +218,10 @@ const BasicTable = <T extends { id: number }>({
     return data?.map((row, rowIndex) => (
       <TableRow
         key={rowIndex}
-        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        sx={{
+          "&:last-child td, &:last-child th": { border: 0 },
+          "&:hover": { transform: "scale(1.02)", transition: "0.4s ease" },
+        }}
       >
         {generateSingleRow(row)}
       </TableRow>
@@ -253,7 +262,7 @@ const BasicTable = <T extends { id: number }>({
           <TableHead>
             <TableRow>{generateColumns}</TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={tableLoading ? { filter: "blur(3px)" } : {}}>
             {enablePagination ? generateRowsPaginated() : generateSimpleRows()}
           </TableBody>
           <TableFooter>

@@ -3,6 +3,7 @@ import { ETheme } from "../config/constants";
 export interface ICommonState {
   loading: boolean;
   theme: ETheme;
+  tableLoading: boolean;
   permissions: IPermission[];
   permissionGroups: IPermissionGroup[];
 }
