@@ -17,13 +17,12 @@ export const CreateRoutes = () => {
   const isAuthorized = useSelector(selectAuth);
 
   const fetchDashboardData = useCallback(() => {
+    const activeLang = Number(localStorage.getItem(LStorage.LANG));
     Promise.all([
       dispatch(GetCurrentUser()),
       dispatch(GetConfig()),
       dispatch(GetPermissions()),
-      dispatch(
-        GetTranslationsByLangId(Number(localStorage.getItem(LStorage.LANG)))
-      ),
+      dispatch(GetTranslationsByLangId(activeLang)),
     ]);
   }, [dispatch]);
 
