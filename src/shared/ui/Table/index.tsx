@@ -205,6 +205,8 @@ const BasicTable = <T extends { id: number }>({
         hover
         key={rowIndex}
         sx={{
+          transform: "scale(1)",
+          transition: "0.4s ease",
           "&:last-child td, &:last-child th": { border: 0 },
           "&:hover": { transform: "scale(1.02)", transition: "0.4s ease" },
         }}
