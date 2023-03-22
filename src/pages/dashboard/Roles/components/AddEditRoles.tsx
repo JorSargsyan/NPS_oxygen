@@ -25,6 +25,7 @@ import BasicAutocomplete from "shared/ui/Autocomplete";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { CreateRole, UpdateRole } from "store/slicers/roles";
 import { ERequestStatus } from "store/enums/index.enum";
+import toast from "react-hot-toast";
 
 interface IFormData {
   name: string;
@@ -70,11 +71,13 @@ const AddEditRoles = ({
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
         return;
       }
+      toast.success("Role is Updated");
     } else {
       const { meta } = await dispatch(CreateRole(formData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
         return;
       }
+      toast.success("Role is Created");
     }
 
     onSuccess?.();

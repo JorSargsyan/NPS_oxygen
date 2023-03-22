@@ -40,10 +40,10 @@ export const UpdateRole = createAsyncThunk<
   return (await api.put(`${EBaseUrl.API}/Role/${id}`, formData)).data;
 });
 
-export const DeleteRole = createAsyncThunk<IRole, number>(
-  `${name}/UpdateRole`,
+export const DeleteRole = createAsyncThunk<unknown, number>(
+  `${name}/DeleteRole`,
   async (id) => {
-    return (await api.delete(`${EBaseUrl.API}/admin/roles/${id}`)).data;
+    return (await api.delete(`${EBaseUrl.API}/Role/${id}`)).data;
   }
 );
 
