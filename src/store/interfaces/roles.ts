@@ -17,6 +17,10 @@ export interface IRole {
   usersCount: number;
 }
 
+export interface IRoleDetailed extends IRole {
+  permissionIds: number[];
+}
+
 export interface IUserRole {
   id: number;
   admin: number;
