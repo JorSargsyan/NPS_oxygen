@@ -1,5 +1,7 @@
+import { IPaginated } from "./main";
+
 export interface IRolesState {
-  roles: IRole[];
+  roles: IPaginated<IRole> | null;
   userRole: IRole | null;
   permissions: {
     [x: string]: string[];
@@ -7,15 +9,12 @@ export interface IRolesState {
 }
 
 export interface IRole {
+  creationDate: string;
+  dataVisibility: string;
+  displayName: string;
   id: number;
   name: string;
-  createdBy: string;
-  updatedBy: string;
-  permissions: string[];
-  createdAt: string;
-  updatedAt: string;
-  admin: number;
-  role: number;
+  usersCount: number;
 }
 
 export interface IUserRole {

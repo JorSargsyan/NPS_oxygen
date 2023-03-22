@@ -8,12 +8,14 @@ import {
   IChangePasswordRequest,
   IAddEditUserRequest,
   IUserCompact,
+  IUserGroup,
 } from "../interfaces/users";
 
 const name = "USERS";
 
 const initialState: IUsersState = {
   data: defaultTableData,
+  userGroups: null,
   userInfo: null,
 };
 
@@ -28,6 +30,13 @@ export const GetUserById = createAsyncThunk<IUser, number>(
   `${name}/GetUserById`,
   async (userId: number) => {
     return (await api.get(`${EBaseUrl.API}/User/${userId}`)).data;
+  }
+);
+
+export const GetUserGroups = createAsyncThunk<IUserGroup[]>(
+  `${name}/GetUserGroups`,
+  async () => {
+    return (await api.get(`${EBaseUrl.API}/User/Groups`)).data;
   }
 );
 
@@ -86,9 +95,13 @@ const usersSlice = createSlice({
     builder.addCase(GetCurrentUser.fulfilled, (state, { payload }) => {
       state.userInfo = payload;
     });
+    builder.addCase(GetUserGroups.fulfilled, (state, { payload }) => {
+      state.userGroups = payload;
+    });
   },
 });
 
 export const selectUsers = (state: IState) => state.users.data;
 export const selectUserInfo = (state: IState) => state.users.userInfo;
+export const selectUserGroups = (state: IState) => state.users.userGroups;
 export default usersSlice.reducer;

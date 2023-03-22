@@ -2,6 +2,7 @@ import { IPaginated } from "./main";
 
 export interface IUsersState {
   data: IPaginated<IUserCompact>;
+  userGroups: IUserGroup[] | null;
   userInfo: IUser | null;
 }
 
@@ -46,4 +47,9 @@ export interface IAddEditUserRequest {
   name: string;
   surname: string;
   phone: string;
+}
+
+export interface IUserGroup {
+  id: number;
+  name: string;
 }

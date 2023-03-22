@@ -184,6 +184,7 @@ export function createComponents(
             borderColor: palette.error.main,
             boxShadow: `${palette.error.main} 0 0 0 2px`,
           },
+          paddingTop: 0,
         },
         input: {
           fontSize: 14,
