@@ -6,6 +6,7 @@ import users from "./users";
 import roles from "./roles";
 import translations from "./translations";
 import customers from "./customers";
+import feedbacks from "./feedback";
 import campaigns from "./campaigns";
 
 const reducers = {
@@ -17,6 +18,7 @@ const reducers = {
   roles,
   translations,
   customers,
+  feedbacks,
 };
 
 const combinedReducers = combineReducers(reducers);
