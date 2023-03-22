@@ -49,7 +49,7 @@ const Users = () => {
   const handlePrefillUser = useCallback(async () => {
     setActiveRow(location.state.id);
     setDrawerOpen(true);
-  }, [location.state.id]);
+  }, [location.state?.id]);
 
   useEffect(() => {
     dispatch(GetUsers(defaultFilterValues));
