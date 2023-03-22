@@ -169,6 +169,7 @@ const AddEditRoles = ({
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   name="permissions.customer"
+                  hasSelectAllOption
                   options={permGroups[0]?.permissions}
                   inputLabel={"Customer Permissions"}
                   multiple
@@ -181,6 +182,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Feedbacks Permissions"
                   name="permissions.feedbacks"
+                  hasSelectAllOption
                   options={permGroups[1].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -192,6 +194,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Dashboard Permissions"
                   name="permissions.dashboard"
+                  hasSelectAllOption
                   options={permGroups[2].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -203,6 +206,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Campaign Permissions"
                   name="permissions.campaign"
+                  hasSelectAllOption
                   options={permGroups[3].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -214,6 +218,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Roles Permissions"
                   name="permissions.roles"
+                  hasSelectAllOption
                   options={permGroups[4].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -225,6 +230,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Users Permissions"
                   name="permissions.users"
+                  hasSelectAllOption
                   options={permGroups[5].permissions}
                   defaultValue={[]}
                   optionLabel="name"
@@ -236,6 +242,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Translation Permissions"
                   name="permissions.translations"
+                  hasSelectAllOption
                   options={permGroups[6].permissions}
                   defaultValue={[]}
                   optionLabel="name"

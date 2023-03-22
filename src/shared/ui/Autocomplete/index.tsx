@@ -35,9 +35,11 @@ interface IAutocompleteProps<OptionType> {
   multiple: boolean;
   rules?: any;
   getOptionDisabled?: (option: OptionType) => boolean;
+  groupBy?: (option: OptionType) => string;
+  hasSelectAllOption?: boolean;
 }
 
-const BasicAutocomplete = <T extends { id: number }>({
+const BasicAutocomplete = <T extends { id?: number }>({
   optionLabel,
   disabled,
   async = false,
@@ -52,6 +54,8 @@ const BasicAutocomplete = <T extends { id: number }>({
   rules,
   multiple = false,
   defaultValue,
+  groupBy = undefined,
+  hasSelectAllOption = false,
 }: IAutocompleteProps<T>) => {
   const {
     control,
@@ -77,7 +81,7 @@ const BasicAutocomplete = <T extends { id: number }>({
     } else if (!optionLabel) {
       return "";
     }
-    return option[optionLabel] as string;
+    return option[optionLabel as string];
   };
 
   const errorInfo = useCallback(() => {
@@ -122,11 +126,14 @@ const BasicAutocomplete = <T extends { id: number }>({
             disabled={disabled}
             multiple={multiple}
             onChange={handleChange}
+            groupBy={groupBy}
             limitTags={multiple ? 1 : undefined}
             options={options}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
-              return multiple ? [selectAllOption, ...filtered] : filtered;
+              return multiple && hasSelectAllOption
+                ? [selectAllOption, ...filtered]
+                : filtered;
             }}
             disableCloseOnSelect={multiple}
             isOptionEqualToValue={(option, value) =>

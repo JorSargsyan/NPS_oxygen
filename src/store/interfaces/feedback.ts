@@ -2,6 +2,7 @@ import { IPaginated } from "./main";
 
 export interface IFeedbacksState {
   listData: IPaginated<IFeedback>;
+  causeAndMoodList: ICauseCategory[];
 }
 
 export interface IComments {
@@ -39,4 +40,32 @@ export interface IChangeFeedbackStatus {
   formData: {
     state: number;
   };
+}
+
+export interface IChangeCustomerRootCause {
+  id: number;
+  formData: {
+    rootCauseIDs: number[];
+  };
+}
+
+export interface IChangeCustomerMood {
+  id: number;
+  formData: {
+    customerMood: number;
+  };
+}
+
+export interface IFeedbackCauseAndMood {
+  customerMood: string;
+  id: number;
+  rootCauseIDs: number[];
+}
+
+export interface ICauseCategory {
+  causeCategoryID: number;
+  causeCategoryName: string;
+  rootCauseID: number;
+  rootCauseIsHidden: boolean;
+  rootCauseName: string;
 }
