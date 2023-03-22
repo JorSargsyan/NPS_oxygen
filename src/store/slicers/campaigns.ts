@@ -7,6 +7,7 @@ import {
   ICampaign,
   ICampaignState,
   ICampaignLog,
+  ICreateCampaignRequest,
 } from "store/interfaces/campaigns";
 
 const name = "CAMPAIGNS";
@@ -21,6 +22,13 @@ export const GetCampaigns = createAsyncThunk<
 >(`${name}/GetCampaigns`, async (formData) => {
   return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
 });
+
+export const CreateCampaign = createAsyncThunk<unknown, ICreateCampaignRequest>(
+  `${name}/GetCampaigns`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
+  }
+);
 
 export const GetCampaignLogs = createAsyncThunk<ICampaignLog[], number>(
   `${name}/GetCampaignLogs`,

@@ -4,7 +4,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { columns, deleteCampaignWarningConfig } from "./constants";
 import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Button, SvgIcon, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import {
   RIGHT_SIDEBAR_WIDTH,
@@ -25,10 +25,13 @@ import { ERequestStatus } from "store/enums/index.enum";
 import SharedDialog from "shared/ui/Dialog";
 import { setLoading } from "store/slicers/common";
 import toast from "react-hot-toast";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import AddCampaign from "./components/AddCampaign";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
   Rename = "Rename",
+  Add = "Add",
 }
 
 const CampaignsPage = () => {
@@ -76,6 +79,11 @@ const CampaignsPage = () => {
     setWarningOpen(true);
   };
 
+  const handleAdd = () => {
+    setDrawerOpen(true);
+    setMode(ECampaignAction.Add);
+  };
+
   const handleDelete = async () => {
     if (!activeRow) {
       return;
@@ -112,6 +120,18 @@ const CampaignsPage = () => {
   const handleSuccess = () => {
     setDrawerOpen(false);
     refetchData();
+    toast.success("Campaign created successfully");
+  };
+
+  const getDrawerTitle = () => {
+    switch (mode) {
+      case ECampaignAction.Add:
+        return "Add campaign";
+      case ECampaignAction.Rename:
+        return "Remane campaign";
+      case ECampaignAction.ViewHistory:
+        return "View campaign history";
+    }
   };
 
   useEffect(() => {
@@ -120,7 +140,21 @@ const CampaignsPage = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h3">Campaigns</Typography>
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="h3">Campaigns</Typography>
+        <Button
+          startIcon={
+            <SvgIcon fontSize="small">
+              <PlusIcon />
+            </SvgIcon>
+          }
+          variant="outlined"
+          onClick={handleAdd}
+        >
+          Add
+        </Button>
+      </Box>
+
       <BasicTable<ICampaign>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={columns}
@@ -138,16 +172,16 @@ const CampaignsPage = () => {
             : RIGHT_SIDEBAR_WIDTH_EXTENDED
         }
         onClose={() => setDrawerOpen(false)}
-        title={
-          mode === ECampaignAction.Rename
-            ? "Rename Campaign"
-            : "View Campaign history"
-        }
+        title={getDrawerTitle()}
       >
-        {mode === ECampaignAction.Rename ? (
+        {mode === ECampaignAction.Rename && (
           <Rename data={editData} onSuccess={handleSuccess} />
-        ) : (
+        )}
+        {mode === ECampaignAction.ViewHistory && (
           <HistoryView data={rowHistory} />
+        )}
+        {mode === ECampaignAction.Add && (
+          <AddCampaign onSuccess={handleSuccess} />
         )}
       </RightDrawer>
       <SharedDialog

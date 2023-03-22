@@ -11,6 +11,13 @@ export interface ICampaignLog {
   username: string;
 }
 
+export interface ICreateCampaignRequest {
+  name: "asdads (NPS Transactional)";
+  surveyMetric: 1;
+  touchpoint: 1;
+  type: 1;
+}
+
 export interface ICampaign {
   bounced: number;
   creationDate: string;
