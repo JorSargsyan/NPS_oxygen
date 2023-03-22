@@ -75,6 +75,7 @@ const LanguageMenu = () => {
       );
       setSelectedLanguage(selectedLang);
     } else {
+      localStorage.setItem(LStorage.LANG, languagesList[0].value.toString());
       setSelectedLanguage(languagesList[0]);
     }
   }, []);
@@ -89,7 +90,7 @@ const LanguageMenu = () => {
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
-          <Box display="flex" height="25px" margin="5px 0">
+          <Box display="flex" height="20px" margin="5px 0">
             <img
               style={{
                 maxWidth: "100%",
@@ -138,7 +139,7 @@ const LanguageMenu = () => {
                 handleSelectLanguage(item.value);
               }}
             >
-              <Box display="flex" height="25px" margin="5px 0">
+              <Box display="flex" height="20px" margin="5px 0">
                 <img
                   style={{
                     maxWidth: "100%",
