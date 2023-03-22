@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   IconButton,
+  Skeleton,
   Stack,
   SvgIcon,
   useMediaQuery,
@@ -87,20 +88,24 @@ export const TopNav = (props) => {
               </IconButton>
             </Tooltip> */}
             <LanguageMenu />
-            <Avatar
-              onClick={accountPopover.handleOpen}
-              ref={accountPopover.anchorRef}
-              sx={{
-                cursor: "pointer",
-                height: 40,
-                width: 40,
-              }}
-              src={
-                EBaseUrl.MediaUserURL
-                  ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
-                  : "/assets/avatars/avatar-anika-visser.png"
-              }
-            />
+            {userInfo ? (
+              <Avatar
+                onClick={accountPopover.handleOpen}
+                ref={accountPopover.anchorRef}
+                sx={{
+                  cursor: "pointer",
+                  height: 40,
+                  width: 40,
+                }}
+                src={
+                  EBaseUrl.MediaUserURL
+                    ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
+                    : "/assets/avatars/avatar-anika-visser.png"
+                }
+              />
+            ) : (
+              <Skeleton width={40} height={60} sx={{ borderRadius: "50%" }} />
+            )}
           </Stack>
         </Stack>
       </Box>
