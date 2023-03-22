@@ -8,11 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Fragment, useCallback, useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
-import BasicSelect from "shared/ui/Select";
 import TextInput from "shared/ui/TextInput";
 import {
   selectLoadingState,
@@ -23,8 +22,19 @@ import { selectUserGroups } from "store/slicers/users";
 import { IUserGroup } from "store/interfaces/users";
 import { IPermGroupPermission } from "store/interfaces/common";
 import BasicAutocomplete from "shared/ui/Autocomplete";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { CreateRole } from "store/slicers/roles";
+import { ERequestStatus } from "store/enums/index.enum";
 
-interface IFormData {}
+interface IFormData {
+  name: string;
+  groupIds: number[];
+  dataVisibility: string;
+  displayName: string;
+  permissions: {
+    [key: string]: IPermGroupPermission[];
+  };
+}
 
 const AddEditRoles = ({
   onSuccess,
@@ -35,13 +45,30 @@ const AddEditRoles = ({
 }) => {
   const permGroups = useSelector(selectPermissionGroups);
   const userGroups = useSelector(selectUserGroups);
-  const methods = useForm<IFormData>({
-    defaultValues: {},
-  });
+  const dispatch = useAsyncDispatch();
+  const methods = useForm<IFormData>();
   const isLoading = useSelector(selectLoadingState);
 
   const onSubmit = async (data: IFormData) => {
-    console.log(data);
+    const { displayName, name, groupIds, permissions, dataVisibility } = data;
+    const permissionIds = Object.values(permissions).reduce((acc, curr) => {
+      return acc.concat(curr.map((i) => i.id));
+    }, [] as number[]);
+
+    const formData = {
+      displayName,
+      dataVisibility,
+      groupIds,
+      name,
+      permissionIds,
+    };
+
+    const { meta } = await dispatch(CreateRole(formData));
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    onSuccess?.();
   };
 
   const setEditData = useCallback(() => {
@@ -74,109 +101,120 @@ const AddEditRoles = ({
                 />
               </Grid>
               <Grid item xs={4}>
-                <BasicSelect<IUserGroup>
-                  label="User Groups"
-                  name="userGroup"
+                <BasicAutocomplete<IUserGroup>
+                  inputLabel="User Groups"
+                  name="groupIds"
                   options={userGroups}
-                  valueProp={"id"}
-                  labelProp={"name"}
+                  multiple
+                  defaultValue={[]}
+                  optionLabel="name"
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormLabel id="demo-radio-buttons-group-label">
-                  Accessible data
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="accessible"
-                >
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="General"
-                  />
-                  <FormControlLabel
-                    value="employees"
-                    control={<Radio />}
-                    label="Subordinate employees"
-                  />
-                  <FormControlLabel
-                    value="personal"
-                    control={<Radio />}
-                    label="Personal"
-                  />
-                </RadioGroup>
+                <FormLabel>Accessible data</FormLabel>
+                <Controller
+                  control={methods.control}
+                  name="dataVisibility"
+                  defaultValue={"1"}
+                  render={({ field }) => {
+                    return (
+                      <RadioGroup {...field} row>
+                        <FormControlLabel
+                          value="1"
+                          control={<Radio />}
+                          label="General"
+                        />
+                        <FormControlLabel
+                          value="2"
+                          control={<Radio />}
+                          label="Subordinate employees"
+                        />
+                        <FormControlLabel
+                          value="3"
+                          control={<Radio />}
+                          label="Personal"
+                        />
+                      </RadioGroup>
+                    );
+                  }}
+                />
               </Grid>
             </Grid>
             <Grid mt={0} container item xs={12} spacing={3}>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  name="customerPermission"
+                  name="permissions.customer"
                   options={permGroups[0]?.permissions}
                   inputLabel={"Customer Permissions"}
                   multiple
                   defaultValue={[]}
+                  prefix="permissions"
                   optionLabel="name"
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Feedbacks Permissions"
-                  name="feedbackPermission"
+                  name="permissions.feedback"
                   options={permGroups[1].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Dashboard Permissions"
-                  name="dashboardPermission"
+                  name="permissions.dashboard"
                   options={permGroups[2].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Campaign Permissions"
-                  name="campaignPermission"
+                  name="permissions.campaign"
                   options={permGroups[3].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Roles Permissions"
-                  name="rolePermission"
+                  name="permissions.role"
                   options={permGroups[4].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Users Permissions"
-                  name="userPermission"
+                  name="permissions.user"
                   options={permGroups[5].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
                   inputLabel="Translation Permissions"
-                  name="translationPermission"
+                  name="permissions.translation"
                   options={permGroups[6].permissions}
                   defaultValue={[]}
                   optionLabel="name"
+                  prefix="permissions"
                   multiple
                 />
               </Grid>

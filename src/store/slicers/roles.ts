@@ -22,7 +22,7 @@ export const GetRoles = createAsyncThunk<IPaginated<IRole>, IGridRequest>(
 export const CreateRole = createAsyncThunk<IRole, IAddEditRoleRequest>(
   `${name}/CreateRole`,
   async (formData) => {
-    return (await api.post(`${EBaseUrl.API}/admin/roles`, formData)).data;
+    return (await api.post(`${EBaseUrl.API}/Role`, formData)).data;
   }
 );
 

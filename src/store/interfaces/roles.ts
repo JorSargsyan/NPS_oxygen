@@ -27,7 +27,10 @@ export interface IUserRole {
 
 export interface IAddEditRoleRequest {
   name: string;
-  permissions: string[];
+  displayName: string;
+  dataVisibility: string;
+  groupIds: number[];
+  permissionIds: number[];
 }
 
 export interface IPermission {

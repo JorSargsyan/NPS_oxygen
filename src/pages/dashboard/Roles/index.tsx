@@ -34,10 +34,6 @@ const RolesPage = () => {
     dispatch(GetRoles(methods.watch("filters")));
   };
 
-  const handleChangeSelected = (ids: number[]) => {
-    console.log(ids);
-  };
-
   const handleEdit = (row: IRole) => {
     setActiveRow(row);
     setDrawerOpen(true);
@@ -117,7 +113,6 @@ const RolesPage = () => {
         columns={roleColumns}
         paginatedData={roles}
         onChange={refetchRoles}
-        onChangeSelected={handleChangeSelected}
         getActions={getActions}
       />
       <RightDrawer

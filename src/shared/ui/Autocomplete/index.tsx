@@ -3,6 +3,7 @@ import {
   Checkbox,
   CircularProgress,
   TextField,
+  createFilterOptions,
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -12,6 +13,12 @@ import { debounce } from "shared/helpers";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
+const select_all = 0;
+
+const selectAllOption = {
+  id: select_all,
+  name: "Select All",
+};
 
 interface IAutocompleteProps<OptionType> {
   optionLabel?: keyof OptionType;
@@ -27,10 +34,10 @@ interface IAutocompleteProps<OptionType> {
   defaultValue: [] | "";
   multiple: boolean;
   rules?: any;
-  getOptionDisabled?:(option: OptionType) => boolean;
+  getOptionDisabled?: (option: OptionType) => boolean;
 }
 
-const BasicAutocomplete = <T extends unknown>({
+const BasicAutocomplete = <T extends { id: number }>({
   optionLabel,
   disabled,
   async = false,
@@ -49,8 +56,20 @@ const BasicAutocomplete = <T extends unknown>({
   const {
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext();
+
+  const allSelected = options?.length === watch(name)?.length;
+  const filter = createFilterOptions();
+
+  const handleSelectAll = (isSelected) => {
+    if (!isSelected) {
+      setValue(name, options);
+    } else {
+      setValue(name, []);
+    }
+  };
 
   const getOptionLabel = (option: T) => {
     if (typeof option === "string") {
@@ -73,10 +92,21 @@ const BasicAutocomplete = <T extends unknown>({
 
   const handleChange = (
     e: React.SyntheticEvent<Element, Event>,
-    values: T | T[] | null
+    values: T | T[] | null,
+    reason
   ) => {
-    setValue(name, values);
-    onChangeCB?.(values);
+    if (multiple) {
+      const isSelectAll = (values as T[]).find((i) => i.id === select_all);
+      if (isSelectAll) {
+        handleSelectAll(allSelected);
+      } else {
+        setValue(name, values);
+        onChangeCB?.(values);
+      }
+    } else {
+      setValue(name, values);
+      onChangeCB?.(values);
+    }
   };
 
   return (
@@ -92,7 +122,12 @@ const BasicAutocomplete = <T extends unknown>({
             disabled={disabled}
             multiple={multiple}
             onChange={handleChange}
+            limitTags={multiple ? 1 : undefined}
             options={options}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+              return multiple ? [selectAllOption, ...filtered] : filtered;
+            }}
             disableCloseOnSelect={multiple}
             isOptionEqualToValue={(option, value) =>
               JSON.stringify(option) === JSON.stringify(value)
@@ -105,18 +140,23 @@ const BasicAutocomplete = <T extends unknown>({
             getOptionLabel={getOptionLabel}
             getOptionDisabled={getOptionDisabled}
             loading={true}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                {!!multiple ? (
-                  <Checkbox
-                    icon={icon}
-                    checkedIcon={checkedIcon}
-                    checked={selected}
-                  />
-                ) : null}
-                {getOptionLabel(option)}
-              </li>
-            )}
+            renderOption={(props, option, { selected }) => {
+              const selectAllProps =
+                option.id === select_all ? { checked: allSelected } : {};
+              return (
+                <li {...props}>
+                  {multiple ? (
+                    <Checkbox
+                      icon={icon}
+                      checkedIcon={checkedIcon}
+                      checked={selected}
+                      {...selectAllProps}
+                    />
+                  ) : null}
+                  {getOptionLabel(option)}
+                </li>
+              );
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
