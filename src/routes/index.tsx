@@ -9,6 +9,8 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { GetConfig, GetPermissions } from "store/slicers/common";
 import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
+import { GetTranslationsByLangId } from "store/slicers/translations";
+import { LStorage } from "store/config/constants";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
@@ -19,11 +21,14 @@ export const CreateRoutes = () => {
       dispatch(GetCurrentUser()),
       dispatch(GetConfig()),
       dispatch(GetPermissions()),
+      dispatch(
+        GetTranslationsByLangId(Number(localStorage.getItem(LStorage.LANG)))
+      ),
     ]);
   }, [dispatch]);
 
   useEffect(() => {
-    if (isAuthorized) {
+    if (isAuthorized && Number(localStorage.getItem(LStorage.LANG))) {
       fetchDashboardData();
     }
   }, [fetchDashboardData, isAuthorized]);

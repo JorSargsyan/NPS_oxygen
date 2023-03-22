@@ -11,7 +11,7 @@ api.interceptors.request.use(
     config.headers = {
       ...config.headers,
       "Content-Type": "application/json",
-      languageId: 2,
+      languageId: localStorage.getItem(LStorage.LANG) || "",
       Authorization: localStorage.getItem(LStorage.AUTH) || "",
     };
     return config;
