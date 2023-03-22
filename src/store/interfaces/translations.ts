@@ -2,6 +2,7 @@ import { IPaginated } from "./main";
 
 export interface ITranslationsState {
   list: IPaginated<ITranslation>;
+  translationDataByLangId: ITranslationDataByLangId | null;
 }
 
 export interface ITranslation {
@@ -23,3 +24,8 @@ export interface IDeleteTranslation {
 }
 
 export type IAddEditTranslation = Omit<ITranslation, "id">;
+
+export interface ITranslationDataByLangId {
+  languageId: number;
+  translations: { [key: string]: string };
+}

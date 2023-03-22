@@ -6,6 +6,7 @@ import {
   IAddEditTranslation,
   IDeleteTranslation,
   ITranslation,
+  ITranslationDataByLangId,
   ITranslationsState,
 } from "../interfaces/translations";
 
@@ -13,6 +14,7 @@ const name = "TRANSLATIONS";
 
 const initialState: ITranslationsState = {
   list: defaultTableData,
+  translationDataByLangId: null,
 };
 
 export const GetTranslations = createAsyncThunk<
@@ -40,6 +42,13 @@ export const DeleteTranslation = createAsyncThunk<
   ).data;
 });
 
+export const GetTranslationsByLangId = createAsyncThunk<
+  ITranslationDataByLangId,
+  number
+>(`${name}/GetTranslationsByLangId`, async (id) => {
+  return (await api.get(`${EBaseUrl.API}/Translations/${id}`)).data;
+});
+
 const translationsSlice = createSlice({
   initialState,
   name,
@@ -48,9 +57,14 @@ const translationsSlice = createSlice({
     builder.addCase(GetTranslations.fulfilled, (state, { payload }) => {
       state.list = payload;
     });
+    builder.addCase(GetTranslationsByLangId.fulfilled, (state, { payload }) => {
+      state.translationDataByLangId = payload;
+    });
   },
 });
 
 export const selectTranslations = (state: IState) => state.translations.list;
+export const selectTranslationsByLangId = (state: IState) =>
+  state.translations.translationDataByLangId;
 
 export default translationsSlice.reducer;

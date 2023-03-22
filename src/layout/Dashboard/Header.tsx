@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import LanguageMenu from "shared/components/LanguageMenu";
 import { usePopover } from "shared/helpers/hooks/usePopover";
 import { EBaseUrl } from "store/config/constants";
 import { selectUserInfo } from "store/slicers/users";
@@ -85,6 +86,7 @@ export const TopNav = (props) => {
                 </Badge>
               </IconButton>
             </Tooltip> */}
+            <LanguageMenu />
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}

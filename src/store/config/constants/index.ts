@@ -7,6 +7,7 @@ export const EBaseUrl = {
 
 export const LStorage = {
   AUTH: "authorization",
+  LANG: "language",
 };
 
 export enum ETheme {
