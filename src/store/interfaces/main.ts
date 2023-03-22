@@ -1,4 +1,5 @@
 import { IAuthState } from "./auth";
+import { ICampaignState } from "./campaigns";
 import { ICommonState } from "./common";
 import { ICustomersState } from "./customers";
 import { IErrorsState } from "./errors";
@@ -31,6 +32,7 @@ export interface IState {
   auth: IAuthState;
   users: IUsersState;
   roles: IRolesState;
+  campaigns: ICampaignState;
   translations: ITranslationsState;
   customers: ICustomersState;
   feedbacks: IFeedbacksState;

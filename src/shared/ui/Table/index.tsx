@@ -132,7 +132,7 @@ const BasicTable = <T extends { id: number }>({
             <Checkbox
               checked={
                 selectedList?.length ===
-                (enablePagination ? paginatedData?.displayData : data).length
+                (enablePagination ? paginatedData?.displayData : data)?.length
               }
               onChange={handleCheckAll}
             />

@@ -16,7 +16,12 @@ import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditRoles from "./components/AddEditRoles";
-import { GetRoleById, GetRoles, selectRoles } from "store/slicers/roles";
+import {
+  DeleteRole,
+  GetRoleById,
+  GetRoles,
+  selectRoles,
+} from "store/slicers/roles";
 import { IRole, IRoleDetailed } from "store/interfaces/roles";
 import { GetUserGroups } from "store/slicers/users";
 import { ERequestStatus } from "store/enums/index.enum";
@@ -57,17 +62,16 @@ const RolesPage = () => {
     if (!activeRow) {
       return;
     }
-    // dispatch(setLoading(true));
-    // const { meta } = await dispatch();
-    // DeleteRole({ key, module: translationModule })
-    // if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-    //   dispatch(setLoading(false));
-    //   return;
-    // }
+    dispatch(setLoading(true));
+    const { meta } = await dispatch(DeleteRole(activeRow.id));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      dispatch(setLoading(false));
+      return;
+    }
     setActiveRow(undefined);
     await refetchRoles();
     dispatch(setLoading(false));
-    toast.success("Country is deleted");
+    toast.success("Role is deleted");
   };
 
   const onFormSuccess = () => {
