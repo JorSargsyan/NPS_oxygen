@@ -139,14 +139,20 @@ const LanguageMenu = () => {
                 handleSelectLanguage(item.value);
               }}
             >
-              <Box display="flex" height="20px" margin="5px 0">
+              <Box
+                display="flex"
+                width={100}
+                alignItems={"center"}
+                height="15px"
+                margin="5px 0"
+              >
                 <img
                   style={{
                     maxWidth: "100%",
                     maxHeight: "100%",
                     objectFit: "contain",
                     marginRight: "10px",
-                    borderRadius: "5px",
+                    borderRadius: "2px",
                   }}
                   src={item.icon}
                   alt="language"
