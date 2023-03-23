@@ -5,6 +5,7 @@ export interface IFeedbacksState {
   causeAndMoodList: ICauseCategory[];
   feedbackDetails: null | IFeedbackDetails;
   feedbackNotes: IFeedbackNotes[];
+  feedbackLogs: IFeedbackLog[];
 }
 
 export interface IFeedbackNotes {
@@ -131,4 +132,29 @@ export interface ICauseCategory {
   rootCauseID: number;
   rootCauseIsHidden: boolean;
   rootCauseName: string;
+}
+
+export interface IUpdateManager {
+  assignUserID: number;
+  feedbackIDs: string[];
+}
+
+export interface IFeedbackUser {
+  id: number;
+  name: string;
+  surname: string;
+  imagePath: string;
+  noImage: boolean;
+}
+
+export interface IFeedbackLog {
+  id: number;
+  creationDate: string;
+  assignUser: string;
+  cause: string;
+  root: string;
+  mood: null;
+  status: number;
+  logType: number;
+  user: IFeedbackUser;
 }

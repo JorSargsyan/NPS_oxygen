@@ -5,7 +5,7 @@ import DeleteIcon from "@heroicons/react/24/solid/XMarkIcon";
 export interface ISelectProps<T> {
   label: string;
   options: T[];
-  onChangeCB?: () => void;
+  onChangeCB?: (value: number) => void;
   clearable?: boolean;
   disabled?: boolean;
   getValue?: (val: T) => string;
@@ -41,18 +41,19 @@ const BasicSelect = <T extends unknown>({
   const { control } = useFormContext();
 
   const handleChange = (e, onChange) => {
+    const value = e.target.value;
     if (onFormatValue) {
-      const result = onFormatValue(e.target.value);
+      const result = onFormatValue(value);
       onChange(result);
     } else {
-      onChange(e.target.value);
+      onChange(value);
     }
-    onChangeCB?.();
+    onChangeCB?.(value);
   };
 
-  const handleReset = (onChange) => {
-    onChange("");
-    onChangeCB?.();
+  const handleReset = (field) => {
+    field.onChange("");
+    onChangeCB?.(field.value);
   };
 
   return (
@@ -72,7 +73,7 @@ const BasicSelect = <T extends unknown>({
                   <Box sx={{ cursor: "pointer" }} mr={3} mt={0.5}>
                     <DeleteIcon
                       height={20}
-                      onClick={() => handleReset(field.onChange)}
+                      onClick={() => handleReset(field)}
                     />
                   </Box>
                 )

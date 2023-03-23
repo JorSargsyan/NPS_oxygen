@@ -1,22 +1,17 @@
+import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
 import { MenuItem, Select, SvgIcon, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { defaultFilterValues } from "resources/constants";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
 import BasicTable from "shared/ui/Table";
-import {
-  EFeedbackStatus,
-  EFeedbackStatusesModalTypes,
-} from "store/enums/feedbacks.enum";
-import { ERequestStatus } from "store/enums/index.enum";
 import { IFeedback, IFeedbackCauseAndMood } from "store/interfaces/feedback";
 import {
-  ChangeFeedbackStatus,
-  GetFeedbackCauseAndMood,
   GetFeedbackCauseAndMoodCategoriesList,
   GetFeedbacks,
   selectFeedbacks,
@@ -28,8 +23,7 @@ import {
   feedbackStatusList,
   viewCommentsDialogConfig,
 } from "./constants";
-import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
-import { useNavigate } from "react-router-dom";
+import { changeFeedbackStatus } from "./helpers";
 
 export interface IActiveRow {
   type: number;
@@ -47,55 +41,13 @@ const Feedbacks = () => {
   const feedbacks = useSelector(selectFeedbacks);
   const navigate = useNavigate();
 
-  const handleChangeStatus = async (e, rowId) => {
-    const value = e.target.value;
-    const { meta } = await dispatch(
-      ChangeFeedbackStatus({
-        id: rowId,
-        formData: {
-          state: value,
-        },
-      })
-    );
-
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      const causeAndMooRes = await dispatch(GetFeedbackCauseAndMood(rowId));
-      setDrawerOpen(true);
-      if (causeAndMooRes.meta.requestStatus !== ERequestStatus.FULFILLED) {
-        return;
-      }
-      if (
-        value === EFeedbackStatus.Postponed ||
-        value === EFeedbackStatus.Misrated
-      ) {
-        setActiveRow({
-          type: EFeedbackStatusesModalTypes.Requires_Cause,
-          data: causeAndMooRes.payload,
-          rowId,
-          state: value,
-        });
-      } else if (
-        value === EFeedbackStatus.Resolved ||
-        value === EFeedbackStatus.Not_Resolved
-      ) {
-        setActiveRow({
-          type: EFeedbackStatusesModalTypes.Requires_Both,
-          data: causeAndMooRes.payload,
-          rowId,
-          state: value,
-        });
-      } else {
-        setActiveRow(undefined);
-      }
-    } else {
-      refetchFeedbacks();
-    }
-  };
-
   const handleOpenCommentViewDialog = (row: IFeedback) => {
     setSelectedFeedbackId({ id: row.id, data: row.comments });
     setCommentDialogOpen(true);
   };
+  const methods = useForm({
+    defaultValues: { config: defaultFilterValues },
+  });
 
   const viewCommentColumn = {
     label: "Comment",
@@ -121,7 +73,16 @@ const Feedbacks = () => {
           <Select
             size="small"
             value={row.feedbackStatus.id}
-            onChange={(e) => handleChangeStatus(e, row.id)}
+            onChange={(e) =>
+              changeFeedbackStatus({
+                value: e.target.value,
+                rowId: row.id,
+                dispatch,
+                setDrawerOpen,
+                setActiveRow,
+                refetchFeedbacks,
+              })
+            }
           >
             {feedbackStatusList.map((feedbackStatus, index) => {
               return (
@@ -136,12 +97,8 @@ const Feedbacks = () => {
     },
   };
 
-  const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
-  });
-
   const refetchFeedbacks = () => {
-    dispatch(GetFeedbacks(methods.watch("filters")));
+    dispatch(GetFeedbacks(methods.watch("config")));
   };
 
   const handleChangeSelected = (ids: number[]) => {

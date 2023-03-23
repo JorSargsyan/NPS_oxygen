@@ -7,7 +7,10 @@ import {
   IChangeFeedbackStatus,
   IFeedback,
   IFeedbackDetails,
+  IFeedbackLog,
+  IFeedbackNotes,
   IFeedbacksState,
+  IUpdateManager,
 } from "store/interfaces/feedback";
 import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -19,6 +22,7 @@ const initialState: IFeedbacksState = {
   causeAndMoodList: [],
   feedbackDetails: null,
   feedbackNotes: [],
+  feedbackLogs: [],
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -79,10 +83,24 @@ export const GetFeedbackDetail = createAsyncThunk<IFeedbackDetails, number>(
   }
 );
 
-export const GetFeedbackNotes = createAsyncThunk<IFeedbackDetails, number>(
+export const GetFeedbackNotes = createAsyncThunk<IFeedbackNotes[], number>(
   `${name}/GetFeedbackNotes`,
   async (params: number) => {
     return (await api.get(`${EBaseUrl.API}/Notes?id=${params}`)).data;
+  }
+);
+
+export const UpdateFeedbackManager = createAsyncThunk<unknown, IUpdateManager>(
+  `${name}/UpdateFeedbackManager`,
+  async (data: IUpdateManager) => {
+    return (await api.put(`${EBaseUrl.API}/Feedback/Assign`, data)).data;
+  }
+);
+
+export const GetFeedbackLogs = createAsyncThunk<IFeedbackLog[], string>(
+  `${name}/GetFeedbackLogs`,
+  async (id: string) => {
+    return (await api.get(`${EBaseUrl.API}/Feedback/Logs/${id}`)).data;
   }
 );
 
@@ -104,7 +122,7 @@ const FeedbacksSlice = createSlice({
       state.feedbackDetails = payload;
     });
     builder.addCase(GetFeedbackNotes.fulfilled, (state, { payload }) => {
-      state.feedbackDetails = payload;
+      state.feedbackNotes = payload;
     });
   },
 });
@@ -116,5 +134,7 @@ export const selectFeedbackDetails = (state: IState) =>
   state.feedbacks.feedbackDetails;
 export const selectFeedbackNotes = (state: IState) =>
   state.feedbacks.feedbackNotes;
+export const selectFeedbackLogs = (state: IState) =>
+  state.feedbacks.feedbackLogs;
 
 export default FeedbacksSlice.reducer;

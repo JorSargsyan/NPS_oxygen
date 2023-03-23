@@ -243,7 +243,7 @@ const BasicTable = <T extends { id: number }>({
       </TableRow>
     ));
   };
-
+  
   const getPagination = (component: any = "td") => {
     return paginatedData?.displayData?.length && enablePagination ? (
       <TablePagination
