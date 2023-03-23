@@ -21,3 +21,18 @@ export const customerColumns: IColumn[] = [
     field: "creationDate",
   },
 ];
+
+export const CustomerStatusList = [
+  {
+    value: "1",
+    name: "Active",
+  },
+  {
+    value: "2",
+    name: "Blocked",
+  },
+  {
+    value: "3",
+    name: "Quarantined",
+  },
+];

@@ -14,6 +14,7 @@ import {
 } from "store/slicers/customers";
 import { ICustomer } from "store/interfaces/customers";
 import { ERequestStatus } from "store/enums/index.enum";
+import Filters from "./components/Filters";
 
 const Customers = () => {
   const dispatch = useAsyncDispatch();
@@ -67,16 +68,22 @@ const Customers = () => {
   };
 
   const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
+    defaultValues: { config: defaultFilterValues },
   });
 
   const refetchCustomers = () => {
-    dispatch(GetCustomers(methods.watch("filters")));
+    const data = {
+      ...methods.watch("config"),
+      filters: methods.watch("config.filters").filter((i) => i),
+    };
+    dispatch(GetCustomers(data));
   };
 
   const handleChangeSelected = (ids: number[]) => {
     console.log(ids);
   };
+
+  console.log(methods.watch());
 
   useEffect(() => {
     dispatch(GetCustomers(defaultFilterValues));
@@ -88,6 +95,7 @@ const Customers = () => {
       <BasicTable<ICustomer>
         selectable
         hasSearchInput
+        Filter={() => <Filters onChange={refetchCustomers} methods={methods} />}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={[...customerColumns, statusColumn]}
         paginatedData={customers}

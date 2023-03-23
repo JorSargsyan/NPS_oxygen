@@ -37,7 +37,7 @@ const BasicTable = <T extends { id: number }>({
   enablePagination = true,
   hasSearchInput = false,
 }: ITableProps<T>): JSX.Element => {
-  const filters = filterOptions?.watch("filters");
+  const filters = filterOptions?.watch("config");
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
   const tableLoading = useSelector(selectTableLoadingState);
@@ -134,13 +134,15 @@ const BasicTable = <T extends { id: number }>({
       <Fragment>
         {selectable ? (
           <TableCell align="left">
-            <Checkbox
-              checked={
-                selectedList?.length ===
-                (enablePagination ? paginatedData?.displayData : data)?.length
-              }
-              onChange={handleCheckAll}
-            />
+            {paginatedData?.displayData.length ? (
+              <Checkbox
+                checked={
+                  selectedList?.length ===
+                  (enablePagination ? paginatedData?.displayData : data)?.length
+                }
+                onChange={handleCheckAll}
+              />
+            ) : null}
           </TableCell>
         ) : null}
         {columnsData?.map((column, index) => (

@@ -1,13 +1,13 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import BasicSelect from "shared/ui/Select";
-import { translationModuleOptions } from "../constants";
+import { CustomerStatusList } from "../constants";
 import { FormProvider } from "react-hook-form";
 
 const onFormatValue = (value: string) => {
   return {
     value: value.toString(),
-    key: "Module",
+    key: "CustomerStatus",
     queryCondition: 2,
   };
 };
@@ -22,7 +22,7 @@ const Filters = ({ methods, onChange }) => {
               size="small"
               label="Status"
               clearable
-              options={translationModuleOptions}
+              options={CustomerStatusList}
               getLabel={(option) => option.name.toString()}
               getValue={(option) => option?.value?.toString() || ""}
               onFormatValue={onFormatValue}

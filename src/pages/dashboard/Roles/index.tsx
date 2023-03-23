@@ -33,11 +33,11 @@ const RolesPage = () => {
   const dispatch = useAsyncDispatch();
   const roles = useSelector(selectRoles);
   const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
+    defaultValues: { config: defaultFilterValues },
   });
 
   const refetchRoles = () => {
-    dispatch(GetRoles(methods.watch("filters")));
+    dispatch(GetRoles(methods.watch("config")));
   };
 
   const handleEdit = async (row: IRole) => {

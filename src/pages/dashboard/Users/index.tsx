@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { IUserCompact } from "store/interfaces/users";
-import { GetUserById, GetUsers, selectUsers } from "store/slicers/users";
+import { GetUsers, selectUsers } from "store/slicers/users";
 import { userColumns } from "./constants";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
@@ -12,7 +12,6 @@ import { defaultFilterValues } from "resources/constants";
 import RightDrawer from "shared/ui/Drawer";
 import UserDetails from "./components/UserDetails";
 import { useLocation } from "react-router-dom";
-import { ERequestStatus } from "store/enums/index.enum";
 
 const Users = () => {
   const location = useLocation();
@@ -21,11 +20,11 @@ const Users = () => {
   const [activeRow, setActiveRow] = useState(0);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
+    defaultValues: { config: defaultFilterValues },
   });
 
   const refetchUsers = () => {
-    dispatch(GetUsers(methods.watch("filters")));
+    dispatch(GetUsers(methods.watch("config")));
   };
 
   const handleChangeSelected = (ids: number[]) => {

@@ -44,11 +44,11 @@ const CampaignsPage = () => {
   const [editData, setEditData] = useState<ICampaign>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
+    defaultValues: { config: defaultFilterValues },
   });
 
   const refetchData = () => {
-    dispatch(GetCampaigns(methods.watch("filters")));
+    dispatch(GetCampaigns(methods.watch("config")));
   };
 
   const handleChangeSelected = (ids: number[]) => {

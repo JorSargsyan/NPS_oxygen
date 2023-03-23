@@ -1,10 +1,12 @@
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Select, MenuItem, FormControl, InputLabel, Box } from "@mui/material";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
+import DeleteIcon from "@heroicons/react/24/solid/XMarkIcon";
 
 export interface ISelectProps<T> {
   label: string;
   options: T[];
   onChangeCB?: () => void;
+  clearable?: boolean;
   disabled?: boolean;
   getValue?: (val: T) => string;
   getLabel?: (val: T) => string;
@@ -28,6 +30,7 @@ const BasicSelect = <T extends unknown>({
   valueProp,
   getValue,
   getLabel,
+  clearable = false,
   onChangeCB,
   onFormatValue,
   size = "medium",
@@ -45,47 +48,66 @@ const BasicSelect = <T extends unknown>({
     onChangeCB();
   };
 
+  const handleReset = (onChange) => {
+    onChange("");
+    onChangeCB();
+  };
+
   return (
     <Controller
       control={control}
       name={name}
       rules={rules}
-      render={({ field }) => (
-        <FormControl fullWidth variant="filled">
-          <InputLabel>{label}</InputLabel>
-          <Select
-            size={size}
-            {...field}
-            value={
-              typeof valueProp === "string"
-                ? (field.value as string)
-                : getValue?.(field.value)
-            }
-            onChange={(e) => {
-              handleChange(e, field.onChange);
-            }}
-            label={label}
-            disabled={disabled}
-          >
-            {options?.map((option: T, index: number) => {
-              return (
-                <MenuItem
-                  key={index}
-                  value={
-                    typeof valueProp === "string"
-                      ? option[valueProp as string]
-                      : getValue?.(option)
-                  }
-                >
-                  {typeof labelProp === "string"
-                    ? option[labelProp as string]
-                    : getLabel?.(option)}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-      )}
+      render={({ field }) => {
+        console.log(field.value);
+        return (
+          <FormControl fullWidth variant="filled">
+            <InputLabel>{label}</InputLabel>
+            <Select
+              endAdornment={
+                field?.value &&
+                clearable && (
+                  <Box sx={{ cursor: "pointer" }} mr={3} mt={0.5}>
+                    <DeleteIcon
+                      height={20}
+                      onClick={() => handleReset(field.onChange)}
+                    />
+                  </Box>
+                )
+              }
+              size={size}
+              {...field}
+              value={
+                typeof valueProp === "string"
+                  ? (field.value as string)
+                  : getValue?.(field.value)
+              }
+              onChange={(e) => {
+                handleChange(e, field.onChange);
+              }}
+              label={label}
+              disabled={disabled}
+            >
+              {options?.map((option: T, index: number) => {
+                return (
+                  <MenuItem
+                    key={index}
+                    value={
+                      typeof valueProp === "string"
+                        ? option[valueProp as string]
+                        : getValue?.(option)
+                    }
+                  >
+                    {typeof labelProp === "string"
+                      ? option[labelProp as string]
+                      : getLabel?.(option)}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        );
+      }}
     />
   );
 };

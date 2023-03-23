@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import { IFilterOptions } from "shared/ui/Table/constants";
 import SearchIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
-import { Box } from "@mui/system";
 
 type Props = {
   filterOptions: IFilterOptions;
@@ -18,8 +17,8 @@ const SearchInput = ({ filterOptions, fetchData }: Props) => {
   const handleSearch = (e) => {
     filterOptions?.reset({
       ...filterOptions?.watch(),
-      filters: {
-        ...filterOptions?.watch("filters"),
+      config: {
+        ...filterOptions?.watch("config"),
         search: e.target.value,
       },
     });

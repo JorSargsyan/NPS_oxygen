@@ -29,12 +29,16 @@ const Translations = () => {
   const dispatch = useAsyncDispatch();
   const translations = useSelector(selectTranslations);
   const methods = useForm({
-    defaultValues: { filters: defaultFilterValues },
+    defaultValues: { config: defaultFilterValues },
   });
 
   const refetchTranslations = async () => {
     await dispatch(setTableLoading(true));
-    await dispatch(GetTranslations(methods.watch("filters")));
+    const data = {
+      ...methods.watch("config"),
+      filters: methods.watch("config.filters").filter((i) => i),
+    };
+    await dispatch(GetTranslations(data));
     await dispatch(setTableLoading(false));
   };
 
