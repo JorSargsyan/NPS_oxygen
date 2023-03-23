@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import { EScoreTypes } from "store/enums/feedbacks.enum";
+import { EFeedbackStatus, EScoreTypes } from "store/enums/feedbacks.enum";
 import { IFeedback, IScore } from "store/interfaces/feedback";
 
 const scoreColors = {
@@ -75,3 +75,43 @@ export const feedbackColumns = [
 export const viewCommentsDialogConfig = {
   title: "Quick view comments",
 };
+
+export interface IFeedbackStatusList {
+  value: EFeedbackStatus;
+  name: string;
+}
+
+export const feedbackStatusList: IFeedbackStatusList[] = [
+  {
+    value: EFeedbackStatus.New,
+    name: "New",
+  },
+  {
+    value: EFeedbackStatus.Follow_Up,
+    name: "Follow Up",
+  },
+  {
+    value: EFeedbackStatus.Postponed,
+    name: "Postponed",
+  },
+  {
+    value: EFeedbackStatus.No_response,
+    name: "No Response",
+  },
+  {
+    value: EFeedbackStatus.Resolved,
+    name: "Resolved",
+  },
+  {
+    value: EFeedbackStatus.Not_Resolved,
+    name: "Not Resolved",
+  },
+  {
+    value: EFeedbackStatus.Misrated,
+    name: "Misrated",
+  },
+  {
+    value: EFeedbackStatus.Archived,
+    name: "Archived",
+  },
+];

@@ -5,6 +5,7 @@ import {
   IGetPermissionsResponse,
   IPermissionGroup,
   IGetConfigResponse,
+  IManagers,
 } from "../interfaces/common";
 import { IState } from "../interfaces/main";
 import { api } from "store/services/apiService";
@@ -17,6 +18,7 @@ const initialState: ICommonState = {
   tableLoading: false,
   permissions: [],
   permissionGroups: [],
+  managers: [],
 };
 
 export const GetPermissions = createAsyncThunk<IGetPermissionsResponse>(
@@ -37,6 +39,13 @@ export const GetConfig = createAsyncThunk<IGetConfigResponse>(
   `${name}/GetConfig`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Config`)).data;
+  }
+);
+
+export const GetUserManagers = createAsyncThunk<IManagers[]>(
+  `${name}/GetUserManagers`,
+  async () => {
+    return (await api.get(`${EBaseUrl.API}/User/Managers`)).data;
   }
 );
 
@@ -64,6 +73,9 @@ const commonSlice = createSlice({
     builder.addCase(GetConfig.fulfilled, (state, { payload }) => {
       state.theme = payload.themeColor;
     });
+    builder.addCase(GetUserManagers.fulfilled, (state, { payload }) => {
+      state.managers = payload;
+    });
   },
 });
 
@@ -75,4 +87,5 @@ export const selectTheme = (state: IState) => state.common.theme;
 export const selectPermissions = (state: IState) => state.common.permissions;
 export const selectPermissionGroups = (state: IState) =>
   state.common.permissionGroups;
+export const selectManagers = (state: IState) => state.common.managers;
 export default commonSlice.reducer;

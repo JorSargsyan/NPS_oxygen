@@ -11,6 +11,7 @@ import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
 import { GetTranslationsByLangId } from "store/slicers/translations";
 import { LStorage } from "store/config/constants";
+import FeedbackDetails from "pages/dashboard/FeedBacks/components/FeedbackDetails";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
@@ -60,6 +61,10 @@ export const CreateRoutes = () => {
         {
           path: "profile",
           element: <AccountPage />,
+        },
+        {
+          path: "feedbacks/:id",
+          element: <FeedbackDetails />,
         },
       ],
     },

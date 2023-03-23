@@ -23,8 +23,13 @@ import {
 } from "store/slicers/feedback";
 import FeedbackStatusDrawer from "./components/FeedbackStatusDrawer";
 import ViewComments from "./components/ViewComments";
-import { feedbackColumns, viewCommentsDialogConfig } from "./constants";
+import {
+  feedbackColumns,
+  feedbackStatusList,
+  viewCommentsDialogConfig,
+} from "./constants";
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
+import { useNavigate } from "react-router-dom";
 
 export interface IActiveRow {
   type: number;
@@ -40,6 +45,7 @@ const Feedbacks = () => {
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
+  const navigate = useNavigate();
 
   const handleChangeStatus = async (e, rowId) => {
     const value = e.target.value;
@@ -95,7 +101,10 @@ const Feedbacks = () => {
     label: "Comment",
     layout: (row: IFeedback) => {
       return (
-        <Box onClick={() => handleOpenCommentViewDialog(row)}>
+        <Box
+          onClick={() => handleOpenCommentViewDialog(row)}
+          textAlign="center"
+        >
           <SvgIcon sx={{ cursor: "pointer" }}>
             <CommentIcon />
           </SvgIcon>
@@ -114,16 +123,13 @@ const Feedbacks = () => {
             value={row.feedbackStatus.id}
             onChange={(e) => handleChangeStatus(e, row.id)}
           >
-            <MenuItem value={EFeedbackStatus.New}>New</MenuItem>
-            <MenuItem value={EFeedbackStatus.Follow_Up}>Follow up</MenuItem>
-            <MenuItem value={EFeedbackStatus.Postponed}>Postponed</MenuItem>
-            <MenuItem value={EFeedbackStatus.No_response}>No response</MenuItem>
-            <MenuItem value={EFeedbackStatus.Resolved}>Resolved</MenuItem>
-            <MenuItem value={EFeedbackStatus.Not_Resolved}>
-              Not resolved
-            </MenuItem>
-            <MenuItem value={EFeedbackStatus.Misrated}>Misrated</MenuItem>
-            <MenuItem value={EFeedbackStatus.Archived}>Archived</MenuItem>
+            {feedbackStatusList.map((feedbackStatus, index) => {
+              return (
+                <MenuItem key={index} value={feedbackStatus.value}>
+                  {feedbackStatus.name}
+                </MenuItem>
+              );
+            })}
           </Select>
         </Box>
       );
@@ -143,6 +149,7 @@ const Feedbacks = () => {
   };
 
   const handleViewFeedback = (id: number) => {
+    navigate(`${id}`);
     console.log(id);
   };
 

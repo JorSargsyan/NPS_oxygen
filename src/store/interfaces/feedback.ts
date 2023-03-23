@@ -3,6 +3,69 @@ import { IPaginated } from "./main";
 export interface IFeedbacksState {
   listData: IPaginated<IFeedback>;
   causeAndMoodList: ICauseCategory[];
+  feedbackDetails: null | IFeedbackDetails;
+  feedbackNotes: IFeedbackNotes[];
+}
+
+export interface IFeedbackNotes {
+  creationDate: string;
+  id: number;
+  isDeleted: boolean;
+  isUpdated: boolean;
+  note: string;
+  updatedDate: string;
+}
+
+export interface ISurvey {
+  sentDate: string;
+  openedDate: string;
+  startedDate: string;
+  finishedDate: string;
+  surveyMetric: number;
+  touchpoint: number;
+  channel: number;
+  type: number;
+}
+
+export interface IService {
+  branch: null;
+  employeeName: string;
+  employeeEmail: string;
+  employeeCode: string;
+  serviceCategory: string;
+  transactionId: string;
+  serviceDate: string;
+  directionCoordinator: null;
+  poNet: null;
+  employeePosition: string;
+}
+
+export interface IFeedbackAnswer {
+  id: number;
+  value: string;
+}
+
+export interface IFeedbacksItemDetails {
+  id: number;
+  title: string;
+  isSkipped: false;
+  type: number;
+  answers: IFeedbackAnswer[];
+}
+
+export interface IFeedbackDetails {
+  id: number;
+  submittedDate: string;
+  isLink: false;
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string;
+  assignID: null;
+  status: 6;
+  campaignName: string;
+  survey: ISurvey;
+  service: IService;
+  feedbacks: IFeedbacksItemDetails[];
 }
 
 export interface IComments {

@@ -19,6 +19,7 @@ export interface ISelectProps<T> {
     RegisterOptions<T>,
     "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
   >;
+  defaultValue?: number | string;
 }
 
 const BasicSelect = <T extends unknown>({
@@ -35,6 +36,7 @@ const BasicSelect = <T extends unknown>({
   onFormatValue,
   size = "medium",
   rules,
+  defaultValue,
 }: ISelectProps<T>) => {
   const { control } = useFormContext();
 
@@ -45,12 +47,12 @@ const BasicSelect = <T extends unknown>({
     } else {
       onChange(e.target.value);
     }
-    onChangeCB();
+    onChangeCB?.();
   };
 
   const handleReset = (onChange) => {
     onChange("");
-    onChangeCB();
+    onChangeCB?.();
   };
 
   return (
@@ -58,8 +60,8 @@ const BasicSelect = <T extends unknown>({
       control={control}
       name={name}
       rules={rules}
+      defaultValue={defaultValue}
       render={({ field }) => {
-        console.log(field.value);
         return (
           <FormControl fullWidth variant="filled">
             <InputLabel>{label}</InputLabel>

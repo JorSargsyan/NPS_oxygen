@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
-import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicAutocomplete from "shared/ui/Autocomplete";

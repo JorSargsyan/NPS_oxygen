@@ -6,6 +6,8 @@ export const api = axios.create({
   responseType: "json",
 });
 
+const feedbackExceptionUrl = "/Feedback/Status/";
+
 api.interceptors.request.use(
   async (config: any) => {
     config.headers = {
@@ -26,7 +28,11 @@ api.interceptors.response.use(
       // localStorage.removeItem(LStorage.AUTH);
       // window.location.href = "/login";
     }
+
     return new Promise(async (_, reject) => {
+      if (err.response?.config?.url.includes(feedbackExceptionUrl)) {
+        return reject(err);
+      }
       if (err?.response?.data?.error?.message) {
         toast.error(
           `${err.response?.data?.error?.code}: ${err.response?.data?.error?.message}`
@@ -34,7 +40,6 @@ api.interceptors.response.use(
       } else {
         toast.error("SMT Went Wrong");
       }
-      return reject(err);
     });
   }
 );

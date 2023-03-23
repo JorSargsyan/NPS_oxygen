@@ -6,6 +6,7 @@ export interface ICommonState {
   tableLoading: boolean;
   permissions: IPermission[];
   permissionGroups: IPermissionGroup[];
+  managers: IManagers[];
 }
 
 export interface IGetPermissionsResponse {
@@ -29,4 +30,15 @@ export interface IPermission {
 export interface IGetConfigResponse {
   sidebar: string;
   themeColor: ETheme;
+}
+
+export interface IManagerUser {
+  id: string;
+  label: string;
+  value: string;
+}
+
+export interface IManagers {
+  groupName: string;
+  users: IManagerUser[];
 }
