@@ -2,7 +2,7 @@ import { Box } from "@mui/system";
 import { EFeedbackStatus, EScoreTypes } from "store/enums/feedbacks.enum";
 import { IFeedback, IScore } from "store/interfaces/feedback";
 
-const scoreColors = {
+export const scoreColors = {
   good: {
     bgColor: "#AFF9DA",
     color: "#146D48",
@@ -115,3 +115,14 @@ export const feedbackStatusList: IFeedbackStatusList[] = [
     name: "Archived",
   },
 ];
+
+export enum ESurveyType {
+  StartPage = 1,
+  SingleSelect,
+  MultipleSelect,
+  Comment,
+  NPS,
+  Friendliness,
+  Custom,
+  EndPage,
+}

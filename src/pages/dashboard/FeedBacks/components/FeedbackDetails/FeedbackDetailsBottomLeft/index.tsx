@@ -1,12 +1,14 @@
+import { feedbackDetailsBottomLeftTabsOptions } from "./constants";
 import BasicTabs from "shared/ui/Tabs";
+import { Box } from "@mui/material";
 
 type Props = {};
 
 const FeedbackDetailsBottomLeft = (props: Props) => {
   return (
-    <div>
-      <BasicTabs />
-    </div>
+    <Box sx={{ minHeight: 400 }}>
+      <BasicTabs tabsData={feedbackDetailsBottomLeftTabsOptions} />
+    </Box>
   );
 };
 
