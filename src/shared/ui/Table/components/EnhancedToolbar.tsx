@@ -4,12 +4,14 @@ import SearchInput from "shared/components/SearchInput";
 import { IEnhancedToolbar } from "../constants";
 import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
+import { Fragment } from "react";
 
 const EnhancedToolbar = ({
   rowsSelected,
   handleToggleFilter,
   filterOptions,
   fetchData,
+  hasFilters,
   hasSearchInput,
 }: IEnhancedToolbar) => {
   return (
@@ -47,9 +49,17 @@ const EnhancedToolbar = ({
           <DeleteIcon height={24} width={24} />
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <FilterListIcon onClick={handleToggleFilter} height={24} width={24} />
-        </Tooltip>
+        <Fragment>
+          {hasFilters && (
+            <Tooltip title="Filter list">
+              <FilterListIcon
+                onClick={handleToggleFilter}
+                height={24}
+                width={24}
+              />
+            </Tooltip>
+          )}
+        </Fragment>
       )}
     </Toolbar>
   );

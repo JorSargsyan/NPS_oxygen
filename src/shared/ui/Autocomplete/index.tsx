@@ -26,6 +26,7 @@ interface IAutocompleteProps<OptionType> {
   async?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  size?: "small" | "medium";
   prefix?: string;
   onChangeCB?: (val: OptionType | OptionType[] | null) => void;
   fetchFn?: (search: string) => void;
@@ -49,6 +50,7 @@ const BasicAutocomplete = <T extends { id?: number }>({
   getOptionDisabled,
   inputLabel,
   options,
+  size,
   name,
   prefix,
   rules,
@@ -124,6 +126,7 @@ const BasicAutocomplete = <T extends { id?: number }>({
           <Autocomplete
             {...field}
             disabled={disabled}
+            size={size}
             multiple={multiple}
             onChange={handleChange}
             groupBy={groupBy}

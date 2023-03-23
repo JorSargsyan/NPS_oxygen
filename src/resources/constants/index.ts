@@ -92,3 +92,24 @@ export const campaignTypes = {
     },
   ],
 };
+export const ConditionList = [
+  {
+    name: "Is",
+    value: "2",
+  },
+  {
+    name: "Is not",
+    value: "3",
+  },
+];
+
+export const FilterConditionMatchList = [
+  {
+    name: "All",
+    value: 1,
+  },
+  {
+    name: "Any",
+    value: 2,
+  },
+];

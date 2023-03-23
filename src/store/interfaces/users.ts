@@ -1,4 +1,4 @@
-import { IPaginated } from "./main";
+import { IFilterOption, IPaginated } from "./main";
 
 export interface IUsersState {
   data: IPaginated<IUserCompact>;
@@ -52,4 +52,10 @@ export interface IAddEditUserRequest {
 export interface IUserGroup {
   id: number;
   name: string;
+}
+
+export interface IDefaultFilterOptionForm {
+  type: IFilterOption | null;
+  queryCondition: string;
+  value: IFilterOption | null;
 }
