@@ -1,8 +1,7 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { useState, SyntheticEvent, ReactNode } from "react";
+import { useState, SyntheticEvent, ReactNode, Fragment } from "react";
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -21,11 +20,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Fragment>{children}</Fragment>}
     </div>
   );
 }
@@ -40,9 +35,14 @@ function a11yProps(index: number) {
 interface ITabsData {
   index: number;
   children: ReactNode;
+  label: string;
 }
 
-const BasicTabs = ({ tabsData }: ITabsData[]) => {
+interface ITabsProps {
+  tabsData: ITabsData[];
+}
+
+const BasicTabs = ({ tabsData }: ITabsProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -56,8 +56,9 @@ const BasicTabs = ({ tabsData }: ITabsData[]) => {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          centered
         >
-          {data.map((item) => {
+          {tabsData.map((item) => {
             return (
               <Tab
                 key={item.index}
@@ -68,7 +69,7 @@ const BasicTabs = ({ tabsData }: ITabsData[]) => {
           })}
         </Tabs>
       </Box>
-      {data?.map((item) => {
+      {tabsData?.map((item) => {
         return (
           <TabPanel key={item.index} value={value} index={item.index}>
             {item.children}

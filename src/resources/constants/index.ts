@@ -26,3 +26,69 @@ export {
   RIGHT_SIDEBAR_WIDTH,
   RIGHT_SIDEBAR_WIDTH_EXTENDED,
 };
+
+export enum ESurveyMetric {
+  NPS = 1,
+}
+
+export enum ETouchPoint {
+  Postal_office = 1,
+}
+
+export enum EChannel {
+  LinkViaSms = 1,
+  General_Link,
+}
+
+export enum ESurveyMetricValues {
+  NPS = "NPS",
+}
+
+export enum ETouchPointValues {
+  Postal_office = "PostalOffices",
+}
+
+export enum EChannelValues {
+  LinkViaSms = "LinkViaSms",
+  General_Link = "General Link",
+}
+
+export enum ECampaignType {
+  Hot = "Hot",
+}
+
+export const campaignTypes = {
+  surveyMetric: [
+    {
+      id: ESurveyMetric.NPS,
+      label: "NPS",
+      value: ESurveyMetricValues.NPS,
+    },
+  ],
+  touchpoint: [
+    {
+      id: ETouchPoint.Postal_office,
+      label: "Postal Offices",
+      value: ETouchPointValues.Postal_office,
+    },
+  ],
+  channel: [
+    {
+      id: 1,
+      label: "Link Via Sms",
+      value: EChannelValues.LinkViaSms,
+    },
+    {
+      id: 2,
+      label: "Link",
+      value: EChannelValues.General_Link,
+    },
+  ],
+  type: [
+    {
+      id: 1,
+      label: "Hot",
+      value: ECampaignType.Hot,
+    },
+  ],
+};

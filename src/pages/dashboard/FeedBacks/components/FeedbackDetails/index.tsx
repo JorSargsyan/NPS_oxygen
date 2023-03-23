@@ -5,6 +5,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { GetUserManagers } from "store/slicers/common";
 import { GetFeedbackDetail, GetFeedbackNotes } from "store/slicers/feedback";
 import FeedbackDetailsBottomLeft from "./FeedbackDetailsBottomLeft";
+import FeedbackDetailsBottomRight from "./FeedbackDetailsBottomRight";
 import FeedbackDetailsTop from "./FeedbackDetailsTop";
 
 type Props = {};
@@ -33,7 +34,7 @@ const FeedbackDetails = (props: Props) => {
         </Box>
         <Box flex={1}>
           <Paper elevation={3}>
-            <FeedbackDetailsBottomLeft />
+            <FeedbackDetailsBottomRight />
           </Paper>
         </Box>
       </Box>

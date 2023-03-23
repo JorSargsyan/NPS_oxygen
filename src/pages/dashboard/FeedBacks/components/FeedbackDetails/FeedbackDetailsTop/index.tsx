@@ -26,7 +26,7 @@ import FeedbackStatusDrawer from "../../FeedbackStatusDrawer";
 
 interface IFormData {
   feedbackStatus: number;
-  manager: number;
+  manager: number | string;
 }
 
 const FeedbackDetailsTop = () => {
@@ -62,9 +62,9 @@ const FeedbackDetailsTop = () => {
   useEffect(() => {
     methods.reset({
       feedbackStatus: feedbackItemDetails?.status,
-      manager: feedbackItemDetails?.assignID,
+      manager: feedbackItemDetails?.assignID ?? "",
     });
-  }, [feedbackItemDetails?.status, methods]);
+  }, [feedbackItemDetails?.status, methods, feedbackItemDetails?.assignID]);
 
   useEffect(() => {
     if (!causeCategoriesList?.length) {
@@ -75,7 +75,7 @@ const FeedbackDetailsTop = () => {
   return (
     <FormProvider {...methods}>
       <Paper elevation={3}>
-        <Box p={2}>
+        <Box p={2} sx={{ minHeight: 330 }}>
           <Box display="flex">
             <Box width="30%" mr={5}>
               <BasicSelect<IFeedbackStatusList>
@@ -117,7 +117,7 @@ const FeedbackDetailsTop = () => {
             }}
             mt={4}
           >
-            <Box mr={5}>
+            <Box>
               {feedbackItemDetails?.customerName ? (
                 <Fragment>
                   <Typography fontSize={14} fontWeight="bold" mb={1}>

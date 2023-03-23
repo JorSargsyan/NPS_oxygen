@@ -52,6 +52,9 @@ const Feedbacks = () => {
   const viewCommentColumn = {
     label: "Comment",
     layout: (row: IFeedback) => {
+      if (!row?.comments?.length) {
+        return;
+      }
       return (
         <Box
           onClick={() => handleOpenCommentViewDialog(row)}
