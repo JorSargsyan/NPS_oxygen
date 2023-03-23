@@ -36,17 +36,24 @@ const Users = () => {
   });
 
   const refetchUsers = () => {
-    const filters = methods.watch("config.filters").map((filter, index) => {
-      return {
-        ...filter,
-        rowId: index + 1,
-        hidden: null,
-        label: filter.value.label,
-        value: filter.value.value,
-        type: filter.type.type,
-        key: filter.type.label,
-      };
-    });
+    const filtersCombined = methods
+      .watch("config.filters")
+      .map((filter, index) => {
+        return {
+          ...filter,
+          rowId: index + 1,
+          hidden: null,
+          label: filter.value?.label,
+          value: filter.value?.value,
+          type: filter.type?.type,
+          key: filter.type?.label,
+        };
+      });
+
+    let filters =
+      filtersCombined.length === 1 && !filtersCombined[0].queryCondition
+        ? []
+        : filtersCombined;
 
     dispatch(
       GetUsers({

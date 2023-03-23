@@ -1,6 +1,6 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import BasicSelect from "shared/ui/Select";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useWatch } from "react-hook-form";
 import {
   StatusList,
   defaultFilterRowValue,
@@ -10,7 +10,8 @@ import { ConditionList, FilterConditionMatchList } from "resources/constants";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
+import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import { getQueryParams } from "shared/helpers/getQueryParams";
@@ -34,6 +35,22 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
   const handleRemoveRow = (index: number) => {
     remove(index);
   };
+  const filtersWatch = useWatch({
+    control: methods.control,
+    name: "config.filters",
+  });
+
+  const getApplyStatus = useMemo(() => {
+    const isValid = filtersWatch.every((item) => {
+      return item.type && item.queryCondition && item.value;
+    });
+    return !isValid;
+  }, [filtersWatch]);
+
+  const handleReset = () => {
+    methods.setValue("config.filters", [defaultFilterRowValue]);
+    onChange?.();
+  };
 
   const handleFetchValues = async (index: number) => {
     let row = methods.watch(`config.filters[${index}]`);
@@ -44,8 +61,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
         term: "",
         count: 40,
       };
-
-      console.log(formData);
 
       const { meta, payload } = await dispatch(
         GetFilterValues(getQueryParams(formData))
@@ -69,8 +84,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
     }
   };
 
-  console.log(methods.watch("config.filters"));
-
   return (
     <Box p={1}>
       <FormProvider {...methods}>
@@ -89,6 +102,15 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             <Typography fontWeight={500} ml={2}>
               of the users match following filters
             </Typography>
+          </Box>
+          <Box flex={1} justifyContent={"flex-end"} display="flex">
+            <Button
+              onClick={handleReset}
+              startIcon={<ResetIcon height={24} width={24} />}
+              variant="outlined"
+            >
+              <Typography>Reset</Typography>
+            </Button>
           </Box>
         </Box>
         <Grid container spacing={1}>
@@ -180,7 +202,11 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           display="flex"
           justifyContent={"flex-end"}
         >
-          <ButtonLoader onClick={onSubmit} isLoading={false}>
+          <ButtonLoader
+            disabled={getApplyStatus}
+            onClick={onSubmit}
+            isLoading={false}
+          >
             <Typography>Apply</Typography>
           </ButtonLoader>
         </Box>
