@@ -83,8 +83,6 @@ const Customers = () => {
     console.log(ids);
   };
 
-  console.log(methods.watch());
-
   useEffect(() => {
     dispatch(GetCustomers(defaultFilterValues));
   }, [dispatch]);

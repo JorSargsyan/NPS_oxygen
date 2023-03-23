@@ -4,23 +4,35 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { IUserCompact } from "store/interfaces/users";
 import { GetUsers, selectUsers } from "store/slicers/users";
-import { userColumns } from "./constants";
+import { defaultFilterRowValue, userColumns } from "./constants";
 import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { defaultFilterValues } from "resources/constants";
+import { Button, Typography } from "@mui/material";
+import { useFieldArray, useForm } from "react-hook-form";
+import {
+  RIGHT_SIDEBAR_WIDTH_EXTENDED,
+  defaultFilterValues,
+} from "resources/constants";
 import RightDrawer from "shared/ui/Drawer";
 import UserDetails from "./components/UserDetails";
 import { useLocation } from "react-router-dom";
+import Filters from "./components/Filters";
 
 const Users = () => {
   const location = useLocation();
   const dispatch = useAsyncDispatch();
   const users = useSelector(selectUsers);
   const [activeRow, setActiveRow] = useState(0);
+  const [isFiltersOpen, setFiltersOpen] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const methods = useForm({
-    defaultValues: { config: defaultFilterValues },
+    defaultValues: {
+      config: { ...defaultFilterValues, filters: [defaultFilterRowValue] },
+    },
+  });
+
+  const { append, remove, fields } = useFieldArray({
+    name: "config.filters",
+    control: methods.control,
   });
 
   const refetchUsers = () => {
@@ -62,7 +74,12 @@ const Users = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h3">Users</Typography>
+      <Box display="flex" justifyContent={"space-between"}>
+        <Typography variant="h3">Users</Typography>
+        <Button variant="outlined" onClick={() => setFiltersOpen(true)}>
+          Advanced filters
+        </Button>
+      </Box>
       <BasicTable<IUserCompact>
         selectable
         hasSearchInput
@@ -80,6 +97,19 @@ const Users = () => {
         title={`View User`}
       >
         <UserDetails userId={activeRow} />
+      </RightDrawer>
+      <RightDrawer
+        width={RIGHT_SIDEBAR_WIDTH_EXTENDED}
+        open={isFiltersOpen}
+        setOpen={setFiltersOpen}
+        onClose={() => setFiltersOpen(false)}
+        title={`Advanced filters`}
+      >
+        <Filters
+          fieldsConfig={{ fields, append, remove }}
+          onChange={refetchUsers}
+          methods={methods}
+        />
       </RightDrawer>
     </Box>
   );

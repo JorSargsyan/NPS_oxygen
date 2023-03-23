@@ -37,3 +37,10 @@ export interface IState {
   customers: ICustomersState;
   feedbacks: IFeedbacksState;
 }
+
+export interface IFilterOption {
+  additionalInfo: string;
+  id: number;
+  label: string;
+  value: string;
+}

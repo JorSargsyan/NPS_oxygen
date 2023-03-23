@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
-import { IPaginated, IState, IGridRequest } from "store/interfaces/main";
+import {
+  IPaginated,
+  IState,
+  IGridRequest,
+  IFilterOption,
+} from "store/interfaces/main";
 import { api } from "store/services/apiService";
 import {
   IUser,
@@ -37,6 +42,13 @@ export const GetUserGroups = createAsyncThunk<IUserGroup[]>(
   `${name}/GetUserGroups`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Groups`)).data;
+  }
+);
+
+export const GetFilterValues = createAsyncThunk<IFilterOption[], string>(
+  `${name}/GetFilterValues`,
+  async (params: string) => {
+    return (await api.post(`${EBaseUrl.API}/User/Filter?${params}`, {})).data;
   }
 );
 

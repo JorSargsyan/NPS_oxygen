@@ -271,6 +271,7 @@ const BasicTable = <T extends { id: number }>({
             handleToggleFilter={() => setFiltersVisible((state) => !state)}
             rowsSelected={selectedList.length}
             filterOptions={filterOptions}
+            hasFilters={!!Filter}
             fetchData={onChange}
             hasSearchInput={hasSearchInput}
           />

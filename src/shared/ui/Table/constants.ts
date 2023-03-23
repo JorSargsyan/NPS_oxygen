@@ -23,6 +23,7 @@ export interface IEnhancedToolbar {
   rowsSelected: number;
   filterOptions: IFilterOptions;
   fetchData: () => void;
+  hasFilters: boolean;
   hasSearchInput: boolean;
   handleToggleFilter: () => void;
 }

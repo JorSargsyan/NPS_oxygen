@@ -26,3 +26,14 @@ export {
   RIGHT_SIDEBAR_WIDTH,
   RIGHT_SIDEBAR_WIDTH_EXTENDED,
 };
+
+export const ConditionList = [
+  {
+    name: "Is",
+    value: "2",
+  },
+  {
+    name: "Is not",
+    value: "3",
+  },
+];

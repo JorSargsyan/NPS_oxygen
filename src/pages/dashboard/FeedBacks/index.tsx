@@ -102,12 +102,11 @@ const Feedbacks = () => {
   };
 
   const handleChangeSelected = (ids: number[]) => {
-    console.log(ids);
+    // console.log(ids);
   };
 
   const handleViewFeedback = (id: number) => {
     navigate(`${id}`);
-    console.log(id);
   };
 
   const getActions = (row: IFeedback) => {

@@ -38,3 +38,30 @@ export const userColumns: IColumn[] = [
     },
   },
 ];
+
+export const userFilterTypes = [
+  {
+    name: "Role",
+    value: "1",
+  },
+  {
+    name: "Position",
+    value: "2",
+  },
+  {
+    name: "Department",
+    value: "3",
+  },
+  {
+    name: "Status",
+    value: "4",
+  },
+];
+
+export const defaultFilterRowValue = {
+  type: "",
+  label: "",
+  key: "",
+  queryCondition: "",
+  value: "",
+};
