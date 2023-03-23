@@ -27,7 +27,7 @@ const SearchInput = ({ filterOptions, fetchData }: Props) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item xs={4} pb={1} pt={1}>
         <TextField
           label=""
           fullWidth

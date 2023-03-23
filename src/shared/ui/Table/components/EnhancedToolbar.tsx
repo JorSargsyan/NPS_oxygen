@@ -18,7 +18,7 @@ const EnhancedToolbar = ({
   return (
     <Toolbar
       sx={{
-        pl: { sm: 4 },
+        pl: { sm: 1.3 },
         pr: { xs: 1, sm: 2 },
         ...(rowsSelected > 0 && {
           bgcolor: (theme) =>
@@ -48,7 +48,7 @@ const EnhancedToolbar = ({
       {rowsSelected > 0 ? (
         <Button
           variant="contained"
-          onClick={onExport}
+          onClick={() => onExport?.()}
           startIcon={<ExportIcon height={24} width={24} />}
         >
           <Typography>Export</Typography>

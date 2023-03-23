@@ -21,6 +21,7 @@ import DotsMenu from "../DotsMenu";
 import EnhancedToolbar from "./components/EnhancedToolbar";
 import TablePaginationActions from "./components/TablePAginationActions";
 import { IAction, IColumn, ITableProps, rowsPerPageOptions } from "./constants";
+import NoRows from "./components/NoRows";
 
 const BasicTable = <T extends { id: number }>({
   columns,
@@ -129,6 +130,12 @@ const BasicTable = <T extends { id: number }>({
     },
     [filterOptions, filters, onChange]
   );
+
+  const noResults = useMemo(() => {
+    return !(enablePagination
+      ? paginatedData?.displayData.length
+      : data.length);
+  }, [data?.length, enablePagination, paginatedData?.displayData?.length]);
 
   const generateColumns = useMemo(() => {
     return (
@@ -272,7 +279,7 @@ const BasicTable = <T extends { id: number }>({
             handleToggleFilter={() => setFiltersVisible((state) => !state)}
             rowsSelected={selectedList.length}
             filterOptions={filterOptions}
-            onExport={() => onExport(selectedList)}
+            onExport={() => onExport?.(selectedList)}
             hasFilters={!!Filter}
             fetchData={onChange}
             hasSearchInput={hasSearchInput}
@@ -285,16 +292,24 @@ const BasicTable = <T extends { id: number }>({
           </Box>
         )}
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>{generateColumns}</TableRow>
-          </TableHead>
+          {!noResults && (
+            <TableHead>
+              <TableRow>{generateColumns}</TableRow>
+            </TableHead>
+          )}
           <TableBody sx={tableLoading ? { filter: "blur(3px)" } : {}}>
-            {enablePagination ? generateRowsPaginated() : generateSimpleRows()}
+            <Fragment>
+              {enablePagination
+                ? generateRowsPaginated()
+                : generateSimpleRows()}
+            </Fragment>
           </TableBody>
+
           <TableFooter>
             <TableRow>{getPagination()}</TableRow>
           </TableFooter>
         </Table>
+        <Fragment>{noResults && <NoRows />}</Fragment>
       </TableContainer>
     </Box>
   );
