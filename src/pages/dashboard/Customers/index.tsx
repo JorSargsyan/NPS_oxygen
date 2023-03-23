@@ -17,6 +17,7 @@ import { ICustomer } from "store/interfaces/customers";
 import { ERequestStatus } from "store/enums/index.enum";
 import Filters from "./components/Filters";
 import { EBaseUrl } from "store/config/constants";
+import { setTableLoading } from "store/slicers/common";
 
 const Customers = () => {
   const dispatch = useAsyncDispatch();
@@ -73,12 +74,14 @@ const Customers = () => {
     defaultValues: { config: defaultFilterValues },
   });
 
-  const refetchCustomers = () => {
+  const refetchCustomers = async () => {
+    await dispatch(setTableLoading(true));
     const data = {
       ...methods.watch("config"),
       filters: methods.watch("config.filters").filter((i) => i),
     };
-    dispatch(GetCustomers(data));
+    await dispatch(GetCustomers(data));
+    await dispatch(setTableLoading(false));
   };
 
   const handleExport = async (selected: number[]) => {
