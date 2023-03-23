@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTranslations from "./components/AddEditTranslations";
+import Filters from "./components/Filters";
 
 const Translations = () => {
   const [activeRow, setActiveRow] = useState<ITranslation>();
@@ -109,6 +110,9 @@ const Translations = () => {
       <BasicTable<ITranslation>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={columns}
+        Filter={() => (
+          <Filters onChange={refetchTranslations} methods={methods} />
+        )}
         paginatedData={translations}
         onChange={refetchTranslations}
         getActions={getActions}

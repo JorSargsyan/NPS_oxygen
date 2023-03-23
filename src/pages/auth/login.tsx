@@ -97,9 +97,7 @@ const Login = () => {
                 </Button>
 
                 <Alert severity="info" sx={{ mt: 3 }}>
-                  <div>
-                    You can use <b>demo@nps.io</b> and password <b>123456</b>
-                  </div>
+                  <div>powered by Oxygen LLC</div>
                 </Alert>
               </FormProvider>
             </form>

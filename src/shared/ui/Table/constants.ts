@@ -24,6 +24,7 @@ export interface IEnhancedToolbar {
   filterOptions: IFilterOptions;
   fetchData: () => void;
   hasSearchInput: boolean;
+  handleToggleFilter: () => void;
 }
 
 export interface IAction<T> {
@@ -37,6 +38,7 @@ export interface ITableProps<T> {
   data?: T[];
   sortable?: boolean;
   paginatedData?: IPaginated<T>;
+  Filter?: () => JSX.Element;
   onChange?: () => void;
   onChangeSelected?: (list: number[]) => void;
   selectable?: boolean;

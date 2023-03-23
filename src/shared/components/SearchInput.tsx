@@ -1,4 +1,10 @@
-import { debounce, InputAdornment, SvgIcon, TextField } from "@mui/material";
+import {
+  debounce,
+  Grid,
+  InputAdornment,
+  SvgIcon,
+  TextField,
+} from "@mui/material";
 import { IFilterOptions } from "shared/ui/Table/constants";
 import SearchIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import { Box } from "@mui/system";
@@ -21,28 +27,34 @@ const SearchInput = ({ filterOptions, fetchData }: Props) => {
   };
 
   return (
-    <Box width="50%">
-      <TextField
-        label=""
-        fullWidth
-        size="medium"
-        placeholder="Search"
-        variant="outlined"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment
-              position={"start"}
-              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            >
-              <SvgIcon>
-                <SearchIcon />
-              </SvgIcon>
-            </InputAdornment>
-          ),
-        }}
-        onChange={debounce(handleSearch, 600)}
-      />
-    </Box>
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
+        <TextField
+          label=""
+          fullWidth
+          size="medium"
+          placeholder="Search"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment
+                position={"start"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <SvgIcon>
+                  <SearchIcon />
+                </SvgIcon>
+              </InputAdornment>
+            ),
+          }}
+          onChange={debounce(handleSearch, 600)}
+        />
+      </Grid>
+    </Grid>
   );
 };
 

@@ -7,6 +7,7 @@ import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 
 const EnhancedToolbar = ({
   rowsSelected,
+  handleToggleFilter,
   filterOptions,
   fetchData,
   hasSearchInput,
@@ -47,7 +48,7 @@ const EnhancedToolbar = ({
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <FilterListIcon height={24} width={24} />
+          <FilterListIcon onClick={handleToggleFilter} height={24} width={24} />
         </Tooltip>
       )}
     </Toolbar>

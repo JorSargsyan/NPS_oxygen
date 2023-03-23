@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  Divider,
   Paper,
   Table,
   TableBody,
@@ -28,6 +29,7 @@ const BasicTable = <T extends { id: number }>({
   sortable = true,
   onChangeSelected,
   paginatedData,
+  Filter,
   toolbar = true,
   onChange,
   getActions,
@@ -36,6 +38,7 @@ const BasicTable = <T extends { id: number }>({
   hasSearchInput = false,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("filters");
+  const [filtersVisible, setFiltersVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
   const tableLoading = useSelector(selectTableLoadingState);
 
@@ -262,13 +265,18 @@ const BasicTable = <T extends { id: number }>({
     <Box pt={4}>
       <TableContainer component={Paper}>
         {toolbar && (
-          <Box pb={2}>
-            <EnhancedToolbar
-              rowsSelected={selectedList.length}
-              filterOptions={filterOptions}
-              fetchData={onChange}
-              hasSearchInput={hasSearchInput}
-            />
+          <EnhancedToolbar
+            handleToggleFilter={() => setFiltersVisible((state) => !state)}
+            rowsSelected={selectedList.length}
+            filterOptions={filterOptions}
+            fetchData={onChange}
+            hasSearchInput={hasSearchInput}
+          />
+        )}
+        {Filter && filtersVisible && (
+          <Box>
+            <Divider />
+            <Filter />
           </Box>
         )}
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
