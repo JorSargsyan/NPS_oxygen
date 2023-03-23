@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import { IColumn } from "shared/ui/Table/constants";
-import { IUserCompact } from "store/interfaces/users";
+import { IDefaultFilterOptionForm, IUserCompact } from "store/interfaces/users";
 
 export const userColumns: IColumn[] = [
   {
@@ -41,27 +41,39 @@ export const userColumns: IColumn[] = [
 
 export const userFilterTypes = [
   {
-    name: "Role",
+    label: "Role",
     value: "1",
+    type: 1,
   },
   {
-    name: "Position",
+    label: "Position",
     value: "2",
+    type: 1,
   },
   {
-    name: "Department",
+    label: "Department",
     value: "3",
+    type: 1,
   },
   {
-    name: "Status",
+    label: "Status",
     value: "4",
+    type: 3,
   },
 ];
 
-export const defaultFilterRowValue = {
-  type: "",
-  label: "",
-  key: "",
+export const defaultFilterRowValue: IDefaultFilterOptionForm = {
+  type: null,
   queryCondition: "",
-  value: "",
+  value: null,
 };
+
+export const StatusList = [
+  {
+    id: 1,
+    label: "Active",
+    value: "Active",
+    type: null,
+    additionalInfo: null,
+  },
+];

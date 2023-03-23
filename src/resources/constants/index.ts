@@ -37,3 +37,14 @@ export const ConditionList = [
     value: "3",
   },
 ];
+
+export const FilterConditionMatchList = [
+  {
+    name: "All",
+    value: 1,
+  },
+  {
+    name: "Any",
+    value: 2,
+  },
+];

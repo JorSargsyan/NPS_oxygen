@@ -36,7 +36,25 @@ const Users = () => {
   });
 
   const refetchUsers = () => {
-    dispatch(GetUsers(methods.watch("config")));
+    const filters = methods.watch("config.filters").map((filter, index) => {
+      return {
+        ...filter,
+        rowId: index + 1,
+        hidden: null,
+        label: filter.value.label,
+        value: filter.value.value,
+        type: filter.type.type,
+        key: filter.type.label,
+      };
+    });
+
+    dispatch(
+      GetUsers({
+        ...methods.watch("config"),
+        filters,
+      })
+    );
+    setFiltersOpen(false);
   };
 
   const handleChangeSelected = (ids: number[]) => {

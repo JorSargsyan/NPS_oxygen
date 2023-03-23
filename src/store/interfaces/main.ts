@@ -39,8 +39,9 @@ export interface IState {
 }
 
 export interface IFilterOption {
-  additionalInfo: string;
+  additionalInfo: string | null;
   id: number;
   label: string;
-  value: string;
+  value: IFilterOption | string | null;
+  type: IFilterOption | string | null;
 }
