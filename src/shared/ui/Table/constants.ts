@@ -20,6 +20,7 @@ export interface IFilterOptions {
 }
 
 export interface IEnhancedToolbar {
+  onExport?: () => void;
   rowsSelected: number;
   filterOptions: IFilterOptions;
   fetchData: () => void;
@@ -41,6 +42,7 @@ export interface ITableProps<T> {
   paginatedData?: IPaginated<T>;
   Filter?: () => JSX.Element;
   onChange?: () => void;
+  onExport?: (arr: number[]) => void;
   onChangeSelected?: (list: number[]) => void;
   selectable?: boolean;
   getActions?: (row: T) => IAction<T>[];

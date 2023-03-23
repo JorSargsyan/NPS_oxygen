@@ -9,12 +9,14 @@ import { useForm } from "react-hook-form";
 import { defaultFilterValues } from "resources/constants";
 import {
   ChangeCustomerStatus,
+  ExportCustomers,
   GetCustomers,
   selectCustomers,
 } from "store/slicers/customers";
 import { ICustomer } from "store/interfaces/customers";
 import { ERequestStatus } from "store/enums/index.enum";
 import Filters from "./components/Filters";
+import { EBaseUrl } from "store/config/constants";
 
 const Customers = () => {
   const dispatch = useAsyncDispatch();
@@ -79,6 +81,19 @@ const Customers = () => {
     dispatch(GetCustomers(data));
   };
 
+  const handleExport = async (selected: number[]) => {
+    const { meta, payload } = await dispatch(
+      ExportCustomers({ customerIDs: selected })
+    );
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    const fileUrl = EBaseUrl.BaseURL + payload;
+
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
+  };
+
   const handleChangeSelected = (ids: number[]) => {
     console.log(ids);
   };
@@ -93,6 +108,7 @@ const Customers = () => {
       <BasicTable<ICustomer>
         selectable
         hasSearchInput
+        onExport={handleExport}
         Filter={() => <Filters onChange={refetchCustomers} methods={methods} />}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={[...customerColumns, statusColumn]}

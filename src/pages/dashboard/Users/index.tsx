@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { IUserCompact } from "store/interfaces/users";
-import { GetUsers, selectUsers } from "store/slicers/users";
+import { ExportUsers, GetUsers, selectUsers } from "store/slicers/users";
 import { defaultFilterRowValue, userColumns } from "./constants";
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
@@ -16,6 +16,8 @@ import RightDrawer from "shared/ui/Drawer";
 import UserDetails from "./components/UserDetails";
 import { useLocation } from "react-router-dom";
 import Filters from "./components/Filters";
+import { ERequestStatus } from "store/enums/index.enum";
+import { EBaseUrl } from "store/config/constants";
 
 const Users = () => {
   const location = useLocation();
@@ -64,10 +66,6 @@ const Users = () => {
     setFiltersOpen(false);
   };
 
-  const handleChangeSelected = (ids: number[]) => {
-    // console.log(ids);
-  };
-
   const handleView = (rowId: number) => {
     setActiveRow(rowId);
     setDrawerOpen(true);
@@ -86,6 +84,19 @@ const Users = () => {
     setActiveRow(location.state.id);
     setDrawerOpen(true);
   }, [location.state?.id]);
+
+  const handleExport = async (selected: number[]) => {
+    const { meta, payload } = await dispatch(
+      ExportUsers({ userIds: selected })
+    );
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    const fileUrl = EBaseUrl.BaseURL + payload;
+
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
+  };
 
   useEffect(() => {
     dispatch(GetUsers(defaultFilterValues));
@@ -108,12 +119,12 @@ const Users = () => {
       <BasicTable<IUserCompact>
         selectable
         hasSearchInput
+        onExport={handleExport}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         columns={userColumns}
         getActions={getActions}
         paginatedData={users}
         onChange={refetchUsers}
-        onChangeSelected={handleChangeSelected}
       />
       <RightDrawer
         open={isDrawerOpen}

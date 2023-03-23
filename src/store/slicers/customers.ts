@@ -5,7 +5,6 @@ import { api } from "store/services/apiService";
 import {
   ICustomer,
   ICustomersState,
-  ICustomerExport,
   IChangeCustomerStatus,
 } from "../interfaces/customers";
 
@@ -31,14 +30,12 @@ export const ChangeCustomerStatus = createAsyncThunk<
   ).data;
 });
 
-export const ExportCustomers = createAsyncThunk<ICustomerExport[], string>(
-  `${name}/ExportCustomers`,
-  async (params) => {
-    return (
-      await api.get(`${EBaseUrl.API}/admin/customers/export/data?${params}`)
-    ).data;
-  }
-);
+export const ExportCustomers = createAsyncThunk<
+  string,
+  { customerIDs: number[] }
+>(`${name}/ExportCustomers`, async (formData) => {
+  return (await api.post(`${EBaseUrl.API}/Customer/Export`, formData)).data;
+});
 
 export const CustomersExport = createAsyncThunk<ICustomer[], string>(
   `${name}/CustomersExport`,

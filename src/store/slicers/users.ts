@@ -45,6 +45,13 @@ export const GetUserGroups = createAsyncThunk<IUserGroup[]>(
   }
 );
 
+export const ExportUsers = createAsyncThunk<string, { userIds: number[] }>(
+  `${name}/ExportUsers`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/User/Export`, formData)).data;
+  }
+);
+
 export const GetFilterValues = createAsyncThunk<IFilterOption[], string>(
   `${name}/GetFilterValues`,
   async (params: string) => {

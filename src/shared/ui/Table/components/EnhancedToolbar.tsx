@@ -1,15 +1,16 @@
-import { Toolbar, Typography, Tooltip } from "@mui/material";
+import { Toolbar, Typography, Tooltip, Button } from "@mui/material";
 import { alpha, Box } from "@mui/system";
 import SearchInput from "shared/components/SearchInput";
 import { IEnhancedToolbar } from "../constants";
 import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
-import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
+import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
 import { Fragment } from "react";
 
 const EnhancedToolbar = ({
   rowsSelected,
   handleToggleFilter,
   filterOptions,
+  onExport,
   fetchData,
   hasFilters,
   hasSearchInput,
@@ -17,8 +18,8 @@ const EnhancedToolbar = ({
   return (
     <Toolbar
       sx={{
-        pl: { sm: 1 },
-        pr: { xs: 1, sm: 1 },
+        pl: { sm: 4 },
+        pr: { xs: 1, sm: 2 },
         ...(rowsSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -45,9 +46,13 @@ const EnhancedToolbar = ({
         </Box>
       )}
       {rowsSelected > 0 ? (
-        <Tooltip title="Delete">
-          <DeleteIcon height={24} width={24} />
-        </Tooltip>
+        <Button
+          variant="contained"
+          onClick={onExport}
+          startIcon={<ExportIcon height={24} width={24} />}
+        >
+          <Typography>Export</Typography>
+        </Button>
       ) : (
         <Fragment>
           {hasFilters && (

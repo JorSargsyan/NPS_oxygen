@@ -31,6 +31,7 @@ const BasicTable = <T extends { id: number }>({
   paginatedData,
   Filter,
   toolbar = true,
+  onExport,
   onChange,
   getActions,
   filterOptions,
@@ -243,7 +244,7 @@ const BasicTable = <T extends { id: number }>({
       </TableRow>
     ));
   };
-  
+
   const getPagination = (component: any = "td") => {
     return paginatedData?.displayData?.length && enablePagination ? (
       <TablePagination
@@ -271,6 +272,7 @@ const BasicTable = <T extends { id: number }>({
             handleToggleFilter={() => setFiltersVisible((state) => !state)}
             rowsSelected={selectedList.length}
             filterOptions={filterOptions}
+            onExport={() => onExport(selectedList)}
             hasFilters={!!Filter}
             fetchData={onChange}
             hasSearchInput={hasSearchInput}
