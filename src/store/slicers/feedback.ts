@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
 import {
   IAddNote,
+  ICauseAndMoodRes,
   ICauseCategory,
   IChangeCustomerMood,
   IChangeCustomerRootCause,
@@ -45,12 +46,12 @@ export const ChangeFeedbackStatus = createAsyncThunk<
   ).data;
 });
 
-export const GetFeedbackCauseAndMood = createAsyncThunk<unknown, number>(
-  `${name}/GetFeedbackCauseAndMood`,
-  async (id: number) => {
-    return (await api.get(`${EBaseUrl.API}/Feedback/CauseAndMood/${id}`)).data;
-  }
-);
+export const GetFeedbackCauseAndMood = createAsyncThunk<
+  ICauseAndMoodRes,
+  number
+>(`${name}/GetFeedbackCauseAndMood`, async (id: number) => {
+  return (await api.get(`${EBaseUrl.API}/Feedback/CauseAndMood/${id}`)).data;
+});
 
 export const GetFeedbackCauseAndMoodCategoriesList = createAsyncThunk<
   ICauseCategory[]

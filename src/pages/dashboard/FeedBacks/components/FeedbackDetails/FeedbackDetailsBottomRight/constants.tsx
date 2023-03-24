@@ -37,3 +37,14 @@ export const deleteNoteDialogOptions = {
   title: "Warning",
   description: "Are you sure you want to delete this note?",
 };
+
+export enum EFeedbackLogTypes {
+  Assign = 1,
+  Unassign,
+  Status,
+  Cause,
+  Root,
+  Mood,
+  Note,
+  Cancel,
+}

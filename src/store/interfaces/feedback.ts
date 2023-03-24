@@ -180,3 +180,9 @@ export interface IUpdateNote {
     note: string;
   };
 }
+
+export interface ICauseAndMoodRes {
+  customerMood: number;
+  id: number;
+  rootCauseIDs: number[];
+}

@@ -5,7 +5,7 @@ import {
   IFeedbackStatusList,
 } from "pages/dashboard/FeedBacks/constants";
 import { changeFeedbackStatus } from "pages/dashboard/FeedBacks/helpers";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
