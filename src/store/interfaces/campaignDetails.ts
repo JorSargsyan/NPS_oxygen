@@ -20,7 +20,7 @@ export interface ICampaignDetailed {
   quarantinePeriod: number;
   shareLink: string;
   surveyMetric: number;
-  surveyQuarantine: true;
+  surveyQuarantine: boolean;
   touchpoint: string;
   triggerIDs: number[];
   type: number;

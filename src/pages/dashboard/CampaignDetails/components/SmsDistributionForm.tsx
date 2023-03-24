@@ -12,7 +12,7 @@ import {
   selectTriggers,
 } from "store/slicers/campaignDetail";
 import RightDrawer from "shared/ui/Drawer";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import TestSMSForm from "./TestSMSForm";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import { requiredRules } from "shared/helpers/validators";
@@ -65,6 +65,23 @@ const SmsDistributionForm = () => {
 
     toast.success("Campaign schedule is set.");
   };
+
+  useEffect(() => {
+    if (campaignInfo) {
+      methods.reset({
+        ignoreQuarantine: campaignInfo.ignoreQuarantine,
+        message: campaignInfo.message,
+        numberOfTransaction: campaignInfo.numberOfTransaction.toString(),
+        postpone: campaignInfo.postpone,
+        postponeTime: campaignInfo.postponeTime.toString(),
+        quarantinePeriod: campaignInfo.quarantinePeriod.toString(),
+        surveyQuarantine: campaignInfo.surveyQuarantine,
+        triggerIDs: triggers.filter((i) =>
+          campaignInfo.triggerIDs.includes(i.id)
+        ),
+      });
+    }
+  }, [campaignInfo, methods, triggers]);
 
   return (
     <Fragment>
@@ -130,7 +147,9 @@ const SmsDistributionForm = () => {
                 <Controller
                   name="postpone"
                   control={methods.control}
-                  render={({ field }) => <Switch {...field} />}
+                  render={({ field }) => (
+                    <Switch {...field} checked={field.value} />
+                  )}
                 />
               </Box>
             </Box>
@@ -212,7 +231,9 @@ const SmsDistributionForm = () => {
                 <Controller
                   name="surveyQuarantine"
                   control={methods.control}
-                  render={({ field }) => <Switch {...field} />}
+                  render={({ field }) => (
+                    <Switch {...field} checked={field.value} />
+                  )}
                 />
               </Box>
             </Box>
@@ -279,7 +300,9 @@ const SmsDistributionForm = () => {
                 <Controller
                   name="ignoreQuarantine"
                   control={methods.control}
-                  render={({ field }) => <Switch {...field} />}
+                  render={({ field }) => (
+                    <Switch {...field} checked={field.value} />
+                  )}
                 />
               </Box>
             </Box>
