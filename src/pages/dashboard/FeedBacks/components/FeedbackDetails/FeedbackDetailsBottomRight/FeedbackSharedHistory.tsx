@@ -1,6 +1,6 @@
 import { Avatar, Card, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { Fragment, ReactNode } from "react";
+import { Fragment } from "react";
 import { EBaseUrl } from "store/config/constants";
 import { IFeedbackUser } from "store/interfaces/feedback";
 import { CardContentNoPadding } from "./TabNotesComponent";
@@ -42,11 +42,7 @@ const FeedBackSharedHistoryComponent = <
                               height: 40,
                               width: 40,
                             }}
-                            src={
-                              EBaseUrl.MediaUserURL
-                                ? `${EBaseUrl.MediaUserURL}/${item?.user?.imagePath}`
-                                : "/assets/avatars/avatar-anika-visser.png"
-                            }
+                            src={`${EBaseUrl.MediaUserURL}/${item?.user?.imagePath}`}
                           />
                         ) : (
                           <Avatar
@@ -72,9 +68,9 @@ const FeedBackSharedHistoryComponent = <
                     <Box></Box>
                   </Box>
                   <Divider />
-                  <Typography fontSize={14}>
+                  <Box fontSize={14} pt={1}>
                     {children ? children(item) : item?.note}
-                  </Typography>
+                  </Box>
                 </CardContentNoPadding>
               </Card>
             );

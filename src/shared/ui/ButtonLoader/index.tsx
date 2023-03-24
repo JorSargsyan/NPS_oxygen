@@ -49,8 +49,4 @@ const ButtonLoader = ({
   );
 };
 
-ButtonLoader.defaultProps = {
-  color: "primary",
-  variant: "contained",
-};
 export default memo(ButtonLoader);

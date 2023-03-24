@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { format } from "date-fns";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -43,6 +43,7 @@ import {
   selectFeedbackNotes,
   UpdateFeedbackNote,
 } from "store/slicers/feedback";
+import { selectUserInfo } from "store/slicers/users";
 import { deleteNoteDialogOptions } from "./constants";
 import NoteHistory from "./FeedbackSharedHistory";
 
@@ -75,6 +76,7 @@ const TabNotesComponent = () => {
   const isButtonLoading = useSelector(selectLoadingState);
   const notesList = useSelector(selectFeedbackNotes);
   const historyList = useSelector(selectFeedbackNoteHistory);
+  const userInfo = useSelector(selectUserInfo);
 
   const watchNotesList = useWatch({
     name: "notesList",
@@ -177,13 +179,24 @@ const TabNotesComponent = () => {
     setDrawerOpen(true);
   };
 
-  useEffect(() => {
+  const isSameNoteCreator = useCallback(
+    (id) => {
+      return id === userInfo?.id;
+    },
+    [userInfo?.id]
+  );
+
+  const initialFetch = useCallback(() => {
     if (notesList?.length) {
       methods.reset({
         notesList,
       });
     }
-  }, [notesList]);
+  }, [notesList, methods]);
+
+  useEffect(() => {
+    initialFetch();
+  }, [initialFetch]);
 
   return (
     <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
@@ -238,11 +251,7 @@ const TabNotesComponent = () => {
                                   height: 40,
                                   width: 40,
                                 }}
-                                src={
-                                  EBaseUrl.MediaUserURL
-                                    ? `${EBaseUrl.MediaUserURL}/${note?.user?.imagePath}`
-                                    : "/assets/avatars/avatar-anika-visser.png"
-                                }
+                                src={`${EBaseUrl.MediaUserURL}/${note?.user?.imagePath}`}
                               />
                             ) : (
                               <Avatar
@@ -279,7 +288,8 @@ const TabNotesComponent = () => {
                         </Box>
                         <Box>
                           <CardActions>
-                            {!note.isDeleted && (
+                            {(!note.isDeleted ||
+                              isSameNoteCreator(note.user.id)) && (
                               <Button
                                 onClick={(e) => editNote(note)}
                                 startIcon={<Edit height={15} width={15} />}
@@ -294,7 +304,8 @@ const TabNotesComponent = () => {
                                 }}
                               />
                             )}
-                            {!note.isDeleted && (
+                            {(!note.isDeleted ||
+                              isSameNoteCreator(note.user.id)) && (
                               <Button
                                 onClick={(e) => deleteNote(note)}
                                 startIcon={<Trash height={15} width={15} />}

@@ -1,29 +1,21 @@
-import {
-  Box,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import BasicAutocomplete from "shared/ui/Autocomplete";
 import ButtonLoader from "shared/ui/ButtonLoader";
-import { EFeedbackStatusesModalTypes, EMood } from "store/enums/feedbacks.enum";
+import { EFeedbackStatusesModalTypes } from "store/enums/feedbacks.enum";
 import { ERequestStatus } from "store/enums/index.enum";
 import { ICauseCategory } from "store/interfaces/feedback";
 import { selectLoadingState, setLoading } from "store/slicers/common";
 import {
   ChangeFeedbackStatus,
-  selectCauseCategories,
   UpdateCustomerMood,
   UpdateCustomerRootCause,
 } from "store/slicers/feedback";
-import { IActiveRow } from "..";
+import { IActiveRow } from "../..";
+import CustomerMoodRadioGroup from "./CustomerMoodRadioGroup";
+import RootCauseCategoriesAutocomplete from "./RootCauseCategoriesAutocomplete";
 
 type Props = { editData: IActiveRow; onSuccess: () => void };
 type FormData = {
@@ -33,7 +25,6 @@ type FormData = {
 
 const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
   const isLoading = useSelector(selectLoadingState);
-  const causeCategoriesList = useSelector(selectCauseCategories);
   const methods = useForm<FormData>();
   const dispatch = useAsyncDispatch();
 
@@ -99,47 +90,12 @@ const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
     <FormProvider {...methods}>
       {requiresOnlyCause && (
         <Grid item xs={12}>
-          <BasicAutocomplete<any>
-            name="causeCategories"
-            options={causeCategoriesList}
-            inputLabel={"Cause categories"}
-            multiple
-            defaultValue={[]}
-            prefix="permissions"
-            optionLabel="rootCauseName"
-            groupBy={(option) => option.causeCategoryName}
-          />
+          <RootCauseCategoriesAutocomplete />
         </Grid>
       )}
       {requiresBoth && (
         <Grid item xs={12} sx={requiresOnlyCause && { paddingTop: 4 }}>
-          <FormLabel>Customer Mood</FormLabel>
-          <Controller
-            control={methods.control}
-            name="mood"
-            defaultValue={EMood.Good}
-            render={({ field }) => {
-              return (
-                <RadioGroup {...field} row>
-                  <FormControlLabel
-                    value={EMood.Good}
-                    control={<Radio />}
-                    label="Good"
-                  />
-                  <FormControlLabel
-                    value={EMood.Neutral}
-                    control={<Radio />}
-                    label="Neutral"
-                  />
-                  <FormControlLabel
-                    value={EMood.Bad}
-                    control={<Radio />}
-                    label="Bad"
-                  />
-                </RadioGroup>
-              );
-            }}
-          />
+          <CustomerMoodRadioGroup />
         </Grid>
       )}
       <Box pt={4}>

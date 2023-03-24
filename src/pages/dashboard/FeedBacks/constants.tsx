@@ -1,5 +1,9 @@
 import { Box } from "@mui/system";
-import { EFeedbackStatus, EScoreTypes } from "store/enums/feedbacks.enum";
+import {
+  EFeedbackStatus,
+  EMood,
+  EScoreTypes,
+} from "store/enums/feedbacks.enum";
 import { IFeedback, IScore } from "store/interfaces/feedback";
 
 export const scoreColors = {
@@ -126,3 +130,20 @@ export enum ESurveyType {
   Custom,
   EndPage,
 }
+
+export const feedbackStatusValues = {
+  [EFeedbackStatus.New]: "New",
+  [EFeedbackStatus.Follow_Up]: "Follow up",
+  [EFeedbackStatus.Postponed]: "Postponed",
+  [EFeedbackStatus.No_response]: "No response",
+  [EFeedbackStatus.Resolved]: "Resolved",
+  [EFeedbackStatus.Not_Resolved]: "Not resolved",
+  [EFeedbackStatus.Misrated]: "Misrated",
+  [EFeedbackStatus.Archived]: "Archived",
+};
+
+export const customerMoodValues = {
+  [EMood.Good]: "Good",
+  [EFeedbackStatus.Follow_Up]: "Indifferent",
+  [EFeedbackStatus.Postponed]: "Bad",
+};
