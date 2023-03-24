@@ -8,6 +8,7 @@ import translations from "./translations";
 import customers from "./customers";
 import feedbacks from "./feedback";
 import campaigns from "./campaigns";
+import campaignDetails from "./campaignDetail";
 
 const reducers = {
   errors,
@@ -15,6 +16,7 @@ const reducers = {
   auth,
   campaigns,
   users,
+  campaignDetails,
   roles,
   translations,
   customers,

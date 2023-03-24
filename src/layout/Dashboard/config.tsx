@@ -37,7 +37,7 @@ export const items = [
   },
   {
     title: "Campaigns",
-    path: "campaings",
+    path: "campaigns",
     element: <Campaigns />,
     icon: (
       <SvgIcon fontSize="small">

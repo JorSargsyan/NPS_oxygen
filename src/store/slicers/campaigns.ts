@@ -30,12 +30,33 @@ export const CreateCampaign = createAsyncThunk<unknown, ICreateCampaignRequest>(
   }
 );
 
+export const ChangeCampaignState = createAsyncThunk<
+  unknown,
+  { state: boolean; id: number }
+>(`${name}/ChangeCampaignState`, async (formData) => {
+  return (
+    await api.put(`${EBaseUrl.API}/Campaign/Status/${formData.id}`, {
+      state: formData.state,
+    })
+  ).data;
+});
+
 export const GetCampaignLogs = createAsyncThunk<ICampaignLog[], number>(
   `${name}/GetCampaignLogs`,
   async (id) => {
     return (await api.get(`${EBaseUrl.API}/Campaign/Logs/${id}`)).data;
   }
 );
+
+export const TestCustomersCampaign = createAsyncThunk<
+  unknown,
+  {
+    campaignID: number;
+    phoneNumbers: string[];
+  }
+>(`${name}/TestCustomersCampaign`, async (formData) => {
+  return (await api.post(`${EBaseUrl.API}/TestCustomers`, formData)).data;
+});
 
 export const DeleteCampaign = createAsyncThunk<unknown, number>(
   `${name}/DeleteCampaign`,

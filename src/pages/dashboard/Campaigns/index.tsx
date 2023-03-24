@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { columns, deleteCampaignWarningConfig } from "./constants";
 import { Box } from "@mui/system";
-import { Button, SvgIcon, Typography } from "@mui/material";
+import { Button, SvgIcon, Switch, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import {
   RIGHT_SIDEBAR_WIDTH,
@@ -14,6 +14,7 @@ import {
 import RightDrawer from "shared/ui/Drawer";
 import { ICampaign } from "store/interfaces/campaigns";
 import {
+  ChangeCampaignState,
   DeleteCampaign,
   GetCampaignLogs,
   GetCampaigns,
@@ -27,6 +28,7 @@ import { setLoading } from "store/slicers/common";
 import toast from "react-hot-toast";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddCampaign from "./components/AddCampaign";
+import { useNavigate } from "react-router-dom";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
@@ -36,6 +38,7 @@ export enum ECampaignAction {
 
 const CampaignsPage = () => {
   const dispatch = useAsyncDispatch();
+  const navigate = useNavigate();
   const campaigns = useSelector(selectCampaigns);
   const [activeRow, setActiveRow] = useState(0);
   const [warningOpen, setWarningOpen] = useState(false);
@@ -47,9 +50,9 @@ const CampaignsPage = () => {
     defaultValues: { config: defaultFilterValues },
   });
 
-  const refetchData = () => {
+  const refetchData = useCallback(() => {
     dispatch(GetCampaigns(methods.watch("config")));
-  };
+  }, [dispatch, methods]);
 
   const handleChangeSelected = (ids: number[]) => {
     // console.log(ids);
@@ -100,8 +103,16 @@ const CampaignsPage = () => {
     toast.success("Campaign is deleted");
   };
 
+  const handleCampaignDetails = (id: number) => {
+    navigate(`/campaign/${id}`);
+  };
+
   const getActions = (rowData: ICampaign) => {
     return [
+      {
+        label: "Customize",
+        onClick: () => handleCampaignDetails(rowData.id),
+      },
       {
         label: "View History",
         onClick: () => handleViewHistory(rowData.id),
@@ -134,6 +145,32 @@ const CampaignsPage = () => {
     }
   };
 
+  const handleChangeState = useCallback(
+    async (id: number, state: boolean) => {
+      console.log(id, state);
+      await dispatch(ChangeCampaignState({ id, state }));
+      refetchData();
+    },
+    [dispatch, refetchData]
+  );
+
+  const campaignColumns = useMemo(() => {
+    return [
+      ...columns,
+      {
+        label: "State",
+        layout: (rowData: ICampaign) => {
+          return (
+            <Switch
+              onChange={(e, checked) => handleChangeState(rowData.id, checked)}
+              checked={rowData.isActive}
+            />
+          );
+        },
+      },
+    ];
+  }, [handleChangeState]);
+
   useEffect(() => {
     dispatch(GetCampaigns(defaultFilterValues));
   }, [dispatch]);
@@ -157,7 +194,7 @@ const CampaignsPage = () => {
 
       <BasicTable<ICampaign>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
-        columns={columns}
+        columns={campaignColumns}
         toolbar={false}
         getActions={getActions}
         paginatedData={campaigns}
