@@ -90,6 +90,7 @@ const AccountPage = () => {
                     <input
                       type="file"
                       ref={fileInputRef}
+                      accept="image/png, image/jpeg"
                       onChange={handleFileUpload}
                       hidden
                     />

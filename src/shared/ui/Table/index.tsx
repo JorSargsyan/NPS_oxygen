@@ -71,7 +71,7 @@ const BasicTable = <T extends { id: number }>({
     const value = e.target.value;
     filterOptions?.reset({
       ...filterOptions.watch(),
-      filters: {
+      config: {
         ...filters,
         length: value,
       },
@@ -108,7 +108,7 @@ const BasicTable = <T extends { id: number }>({
   const handlePageChange = (_: any, pageNumber: number) => {
     filterOptions?.reset({
       ...filterOptions.watch(),
-      filters: {
+      config: {
         ...filters,
         start: pageNumber * filters?.length,
       },
