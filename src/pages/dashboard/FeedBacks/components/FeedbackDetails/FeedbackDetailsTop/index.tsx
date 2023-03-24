@@ -117,85 +117,83 @@ const FeedbackDetailsTop = () => {
             }}
             mt={4}
           >
-            <Box>
-              {feedbackItemDetails?.customerName ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Customer
-                  </Typography>
-                  <Typography mb={2}>
-                    {feedbackItemDetails.customerName}
-                  </Typography>
-                </Fragment>
-              ) : null}
-              {feedbackItemDetails?.customerPhone ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Phone number
-                  </Typography>
-                  <Typography mb={2}>
-                    {feedbackItemDetails.customerPhone}
-                  </Typography>
-                </Fragment>
-              ) : null}
-              {feedbackItemDetails?.customerEmail ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Email Address
-                  </Typography>
-                  <Typography mb={2}>
-                    {feedbackItemDetails.customerEmail}
-                  </Typography>
-                </Fragment>
-              ) : null}
-            </Box>
-            <Box>
-              {feedbackItemDetails?.id ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Feedback ID
-                  </Typography>
-                  <Typography mb={2}>{feedbackItemDetails.id}</Typography>
-                </Fragment>
-              ) : null}
-              {feedbackItemDetails?.customerEmail ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Campaign
-                  </Typography>
-                  <Typography mb={2}>
-                    {feedbackItemDetails.campaignName}
-                  </Typography>
-                </Fragment>
-              ) : null}
-              {feedbackItemDetails?.customerEmail ? (
-                <Fragment>
-                  <Typography fontSize={14} fontWeight="bold" mb={1}>
-                    Submitted
-                  </Typography>
-                  <Typography mb={2}>
-                    {feedbackItemDetails.submittedDate}
-                  </Typography>
-                </Fragment>
-              ) : null}
-            </Box>
+            {feedbackItemDetails?.customerName ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Customer
+                </Typography>
+                <Typography mb={2}>
+                  {feedbackItemDetails.customerName}
+                </Typography>
+              </Box>
+            ) : null}
+            {feedbackItemDetails?.customerPhone ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Phone number
+                </Typography>
+                <Typography mb={2}>
+                  {feedbackItemDetails.customerPhone}
+                </Typography>
+              </Box>
+            ) : null}
+            {feedbackItemDetails?.customerEmail ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Email Address
+                </Typography>
+                <Typography mb={2}>
+                  {feedbackItemDetails.customerEmail}
+                </Typography>
+              </Box>
+            ) : null}
+          </Box>
+          <Box>
+            {feedbackItemDetails?.id ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Feedback ID
+                </Typography>
+                <Typography mb={2}>{feedbackItemDetails.id}</Typography>
+              </Box>
+            ) : null}
+            {feedbackItemDetails?.customerEmail ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Campaign
+                </Typography>
+                <Typography mb={2}>
+                  {feedbackItemDetails.campaignName}
+                </Typography>
+              </Box>
+            ) : null}
+            {feedbackItemDetails?.customerEmail ? (
+              <Box>
+                <Typography fontSize={14} fontWeight="bold" mb={1}>
+                  Submitted
+                </Typography>
+                <Typography mb={2}>
+                  {feedbackItemDetails.submittedDate}
+                </Typography>
+              </Box>
+            ) : null}
           </Box>
         </Box>
       </Paper>
 
-      {activeRow?.type ? (
-        <RightDrawer
-          open={isDrawerOpen}
-          setOpen={setDrawerOpen}
-          onClose={handleClose}
-          title="Edit Feedback Status"
-        >
+      <RightDrawer
+        open={isDrawerOpen}
+        setOpen={setDrawerOpen}
+        onClose={handleClose}
+        title="Edit Feedback Status"
+      >
+        {activeRow?.type ? (
           <FeedbackStatusDrawer
             editData={activeRow}
             onSuccess={onFormSuccess}
           />
-        </RightDrawer>
-      ) : null}
+        ) : null}
+      </RightDrawer>
     </FormProvider>
   );
 };

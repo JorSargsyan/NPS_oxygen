@@ -4,7 +4,6 @@ import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { defaultFilterValues } from "resources/constants";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import SharedDialog from "shared/ui/Dialog";
@@ -39,7 +38,6 @@ const Feedbacks = () => {
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
-  const navigate = useNavigate();
 
   const handleOpenCommentViewDialog = (row: IFeedback) => {
     setSelectedFeedbackId({ id: row.id, data: row.comments });
@@ -60,7 +58,7 @@ const Feedbacks = () => {
           onClick={() => handleOpenCommentViewDialog(row)}
           textAlign="center"
         >
-          <SvgIcon sx={{ cursor: "pointer" }}>
+          <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
             <CommentIcon />
           </SvgIcon>
         </Box>
@@ -109,7 +107,8 @@ const Feedbacks = () => {
   };
 
   const handleViewFeedback = (id: number) => {
-    navigate(`${id}`);
+    const url = `${window.location.origin}/feedback/${id}`;
+    window.open(url, "_blank");
   };
 
   const getActions = (row: IFeedback) => {

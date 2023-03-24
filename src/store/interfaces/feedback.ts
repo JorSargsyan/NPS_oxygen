@@ -6,14 +6,19 @@ export interface IFeedbacksState {
   feedbackDetails: null | IFeedbackDetails;
   feedbackNotes: IFeedbackNotes[];
   feedbackLogs: IFeedbackLog[];
+  feedbackNoteHistory: IFeedbackNoteHistory[];
 }
 
-export interface IFeedbackNotes {
+export interface IFeedbackNoteHistory {
   creationDate: string;
   id: number;
+  note: string;
+  user: IFeedbackUser;
+}
+
+export interface IFeedbackNotes extends IFeedbackNoteHistory {
   isDeleted: boolean;
   isUpdated: boolean;
-  note: string;
   updatedDate: string;
 }
 
@@ -157,4 +162,21 @@ export interface IFeedbackLog {
   status: number;
   logType: number;
   user: IFeedbackUser;
+}
+
+export interface IAddNote {
+  creationDate: string;
+  feedbackID: number;
+  id: number;
+  isDeleted: boolean;
+  isUpdated: boolean;
+  note: string;
+}
+
+export interface IUpdateNote {
+  noteID: number;
+  formData: {
+    feedbackID: number;
+    note: string;
+  };
 }

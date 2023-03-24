@@ -63,7 +63,7 @@ export const CreateRoutes = () => {
           element: <AccountPage />,
         },
         {
-          path: "feedbacks/:id",
+          path: "feedback/:id",
           element: <FeedbackDetails />,
         },
       ],

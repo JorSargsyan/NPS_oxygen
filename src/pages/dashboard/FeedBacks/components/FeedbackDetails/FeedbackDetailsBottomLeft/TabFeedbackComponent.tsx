@@ -6,9 +6,7 @@ import { selectFeedbackDetails } from "store/slicers/feedback";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
-type Props = {};
-
-const TabFeedbackComponent = (props: Props) => {
+const TabFeedbackComponent = () => {
   const feedbackDetails = useSelector(selectFeedbackDetails);
 
   const textColor = (score: number) => {
@@ -33,7 +31,7 @@ const TabFeedbackComponent = (props: Props) => {
     }
   };
   return (
-    <Box sx={{ overflow: "scroll", height: "400px", p: 3 }}>
+    <Box sx={{ overflow: "scroll", height: "500px", p: 3 }}>
       {feedbackDetails?.feedbacks?.map((feedback) => {
         return (
           <Box
