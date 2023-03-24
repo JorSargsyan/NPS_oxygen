@@ -40,9 +40,10 @@ interface ITabsData {
 
 interface ITabsProps {
   tabsData: ITabsData[];
+  centered?: boolean;
 }
 
-const BasicTabs = ({ tabsData }: ITabsProps) => {
+const BasicTabs = ({ tabsData, centered = true }: ITabsProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -56,7 +57,7 @@ const BasicTabs = ({ tabsData }: ITabsProps) => {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
-          centered
+          centered={centered}
         >
           {tabsData.map((item) => {
             return (

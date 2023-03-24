@@ -12,6 +12,7 @@ import AccountPage from "pages/dashboard/Account";
 import { GetTranslationsByLangId } from "store/slicers/translations";
 import { LStorage } from "store/config/constants";
 import FeedbackDetails from "pages/dashboard/FeedBacks/components/FeedbackDetails";
+import CampaignDetails from "pages/dashboard/CampaignDetails";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
@@ -65,6 +66,10 @@ export const CreateRoutes = () => {
         {
           path: "feedback/:id",
           element: <FeedbackDetails />,
+        },
+        {
+          path: "campaign/:id",
+          element: <CampaignDetails />,
         },
       ],
     },

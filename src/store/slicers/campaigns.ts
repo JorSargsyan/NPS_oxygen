@@ -48,6 +48,16 @@ export const GetCampaignLogs = createAsyncThunk<ICampaignLog[], number>(
   }
 );
 
+export const TestCustomersCampaign = createAsyncThunk<
+  unknown,
+  {
+    campaignID: number;
+    phoneNumbers: string[];
+  }
+>(`${name}/TestCustomersCampaign`, async (formData) => {
+  return (await api.post(`${EBaseUrl.API}/TestCustomers`, formData)).data;
+});
+
 export const DeleteCampaign = createAsyncThunk<unknown, number>(
   `${name}/DeleteCampaign`,
   async (id) => {

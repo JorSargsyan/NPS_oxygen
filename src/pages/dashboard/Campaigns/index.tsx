@@ -28,6 +28,7 @@ import { setLoading } from "store/slicers/common";
 import toast from "react-hot-toast";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddCampaign from "./components/AddCampaign";
+import { useNavigate } from "react-router-dom";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
@@ -37,6 +38,7 @@ export enum ECampaignAction {
 
 const CampaignsPage = () => {
   const dispatch = useAsyncDispatch();
+  const navigate = useNavigate();
   const campaigns = useSelector(selectCampaigns);
   const [activeRow, setActiveRow] = useState(0);
   const [warningOpen, setWarningOpen] = useState(false);
@@ -101,8 +103,16 @@ const CampaignsPage = () => {
     toast.success("Campaign is deleted");
   };
 
+  const handleCampaignDetails = (id: number) => {
+    navigate(`/campaign/${id}`);
+  };
+
   const getActions = (rowData: ICampaign) => {
     return [
+      {
+        label: "Customize",
+        onClick: () => handleCampaignDetails(rowData.id),
+      },
       {
         label: "View History",
         onClick: () => handleViewHistory(rowData.id),
