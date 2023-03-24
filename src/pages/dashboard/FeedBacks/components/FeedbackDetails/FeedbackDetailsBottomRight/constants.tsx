@@ -32,3 +32,8 @@ export const feedbackDetailsBottomRightTabsOptions = [
     children: <TabHistoryComponent />,
   },
 ];
+
+export const deleteNoteDialogOptions = {
+  title: "Warning",
+  description: "Are you sure you want to delete this note?",
+};

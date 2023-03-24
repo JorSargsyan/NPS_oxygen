@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
 import {
+  IAddNote,
   ICauseCategory,
   IChangeCustomerMood,
   IChangeCustomerRootCause,
@@ -8,9 +9,11 @@ import {
   IFeedback,
   IFeedbackDetails,
   IFeedbackLog,
+  IFeedbackNoteHistory,
   IFeedbackNotes,
   IFeedbacksState,
   IUpdateManager,
+  IUpdateNote,
 } from "store/interfaces/feedback";
 import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -23,6 +26,7 @@ const initialState: IFeedbacksState = {
   feedbackDetails: null,
   feedbackNotes: [],
   feedbackLogs: [],
+  feedbackNoteHistory: [],
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -90,6 +94,42 @@ export const GetFeedbackNotes = createAsyncThunk<IFeedbackNotes[], number>(
   }
 );
 
+export const AddFeedbackNote = createAsyncThunk<unknown, IAddNote>(
+  `${name}/AddFeedbackNote`,
+  async (data: IAddNote) => {
+    return (await api.post(`${EBaseUrl.API}/Note`, data)).data;
+  }
+);
+
+export const UpdateFeedbackNote = createAsyncThunk<unknown, IUpdateNote>(
+  `${name}/UpdateFeedbackNote`,
+  async (data: IUpdateNote) => {
+    return (await api.put(`${EBaseUrl.API}/Note/${data.noteID}`, data.formData))
+      .data;
+  }
+);
+
+export const DeleteFeedbackNote = createAsyncThunk<unknown, number>(
+  `${name}/DeleteFeedbackNote`,
+  async (noteID: number) => {
+    return (await api.delete(`${EBaseUrl.API}/Note/${noteID}`)).data;
+  }
+);
+
+export const GetFeedbackDeletedNoteHistory = createAsyncThunk<
+  IFeedbackNoteHistory[],
+  string
+>(`${name}/GetFeedbackDeletedNoteHistory`, async (params: string) => {
+  return (await api.get(`${EBaseUrl.API}/Note/Deleted/Logs?${params}`)).data;
+});
+
+export const GetFeedbackEditedNoteHistory = createAsyncThunk<
+  IFeedbackNoteHistory[],
+  string
+>(`${name}/GetFeedbackEditedNoteHistory`, async (params: string) => {
+  return (await api.get(`${EBaseUrl.API}/Note/Edited/Logs?${params}`)).data;
+});
+
 export const UpdateFeedbackManager = createAsyncThunk<unknown, IUpdateManager>(
   `${name}/UpdateFeedbackManager`,
   async (data: IUpdateManager) => {
@@ -124,6 +164,22 @@ const FeedbacksSlice = createSlice({
     builder.addCase(GetFeedbackNotes.fulfilled, (state, { payload }) => {
       state.feedbackNotes = payload;
     });
+
+    builder.addCase(
+      GetFeedbackDeletedNoteHistory.fulfilled,
+      (state, { payload }) => {
+        state.feedbackNoteHistory = payload;
+      }
+    );
+    builder.addCase(
+      GetFeedbackEditedNoteHistory.fulfilled,
+      (state, { payload }) => {
+        state.feedbackNoteHistory = payload;
+      }
+    );
+    builder.addCase(GetFeedbackLogs.fulfilled, (state, { payload }) => {
+      state.feedbackLogs = payload;
+    });
   },
 });
 
@@ -136,5 +192,7 @@ export const selectFeedbackNotes = (state: IState) =>
   state.feedbacks.feedbackNotes;
 export const selectFeedbackLogs = (state: IState) =>
   state.feedbacks.feedbackLogs;
+export const selectFeedbackNoteHistory = (state: IState) =>
+  state.feedbacks.feedbackNoteHistory;
 
 export default FeedbacksSlice.reducer;

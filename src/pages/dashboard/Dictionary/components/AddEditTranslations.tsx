@@ -26,7 +26,7 @@ interface IFormData {
   am: string;
   en: string;
   ru: string;
-  translationModule: number;
+  translationModule: number | string;
 }
 
 const AddEditTranslations = ({
@@ -43,7 +43,7 @@ const AddEditTranslations = ({
       am: "",
       en: "",
       ru: "",
-      translationModule: 0,
+      translationModule: "",
     },
   });
   const isLoading = useSelector(selectLoadingState);
@@ -51,7 +51,7 @@ const AddEditTranslations = ({
   const onSubmit = async (data: IFormData) => {
     dispatch(setLoading(true));
     const formData: IAddEditTranslation = {
-      translationModule: data.translationModule,
+      translationModule: Number(data.translationModule),
 
       key: data.key,
       captions: [
@@ -119,6 +119,7 @@ const AddEditTranslations = ({
                 label="Translation Module"
                 valueProp="value"
                 labelProp="name"
+                defaultValue=""
                 options={translationModuleOptions}
               />
             </Grid>

@@ -3,9 +3,7 @@ import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { selectFeedbackDetails } from "store/slicers/feedback";
 
-type Props = {};
-
-const TabServiceComponent = (props: Props) => {
+const TabServiceComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
   const { service } = feedbackItemDetails;
 

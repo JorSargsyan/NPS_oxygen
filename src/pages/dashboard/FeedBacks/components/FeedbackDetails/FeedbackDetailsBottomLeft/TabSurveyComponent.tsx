@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 import { campaignTypes } from "resources/constants";
 import { selectFeedbackDetails } from "store/slicers/feedback";
 
-type Props = {};
-
-const TabSurveyComponent = (props: Props) => {
+const TabSurveyComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
   const { survey } = feedbackItemDetails;
 
