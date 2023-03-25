@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import SmsDistributionForm from "./components/SmsDistributionForm";
+import SmsDistributionForm from "./SmsDistributionForm";
 import { useSelector } from "react-redux";
 import { selectCampaignInfo } from "store/slicers/campaignDetail";
 
