@@ -40,7 +40,7 @@ interface IAutocompleteProps<OptionType> {
   hasSelectAllOption?: boolean;
 }
 
-const BasicAutocomplete = <T extends { id?: number }>({
+const BasicAutocomplete = <T extends { id?: number | string }>({
   optionLabel,
   disabled,
   async = false,
@@ -98,8 +98,7 @@ const BasicAutocomplete = <T extends { id?: number }>({
 
   const handleChange = (
     e: React.SyntheticEvent<Element, Event>,
-    values: T | T[] | null,
-    reason
+    values: T | T[] | null
   ) => {
     if (multiple) {
       const isSelectAll = (values as T[]).find((i) => i.id === select_all);

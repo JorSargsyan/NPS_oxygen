@@ -9,6 +9,7 @@ import customers from "./customers";
 import feedbacks from "./feedback";
 import campaigns from "./campaigns";
 import campaignDetails from "./campaignDetail";
+import directorates from "./directorates";
 
 const reducers = {
   errors,
@@ -21,6 +22,7 @@ const reducers = {
   translations,
   customers,
   feedbacks,
+  directorates,
 };
 
 const combinedReducers = combineReducers(reducers);

@@ -13,6 +13,7 @@ import Megaphone from "@heroicons/react/24/solid/MegaphoneIcon";
 import HomePage from "pages/dashboard/Home";
 import Roles from "pages/dashboard/Roles";
 import Users from "pages/dashboard/Users";
+import DirectoratesGrid from "pages/dashboard/Directorates";
 
 export const items = [
   {
@@ -79,6 +80,16 @@ export const items = [
     title: "Translations",
     path: "dictionary",
     element: <Dictionary />,
+    icon: (
+      <SvgIcon fontSize="small">
+        <TranslationIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Directorates",
+    path: "directorates",
+    element: <DirectoratesGrid />,
     icon: (
       <SvgIcon fontSize="small">
         <TranslationIcon />

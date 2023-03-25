@@ -297,6 +297,7 @@ const BasicTable = <T extends { id: number }>({
               <TableRow>{generateColumns}</TableRow>
             </TableHead>
           )}
+
           <TableBody sx={tableLoading ? { filter: "blur(3px)" } : {}}>
             <Fragment>
               {enablePagination
@@ -309,7 +310,9 @@ const BasicTable = <T extends { id: number }>({
             <TableRow>{getPagination()}</TableRow>
           </TableFooter>
         </Table>
-        <Fragment>{noResults && <NoRows />}</Fragment>
+        <Table>
+          <TableBody>{noResults && <NoRows />}</TableBody>
+        </Table>
       </TableContainer>
     </Box>
   );

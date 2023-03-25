@@ -8,6 +8,7 @@ import { ITranslationsState } from "./translations";
 import { IUsersState } from "./users";
 import { IFeedbacksState } from "./feedback";
 import { ICampaignDetailsState } from "./campaignDetails";
+import { IDirectoratesState } from "./directorates";
 export interface IPaginated<T> {
   totalDisplayRecords: number;
   totalRecords: number;
@@ -38,6 +39,7 @@ export interface IState {
   translations: ITranslationsState;
   customers: ICustomersState;
   feedbacks: IFeedbacksState;
+  directorates: IDirectoratesState;
 }
 
 export interface IFilterOption {
