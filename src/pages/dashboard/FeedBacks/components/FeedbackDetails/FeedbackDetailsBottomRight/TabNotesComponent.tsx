@@ -9,7 +9,6 @@ import {
   CardActions,
   CardContent,
   Divider,
-  TextareaAutosize,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -24,6 +23,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
+import BasicTextArea from "shared/ui/TextArea";
 import TextInput from "shared/ui/TextInput";
 import { EBaseUrl } from "store/config/constants";
 import { ERequestStatus } from "store/enums/index.enum";
@@ -57,12 +57,12 @@ export const CardContentNoPadding = styled(CardContent)(`
 interface IFormData {
   notesList: IFeedbackNotes[];
   id: number | string;
+  textarea: string;
 }
 
 const currentTime = format(new Date(), "dd.MM.yyyy HH:mm:ss");
 
 const TabNotesComponent = () => {
-  const [textareaValue, setTextAreaValue] = useState("");
   const [warningOpen, setWarningOpen] = useState(false);
   const [activeRow, setActiveRow] = useState(0);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -88,6 +88,11 @@ const TabNotesComponent = () => {
     control: methods.control,
   });
 
+  const watchTextArea = useWatch({
+    name: "textarea",
+    control: methods.control,
+  });
+
   const dispatch = useAsyncDispatch();
 
   const refetchFeedbackNotes = async () => {
@@ -105,9 +110,9 @@ const TabNotesComponent = () => {
       id: notesList?.length + 1,
       isDeleted: false,
       isUpdated: false,
-      note: textareaValue,
+      note: watchTextArea,
     };
-    setTextAreaValue("");
+    methods.setValue("textarea", "");
     await dispatch(setLoading(true));
     await dispatch(AddFeedbackNote(data));
     await dispatch(setLoading(false));
@@ -129,10 +134,6 @@ const TabNotesComponent = () => {
     await refetchFeedbackNotes();
     dispatch(setLoading(false));
     toast.success("Campaign is deleted");
-  };
-
-  const onChange = (e) => {
-    setTextAreaValue(e.target.value);
   };
 
   const editNote = (note: IFeedbackNotes) => {
@@ -201,30 +202,14 @@ const TabNotesComponent = () => {
   return (
     <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
       <FormProvider {...methods}>
-        <Box
-          sx={{
-            "& .textarea": {
-              width: "100%",
-              resize: "none",
-              borderRadius: 1,
-              padding: 1,
-              borderColor: "primary.main",
-              borderWidth: 2,
-            },
-          }}
-        >
-          <TextareaAutosize
-            aria-label="Add Notes"
-            placeholder="Type your answer here..."
-            minRows={4}
-            className="textarea"
-            onChange={onChange}
-            value={textareaValue}
-          />
-        </Box>
+        <BasicTextArea
+          name="textarea"
+          aria-label="Add Notes"
+          placeholder="Type your answer here..."
+        />
         <Box textAlign="right" py={2}>
           <ButtonLoader
-            disabled={!textareaValue}
+            disabled={!watchTextArea}
             onClick={handleAddNote}
             isLoading={isButtonLoading}
           >
@@ -288,38 +273,38 @@ const TabNotesComponent = () => {
                         </Box>
                         <Box>
                           <CardActions>
-                            {(!note.isDeleted ||
-                              isSameNoteCreator(note.user.id)) && (
-                              <Button
-                                onClick={(e) => editNote(note)}
-                                startIcon={<Edit height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
-                            )}
-                            {(!note.isDeleted ||
-                              isSameNoteCreator(note.user.id)) && (
-                              <Button
-                                onClick={(e) => deleteNote(note)}
-                                startIcon={<Trash height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
-                            )}
+                            {!note.isDeleted &&
+                              isSameNoteCreator(note.user.id) && (
+                                <Button
+                                  onClick={(e) => editNote(note)}
+                                  startIcon={<Edit height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              )}
+                            {!note.isDeleted &&
+                              isSameNoteCreator(note.user.id) && (
+                                <Button
+                                  onClick={(e) => deleteNote(note)}
+                                  startIcon={<Trash height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              )}
 
                             {(note.isDeleted || note.isUpdated) && (
                               <Button

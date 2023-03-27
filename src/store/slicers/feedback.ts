@@ -13,6 +13,7 @@ import {
   IFeedbackNoteHistory,
   IFeedbackNotes,
   IFeedbacksState,
+  IFeedbackTask,
   IUpdateManager,
   IUpdateNote,
 } from "store/interfaces/feedback";
@@ -28,6 +29,7 @@ const initialState: IFeedbacksState = {
   feedbackNotes: [],
   feedbackLogs: [],
   feedbackNoteHistory: [],
+  feedbackTasks: [],
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -145,6 +147,13 @@ export const GetFeedbackLogs = createAsyncThunk<IFeedbackLog[], string>(
   }
 );
 
+export const GetFeedbackTasks = createAsyncThunk<IFeedbackTask[], string>(
+  `${name}/GetFeedbackTasks`,
+  async (id: string) => {
+    return (await api.get(`${EBaseUrl.API}/Tasks?id=${id}`)).data;
+  }
+);
+
 const FeedbacksSlice = createSlice({
   initialState,
   name,
@@ -181,6 +190,9 @@ const FeedbacksSlice = createSlice({
     builder.addCase(GetFeedbackLogs.fulfilled, (state, { payload }) => {
       state.feedbackLogs = payload;
     });
+    builder.addCase(GetFeedbackTasks.fulfilled, (state, { payload }) => {
+      state.feedbackTasks = payload;
+    });
   },
 });
 
@@ -195,5 +207,7 @@ export const selectFeedbackLogs = (state: IState) =>
   state.feedbacks.feedbackLogs;
 export const selectFeedbackNoteHistory = (state: IState) =>
   state.feedbacks.feedbackNoteHistory;
+export const selectFeedbackTasks = (state: IState) =>
+  state.feedbacks.feedbackTasks;
 
 export default FeedbacksSlice.reducer;

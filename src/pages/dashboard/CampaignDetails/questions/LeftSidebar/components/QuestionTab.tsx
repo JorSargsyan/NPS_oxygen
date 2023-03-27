@@ -1,11 +1,8 @@
-import { List, ListItem, ListItemButton, Typography } from "@mui/material";
+import { List, ListItemButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-import {
-  selectCampaignInfo,
-  selectCampaignSurveys,
-} from "store/slicers/campaignDetail";
+import { selectCampaignSurveys } from "store/slicers/campaignDetail";
 
 const QuestionTab = () => {
   const campaignSurveys = useSelector(selectCampaignSurveys);

@@ -56,8 +56,6 @@ const AddEditDirectorate = ({
       attachedEmployeesIDs,
     };
     if (editData) {
-      debugger;
-
       const editedFormData = { ...newFormData, id: editData.id };
       const { meta } = await dispatch(UpdateDirectorate(editedFormData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {

@@ -1,3 +1,4 @@
+import { IAdditionalInfo } from "store/interfaces/directorates";
 import TabHistoryComponent from "./TabHistoryComponent";
 import TabNotesComponent from "./TabNotesComponent";
 import TabRedirectionComponent from "./TabRedirectionComponent";
@@ -48,3 +49,44 @@ export enum EFeedbackLogTypes {
   Note,
   Cancel,
 }
+
+export interface IRedirectTabGroupedEmployeeList {
+  id: number;
+  employeeID: number;
+  group: string;
+  label: string;
+  value: string;
+  additionalInfo: IAdditionalInfo;
+}
+
+export interface IRedirectTabStatuses {
+  value: number;
+  name: string;
+}
+
+export enum ERedirectTabStatuses {
+  In_process = 1,
+  Completed,
+  Overdue,
+}
+
+export enum ERedirectTabStatusesValues {
+  In_process = "In process",
+  Completed = "Completed",
+  Overdue = "Overdue",
+}
+
+export const redirectTabStatuses = [
+  {
+    value: ERedirectTabStatuses.In_process,
+    name: ERedirectTabStatusesValues.In_process,
+  },
+  {
+    value: ERedirectTabStatuses.Completed,
+    name: ERedirectTabStatusesValues.Completed,
+  },
+  {
+    value: ERedirectTabStatuses.Overdue,
+    name: ERedirectTabStatusesValues.Overdue,
+  },
+];

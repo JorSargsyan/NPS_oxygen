@@ -4,6 +4,7 @@ export interface IDirectoratesState {
   listData: IPaginated<IDirectorate>;
   directorateByID: IDirectorateById[];
   filterList: IAttachedEmployee[];
+  feedbackEmployeeList: IWithAttachedEmployee[];
 }
 
 export interface IDirectorate {
@@ -43,4 +44,11 @@ export interface IAddDirectorate {
 
 export interface IUpdateDirectorate extends IAddDirectorate {
   id: number;
+}
+
+export interface IWithAttachedEmployee {
+  id: number;
+  isDisabled: boolean;
+  name: string;
+  attachedEmployeeAdditionalInfo: IAttachedEmployee[];
 }

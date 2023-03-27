@@ -1,3 +1,4 @@
+import { IAttachedEmployee } from "./directorates";
 import { IPaginated } from "./main";
 
 export interface IFeedbacksState {
@@ -7,6 +8,7 @@ export interface IFeedbacksState {
   feedbackNotes: IFeedbackNotes[];
   feedbackLogs: IFeedbackLog[];
   feedbackNoteHistory: IFeedbackNoteHistory[];
+  feedbackTasks: IFeedbackTask[];
 }
 
 export interface IFeedbackNoteHistory {
@@ -185,4 +187,19 @@ export interface ICauseAndMoodRes {
   customerMood: number;
   id: number;
   rootCauseIDs: number[];
+}
+
+export interface IFeedbackTask {
+  id: number;
+  directoratName: string;
+  attachedEmployeeAdditionalInfo: IAttachedEmployee;
+  status: IFeedbackStatus;
+  deadline: string;
+  description: string;
+  createdBy: IFeedbackUser;
+  creationDate: string;
+  updatedDate: string;
+  isDeleted: boolean;
+  isUpdated: boolean;
+  canEditStatus: boolean;
 }

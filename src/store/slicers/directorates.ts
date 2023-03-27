@@ -9,6 +9,7 @@ import {
   IDirectorateById,
   IDirectoratesState,
   IUpdateDirectorate,
+  IWithAttachedEmployee,
 } from "store/interfaces/directorates";
 
 const name = "AUTH";
@@ -17,6 +18,7 @@ const initialState: IDirectoratesState = {
   listData: defaultTableData,
   directorateByID: [],
   filterList: [],
+  feedbackEmployeeList: [],
 };
 
 export const GetDirectorates = createAsyncThunk<
@@ -55,6 +57,15 @@ export const GetAttachedEmployeeFilterList = createAsyncThunk<
   return (await api.post(`${EBaseUrl.API}/Directorate/Filter?${query}`)).data;
 });
 
+export const GetFeedbackRedirectEmployeeList = createAsyncThunk<
+  IWithAttachedEmployee[],
+  string
+>(`${name}/GetFeedbackRedirectEmployeeList`, async (id: string) => {
+  return (
+    await api.get(`${EBaseUrl.API}/Directorate/WithAttachedEmployees/${id}`)
+  ).data;
+});
+
 const authSlicer = createSlice({
   initialState,
   name,
@@ -72,6 +83,12 @@ const authSlicer = createSlice({
         state.filterList = payload;
       }
     );
+    builder.addCase(
+      GetFeedbackRedirectEmployeeList.fulfilled,
+      (state, { payload }) => {
+        state.feedbackEmployeeList = payload;
+      }
+    );
   },
 });
 
@@ -83,5 +100,8 @@ export const selectDirectorateByID = (state: IState) =>
 
 export const selectAttachedEmployeeFilteredList = (state: IState) =>
   state.directorates.filterList;
+
+export const selectFeedbackEmployeeList = (state: IState) =>
+  state.directorates.feedbackEmployeeList;
 
 export default authSlicer.reducer;

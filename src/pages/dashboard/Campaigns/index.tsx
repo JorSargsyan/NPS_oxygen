@@ -147,7 +147,6 @@ const CampaignsPage = () => {
 
   const handleChangeState = useCallback(
     async (id: number, state: boolean) => {
-      console.log(id, state);
       await dispatch(ChangeCampaignState({ id, state }));
       refetchData();
     },

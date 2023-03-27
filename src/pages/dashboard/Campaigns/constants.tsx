@@ -1,6 +1,4 @@
-import { Typography } from "@mui/material";
 import { IColumn } from "shared/ui/Table/constants";
-import { ICampaignLog } from "store/interfaces/campaigns";
 
 export const columns: IColumn[] = [
   {

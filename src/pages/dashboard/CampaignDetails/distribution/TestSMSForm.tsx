@@ -20,7 +20,6 @@ const TestSMSForm = ({ onSuccess }: { onSuccess: () => void }) => {
   });
 
   const onSubmit = async (formData) => {
-    console.log(formData);
     const { meta } = await dispatch(
       TestCustomersCampaign({
         phoneNumbers: formData.phone.split(",").map((item) => item.trim()),
