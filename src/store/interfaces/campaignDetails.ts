@@ -3,6 +3,9 @@ export interface ICampaignDetailsState {
   templates: ITemplate[];
   surveys: ICampaignSurvey[];
   details: ICampaignDetailed | null;
+  selectedSurvey: number;
+  surveyDetails: ICampaignSurveyDetails | null;
+  surveyTemplate: ITemplate | null;
 }
 
 export interface ICampaignDetailed {
@@ -66,4 +69,51 @@ export interface IDistributionSchedule {
   numberOfTransaction: number;
   quarantinePeriod: number;
   triggerIDs: number[];
+}
+
+export interface ISurveyAnswer {
+  id: number;
+  value: string;
+  position: number;
+}
+export interface ICampaignSurveyDetails {
+  buttonText: string;
+  commentConfig: any;
+  id: number;
+  isRequired: boolean;
+  metricConfig: any;
+  multipleConfig: {
+    customEndLength: number;
+    customerStartLength: number;
+    metricLeftText: string | null;
+    metricRightText: string | null;
+  };
+  answers: ISurveyAnswer[];
+  position: number;
+  questionNumber: number;
+  title: string;
+  type: number;
+}
+
+export interface ICreateCampaignSurveyResponse {
+  campaignDeactivated: boolean;
+  emptyQuestionSurveys: any;
+  surveyId: number;
+  surveyResponses: ICampaignSurvey[];
+}
+
+export interface ICreateCampaignSurveyRequest {
+  buttonText: string;
+  campaignID: string;
+  isRequired: boolean;
+  position: number;
+  metricConfig?: {
+    customEndLength: number;
+    customStartLength: number;
+    metricLeftText: string | null;
+    metricRightText: string | null;
+  };
+  selected: boolean;
+  title: string;
+  type: number;
 }
