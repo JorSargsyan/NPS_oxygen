@@ -5,6 +5,7 @@ import {
   InputLabel,
   Box,
   ListSubheader,
+  FormHelperText,
 } from "@mui/material";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 import DeleteIcon from "@heroicons/react/24/solid/XMarkIcon";
@@ -26,6 +27,7 @@ export interface IWithAttachedEmployeeSelectProps<T, R> {
   defaultValue?: number | string;
   groupNameProp?: keyof T;
   groupedListProp?: keyof T;
+  isDisabledProp?: keyof T;
 }
 
 const WithAttachedEmployeeSelect = <T, R extends unknown>({
@@ -42,8 +44,12 @@ const WithAttachedEmployeeSelect = <T, R extends unknown>({
   defaultValue,
   groupNameProp,
   groupedListProp,
+  isDisabledProp,
 }: IWithAttachedEmployeeSelectProps<T, R>) => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   const handleChange = (e, onChange) => {
     const value = e.target.value;
@@ -62,7 +68,10 @@ const WithAttachedEmployeeSelect = <T, R extends unknown>({
         <MenuItem
           key={p[valueProp as string]}
           value={p[valueProp as string]}
-          disabled={p[valueProp as string] === field.value}
+          disabled={
+            p[valueProp as string] === field.value ||
+            options[isDisabledProp as string]
+          }
         >
           {p[labelProp as string]}
         </MenuItem>
@@ -98,6 +107,7 @@ const WithAttachedEmployeeSelect = <T, R extends unknown>({
                   </Box>
                 )
               }
+              error={!!errors?.[name]?.message}
               size={size}
               {...field}
               onChange={(e) => {
@@ -108,6 +118,11 @@ const WithAttachedEmployeeSelect = <T, R extends unknown>({
             >
               {options?.map((p) => renderSelectGroup(p, field))}
             </Select>
+            {errors?.[name]?.message && (
+              <FormHelperText error sx={{ fontSize: 13 }}>
+                {errors?.[name]?.message as string}
+              </FormHelperText>
+            )}
           </FormControl>
         );
       }}

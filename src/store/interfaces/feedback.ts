@@ -9,6 +9,7 @@ export interface IFeedbacksState {
   feedbackLogs: IFeedbackLog[];
   feedbackNoteHistory: IFeedbackNoteHistory[];
   feedbackTasks: IFeedbackTask[];
+  feedbackTaskLogs: IFeedbackTaskLog[];
 }
 
 export interface IFeedbackNoteHistory {
@@ -202,4 +203,49 @@ export interface IFeedbackTask {
   isDeleted: boolean;
   isUpdated: boolean;
   canEditStatus: boolean;
+}
+
+export interface IAddTask {
+  deadline: string;
+  description: string;
+  directorateAttachedEmployee: string;
+  directorateID: number;
+  feedbackID: string;
+}
+
+export interface IUpdateTask {
+  taskID: number;
+  formData: IAddTask;
+}
+
+export interface IDeleteTask {
+  taskID: number;
+  feedbackID: string;
+}
+
+export interface IFeedbackTaskLog {
+  id: number;
+  creationDate: string;
+  directorate: string;
+  directorateAttachedEmployee: string;
+  deadline: string;
+  user: IFeedbackUser;
+  status: number;
+}
+
+export interface IFeedbackTaskUpdateAssignUser {
+  taskID: number;
+  formData: {
+    directorateAttachedEmployee: string;
+    directorateID: number;
+    feedbackID: string;
+  };
+}
+
+export interface IFeedbackTaskUpdateStatus {
+  taskID: number;
+  formData: {
+    status: number;
+    feedbackID: string;
+  };
 }

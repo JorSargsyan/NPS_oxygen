@@ -6,7 +6,7 @@ type Props = {};
 
 const FeedbackDetailsBottomLeft = (props: Props) => {
   return (
-    <Box sx={{ minHeight: 400 }}>
+    <Box sx={{ minHeight: 500 }}>
       <BasicTabs tabsData={feedbackDetailsBottomLeftTabsOptions} />
     </Box>
   );

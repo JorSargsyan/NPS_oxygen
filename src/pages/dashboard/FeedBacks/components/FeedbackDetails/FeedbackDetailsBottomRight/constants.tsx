@@ -24,7 +24,7 @@ export const feedbackDetailsBottomRightTabsOptions = [
   },
   {
     index: EFeedbackDetailsBottomRightTabsOptions.Root_cause,
-    label: "Root_cause",
+    label: "Root cause",
     children: <TabRootCauseComponent />,
   },
   {
@@ -67,26 +67,31 @@ export interface IRedirectTabStatuses {
 export enum ERedirectTabStatuses {
   In_process = 1,
   Completed,
-  Overdue,
+  // Overdue,
 }
 
-export enum ERedirectTabStatusesValues {
-  In_process = "In process",
-  Completed = "Completed",
-  Overdue = "Overdue",
-}
+export const ERedirectTabStatusesValues = {
+  [ERedirectTabStatuses.In_process]: "In process",
+  [ERedirectTabStatuses.Completed]: "Completed",
+  // [ERedirectTabStatuses.Overdue]: "Overdue",
+};
 
 export const redirectTabStatuses = [
   {
     value: ERedirectTabStatuses.In_process,
-    name: ERedirectTabStatusesValues.In_process,
+    name: ERedirectTabStatusesValues[ERedirectTabStatuses.In_process],
   },
   {
     value: ERedirectTabStatuses.Completed,
-    name: ERedirectTabStatusesValues.Completed,
+    name: ERedirectTabStatusesValues[ERedirectTabStatuses.Completed],
   },
-  {
-    value: ERedirectTabStatuses.Overdue,
-    name: ERedirectTabStatusesValues.Overdue,
-  },
+  // {
+  //   value: ERedirectTabStatuses.Overdue,
+  //   name: ERedirectTabStatusesValues[ERedirectTabStatuses.Overdue],
+  // },
 ];
+
+export const deleteFeedbackTaskWarningConfig = {
+  title: "Delete Feedback Task",
+  description: "Are you sure you want to delete this task?",
+};
