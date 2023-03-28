@@ -1,10 +1,9 @@
-import { ICampaignSurvey } from "store/interfaces/campaignDetails";
-
-const reorderDragDrop = (
-  list: ICampaignSurvey[],
+const reorderDragDrop = <T extends unknown>(
+  list: T[],
   startIndex: number,
-  endIndex: number
-): ICampaignSurvey[] => {
+  endIndex: number,
+  needPosition: boolean = true
+): T[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -12,7 +11,11 @@ const reorderDragDrop = (
   return result.map((item, index) => {
     return {
       ...item,
-      position: index !== result.length - 1 ? index : item.position,
+      position: needPosition
+        ? index !== result.length - 1
+          ? index
+          : item.position
+        : index,
     };
   });
 };

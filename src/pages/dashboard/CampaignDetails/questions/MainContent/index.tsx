@@ -1,26 +1,34 @@
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment } from "react";
-import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
 import { selectSurveyInfo } from "store/slicers/campaignDetail";
+import { CampaignSurveyForms } from "./constants";
 
 const MainContent = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
-  const methods = useForm({});
 
-  const handleNextClick = () => {};
+  const SurveyFormComp = () => {
+    const Comp = CampaignSurveyForms[surveyInfo.details.type];
+    return <Comp />;
+  };
 
-  console.log(surveyInfo);
   return (
     <Fragment>
       {surveyInfo?.details && (
-        <Box component={Paper} elevation={3} p={2}>
+        <Box
+          mb={10}
+          component={Paper}
+          elevation={3}
+          p={2}
+          height="450px"
+          overflow={"scroll"}
+        >
           <Box display={"flex"} justifyContent={"center"}>
             <Box
               height="60%"
-              width="70%"
+              width="50%"
               borderRadius="10px"
               sx={{
                 "& img": {
@@ -36,6 +44,10 @@ const MainContent = () => {
                 alt="sadas"
               />
             </Box>
+          </Box>
+          <SurveyFormComp />
+          <Box display="flex" mt={2} flexDirection={"row-reverse"}>
+            <Button variant="outlined">{surveyInfo.details.buttonText}</Button>
           </Box>
         </Box>
       )}
