@@ -9,7 +9,7 @@ const Questions = () => {
       <Box flex={1}>
         <LeftSidebar />
       </Box>
-      <Box flex={4} mx={2}>
+      <Box flex={3} mx={2}>
         <MainContent />
       </Box>
       <Box flex={1}>

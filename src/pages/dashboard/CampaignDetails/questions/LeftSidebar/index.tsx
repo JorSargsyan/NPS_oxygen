@@ -29,6 +29,7 @@ import { ICampaignSurvey } from "store/interfaces/campaignDetails";
 import { ERequestStatus } from "store/enums/index.enum";
 import SharedDialog from "shared/ui/Dialog";
 import {
+  CampaignSurveyIcons,
   CampaignSurveyTypeList,
   ECampaignSurveyType,
   SurveyTypeConfig,
@@ -150,6 +151,15 @@ const LeftSidebar = () => {
     [dispatch]
   );
 
+  const getOptionIcon = (type: number) => {
+    const Comp = CampaignSurveyIcons[type];
+    return (
+      <Box mr={1} display="flex" alignItems="center">
+        <Comp height={20} width={20} color="white" />
+      </Box>
+    );
+  };
+
   useEffect(() => {
     if (!campaignSurveys.length) {
       return;
@@ -263,12 +273,22 @@ const LeftSidebar = () => {
                             width="100%"
                           >
                             <Box display={"flex"}>
-                              <Typography
+                              <Box
+                                px={1}
+                                display="flex"
+                                justifyContent={"center"}
+                                alignItems={"center"}
                                 color="primary.secondary"
-                                fontWeight={600}
+                                sx={{
+                                  backgroundColor: "primary.main",
+                                  borderRadius: "4px",
+                                }}
                               >
-                                {index + 1}.
-                              </Typography>
+                                {getOptionIcon(survey.type)}
+                                <Typography color={"white"} fontWeight={600}>
+                                  {index + 1}
+                                </Typography>
+                              </Box>
                               <Typography fontSize={14} ml={1}>
                                 {survey.title ||
                                   CampaignSurveyTypeList[survey.type]}

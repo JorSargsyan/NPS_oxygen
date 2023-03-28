@@ -11,7 +11,7 @@ export enum ERightSibebarTabs {
 export const rightSidebarTabsData = [
   {
     index: ERightSibebarTabs.Questions,
-    label: "Questions",
+    label: "Settings",
     children: <QuestionTab />,
   },
   {
