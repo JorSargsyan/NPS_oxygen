@@ -19,6 +19,7 @@ const initialState: ICommonState = {
   permissions: [],
   permissionGroups: [],
   managers: [],
+  sidebarVisible: true,
 };
 
 export const GetPermissions = createAsyncThunk<IGetPermissionsResponse>(
@@ -62,6 +63,9 @@ const commonSlice = createSlice({
     setTableLoading(state, { payload }) {
       state.tableLoading = payload;
     },
+    setSidebarVisible(state, { payload }) {
+      state.sidebarVisible = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(GetPermissions.fulfilled, (state, { payload }) => {
@@ -85,7 +89,10 @@ export const selectTableLoadingState = (state: IState) =>
   state.common.tableLoading;
 export const selectTheme = (state: IState) => state.common.theme;
 export const selectPermissions = (state: IState) => state.common.permissions;
+export const selectSidebarVisible = (state: IState) =>
+  state.common.sidebarVisible;
 export const selectPermissionGroups = (state: IState) =>
   state.common.permissionGroups;
 export const selectManagers = (state: IState) => state.common.managers;
+export const { setSidebarVisible } = commonSlice.actions;
 export default commonSlice.reducer;

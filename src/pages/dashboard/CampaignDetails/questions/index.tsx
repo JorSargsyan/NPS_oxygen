@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import LeftSidebar from "./LeftSidebar";
-import MainContent from "./components/MainContent";
-import RightSidebar from "./components/RightSibebar";
+import MainContent from "./MainContent";
+import RightSidebar from "./RightSidebar";
 
 const Questions = () => {
   return (
@@ -9,10 +9,10 @@ const Questions = () => {
       <Box flex={1}>
         <LeftSidebar />
       </Box>
-      <Box flex={3} mx={2} bgcolor={"blue"}>
+      <Box flex={4} mx={2}>
         <MainContent />
       </Box>
-      <Box flex={1} bgcolor={"green"}>
+      <Box flex={1}>
         <RightSidebar />
       </Box>
     </Box>

@@ -10,6 +10,7 @@ import {
   GetSurveys,
   GetTemplates,
 } from "store/slicers/campaignDetail";
+import { setSidebarVisible } from "store/slicers/common";
 
 const CampaignDetail = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const CampaignDetail = () => {
 
   const init = useCallback(() => {
     Promise.all([
+      dispatch(setSidebarVisible(false)),
       dispatch(GetCampaignById(Number(id))),
       dispatch(GetTemplates(Number(id))),
       dispatch(GetSurveys(Number(id))),
@@ -30,7 +32,7 @@ const CampaignDetail = () => {
 
   return (
     <Box p={2}>
-      <BasicTabs centered={false} tabsData={campaignDetailsTabList} />
+      <BasicTabs tabsData={campaignDetailsTabList} />
     </Box>
   );
 };
