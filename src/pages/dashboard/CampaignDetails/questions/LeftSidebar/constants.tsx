@@ -1,30 +1,10 @@
-import DesignTab from "./components/DesignTab";
-import LogicTab from "./components/LogicTab";
-import QuestionTab from "./components/QuestionTab";
-
-export enum ELeftSibebarTabs {
-  Questions = 0,
-  Design,
-  Logic,
-}
-
-export const leftSidebarTabsData = [
-  {
-    index: ELeftSibebarTabs.Questions,
-    label: "Questions",
-    children: <QuestionTab />,
-  },
-  {
-    index: ELeftSibebarTabs.Design,
-    label: "Design",
-    children: <DesignTab />,
-  },
-  {
-    index: ELeftSibebarTabs.Logic,
-    label: "Logic",
-    children: <LogicTab />,
-  },
-];
+import CircleIcon from "@heroicons/react/24/outline/StopCircleIcon";
+import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
+import ChatIcon from "@heroicons/react/24/outline/ChatBubbleBottomCenterTextIcon";
+import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
+import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
+import StarIcon from "@heroicons/react/24/outline/StarIcon";
+import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
 
 export const deleteCampaignSurveyWarningConfig = {
   title: "Warning",
@@ -51,6 +31,17 @@ export const CampaignSurveyTypeList = {
   [ECampaignSurveyType.ServiceQualityScore]: "Service quality score",
   [ECampaignSurveyType.Rating]: "Rating",
   [ECampaignSurveyType.Final]: "Thank you",
+};
+
+export const CampaignSurveyIcons = {
+  [ECampaignSurveyType.Welcome]: HandIcon,
+  [ECampaignSurveyType.SingleChoice]: CircleIcon,
+  [ECampaignSurveyType.MultipleChoice]: CheckIcon,
+  [ECampaignSurveyType.Comment]: ChatIcon,
+  [ECampaignSurveyType.Nps]: ChartIcon,
+  [ECampaignSurveyType.ServiceQualityScore]: SmileIcon,
+  [ECampaignSurveyType.Rating]: SmileIcon,
+  [ECampaignSurveyType.Final]: HandIcon,
 };
 
 export const SurveyTypeConfig = {

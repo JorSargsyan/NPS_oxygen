@@ -15,13 +15,18 @@ import { usePopover } from "shared/helpers/hooks/usePopover";
 import { EBaseUrl } from "store/config/constants";
 import { selectUserInfo } from "store/slicers/users";
 import AccountPopover from "./account";
+import { useLocation } from "react-router-dom";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
+  const location = useLocation();
   const { onNavOpen } = props;
   const lgUp = useMediaQuery<any>((theme) => theme.breakpoints.up("lg"));
+
+  const sidebarBtnVisible = location.pathname.includes("/campaign/");
+
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
 
@@ -35,11 +40,11 @@ export const TopNav = (props) => {
             alpha(theme.palette.background.default, 0.8),
           position: "sticky",
           left: {
-            lg: `${SIDE_NAV_WIDTH}px`,
+            lg: `${!sidebarBtnVisible ? SIDE_NAV_WIDTH : 0}px`,
           },
           top: 0,
           width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
+            lg: `calc(100% - ${!sidebarBtnVisible ? SIDE_NAV_WIDTH : 0}px)`,
           },
           zIndex: (theme) => theme.zIndex.appBar,
         }}
@@ -55,7 +60,7 @@ export const TopNav = (props) => {
           }}
         >
           <Stack alignItems="center" direction="row" spacing={2}>
-            {!lgUp && (
+            {(!lgUp || sidebarBtnVisible) && (
               <IconButton onClick={onNavOpen}>
                 <SvgIcon fontSize="small">
                   <Bars3Icon />

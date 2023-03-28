@@ -85,6 +85,8 @@ export const selectTableLoadingState = (state: IState) =>
   state.common.tableLoading;
 export const selectTheme = (state: IState) => state.common.theme;
 export const selectPermissions = (state: IState) => state.common.permissions;
+export const selectSidebarVisible = (state: IState) =>
+  state.common.sidebarVisible;
 export const selectPermissionGroups = (state: IState) =>
   state.common.permissionGroups;
 export const selectManagers = (state: IState) => state.common.managers;

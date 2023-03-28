@@ -30,7 +30,7 @@ const CampaignDetail = () => {
 
   return (
     <Box p={2}>
-      <BasicTabs centered={false} tabsData={campaignDetailsTabList} />
+      <BasicTabs tabsData={campaignDetailsTabList} />
     </Box>
   );
 };

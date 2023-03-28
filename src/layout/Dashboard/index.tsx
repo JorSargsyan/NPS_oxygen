@@ -2,16 +2,16 @@ import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { SideNav } from "./Navigation";
 import { TopNav } from "./Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const SIDE_NAV_WIDTH = 280;
 
-const LayoutRoot = styled("div")(({ theme }) => ({
+const LayoutRoot = styled("div")(({ theme, isSidebarVisible }) => ({
   display: "flex",
   flex: "1 1 auto",
   maxWidth: "100%",
   [theme.breakpoints.up("lg")]: {
-    paddingLeft: SIDE_NAV_WIDTH,
+    paddingLeft: isSidebarVisible ? SIDE_NAV_WIDTH : 0,
   },
 }));
 
@@ -23,13 +23,15 @@ const LayoutContainer = styled("div")({
 });
 
 const DashboardLayout = () => {
+  const location = useLocation();
   const [openNav, setOpenNav] = useState(false);
+  const isSidebarVisible = !location.pathname.includes("/campaign/");
 
   return (
     <>
       <TopNav onNavOpen={() => setOpenNav(true)} />
       <SideNav onClose={() => setOpenNav(false)} open={openNav} />
-      <LayoutRoot>
+      <LayoutRoot isSidebarVisible={isSidebarVisible}>
         <LayoutContainer>
           <Outlet />
         </LayoutContainer>

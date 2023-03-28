@@ -19,6 +19,8 @@ export const SideNav = (props) => {
   const { open, onClose } = props;
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
 
+  const sidebarBtnVisible = location.pathname.includes("/campaign/");
+
   const content = (
     <Scrollbar
       sx={{
@@ -114,7 +116,7 @@ export const SideNav = (props) => {
     </Scrollbar>
   );
 
-  if (lgUp) {
+  if (lgUp && !sidebarBtnVisible) {
     return (
       <Drawer
         anchor="left"

@@ -121,6 +121,15 @@ const campaignDetailSlice = createSlice({
     builder.addCase(GetSurveys.fulfilled, (state, { payload }) => {
       state.surveys = payload;
     });
+    builder.addCase(GetCampaignSurveyById.fulfilled, (state, { payload }) => {
+      state.surveyDetails = payload;
+    });
+    builder.addCase(
+      GetCampaignSurveyTemplateById.fulfilled,
+      (state, { payload }) => {
+        state.surveyTemplate = payload;
+      }
+    );
   },
 });
 
@@ -133,6 +142,12 @@ export const selectCampaignSurveys = (state: IState) =>
   state.campaignDetails.surveys;
 export const selectTemplates = (state: IState) =>
   state.campaignDetails.templates;
+export const selectSurveyInfo = (state: IState) => {
+  return {
+    details: state.campaignDetails.surveyDetails,
+    template: state.campaignDetails.surveyTemplate,
+  };
+};
 
 export const { setSelectedSurvey } = campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;
