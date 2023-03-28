@@ -252,7 +252,8 @@ const LeftSidebar = () => {
                   return (
                     <Draggable
                       isDragDisabled={
-                        survey.type === Number(ECampaignSurveyType.Welcome)
+                        survey.type === Number(ECampaignSurveyType.Welcome) ||
+                        survey.type === Number(ECampaignSurveyType.Final)
                       }
                       key={survey.id}
                       draggableId={survey.id}

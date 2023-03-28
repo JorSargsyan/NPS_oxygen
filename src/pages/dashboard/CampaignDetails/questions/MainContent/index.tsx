@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment } from "react";
 import { useForm } from "react-hook-form";
@@ -16,10 +16,7 @@ const MainContent = () => {
   return (
     <Fragment>
       {surveyInfo?.details && (
-        <Box
-          sx={{ backgroundColor: "primary.lightest", borderRadius: "10px" }}
-          p={2}
-        >
+        <Box component={Paper} elevation={3} p={2}>
           <Box display={"flex"} justifyContent={"center"}>
             <Box
               height="60%"
