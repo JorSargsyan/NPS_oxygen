@@ -1,7 +1,7 @@
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { Button, SvgIcon, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { defaultFilterValues } from "resources/constants";
@@ -13,6 +13,7 @@ import {
   IAttachedEmployeeAdditionalInfo,
   IDirectorate,
 } from "store/interfaces/directorates";
+import { setTableLoading } from "store/slicers/common";
 import {
   GetDirectorateById,
   GetDirectorates,
@@ -36,8 +37,10 @@ const DirectoratesGrid = () => {
     defaultValues: { config: defaultFilterValues },
   });
 
-  const refetchRoles = () => {
-    dispatch(GetDirectorates(methods.watch("config")));
+  const refetchRoles = async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetDirectorates(methods.watch("config")));
+    await dispatch(setTableLoading(false));
   };
 
   const handleEdit = async (row: IDirectorate) => {
@@ -68,9 +71,15 @@ const DirectoratesGrid = () => {
     ];
   };
 
-  useEffect(() => {
-    dispatch(GetDirectorates(defaultFilterValues));
+  const initialFetch = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetDirectorates(defaultFilterValues));
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    initialFetch();
+  }, [initialFetch]);
 
   return (
     <Box p={4}>

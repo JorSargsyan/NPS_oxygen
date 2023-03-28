@@ -3,6 +3,7 @@ import {
   Checkbox,
   Divider,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -22,6 +23,21 @@ import EnhancedToolbar from "./components/EnhancedToolbar";
 import TablePaginationActions from "./components/TablePAginationActions";
 import { IAction, IColumn, ITableProps, rowsPerPageOptions } from "./constants";
 import NoRows from "./components/NoRows";
+
+const LoadingSkeleton = () => (
+  <Box
+    sx={{
+      height: "max-content",
+    }}
+  >
+    {[...Array(6)].map((_) => (
+      <Skeleton
+        variant="rectangular"
+        sx={{ my: 2, mx: 1, height: "3em", borderRadius: "8px" }}
+      />
+    ))}
+  </Box>
+);
 
 const BasicTable = <T extends { id: number }>({
   columns,

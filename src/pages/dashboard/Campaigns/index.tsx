@@ -1,17 +1,21 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import BasicTable from "shared/ui/Table";
-import { columns, deleteCampaignWarningConfig } from "./constants";
-import { Box } from "@mui/system";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { Button, SvgIcon, Switch, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
+  defaultFilterValues,
   RIGHT_SIDEBAR_WIDTH,
   RIGHT_SIDEBAR_WIDTH_EXTENDED,
-  defaultFilterValues,
 } from "resources/constants";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
+import BasicTable from "shared/ui/Table";
+import { ERequestStatus } from "store/enums/index.enum";
 import { ICampaign } from "store/interfaces/campaigns";
 import {
   ChangeCampaignState,
@@ -20,20 +24,23 @@ import {
   GetCampaigns,
   selectCampaigns,
 } from "store/slicers/campaigns";
-import Rename from "./components/Rename";
-import HistoryView from "./components/HistoryView";
-import { ERequestStatus } from "store/enums/index.enum";
-import SharedDialog from "shared/ui/Dialog";
 import { setLoading } from "store/slicers/common";
-import toast from "react-hot-toast";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import CampaignListViewTypes from "./components/CampaignListTypes";
 import AddCampaign from "./components/AddCampaign";
-import { useNavigate } from "react-router-dom";
+import HistoryView from "./components/HistoryView";
+import Rename from "./components/Rename";
+import { columns, deleteCampaignWarningConfig } from "./constants";
+import CampaignCardsList from "./components/CampaignCardsList";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
   Rename = "Rename",
   Add = "Add",
+}
+
+export enum ECampaignListViewTypes {
+  Card = "Card",
+  Grid = "Grid",
 }
 
 const CampaignsPage = () => {
@@ -45,6 +52,9 @@ const CampaignsPage = () => {
   const [rowHistory, setRowHistory] = useState([]);
   const [mode, setMode] = useState<ECampaignAction>();
   const [editData, setEditData] = useState<ICampaign>();
+  const [campaignListVisibilityType, setCampaignListVisibilityType] = useState(
+    ECampaignListViewTypes.Card
+  );
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const methods = useForm({
     defaultValues: { config: defaultFilterValues },
@@ -115,7 +125,7 @@ const CampaignsPage = () => {
       },
       {
         label: "View History",
-        onClick: () => handleViewHistory(rowData.id),
+        onClick: () => handleViewHistory(rowData?.id),
       },
       {
         label: "Rename",
@@ -176,30 +186,48 @@ const CampaignsPage = () => {
 
   return (
     <Box p={4}>
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h3">Campaigns</Typography>
-        <Button
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusIcon />
-            </SvgIcon>
-          }
-          variant="outlined"
-          onClick={handleAdd}
-        >
-          Add
-        </Button>
+
+        <Box display="flex" alignItems="center" gap={2}>
+          <CampaignListViewTypes
+            type={campaignListVisibilityType}
+            setType={setCampaignListVisibilityType}
+          />
+          <Button
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+            variant="outlined"
+            onClick={handleAdd}
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
 
-      <BasicTable<ICampaign>
-        filterOptions={{ watch: methods.watch, reset: methods.reset }}
-        columns={campaignColumns}
-        toolbar={false}
-        getActions={getActions}
-        paginatedData={campaigns}
-        onChange={refetchData}
-        onChangeSelected={handleChangeSelected}
-      />
+      <Box>
+        {campaignListVisibilityType === ECampaignListViewTypes.Grid ? (
+          <BasicTable<ICampaign>
+            filterOptions={{ watch: methods.watch, reset: methods.reset }}
+            columns={campaignColumns}
+            toolbar={false}
+            getActions={getActions}
+            paginatedData={campaigns}
+            onChange={refetchData}
+            onChangeSelected={handleChangeSelected}
+          />
+        ) : (
+          <CampaignCardsList
+            list={campaigns?.displayData}
+            actions={getActions}
+            handleChangeState={handleChangeState}
+          />
+        )}
+      </Box>
+
       <RightDrawer
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
