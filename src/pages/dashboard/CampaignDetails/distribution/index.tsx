@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { selectCampaignInfo } from "store/slicers/campaignDetail";
 
 const Distribution = () => {
-  const [showSmsForm, setShowSmsForm] = useState(true);
+  const [showSmsForm, setShowSmsForm] = useState(false);
   const campaignInfo = useSelector(selectCampaignInfo);
 
   const handleCopy = () => {
