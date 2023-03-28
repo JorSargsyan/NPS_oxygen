@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
 import {
   IAddNote,
+  IAddTask,
   ICauseAndMoodRes,
   ICauseCategory,
   IChangeCustomerMood,
   IChangeCustomerRootCause,
   IChangeFeedbackStatus,
+  IDeleteTask,
   IFeedback,
   IFeedbackDetails,
   IFeedbackLog,
@@ -14,8 +16,12 @@ import {
   IFeedbackNotes,
   IFeedbacksState,
   IFeedbackTask,
+  IFeedbackTaskLog,
+  IFeedbackTaskUpdateAssignUser,
+  IFeedbackTaskUpdateStatus,
   IUpdateManager,
   IUpdateNote,
+  IUpdateTask,
 } from "store/interfaces/feedback";
 import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -30,6 +36,7 @@ const initialState: IFeedbacksState = {
   feedbackLogs: [],
   feedbackNoteHistory: [],
   feedbackTasks: [],
+  feedbackTaskLogs: [],
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -154,6 +161,64 @@ export const GetFeedbackTasks = createAsyncThunk<IFeedbackTask[], string>(
   }
 );
 
+export const AddFeedbackTask = createAsyncThunk<unknown, IAddTask>(
+  `${name}/AddFeedbackTask`,
+  async (data: IAddTask) => {
+    return (await api.post(`${EBaseUrl.API}/Task`, data)).data;
+  }
+);
+
+export const UpdateFeedbackTask = createAsyncThunk<unknown, IUpdateTask>(
+  `${name}/UpdateFeedbackTask`,
+  async (data: IUpdateTask) => {
+    return (await api.put(`${EBaseUrl.API}/Task/${data.taskID}`, data.formData))
+      .data;
+  }
+);
+
+export const DeleteFeedbackTask = createAsyncThunk<unknown, IDeleteTask>(
+  `${name}/DeleteFeedbackTask`,
+  async (data: IDeleteTask) => {
+    return (
+      await api.delete(`${EBaseUrl.API}/Task/${data.feedbackID}/${data.taskID}`)
+    ).data;
+  }
+);
+
+export const GetFeedbackTaskLogs = createAsyncThunk<IFeedbackTaskLog[], number>(
+  `${name}/GetFeedbackTaskLogs`,
+  async (id: number) => {
+    return (await api.get(`${EBaseUrl.API}/Task/Logs?taskId=${id}`)).data;
+  }
+);
+
+export const UpdateFeedbackTaskAssignedUser = createAsyncThunk<
+  unknown,
+  IFeedbackTaskUpdateAssignUser
+>(
+  `${name}/UpdateFeedbackTaskAssignedUser`,
+  async (data: IFeedbackTaskUpdateAssignUser) => {
+    return (
+      await api.put(
+        `${EBaseUrl.API}/Task/AssignedUser/${data.taskID}`,
+        data.formData
+      )
+    ).data;
+  }
+);
+
+export const UpdateFeedbackTaskStatus = createAsyncThunk<
+  unknown,
+  IFeedbackTaskUpdateStatus
+>(
+  `${name}/UpdateFeedbackTaskStatus`,
+  async (data: IFeedbackTaskUpdateStatus) => {
+    return (
+      await api.put(`${EBaseUrl.API}/Task/Status/${data.taskID}`, data.formData)
+    ).data;
+  }
+);
+
 const FeedbacksSlice = createSlice({
   initialState,
   name,
@@ -193,6 +258,9 @@ const FeedbacksSlice = createSlice({
     builder.addCase(GetFeedbackTasks.fulfilled, (state, { payload }) => {
       state.feedbackTasks = payload;
     });
+    builder.addCase(GetFeedbackTaskLogs.fulfilled, (state, { payload }) => {
+      state.feedbackTaskLogs = payload;
+    });
   },
 });
 
@@ -209,5 +277,7 @@ export const selectFeedbackNoteHistory = (state: IState) =>
   state.feedbacks.feedbackNoteHistory;
 export const selectFeedbackTasks = (state: IState) =>
   state.feedbacks.feedbackTasks;
+export const selectFeedbackTaskLogs = (state: IState) =>
+  state.feedbacks.feedbackTaskLogs;
 
 export default FeedbacksSlice.reducer;

@@ -78,7 +78,7 @@ const AddEditDirectorate = ({
     dispatch(setLoading(false));
     onSuccess();
   };
-
+  // console.log(methods.watch());
   const fetchEmployeeList = async (value: string) => {
     if (value) {
       const formData = {
@@ -92,26 +92,34 @@ const AddEditDirectorate = ({
     }
   };
 
-  const setEditData = useCallback(async () => {
+  const initialFetch = useCallback(async () => {
     const formData = {
       filter: "attachedemployee",
       term: "",
-      count: 15,
+      count: 2,
       ...(editData?.id ? { directorateID: editData.id } : {}),
     };
+    // console.log(editData);
     const query = getQueryParams(formData);
     await dispatch(GetAttachedEmployeeFilterList(query));
+
+    const filteredIDs = editData?.attachedEmployeeAdditionalInfo.map(
+      (i) => i.id
+    );
+
+    // const selectedValues =
+
     if (editData) {
       methods.reset({
         name: editData.name ?? "",
-        attachedEmployeesIDs: editData.attachedEmployeeAdditionalInfo || [],
+        attachedEmployeesIDs: editData?.attachedEmployeeAdditionalInfo || [],
       });
     }
   }, [editData, methods, dispatch]);
 
   useEffect(() => {
-    setEditData();
-  }, [setEditData]);
+    initialFetch();
+  }, [initialFetch]);
 
   return (
     <Fragment>
