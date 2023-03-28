@@ -38,6 +38,8 @@ interface IAutocompleteProps<OptionType> {
   getOptionDisabled?: (option: OptionType) => boolean;
   groupBy?: (option: OptionType) => string;
   hasSelectAllOption?: boolean;
+  isEqualByID?: boolean;
+  isOptionEqualToValue?: (option: OptionType, value: any) => boolean;
 }
 
 const BasicAutocomplete = <T extends { id?: number | string }>({
@@ -58,6 +60,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
   defaultValue,
   groupBy = undefined,
   hasSelectAllOption = false,
+  isOptionEqualToValue = undefined,
 }: IAutocompleteProps<T>) => {
   const {
     control,
@@ -138,9 +141,12 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
                 : filtered;
             }}
             disableCloseOnSelect={multiple}
-            isOptionEqualToValue={(option, value) =>
-              JSON.stringify(option) === JSON.stringify(value)
-            }
+            isOptionEqualToValue={(option, value) => {
+              if (isOptionEqualToValue) {
+                return isOptionEqualToValue?.(option, value);
+              }
+              return JSON.stringify(option) === JSON.stringify(value);
+            }}
             {...(async
               ? {
                   onInputChange: debounce((_, value) => fetchFn?.(value)),

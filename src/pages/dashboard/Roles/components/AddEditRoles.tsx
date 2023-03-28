@@ -93,7 +93,6 @@ const AddEditRoles = ({
             editData?.permissionIds.includes(i.id)
           );
       });
-      console.log(permGroupData);
       methods.reset({
         ...editData,
         permissions: permGroupData,

@@ -37,8 +37,10 @@ api.interceptors.response.use(
         toast.error(
           `${err.response?.data?.error?.code}: ${err.response?.data?.error?.message}`
         );
+        reject(err);
       } else {
         toast.error("SMT Went Wrong");
+        reject(err);
       }
     });
   }

@@ -91,7 +91,6 @@ const RedirectTaskDrawer = (props: Props) => {
         taskID: editData.id,
       };
       const { meta } = await dispatch(UpdateFeedbackTask(updatedFormData));
-
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
         dispatch(setLoading(false));
         return;
