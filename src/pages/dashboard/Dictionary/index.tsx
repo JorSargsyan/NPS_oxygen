@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
@@ -91,9 +91,15 @@ const Translations = () => {
     ];
   };
 
-  useEffect(() => {
+  const initialFetch = useCallback(async () => {
+    await dispatch(setTableLoading(true));
     dispatch(GetTranslations(defaultFilterValues));
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    initialFetch();
+  }, [initialFetch]);
 
   return (
     <Box p={4}>
