@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { selectFeedbackDetails } from "store/slicers/feedback";
+import NoData from "../../NoData";
 
 const TabServiceComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
@@ -16,6 +17,7 @@ const TabServiceComponent = () => {
       }}
       p={3}
     >
+      {!service && <NoData description="There is no data" />}
       {service?.employeeName ? (
         <Box mr={1}>
           <Typography fontSize={14} fontWeight="bold" mb={1}>

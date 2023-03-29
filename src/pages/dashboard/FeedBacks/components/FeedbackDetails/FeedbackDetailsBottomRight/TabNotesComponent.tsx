@@ -44,6 +44,7 @@ import {
   UpdateFeedbackNote,
 } from "store/slicers/feedback";
 import { selectUserInfo } from "store/slicers/users";
+import NoData from "../../NoData";
 import { deleteNoteDialogOptions } from "./constants";
 import NoteHistory from "./FeedbackSharedHistory";
 
@@ -217,99 +218,67 @@ const TabNotesComponent = () => {
           </ButtonLoader>
         </Box>
         <Fragment>
-          {watchNotesList?.length
-            ? watchNotesList?.map((note, index) => {
-                return (
-                  <Card key={note.id} sx={{ marginBottom: 2 }}>
-                    <CardContentNoPadding>
-                      <Box
-                        display="flex"
-                        alignItems="flex-start"
-                        justifyContent="space-between"
-                        pb={1}
-                      >
-                        <Box display="flex" alignItems="center">
-                          <Box mr={1}>
-                            {note?.user?.imagePath ? (
-                              <Avatar
-                                sx={{
-                                  height: 40,
-                                  width: 40,
-                                }}
-                                src={`${EBaseUrl.MediaUserURL}/${note?.user?.imagePath}`}
-                              />
-                            ) : (
-                              <Avatar
-                                sx={{
-                                  height: 40,
-                                  width: 40,
-                                  backgroundColor: "primary.main",
-                                }}
-                              >
-                                {note?.user?.name.slice(0, 1)}
-                              </Avatar>
-                            )}
-                          </Box>
-                          <Box>
-                            <Box fontSize={12}>
-                              {`${note?.user?.name} ${note?.user?.surname}`}
-                              {note.isUpdated && (
-                                <Typography
-                                  sx={{ color: "warning.main" }}
-                                  fontSize={12}
-                                >{`Edited on ${note?.updatedDate}`}</Typography>
-                              )}
-                              {note.isDeleted && (
-                                <Typography
-                                  fontSize={12}
-                                  sx={{ color: "error.main" }}
-                                >{`Deleted on ${note?.updatedDate}`}</Typography>
-                              )}
-                            </Box>
-                            <Typography fontSize={12}>
-                              {note?.creationDate}
-                            </Typography>
-                          </Box>
+          {watchNotesList?.length ? (
+            watchNotesList?.map((note, index) => {
+              return (
+                <Card key={note.id} sx={{ marginBottom: 2 }}>
+                  <CardContentNoPadding>
+                    <Box
+                      display="flex"
+                      alignItems="flex-start"
+                      justifyContent="space-between"
+                      pb={1}
+                    >
+                      <Box display="flex" alignItems="center">
+                        <Box mr={1}>
+                          {note?.user?.imagePath ? (
+                            <Avatar
+                              sx={{
+                                height: 40,
+                                width: 40,
+                              }}
+                              src={`${EBaseUrl.MediaUserURL}/${note?.user?.imagePath}`}
+                            />
+                          ) : (
+                            <Avatar
+                              sx={{
+                                height: 40,
+                                width: 40,
+                                backgroundColor: "primary.main",
+                              }}
+                            >
+                              {note?.user?.name.slice(0, 1)}
+                            </Avatar>
+                          )}
                         </Box>
                         <Box>
-                          <CardActions>
-                            {!note.isDeleted &&
-                              isSameNoteCreator(note.user.id) && (
-                                <Button
-                                  onClick={(e) => editNote(note)}
-                                  startIcon={<Edit height={15} width={15} />}
-                                  size="small"
-                                  variant="outlined"
-                                  sx={{
-                                    minWidth: 25,
-                                    padding: "10px",
-                                    "& .MuiButton-startIcon": {
-                                      marginRight: 0,
-                                    },
-                                  }}
-                                />
-                              )}
-                            {!note.isDeleted &&
-                              isSameNoteCreator(note.user.id) && (
-                                <Button
-                                  onClick={(e) => deleteNote(note)}
-                                  startIcon={<Trash height={15} width={15} />}
-                                  size="small"
-                                  variant="outlined"
-                                  sx={{
-                                    minWidth: 25,
-                                    padding: "10px",
-                                    "& .MuiButton-startIcon": {
-                                      marginRight: 0,
-                                    },
-                                  }}
-                                />
-                              )}
-
-                            {(note.isDeleted || note.isUpdated) && (
+                          <Box fontSize={12}>
+                            {`${note?.user?.name} ${note?.user?.surname}`}
+                            {note.isUpdated && (
+                              <Typography
+                                sx={{ color: "warning.main" }}
+                                fontSize={12}
+                              >{`Edited on ${note?.updatedDate}`}</Typography>
+                            )}
+                            {note.isDeleted && (
+                              <Typography
+                                fontSize={12}
+                                sx={{ color: "error.main" }}
+                              >{`Deleted on ${note?.updatedDate}`}</Typography>
+                            )}
+                          </Box>
+                          <Typography fontSize={12}>
+                            {note?.creationDate}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <CardActions>
+                          {!note.isDeleted &&
+                            isSameNoteCreator(note.user.id) && (
                               <Button
-                                onClick={() => viewFeedbackHistory(note)}
-                                startIcon={<History height={15} width={15} />}
+                                onClick={(e) => editNote(note)}
+                                startIcon={<Edit height={15} width={15} />}
                                 size="small"
                                 variant="outlined"
                                 sx={{
@@ -321,42 +290,76 @@ const TabNotesComponent = () => {
                                 }}
                               />
                             )}
-                          </CardActions>
-                        </Box>
+                          {!note.isDeleted &&
+                            isSameNoteCreator(note.user.id) && (
+                              <Button
+                                onClick={(e) => deleteNote(note)}
+                                startIcon={<Trash height={15} width={15} />}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  minWidth: 25,
+                                  padding: "10px",
+                                  "& .MuiButton-startIcon": {
+                                    marginRight: 0,
+                                  },
+                                }}
+                              />
+                            )}
+
+                          {(note.isDeleted || note.isUpdated) && (
+                            <Button
+                              onClick={() => viewFeedbackHistory(note)}
+                              startIcon={<History height={15} width={15} />}
+                              size="small"
+                              variant="outlined"
+                              sx={{
+                                minWidth: 25,
+                                padding: "10px",
+                                "& .MuiButton-startIcon": {
+                                  marginRight: 0,
+                                },
+                              }}
+                            />
+                          )}
+                        </CardActions>
                       </Box>
-                      <Divider />
-                      {!note.isDeleted && (
-                        <TextInput<IFormData>
-                          label="Note"
-                          disabled={note.id !== watchEditedNoteID}
-                          name={`notesList[${index}].note`}
-                        />
-                      )}
-                      {watchEditedNoteID && watchEditedNoteID === note.id && (
-                        <Box textAlign="end" mt={2}>
-                          <Button
-                            onClick={handleCancelNoteEditing}
-                            size="small"
-                            variant="outlined"
-                            sx={{ marginRight: 2 }}
-                          >
-                            <Typography>Cancel</Typography>
-                          </Button>
-                          <ButtonLoader
-                            onClick={() => handleSaveEditedNote(note)}
-                            size="small"
-                            variant="contained"
-                            isLoading={isButtonLoading}
-                          >
-                            <Typography>Save</Typography>
-                          </ButtonLoader>
-                        </Box>
-                      )}
-                    </CardContentNoPadding>
-                  </Card>
-                );
-              })
-            : null}
+                    </Box>
+                    <Divider />
+                    {!note.isDeleted && (
+                      <TextInput<IFormData>
+                        label="Note"
+                        disabled={note.id !== watchEditedNoteID}
+                        name={`notesList[${index}].note`}
+                      />
+                    )}
+                    {watchEditedNoteID && watchEditedNoteID === note.id && (
+                      <Box textAlign="end" mt={2}>
+                        <Button
+                          onClick={handleCancelNoteEditing}
+                          size="small"
+                          variant="outlined"
+                          sx={{ marginRight: 2 }}
+                        >
+                          <Typography>Cancel</Typography>
+                        </Button>
+                        <ButtonLoader
+                          onClick={() => handleSaveEditedNote(note)}
+                          size="small"
+                          variant="contained"
+                          isLoading={isButtonLoading}
+                        >
+                          <Typography>Save</Typography>
+                        </ButtonLoader>
+                      </Box>
+                    )}
+                  </CardContentNoPadding>
+                </Card>
+              );
+            })
+          ) : (
+            <NoData description="There are no notes yet" />
+          )}
         </Fragment>
         <SharedDialog
           open={warningOpen}

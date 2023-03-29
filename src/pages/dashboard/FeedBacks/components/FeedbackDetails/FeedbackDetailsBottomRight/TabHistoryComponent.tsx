@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { IFeedbackLog } from "store/interfaces/feedback";
 import { GetFeedbackLogs, selectFeedbackLogs } from "store/slicers/feedback";
+import NoData from "../../NoData";
 import { EFeedbackLogTypes } from "./constants";
 import FeedBackSharedHistoryComponent from "./FeedbackSharedHistory";
 
@@ -91,10 +92,14 @@ const TabHistoryComponent = () => {
 
   return (
     <Box p={2}>
-      <FeedBackSharedHistoryComponent<IFeedbackLog>
-        list={feedbackLogs}
-        children={FeedbackHistoryLogsText}
-      />
+      {feedbackLogs?.length ? (
+        <FeedBackSharedHistoryComponent<IFeedbackLog>
+          list={feedbackLogs}
+          children={FeedbackHistoryLogsText}
+        />
+      ) : (
+        <NoData description="There is no history" />
+      )}
     </Box>
   );
 };

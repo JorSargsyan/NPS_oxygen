@@ -40,6 +40,7 @@ import {
   UpdateFeedbackTaskStatus,
 } from "store/slicers/feedback";
 import { selectUserInfo } from "store/slicers/users";
+import NoData from "../../NoData";
 import FeedbackTaskHistory from "./components/FeedbackTaskHistory";
 import RedirectTaskDrawer from "./components/RedirectTaskDrawer";
 import WithAttachedEmployeeSelect from "./components/WithAttachedEmployeesSelect";
@@ -237,192 +238,200 @@ const TabRedirectionComponent = () => {
         </Button>
       </Box>
       <FormProvider {...methods}>
-        {tasksListWatch?.map((task, index) => {
-          return (
-            <Card key={task.id} sx={{ marginBottom: 2 }}>
-              <CardContentNoPadding>
-                {!task.isDeleted ? (
-                  <Fragment>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        paddingBottom: 2,
-                      }}
-                    >
-                      <Box display="flex">
-                        <Typography fontSize={13} mr={1}>
-                          Deadline:
-                        </Typography>
-                        <Typography fontWeight="bold" fontSize={13}>
-                          {task.deadline}
-                        </Typography>
+        {tasksListWatch?.length ? (
+          tasksListWatch?.map((task, index) => {
+            return (
+              <Card key={task.id} sx={{ marginBottom: 2 }}>
+                <CardContentNoPadding>
+                  {!task.isDeleted ? (
+                    <Fragment>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          paddingBottom: 2,
+                        }}
+                      >
+                        <Box display="flex">
+                          <Typography fontSize={13} mr={1}>
+                            Deadline:
+                          </Typography>
+                          <Typography fontWeight="bold" fontSize={13}>
+                            {task.deadline}
+                          </Typography>
+                        </Box>
+
+                        <CardActions>
+                          {!task.isDeleted &&
+                            isSameTaskCreator(task.createdBy.id) &&
+                            task.status.id !==
+                              ERedirectTabStatuses.Completed && (
+                              <Button
+                                onClick={(e) => editFeedbackTask(task)}
+                                startIcon={<Edit height={15} width={15} />}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  minWidth: 25,
+                                  padding: "10px",
+                                  "& .MuiButton-startIcon": {
+                                    marginRight: 0,
+                                  },
+                                }}
+                              />
+                            )}
+                          {!task.isDeleted &&
+                            isSameTaskCreator(task.createdBy.id) && (
+                              <Button
+                                onClick={(e) => deleteFeedbackTask(task)}
+                                startIcon={<Trash height={15} width={15} />}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  minWidth: 25,
+                                  padding: "10px",
+                                  "& .MuiButton-startIcon": {
+                                    marginRight: 0,
+                                  },
+                                }}
+                              />
+                            )}
+
+                          {(task.isDeleted || task.isUpdated) && (
+                            <Button
+                              onClick={() => viewFeedbackTaskHistory(task)}
+                              startIcon={<History height={15} width={15} />}
+                              size="small"
+                              variant="outlined"
+                              sx={{
+                                minWidth: 25,
+                                padding: "10px",
+                                "& .MuiButton-startIcon": {
+                                  marginRight: 0,
+                                },
+                              }}
+                            />
+                          )}
+                        </CardActions>
                       </Box>
+                      <Box mb={2} sx={{ display: "flex", gap: 2 }}>
+                        <WithAttachedEmployeeSelect<
+                          IWithAttachedEmployee,
+                          IAttachedEmployee
+                        >
+                          name={`tasks[${index}].attachedEmployeeAdditionalInfo.id`}
+                          defaultValue={""}
+                          size="small"
+                          label="Employees"
+                          valueProp="id"
+                          labelProp="label"
+                          groupNameProp="name"
+                          groupedListProp="attachedEmployeeAdditionalInfo"
+                          options={employeeListWatch[index]}
+                          isDisabledProp="isDisabled"
+                          onChangeCB={(value: number) =>
+                            changeAttachedEmployee(value, task, index)
+                          }
+                        />
 
-                      <CardActions>
-                        {!task.isDeleted &&
-                          isSameTaskCreator(task.createdBy.id) &&
-                          task.status.id !== ERedirectTabStatuses.Completed && (
-                            <Button
-                              onClick={(e) => editFeedbackTask(task)}
-                              startIcon={<Edit height={15} width={15} />}
-                              size="small"
-                              variant="outlined"
+                        <BasicSelect<IRedirectTabStatuses>
+                          name={`tasks[${index}].status.id`}
+                          defaultValue={""}
+                          size="small"
+                          label="Feedback status"
+                          valueProp="value"
+                          labelProp="name"
+                          options={redirectTabStatuses}
+                          onChangeCB={(value: number) =>
+                            changeFeedbackStatus(value, task)
+                          }
+                          disabled={
+                            task.status.id === ERedirectTabStatuses.Completed
+                          }
+                        />
+                      </Box>
+                      <Fragment>
+                        <Typography sx={{ marginBottom: 1, fontSize: 13 }}>
+                          Redirected department
+                        </Typography>
+                        <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
+                          {task.directoratName}
+                        </Typography>
+                      </Fragment>
+                      <Divider
+                        sx={{ borderColor: "neutral.400", margin: "8px 0" }}
+                      />
+                      {task.description && (
+                        <Fragment>
+                          <Fragment>
+                            <Typography sx={{ marginBottom: 1, fontSize: 13 }}>
+                              Task description
+                            </Typography>
+                            <Typography
                               sx={{
-                                minWidth: 25,
-                                padding: "10px",
-                                "& .MuiButton-startIcon": {
-                                  marginRight: 0,
-                                },
+                                marginBottom: 1,
+                                fontWeight: "bold",
+                                fontSize: 13,
                               }}
-                            />
-                          )}
-                        {!task.isDeleted &&
-                          isSameTaskCreator(task.createdBy.id) && (
-                            <Button
-                              onClick={(e) => deleteFeedbackTask(task)}
-                              startIcon={<Trash height={15} width={15} />}
-                              size="small"
-                              variant="outlined"
-                              sx={{
-                                minWidth: 25,
-                                padding: "10px",
-                                "& .MuiButton-startIcon": {
-                                  marginRight: 0,
-                                },
-                              }}
-                            />
-                          )}
-
-                        {(task.isDeleted || task.isUpdated) && (
-                          <Button
-                            onClick={() => viewFeedbackTaskHistory(task)}
-                            startIcon={<History height={15} width={15} />}
-                            size="small"
-                            variant="outlined"
+                            >
+                              {task.description}
+                            </Typography>
+                          </Fragment>
+                          <Divider
                             sx={{
-                              minWidth: 25,
-                              padding: "10px",
-                              "& .MuiButton-startIcon": {
-                                marginRight: 0,
-                              },
+                              borderColor: "neutral.400",
+                              margin: "8px 0",
                             }}
                           />
-                        )}
-                      </CardActions>
-                    </Box>
-                    <Box mb={2} sx={{ display: "flex", gap: 2 }}>
-                      <WithAttachedEmployeeSelect<
-                        IWithAttachedEmployee,
-                        IAttachedEmployee
-                      >
-                        name={`tasks[${index}].attachedEmployeeAdditionalInfo.id`}
-                        defaultValue={""}
-                        size="small"
-                        label="Employees"
-                        valueProp="id"
-                        labelProp="label"
-                        groupNameProp="name"
-                        groupedListProp="attachedEmployeeAdditionalInfo"
-                        options={employeeListWatch[index]}
-                        isDisabledProp="isDisabled"
-                        onChangeCB={(value: number) =>
-                          changeAttachedEmployee(value, task, index)
-                        }
-                      />
-
-                      <BasicSelect<IRedirectTabStatuses>
-                        name={`tasks[${index}].status.id`}
-                        defaultValue={""}
-                        size="small"
-                        label="Feedback status"
-                        valueProp="value"
-                        labelProp="name"
-                        options={redirectTabStatuses}
-                        onChangeCB={(value: number) =>
-                          changeFeedbackStatus(value, task)
-                        }
-                        disabled={
-                          task.status.id === ERedirectTabStatuses.Completed
-                        }
-                      />
-                    </Box>
-                    <Fragment>
-                      <Typography sx={{ marginBottom: 1, fontSize: 13 }}>
-                        Redirected department
-                      </Typography>
-                      <Typography sx={{ fontWeight: "bold", fontSize: 13 }}>
-                        {task.directoratName}
-                      </Typography>
-                    </Fragment>
-                    <Divider
-                      sx={{ borderColor: "neutral.400", margin: "8px 0" }}
-                    />
-                    {task.description && (
-                      <Fragment>
-                        <Fragment>
-                          <Typography sx={{ marginBottom: 1, fontSize: 13 }}>
-                            Task description
-                          </Typography>
-                          <Typography
-                            sx={{
-                              marginBottom: 1,
-                              fontWeight: "bold",
-                              fontSize: 13,
-                            }}
-                          >
-                            {task.description}
-                          </Typography>
                         </Fragment>
-                        <Divider
-                          sx={{ borderColor: "neutral.400", margin: "8px 0" }}
-                        />
-                      </Fragment>
-                    )}
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography sx={{ fontSize: 14, color: "info.main" }}>
-                        Created by
-                      </Typography>
-                      <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                        {task.createdBy.name.concat(
-                          ` ${task.createdBy.surname}`
-                        )}
-                      </Typography>
-                      <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                        {task.creationDate}
-                      </Typography>
-                    </Box>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography sx={{ fontSize: 14, color: "info.main" }}>
-                        Created by
-                      </Typography>
-                      <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                        {task.createdBy.name.concat(
-                          ` ${task.createdBy.surname}`
-                        )}
-                      </Typography>
-                      <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                        {task.creationDate}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography sx={{ fontSize: 14, color: "error.main" }}>
-                        Deleted on
-                      </Typography>
-                      <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
-                        {task.updatedDate}
-                      </Typography>
-                    </Box>
-                  </Fragment>
-                )}
-              </CardContentNoPadding>
-            </Card>
-          );
-        })}
+                      )}
+                      <Box sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, color: "info.main" }}>
+                          Created by
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                          {task.createdBy.name.concat(
+                            ` ${task.createdBy.surname}`
+                          )}
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                          {task.creationDate}
+                        </Typography>
+                      </Box>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <Box sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, color: "info.main" }}>
+                          Created by
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                          {task.createdBy.name.concat(
+                            ` ${task.createdBy.surname}`
+                          )}
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                          {task.creationDate}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, color: "error.main" }}>
+                          Deleted on
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: "bold" }}>
+                          {task.updatedDate}
+                        </Typography>
+                      </Box>
+                    </Fragment>
+                  )}
+                </CardContentNoPadding>
+              </Card>
+            );
+          })
+        ) : (
+          <NoData description="There are no tasks yet" />
+        )}
       </FormProvider>
       <RightDrawer
         open={isDrawerOpen}

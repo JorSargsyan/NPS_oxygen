@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { campaignTypes } from "resources/constants";
 import { selectFeedbackDetails } from "store/slicers/feedback";
+import NoData from "../../NoData";
 
 const TabSurveyComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
@@ -35,6 +36,7 @@ const TabSurveyComponent = () => {
       }}
       p={3}
     >
+      {!survey && <NoData description="There is no data" />}
       {survey?.surveyMetric ? (
         <Box>
           <Typography fontSize={14} fontWeight="bold" mb={1}>
