@@ -103,8 +103,21 @@ const LeftSidebar = () => {
     fetchSurveyData(payload.surveyId);
   };
 
-  const onDragEnd = ({ destination, source }) => {
+  const onDragEnd = ({ destination, source, draggableId }) => {
     if (!destination || destination.index === source.index) {
+      return;
+    }
+
+    const actualSurvey = surveyList.find((i) => i.id === draggableId);
+
+    if (
+      (!(
+        actualSurvey.type === Number(ECampaignSurveyType.Final) ||
+        actualSurvey.type === Number(ECampaignSurveyType.Welcome)
+      ) &&
+        destination.index === 0) ||
+      destination.index === surveyList.length - 1
+    ) {
       return;
     }
 
@@ -170,7 +183,7 @@ const LeftSidebar = () => {
   }, [campaignSurveys, dispatch, fetchSurveyData]);
 
   return (
-    <Box>
+    <Box p={1}>
       <Box mt={2}>
         <Button
           fullWidth

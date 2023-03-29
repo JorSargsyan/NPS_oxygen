@@ -2,11 +2,18 @@ import { Box } from "@mui/system";
 import LeftSidebar from "./LeftSidebar";
 import MainContent from "./MainContent";
 import RightSidebar from "./RightSidebar";
+import { Paper } from "@mui/material";
 
 const Questions = () => {
   return (
-    <Box display="flex" mt={2} minHeight={"100vh"}>
-      <Box flex={1}>
+    <Box display="flex" pt={2}>
+      <Box
+        flex={1}
+        component={Paper}
+        elevation={4}
+        maxHeight="450px"
+        overflow={"scroll"}
+      >
         <LeftSidebar />
       </Box>
       <Box flex={3} mx={2}>

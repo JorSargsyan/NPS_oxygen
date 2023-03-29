@@ -8,6 +8,7 @@ import {
   ICampaignSurvey,
   IDistributionSchedule,
   ICampaignSurveyDetails,
+  IUpdateSurveyRequest,
   ICreateCampaignSurveyRequest,
   ICreateCampaignSurveyResponse,
 } from "store/interfaces/campaignDetails";
@@ -86,6 +87,16 @@ export const GetSurveys = createAsyncThunk<ICampaignSurvey[], number>(
   `${name}/GetSurveys`,
   async (id: number) => {
     return (await api.get(`${EBaseUrl.API}/Surveys/${id}`)).data;
+  }
+);
+
+export const UpdateSurvey = createAsyncThunk<
+  unknown,
+  { data: IUpdateSurveyRequest; id: number }
+>(
+  `${name}/UpdateSurvey`,
+  async ({ id, data }: { id: number; data: IUpdateSurveyRequest }) => {
+    return (await api.put(`${EBaseUrl.API}/Survey/${id}`, data)).data;
   }
 );
 

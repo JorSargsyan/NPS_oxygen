@@ -59,6 +59,24 @@ export interface ICampaignSurvey {
   type: number;
 }
 
+export interface IAnswer {
+  id: number;
+  position: number;
+  value: string;
+  name: string;
+  newAnswer?: boolean;
+}
+
+export interface IUpdateSurveyRequest {
+  campaignID: number;
+  title: string;
+  position: number;
+  type: number;
+  buttonText: string;
+  isRequired: boolean;
+  answers: IAnswer[];
+}
+
 export interface IDistributionSchedule {
   isLink: boolean;
   message: string;
