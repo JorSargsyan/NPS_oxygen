@@ -3,7 +3,6 @@ import {
   Checkbox,
   Divider,
   Paper,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -20,24 +19,9 @@ import { useSelector } from "react-redux";
 import { selectTableLoadingState } from "store/slicers/common";
 import DotsMenu from "../DotsMenu";
 import EnhancedToolbar from "./components/EnhancedToolbar";
+import NoRows from "./components/NoRows";
 import TablePaginationActions from "./components/TablePAginationActions";
 import { IAction, IColumn, ITableProps, rowsPerPageOptions } from "./constants";
-import NoRows from "./components/NoRows";
-
-const LoadingSkeleton = () => (
-  <Box
-    sx={{
-      height: "max-content",
-    }}
-  >
-    {[...Array(6)].map((_) => (
-      <Skeleton
-        variant="rectangular"
-        sx={{ my: 2, mx: 1, height: "3em", borderRadius: "8px" }}
-      />
-    ))}
-  </Box>
-);
 
 const BasicTable = <T extends { id: number }>({
   columns,
@@ -326,9 +310,11 @@ const BasicTable = <T extends { id: number }>({
             <TableRow>{getPagination()}</TableRow>
           </TableFooter>
         </Table>
-        <Table>
-          <TableBody>{noResults && <NoRows />}</TableBody>
-        </Table>
+        {!tableLoading && (
+          <Table>
+            <TableBody>{noResults && <NoRows />}</TableBody>
+          </Table>
+        )}
       </TableContainer>
     </Box>
   );

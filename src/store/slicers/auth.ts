@@ -23,6 +23,13 @@ export const Authorize = createAsyncThunk<
   return (await api.post(`${EBaseUrl.API}/login`, formData)).data;
 });
 
+export const RefreshToken = createAsyncThunk<IAuthorizeResponse>(
+  `${name}/RefreshToken`,
+  async () => {
+    return (await api.get(`${EBaseUrl.API}/Refresh`)).data;
+  }
+);
+
 export const ForgetPassword = createAsyncThunk<
   IAuthChangePasswordResponse,
   IAuthChangePasswordRequest
@@ -42,6 +49,24 @@ const authSlicer = createSlice({
     signOut(state) {
       state.isAuth = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(Authorize.fulfilled, (_, { payload }) => {
+      localStorage.setItem(LStorage.AUTH, payload.accessToken);
+      localStorage.setItem(LStorage.EXPIRATION_DATE, payload.expires);
+      localStorage.setItem(
+        LStorage.EXPIRATION_HOURS,
+        payload.expireHours.toString()
+      );
+    });
+    builder.addCase(RefreshToken.fulfilled, (_, { payload }) => {
+      localStorage.setItem(LStorage.AUTH, payload.accessToken);
+      localStorage.setItem(LStorage.EXPIRATION_DATE, payload.expires);
+      localStorage.setItem(
+        LStorage.EXPIRATION_HOURS,
+        payload.expireHours.toString()
+      );
+    });
   },
 });
 

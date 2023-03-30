@@ -15,7 +15,7 @@ const name = "COMMON";
 const initialState: ICommonState = {
   loading: false,
   theme: ETheme.Light,
-  tableLoading: false,
+  tableLoading: true,
   permissions: [],
   permissionGroups: [],
   managers: [],

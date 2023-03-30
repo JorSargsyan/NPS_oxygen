@@ -73,8 +73,12 @@ const DirectoratesGrid = () => {
 
   const initialFetch = useCallback(async () => {
     await dispatch(setTableLoading(true));
-    await dispatch(GetDirectorates(defaultFilterValues));
-    await dispatch(setTableLoading(false));
+    const { meta } = await dispatch(GetDirectorates(defaultFilterValues));
+    if (meta.requestStatus === ERequestStatus.FULFILLED) {
+      await dispatch(setTableLoading(false));
+    } else {
+      await dispatch(setTableLoading(false));
+    }
   }, [dispatch]);
 
   useEffect(() => {

@@ -8,6 +8,8 @@ export const EBaseUrl = {
 export const LStorage = {
   AUTH: "authorization",
   LANG: "language",
+  EXPIRATION_DATE: "expiration_date",
+  EXPIRATION_HOURS: "expiration_hours",
 };
 
 export enum ETheme {

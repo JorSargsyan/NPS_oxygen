@@ -20,3 +20,13 @@ export const hasOtherPermissionButGet = (
   )?.length;
   return !!sectionArrLength;
 };
+
+export const formatDateString = (date: string) => {
+  const splittedDate = date.split(" ");
+  const newDate = splittedDate[0]
+    .split("/")
+    .reverse()
+    .join("/")
+    .concat(` ${splittedDate[1]}`);
+  return newDate;
+};

@@ -1,13 +1,5 @@
 import styled from "@emotion/styled";
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, Switch, Typography } from "@mui/material";
 import { useCallback } from "react";
 import DotsMenu from "shared/ui/DotsMenu";
 import { IAction } from "shared/ui/Table/constants";
@@ -44,7 +36,7 @@ const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
     <Box sx={{ display: "flex", gap: "18px", flexWrap: "wrap", paddingTop: 4 }}>
       {list?.map((item: ICampaign) => {
         return (
-          <Box key={item.id} sx={{ width: "32%", position: "relative" }}>
+          <Box key={item.id} sx={{ width: "31%", position: "relative" }}>
             <Card sx={{ maxWidth: 345 }}>
               <CardContentNoPadding>
                 <StyledBox>

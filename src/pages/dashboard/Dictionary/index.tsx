@@ -93,8 +93,12 @@ const Translations = () => {
 
   const initialFetch = useCallback(async () => {
     await dispatch(setTableLoading(true));
-    dispatch(GetTranslations(defaultFilterValues));
-    await dispatch(setTableLoading(false));
+    const { meta } = await dispatch(GetTranslations(defaultFilterValues));
+    if (meta.requestStatus === ERequestStatus.FULFILLED) {
+      await dispatch(setTableLoading(false));
+    } else {
+      await dispatch(setTableLoading(false));
+    }
   }, [dispatch]);
 
   useEffect(() => {

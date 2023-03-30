@@ -3,7 +3,11 @@ export interface IAuthState {
 }
 
 export interface IAuthorizeResponse {
-  token: string;
+  accessToken: string;
+  expireHours: number;
+  expires: string;
+  isLdapUser?: boolean;
+  role: string;
 }
 export interface IAuthChangePasswordResponse {
   message: string;
