@@ -24,7 +24,7 @@ import {
   GetCampaigns,
   selectCampaigns,
 } from "store/slicers/campaigns";
-import { setLoading } from "store/slicers/common";
+import { setLoading, setTableLoading } from "store/slicers/common";
 import CampaignListViewTypes from "./components/CampaignListTypes";
 import AddCampaign from "./components/AddCampaign";
 import HistoryView from "./components/HistoryView";
@@ -180,9 +180,19 @@ const CampaignsPage = () => {
     ];
   }, [handleChangeState]);
 
-  useEffect(() => {
-    dispatch(GetCampaigns(defaultFilterValues));
+  const initialFetch = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    const { meta } = await dispatch(GetCampaigns(defaultFilterValues));
+    if (meta.requestStatus === ERequestStatus.FULFILLED) {
+      await dispatch(setTableLoading(false));
+    } else {
+      await dispatch(setTableLoading(false));
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    initialFetch();
+  }, [initialFetch]);
 
   return (
     <Box p={4}>

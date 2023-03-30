@@ -1,17 +1,14 @@
-import {
-  ToggleButton,
-  SvgIcon,
-  Typography,
-  ToggleButtonGroup,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import GridIcon from "@heroicons/react/24/solid/TableCellsIcon";
-import CreditCard from "@heroicons/react/24/solid/CreditCardIcon";
-import { Fragment, useState } from "react";
 import styled from "@emotion/styled";
+import CreditCard from "@heroicons/react/24/solid/CreditCardIcon";
+import GridIcon from "@heroicons/react/24/solid/TableCellsIcon";
+import {
+  SvgIcon,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
+import { Fragment } from "react";
 import { ECampaignListViewTypes } from "..";
-
-type Props = {};
 
 const MyThemeComponent = styled(ToggleButton)(({ theme }) =>
   theme.unstable_sx({
@@ -60,9 +57,6 @@ const CampaignListViewTypes = ({
         <MyThemeComponent
           value={ECampaignListViewTypes.Card}
           selected={type === ECampaignListViewTypes.Card}
-          onChange={(e) => {
-            console.log(e);
-          }}
         >
           <SvgIcon fontSize="small">
             <CreditCard />
@@ -72,9 +66,6 @@ const CampaignListViewTypes = ({
         <MyThemeComponent
           value={ECampaignListViewTypes.Grid}
           selected={type === ECampaignListViewTypes.Grid}
-          onChange={(e) => {
-            console.log(e);
-          }}
         >
           <SvgIcon fontSize="small">
             <GridIcon />
