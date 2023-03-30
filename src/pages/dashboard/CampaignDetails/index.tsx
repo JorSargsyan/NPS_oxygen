@@ -29,7 +29,7 @@ const CampaignDetail = () => {
   }, [init]);
 
   return (
-    <Box p={2}>
+    <Box>
       <BasicTabs tabsData={campaignDetailsTabList} />
     </Box>
   );

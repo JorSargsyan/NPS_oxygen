@@ -74,7 +74,11 @@ export interface IUpdateSurveyRequest {
   type: number;
   buttonText: string;
   isRequired: boolean;
-  answers: IAnswer[];
+  answers?: IAnswer[];
+  metricConfig?: {
+    metricLeftText: string;
+    metricRightText: string;
+  };
 }
 
 export interface IDistributionSchedule {
