@@ -1,5 +1,6 @@
 import {
   Button,
+  IconButton,
   List,
   ListItemButton,
   Menu,
@@ -98,8 +99,6 @@ const LeftSidebar = () => {
 
     await dispatch(GetSurveys(campaignInfo.id));
 
-    await dispatch(setSelectedSurvey(String(payload.surveyId)));
-
     fetchSurveyData(payload.surveyId);
   };
 
@@ -139,10 +138,11 @@ const LeftSidebar = () => {
   };
 
   const handleRemove = async () => {
-    const { meta } = await dispatch(RemoveCampaignSurvey(selectedSurvey));
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+    const removeThunk = await dispatch(RemoveCampaignSurvey(selectedSurvey));
+    if (removeThunk.meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
     }
+
     dispatch(GetSurveys(campaignInfo.id));
   };
 
@@ -150,16 +150,18 @@ const LeftSidebar = () => {
     if (selectedSurvey === id) {
       return;
     }
-    dispatch(setSelectedSurvey(String(id)));
     fetchSurveyData(id);
   };
 
   const fetchSurveyData = useCallback(
-    (surveyId: number) => {
-      Promise.all([
+    async (surveyId: number, needstoSetSelected: boolean = true) => {
+      await Promise.all([
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
       ]);
+      if (needstoSetSelected) {
+        dispatch(setSelectedSurvey(String(surveyId)));
+      }
     },
     [dispatch]
   );
@@ -178,8 +180,13 @@ const LeftSidebar = () => {
       return;
     }
     setSurveyList(campaignSurveys);
-    dispatch(setSelectedSurvey(campaignSurveys[0]?.id));
-    fetchSurveyData(campaignSurveys[0]?.id);
+    const isSelectedSurveyValid = !!campaignSurveys.find(
+      (i) => i.id === selectedSurvey
+    );
+    fetchSurveyData(
+      isSelectedSurveyValid ? selectedSurvey : campaignSurveys[0]?.id
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaignSurveys, dispatch, fetchSurveyData]);
 
   return (
@@ -286,7 +293,7 @@ const LeftSidebar = () => {
                             alignItems={"center"}
                             width="100%"
                           >
-                            <Box display={"flex"}>
+                            <Box display={"flex"} alignItems={"center"}>
                               <Box
                                 px={1}
                                 display="flex"
@@ -310,12 +317,12 @@ const LeftSidebar = () => {
                             </Box>
                             {String(survey.type) !==
                               ECampaignSurveyType.Final && (
-                              <Box mt={1}>
-                                <TrashIcon
+                              <Box>
+                                <IconButton
                                   onClick={() => setWarningOpen(true)}
-                                  height={20}
-                                  width={20}
-                                />
+                                >
+                                  <TrashIcon height={20} width={20} />
+                                </IconButton>
                               </Box>
                             )}
                           </Box>

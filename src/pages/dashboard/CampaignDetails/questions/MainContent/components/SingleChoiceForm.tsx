@@ -3,35 +3,21 @@ import { useEffect } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import TextInput from "shared/ui/TextInput";
-import {
-  GetSurveys,
-  UpdateSurvey,
-  selectCampaignInfo,
-  selectCampaignSurveys,
-  selectSelectedSurvey,
-  selectSurveyInfo,
-} from "store/slicers/campaignDetail";
+import { selectSurveyInfo } from "store/slicers/campaignDetail";
 import BackspaceIcon from "@heroicons/react/24/outline/BackspaceIcon";
 import { Button, IconButton, Typography } from "@mui/material";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import reorderDragDrop from "shared/helpers/reorderDragDrop";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
-import { ERequestStatus } from "store/enums/index.enum";
 
 const defaultAnswer = {
   value: "",
   position: 0,
 };
 
-const SingleChoiceForm = () => {
+const SingleChoiceForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
   const { details } = useSelector(selectSurveyInfo);
-  const campaignInfo = useSelector(selectCampaignInfo);
-  const selectedSurvey = useSelector(selectSelectedSurvey);
-  const surveyList = useSelector(selectCampaignSurveys);
-  const dispatch = useAsyncDispatch();
   const methods = useForm({
     defaultValues: {
       title: "",
@@ -44,36 +30,8 @@ const SingleChoiceForm = () => {
     control: methods.control,
   });
 
-  const onSubmit = async (formData) => {
-    const position = surveyList.find((i) => i.id === selectedSurvey).position;
-
-    const data: IUpdateSurveyRequest = {
-      campaignID: campaignInfo.id,
-      title: formData.title,
-      position,
-      isRequired: true,
-      buttonText: "Next testing",
-      type: details.type,
-      answers: formData.answers.map((answer) => {
-        return {
-          ...answer,
-          newAnswer: !answer.id || false,
-        };
-      }),
-    };
-
-    const { meta } = await dispatch(
-      UpdateSurvey({
-        data: data,
-        id: details.id,
-      })
-    );
-
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-
-    dispatch(GetSurveys(campaignInfo.id));
+  const onSubmitForm = async (formData) => {
+    onSubmit(formData);
   };
 
   const onAddRow = () => {
@@ -197,16 +155,13 @@ const SingleChoiceForm = () => {
         </Box>
         <Box
           mt={2}
-          width="100%"
+          width="10%"
           p={2}
           sx={{
             zIndex: 1100,
             position: "fixed",
             bottom: 0,
             right: 0,
-            border: "1px solid",
-            borderColor: "divider",
-            backgroundColor: "white",
           }}
           display="flex"
           justifyContent={"flex-end"}
@@ -214,9 +169,8 @@ const SingleChoiceForm = () => {
           <Box>
             <ButtonLoader
               fullWidth
-              onClick={methods.handleSubmit(onSubmit)}
+              onClick={methods.handleSubmit(onSubmitForm)}
               isLoading={false}
-              disabled={!Object.keys(methods.formState.touchedFields).length}
               type="submit"
             >
               <Typography>{"Save"}</Typography>

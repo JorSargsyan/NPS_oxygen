@@ -3,26 +3,86 @@ import { Box } from "@mui/system";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
-import { selectSurveyInfo } from "store/slicers/campaignDetail";
+import {
+  GetSurveys,
+  UpdateSurvey,
+  selectCampaignInfo,
+  selectCampaignSurveys,
+  selectSelectedSurvey,
+  selectSurveyInfo,
+} from "store/slicers/campaignDetail";
 import { CampaignSurveyForms } from "./constants";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { ERequestStatus } from "store/enums/index.enum";
+import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 
 const MainContent = () => {
+  const dispatch = useAsyncDispatch();
+  const surveyList = useSelector(selectCampaignSurveys);
   const surveyInfo = useSelector(selectSurveyInfo);
+  const campaignInfo = useSelector(selectCampaignInfo);
+  const selectedSurvey = useSelector(selectSelectedSurvey);
 
-  const SurveyFormComp = () => {
+  const SurveyFormComp = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
     const Comp = CampaignSurveyForms[surveyInfo.details.type];
-    return <Comp />;
+    return <Comp onSubmit={onSubmit} />;
+  };
+
+  const onSubmit = async (formData) => {
+    const position = surveyList.find((i) => i.id === selectedSurvey).position;
+    let answers = [];
+    let metricConfig = {
+      metricLeftText: "",
+      metricRightText: "",
+      customEndLength: 10,
+      customStartLength: 0,
+    };
+    if (formData.answers?.length) {
+      answers = formData?.answers?.map((answer) => {
+        return {
+          ...answer,
+          newAnswer: !answer.id || false,
+        };
+      });
+    }
+
+    if (formData.metricConfig) {
+      metricConfig = { ...metricConfig, ...formData.metricConfig };
+    }
+
+    const data: IUpdateSurveyRequest = {
+      campaignID: campaignInfo.id,
+      title: formData.title,
+      position,
+      isRequired: true,
+      buttonText: "Next testing",
+      type: surveyInfo.details.type,
+      answers,
+      metricConfig,
+    };
+
+    const { meta } = await dispatch(
+      UpdateSurvey({
+        data: data,
+        id: surveyInfo.details.id,
+      })
+    );
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+
+    dispatch(GetSurveys(campaignInfo.id));
   };
 
   return (
     <Fragment>
-      {surveyInfo?.details && (
+      {surveyInfo.details ? (
         <Box
-          mb={10}
           component={Paper}
           elevation={3}
           p={2}
-          height="450px"
+          height="600px"
           overflow={"scroll"}
         >
           <Box display={"flex"} justifyContent={"center"}>
@@ -45,12 +105,9 @@ const MainContent = () => {
               />
             </Box>
           </Box>
-          <SurveyFormComp />
-          <Box display="flex" mt={2} flexDirection={"row-reverse"}>
-            <Button variant="outlined">{surveyInfo.details.buttonText}</Button>
-          </Box>
+          <SurveyFormComp onSubmit={onSubmit} />
         </Box>
-      )}
+      ) : null}
     </Fragment>
   );
 };

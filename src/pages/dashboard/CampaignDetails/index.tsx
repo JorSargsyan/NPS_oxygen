@@ -52,7 +52,7 @@ const CampaignDetail = () => {
   }, [campaignDetails?.isOpen]);
 
   return (
-    <Box p={2}>
+    <Box>
       <BasicTabs tabsData={campaignDetailsTabList} />
       <SharedDialog
         open={unsavedModalOpen}
