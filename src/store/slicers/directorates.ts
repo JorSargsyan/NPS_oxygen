@@ -11,6 +11,7 @@ import {
   IUpdateDirectorate,
   IWithAttachedEmployee,
 } from "store/interfaces/directorates";
+import thunkOptions from "store/config/thunkOptions";
 
 const name = "AUTH";
 
@@ -24,47 +25,66 @@ const initialState: IDirectoratesState = {
 export const GetDirectorates = createAsyncThunk<
   IPaginated<IDirectorate>,
   IGridRequest
->(`${name}/GetDirectorates`, async (formData: IGridRequest) => {
-  return (await api.post(`${EBaseUrl.API}/Directorate/Grid`, formData)).data;
-});
+>(
+  `${name}/GetDirectorates`,
+  async (formData: IGridRequest) => {
+    return (await api.post(`${EBaseUrl.API}/Directorate/Grid`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const GetDirectorateById = createAsyncThunk<IDirectorateById[], number>(
   `${name}/GetDirectorateById`,
   async (id: number) => {
     return (await api.get(`${EBaseUrl.API}/Directorate/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const AddDirectorate = createAsyncThunk<unknown, IAddDirectorate>(
   `${name}/AddDirectorate`,
   async (formData: IAddDirectorate) => {
     return (await api.post(`${EBaseUrl.API}/Directorate`, formData)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const UpdateDirectorate = createAsyncThunk<
   unknown[],
   IUpdateDirectorate
->(`${name}/UpdateDirectorate`, async (formData: IUpdateDirectorate) => {
-  return (await api.put(`${EBaseUrl.API}/Directorate/${formData.id}`, formData))
-    .data;
-});
+>(
+  `${name}/UpdateDirectorate`,
+  async (formData: IUpdateDirectorate) => {
+    return (
+      await api.put(`${EBaseUrl.API}/Directorate/${formData.id}`, formData)
+    ).data;
+  },
+  thunkOptions
+);
 
 export const GetAttachedEmployeeFilterList = createAsyncThunk<
   IAttachedEmployee[],
   string
->(`${name}/GetAttachedEmployeeFilterList`, async (query: string) => {
-  return (await api.post(`${EBaseUrl.API}/Directorate/Filter?${query}`)).data;
-});
+>(
+  `${name}/GetAttachedEmployeeFilterList`,
+  async (query: string) => {
+    return (await api.post(`${EBaseUrl.API}/Directorate/Filter?${query}`)).data;
+  },
+  thunkOptions
+);
 
 export const GetFeedbackRedirectEmployeeList = createAsyncThunk<
   IWithAttachedEmployee[],
   string
->(`${name}/GetFeedbackRedirectEmployeeList`, async (id: string) => {
-  return (
-    await api.get(`${EBaseUrl.API}/Directorate/WithAttachedEmployees/${id}`)
-  ).data;
-});
+>(
+  `${name}/GetFeedbackRedirectEmployeeList`,
+  async (id: string) => {
+    return (
+      await api.get(`${EBaseUrl.API}/Directorate/WithAttachedEmployees/${id}`)
+    ).data;
+  },
+  thunkOptions
+);
 
 const authSlicer = createSlice({
   initialState,

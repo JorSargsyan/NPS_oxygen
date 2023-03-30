@@ -9,6 +9,7 @@ import {
 } from "../interfaces/common";
 import { IState } from "../interfaces/main";
 import { api } from "store/services/apiService";
+import thunkOptions from "store/config/thunkOptions";
 
 const name = "COMMON";
 
@@ -25,28 +26,32 @@ export const GetPermissions = createAsyncThunk<IGetPermissionsResponse>(
   `${name}/GetPermissions`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Permissions`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetPermissionGroups = createAsyncThunk<IPermissionGroup[]>(
   `${name}/GetPermissionGroups`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/Permission`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetConfig = createAsyncThunk<IGetConfigResponse>(
   `${name}/GetConfig`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Config`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetUserManagers = createAsyncThunk<IManagers[]>(
   `${name}/GetUserManagers`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Managers`)).data;
-  }
+  },
+  thunkOptions
 );
 
 const commonSlice = createSlice({

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
+import thunkOptions from "store/config/thunkOptions";
 import { IGridRequest, IPaginated, IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
 import {
@@ -20,34 +21,50 @@ const initialState: ITranslationsState = {
 export const GetTranslations = createAsyncThunk<
   IPaginated<ITranslation>,
   IGridRequest
->(`${name}/GetTranslations`, async (data) => {
-  return (await api.post(`${EBaseUrl.API}/Translation/Grid`, data)).data;
-});
+>(
+  `${name}/GetTranslations`,
+  async (data) => {
+    return (await api.post(`${EBaseUrl.API}/Translation/Grid`, data)).data;
+  },
+  thunkOptions
+);
 
 export const AddTranslation = createAsyncThunk<
   ITranslation,
   IAddEditTranslation
->(`${name}/AddTranslation`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/Translation`, formData)).data;
-});
+>(
+  `${name}/AddTranslation`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Translation`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const DeleteTranslation = createAsyncThunk<
   ITranslation,
   IDeleteTranslation
->(`${name}/DeleteTranslation`, async (params) => {
-  return (
-    await api.delete(
-      `${EBaseUrl.API}/admin/translations/${params.key}/${params.module}`
-    )
-  ).data;
-});
+>(
+  `${name}/DeleteTranslation`,
+  async (params) => {
+    return (
+      await api.delete(
+        `${EBaseUrl.API}/admin/translations/${params.key}/${params.module}`
+      )
+    ).data;
+  },
+  thunkOptions
+);
 
 export const GetTranslationsByLangId = createAsyncThunk<
   ITranslationDataByLangId,
   number
->(`${name}/GetTranslationsByLangId`, async (id) => {
-  return (await api.get(`${EBaseUrl.API}/Translations/${id}`)).data;
-});
+>(
+  `${name}/GetTranslationsByLangId`,
+  async (id) => {
+    return (await api.get(`${EBaseUrl.API}/Translations/${id}`)).data;
+  },
+  thunkOptions
+);
 
 const translationsSlice = createSlice({
   initialState,

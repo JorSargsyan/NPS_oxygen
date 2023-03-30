@@ -3,6 +3,8 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ERequestStatus } from "store/enums/index.enum";
 import { AppDispatch } from "store";
+import { LStorage } from "store/config/constants";
+import { signOut } from "store/slicers/auth";
 // import { RefreshToken } from "store/slicers/auth";
 
 export const useAsyncDispatch = () => {
@@ -17,6 +19,9 @@ export const useAsyncDispatch = () => {
         const { meta, error } = initialActionThunk;
         if (meta.requestStatus !== ERequestStatus.FULFILLED) {
           if (error.status === 401) {
+            await dispatchRedux(signOut());
+            localStorage.removeItem(LStorage.AUTH);
+            // TODO when ready
             // const refreshTokenThunk = await dispatchRedux(RefreshToken());
             // if (
             //   refreshTokenThunk.meta.requestStatus === ERequestStatus.FULFILLED
