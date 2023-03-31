@@ -104,18 +104,22 @@ export interface ISurveyAnswer {
 }
 export interface ICampaignSurveyDetails {
   buttonText: string;
-  commentConfig: any;
+  commentConfig?: {
+    commentType: number;
+    commentMin: number;
+    commentMax: number;
+  };
   id: number;
   isRequired: boolean;
-  multipleConfig: {
+  multipleConfig?: {
     multipleExact: number;
     multipleMax: number;
     multipleMin: number;
     multipleType: number;
   };
-  metricConfig: {
+  metricConfig?: {
     customEndLength: number;
-    customerStartLength: number;
+    customStartLength: number;
     metricLeftText: string | null;
     metricRightText: string | null;
   };

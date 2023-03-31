@@ -7,7 +7,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import TextInput from "shared/ui/TextInput";
 import { selectSurveyInfo, setSurveyForm } from "store/slicers/campaignDetail";
 
-const NpsForm = () => {
+const MetricForm = () => {
   const { details } = useSelector(selectSurveyInfo);
   const dispatch = useAsyncDispatch();
   const methods = useForm();
@@ -64,4 +64,4 @@ const NpsForm = () => {
     </Box>
   );
 };
-export default NpsForm;
+export default MetricForm;

@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
-import { Fragment, memo, useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
 import {
@@ -85,7 +85,7 @@ const MainContent = () => {
           component={Paper}
           elevation={3}
           p={2}
-          height="600px"
+          height="90vh"
           overflow={"scroll"}
         >
           <Box display={"flex"} justifyContent={"center"}>
@@ -115,4 +115,4 @@ const MainContent = () => {
   );
 };
 
-export default memo(MainContent);
+export default MainContent;

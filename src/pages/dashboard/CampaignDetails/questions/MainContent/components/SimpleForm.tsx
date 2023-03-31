@@ -7,7 +7,7 @@ import { requiredRules } from "shared/helpers/validators";
 import TextInput from "shared/ui/TextInput";
 import { selectSurveyInfo, setSurveyForm } from "store/slicers/campaignDetail";
 
-const CommentForm = () => {
+const SimpleForm = () => {
   const dispatch = useAsyncDispatch();
   const { details } = useSelector(selectSurveyInfo);
   const methods = useForm({
@@ -37,7 +37,7 @@ const CommentForm = () => {
       <FormProvider {...methods}>
         <TextInput
           name="title"
-          placeholder={"Type your comment here"}
+          placeholder={"Type your text here"}
           label="Title"
           onBlur={methods.handleSubmit(onSubmit)}
           rules={requiredRules}
@@ -46,4 +46,4 @@ const CommentForm = () => {
     </Box>
   );
 };
-export default memo(CommentForm);
+export default SimpleForm;

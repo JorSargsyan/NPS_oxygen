@@ -11,7 +11,7 @@ const Questions = () => {
         flex={1}
         component={Paper}
         elevation={4}
-        maxHeight="600px"
+        maxHeight="90vh"
         overflow={"scroll"}
       >
         <LeftSidebar />
@@ -23,7 +23,7 @@ const Questions = () => {
         flex={1}
         component={Paper}
         elevation={4}
-        maxHeight="600px"
+        maxHeight="90vh"
         overflow={"scroll"}
       >
         <RightSidebar />

@@ -17,7 +17,7 @@ const defaultAnswer = {
   position: 0,
 };
 
-const SingleChoiceForm = () => {
+const ChoiceForm = () => {
   const dispatch = useAsyncDispatch();
   const { details } = useSelector(selectSurveyInfo);
   const methods = useForm({
@@ -176,4 +176,4 @@ const SingleChoiceForm = () => {
     </Box>
   );
 };
-export default memo(SingleChoiceForm);
+export default ChoiceForm;

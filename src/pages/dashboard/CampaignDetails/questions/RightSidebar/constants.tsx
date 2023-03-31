@@ -40,3 +40,14 @@ export const MultipleChoiceLimitOptions = [
     value: 3,
   },
 ];
+
+export const CommentCharacterLimit = [
+  {
+    name: "Unlimited",
+    value: 1,
+  },
+  {
+    name: "Range",
+    value: 2,
+  },
+];
