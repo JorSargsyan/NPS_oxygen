@@ -1,6 +1,6 @@
-import { Button, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
-import { Fragment } from "react";
+import { Fragment, memo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
 import {
@@ -23,10 +23,13 @@ const MainContent = () => {
   const campaignInfo = useSelector(selectCampaignInfo);
   const selectedSurvey = useSelector(selectSelectedSurvey);
 
-  const SurveyFormComp = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
-    const Comp = CampaignSurveyForms[surveyInfo.details.type];
-    return <Comp onSubmit={onSubmit} />;
-  };
+  const SurveyFormComp = useCallback(
+    ({ onSubmit }: { onSubmit: (data: any) => void }) => {
+      const Comp = CampaignSurveyForms[surveyInfo.details.type];
+      return <Comp onSubmit={onSubmit} />;
+    },
+    [surveyInfo.details?.type]
+  );
 
   const onSubmit = async (formData) => {
     const position = surveyList.find((i) => i.id === selectedSurvey).position;
@@ -112,4 +115,4 @@ const MainContent = () => {
   );
 };
 
-export default MainContent;
+export default memo(MainContent);

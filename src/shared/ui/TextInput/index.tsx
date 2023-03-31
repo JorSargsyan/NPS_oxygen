@@ -14,6 +14,7 @@ interface IInputProps<T> {
   isSecure?: boolean;
   type?: string;
   clearable?: boolean;
+  onBlur?: () => void;
   rules?: Omit<
     RegisterOptions<T>,
     "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
@@ -36,6 +37,7 @@ const InputField = <T extends unknown>({
   isSecure = false,
   onKeyPress,
   onClear,
+  onBlur,
   inputRef,
   disabled,
 }: IInputProps<T>) => {
@@ -107,6 +109,7 @@ const InputField = <T extends unknown>({
             multiline={multiline}
             variant="filled"
             disabled={disabled}
+            onBlur={onBlur}
             InputProps={{
               endAdornment: getEndAdornment(field),
             }}

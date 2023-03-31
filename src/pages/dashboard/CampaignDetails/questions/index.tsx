@@ -19,7 +19,13 @@ const Questions = () => {
       <Box flex={3} mx={2}>
         <MainContent />
       </Box>
-      <Box flex={1}>
+      <Box
+        flex={1}
+        component={Paper}
+        elevation={4}
+        maxHeight="600px"
+        overflow={"scroll"}
+      >
         <RightSidebar />
       </Box>
     </Box>

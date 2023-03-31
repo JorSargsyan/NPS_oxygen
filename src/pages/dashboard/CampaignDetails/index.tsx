@@ -10,6 +10,7 @@ import {
   GetSurveys,
   GetTemplates,
 } from "store/slicers/campaignDetail";
+import { Button, Typography } from "@mui/material";
 
 const CampaignDetail = () => {
   const { id } = useParams();
@@ -24,13 +25,34 @@ const CampaignDetail = () => {
     ]);
   }, [dispatch, id]);
 
+  const handleSubmit = () => {};
+
   useEffect(() => {
     init();
   }, [init]);
 
   return (
     <Box>
-      <BasicTabs tabsData={campaignDetailsTabList} />
+      <Box display="flex">
+        <BasicTabs
+          tabsData={campaignDetailsTabList}
+          Content={() => {
+            return (
+              <Box
+                sx={{
+                  position: "absolute",
+                  right: 10,
+                }}
+                onClick={handleSubmit}
+              >
+                <Button variant="contained">
+                  <Typography>Save changes</Typography>
+                </Button>
+              </Box>
+            );
+          }}
+        />
+      </Box>
     </Box>
   );
 };

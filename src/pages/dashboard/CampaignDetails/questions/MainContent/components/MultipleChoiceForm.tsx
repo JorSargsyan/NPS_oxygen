@@ -1,28 +1,27 @@
 import { Box } from "@mui/system";
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import TextInput from "shared/ui/TextInput";
-import { selectSurveyInfo } from "store/slicers/campaignDetail";
+import { selectSurveyInfo, setSurveyForm } from "store/slicers/campaignDetail";
 import BackspaceIcon from "@heroicons/react/24/outline/BackspaceIcon";
 import { Button, IconButton, Typography } from "@mui/material";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import ButtonLoader from "shared/ui/ButtonLoader";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import reorderDragDrop from "shared/helpers/reorderDragDrop";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { requiredRules } from "shared/helpers/validators";
 
 const defaultAnswer = {
   value: "",
   position: 0,
 };
 
-const MultipleChoiceForm = ({
-  onSubmit,
-}: {
-  onSubmit: (data: any) => void;
-}) => {
+const MultipleChoiceForm = () => {
+  const dispatch = useAsyncDispatch();
   const { details } = useSelector(selectSurveyInfo);
   const methods = useForm({
+    mode: "all",
     defaultValues: {
       title: "",
       answers: [defaultAnswer],
@@ -34,12 +33,22 @@ const MultipleChoiceForm = ({
     control: methods.control,
   });
 
-  const onSubmitForm = async (formData) => {
-    onSubmit(formData);
-  };
+  const formData = methods.watch();
+
+  const onSubmitForm = useCallback(() => {
+    console.log("submitting");
+    dispatch(setSurveyForm(JSON.parse(JSON.stringify(formData))));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, formData?.answers?.length, formData?.title]);
 
   const onAddRow = () => {
     append({ value: "", position: methods.watch("answers").length || 0 });
+    dispatch(setSurveyForm(JSON.parse(JSON.stringify(formData))));
+  };
+
+  const onRemoveRow = (index) => {
+    remove(index);
+    dispatch(setSurveyForm(JSON.parse(JSON.stringify(formData))));
   };
 
   const onDragEnd = ({ destination, source }) => {
@@ -58,10 +67,11 @@ const MultipleChoiceForm = ({
       title: methods.watch("title"),
       answers: newItems,
     });
+    dispatch(setSurveyForm(JSON.parse(JSON.stringify(methods.watch()))));
   };
 
   useEffect(() => {
-    if (details.answers.length) {
+    if (details) {
       methods.reset({
         title: details.title,
         answers: details.answers.map((i) => {
@@ -73,7 +83,7 @@ const MultipleChoiceForm = ({
         }),
       });
     }
-  }, [details.answers, details.title, methods]);
+  }, [details, methods]);
 
   return (
     <Box>
@@ -82,6 +92,8 @@ const MultipleChoiceForm = ({
           name="title"
           placeholder={"Type your final text here"}
           label="Title"
+          rules={requiredRules}
+          onBlur={methods.handleSubmit(onSubmitForm)}
         />
         <Box display="flex" gap={3}>
           <DragDropContext onDragEnd={onDragEnd}>
@@ -120,12 +132,14 @@ const MultipleChoiceForm = ({
                               </Box>
                               <TextInput
                                 size="small"
+                                onBlur={methods.handleSubmit(onSubmitForm)}
+                                rules={requiredRules}
                                 label="Choice"
                                 name={`answers[${index}].value`}
                               />
                               {fields.length > 1 && (
                                 <Box
-                                  onClick={() => remove(index)}
+                                  onClick={() => onRemoveRow(index)}
                                   sx={{ position: "absolute", right: 0 }}
                                   ml={2}
                                   display="flex"
@@ -157,32 +171,8 @@ const MultipleChoiceForm = ({
             </Button>
           </Box>
         </Box>
-        <Box
-          mt={2}
-          width="10%"
-          p={2}
-          sx={{
-            zIndex: 1100,
-            position: "fixed",
-            bottom: 0,
-            right: 0,
-          }}
-          display="flex"
-          justifyContent={"flex-end"}
-        >
-          <Box>
-            <ButtonLoader
-              fullWidth
-              onClick={methods.handleSubmit(onSubmitForm)}
-              isLoading={false}
-              type="submit"
-            >
-              <Typography>{"Save"}</Typography>
-            </ButtonLoader>
-          </Box>
-        </Box>
       </FormProvider>
     </Box>
   );
 };
-export default MultipleChoiceForm;
+export default memo(MultipleChoiceForm);

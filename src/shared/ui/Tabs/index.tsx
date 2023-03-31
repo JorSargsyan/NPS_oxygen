@@ -41,9 +41,10 @@ interface ITabsData {
 interface ITabsProps {
   tabsData: ITabsData[];
   centered?: boolean;
+  Content?: () => JSX.Element;
 }
 
-const BasicTabs = ({ tabsData, centered = true }: ITabsProps) => {
+const BasicTabs = ({ tabsData, centered = true, Content }: ITabsProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -52,7 +53,14 @@ const BasicTabs = ({ tabsData, centered = true }: ITabsProps) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Tabs
           value={value}
           onChange={handleChange}
@@ -69,6 +77,7 @@ const BasicTabs = ({ tabsData, centered = true }: ITabsProps) => {
             );
           })}
         </Tabs>
+        {Content && <Content />}
       </Box>
       {tabsData?.map((item) => {
         return (

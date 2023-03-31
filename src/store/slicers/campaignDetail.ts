@@ -25,6 +25,10 @@ const initialState: ICampaignDetailsState = {
   selectedSurvey: 0,
   surveyDetails: null,
   surveyTemplate: null,
+  form: {
+    survey: null,
+    settings: null,
+  },
 };
 
 export const GetCampaignSurveyById = createAsyncThunk<
@@ -118,6 +122,12 @@ const campaignDetailSlice = createSlice({
     setSelectedSurvey(state, { payload }) {
       state.selectedSurvey = payload;
     },
+    setSurveyForm(state, { payload }) {
+      state.form.survey = payload;
+    },
+    setSettingsForm(state, { payload }) {
+      state.form.settings = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(GetCampaignTriggers.fulfilled, (state, { payload }) => {
@@ -153,6 +163,7 @@ export const selectCampaignSurveys = (state: IState) =>
   state.campaignDetails.surveys;
 export const selectTemplates = (state: IState) =>
   state.campaignDetails.templates;
+export const selectForm = (state: IState) => state.campaignDetails.form;
 export const selectSurveyInfo = (state: IState) => {
   return {
     details: state.campaignDetails.surveyDetails,
@@ -160,5 +171,6 @@ export const selectSurveyInfo = (state: IState) => {
   };
 };
 
-export const { setSelectedSurvey } = campaignDetailSlice.actions;
+export const { setSelectedSurvey, setSettingsForm, setSurveyForm } =
+  campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;

@@ -1,60 +1,49 @@
-import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect } from "react";
+import { useCallback, memo, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import ButtonLoader from "shared/ui/ButtonLoader";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { requiredRules } from "shared/helpers/validators";
 import TextInput from "shared/ui/TextInput";
-import { selectSurveyInfo } from "store/slicers/campaignDetail";
+import { selectSurveyInfo, setSurveyForm } from "store/slicers/campaignDetail";
 
-const CommentForm = ({ onSubmit }: { onSubmit: (data: any) => {} }) => {
+const CommentForm = () => {
+  const dispatch = useAsyncDispatch();
   const { details } = useSelector(selectSurveyInfo);
-  const methods = useForm();
+  const methods = useForm({
+    mode: "all",
+  });
 
-  const onSubmitForm = (formData) => {
-    onSubmit(formData);
+  const onSubmit = async (formData) => {
+    dispatch(setSurveyForm(formData));
   };
 
-  useEffect(() => {
+  const handleReset = useCallback(() => {
+    const data = details;
+    if (!data) {
+      return;
+    }
     methods.reset({
-      title: details.title,
+      title: data.title,
     });
-  }, [details?.title, methods]);
+  }, [details, methods]);
+
+  useEffect(() => {
+    handleReset();
+  }, [handleReset]);
 
   return (
     <Box>
       <FormProvider {...methods}>
         <TextInput
           name="title"
-          placeholder={"Type your welcome text here"}
+          placeholder={"Type your comment here"}
           label="Title"
+          onBlur={methods.handleSubmit(onSubmit)}
+          rules={requiredRules}
         />
       </FormProvider>
-      <Box
-        mt={2}
-        width="10%"
-        p={2}
-        sx={{
-          zIndex: 1100,
-          position: "fixed",
-          bottom: 0,
-          right: 0,
-        }}
-        display="flex"
-        justifyContent={"flex-end"}
-      >
-        <Box>
-          <ButtonLoader
-            fullWidth
-            onClick={methods.handleSubmit(onSubmitForm)}
-            isLoading={false}
-            type="submit"
-          >
-            <Typography>{"Save"}</Typography>
-          </ButtonLoader>
-        </Box>
-      </Box>
     </Box>
   );
 };
-export default CommentForm;
+export default memo(CommentForm);

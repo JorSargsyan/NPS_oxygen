@@ -1,18 +1,19 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import ButtonLoader from "shared/ui/ButtonLoader";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import TextInput from "shared/ui/TextInput";
-import { selectSurveyInfo } from "store/slicers/campaignDetail";
+import { selectSurveyInfo, setSurveyForm } from "store/slicers/campaignDetail";
 
-const ServiceScoreForm = ({ onSubmit }: { onSubmit: (data: any) => {} }) => {
+const ServiceScoreForm = () => {
   const { details } = useSelector(selectSurveyInfo);
+  const dispatch = useAsyncDispatch();
   const methods = useForm();
 
   const onSubmitForm = (formData) => {
-    onSubmit(formData);
+    dispatch(setSurveyForm(formData));
   };
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const ServiceScoreForm = ({ onSubmit }: { onSubmit: (data: any) => {} }) => {
               name="title"
               placeholder={"Type your welcome text here"}
               label="Title"
+              onBlur={methods.handleSubmit(onSubmitForm)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -46,6 +48,7 @@ const ServiceScoreForm = ({ onSubmit }: { onSubmit: (data: any) => {} }) => {
               name="metricConfig.metricLeftText"
               placeholder={"Type left text here"}
               label="Not Likely"
+              onBlur={methods.handleSubmit(onSubmitForm)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -53,34 +56,11 @@ const ServiceScoreForm = ({ onSubmit }: { onSubmit: (data: any) => {} }) => {
               name="metricConfig.metricRightText"
               placeholder={"Type right text here"}
               label="Likely"
+              onBlur={methods.handleSubmit(onSubmitForm)}
             />
           </Grid>
         </Grid>
       </FormProvider>
-      <Box
-        mt={2}
-        width="10%"
-        p={2}
-        sx={{
-          zIndex: 1100,
-          position: "fixed",
-          bottom: 0,
-          right: 0,
-        }}
-        display="flex"
-        justifyContent={"flex-end"}
-      >
-        <Box>
-          <ButtonLoader
-            fullWidth
-            onClick={methods.handleSubmit(onSubmitForm)}
-            isLoading={false}
-            type="submit"
-          >
-            <Typography>{"Save"}</Typography>
-          </ButtonLoader>
-        </Box>
-      </Box>
     </Box>
   );
 };

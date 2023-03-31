@@ -6,6 +6,10 @@ export interface ICampaignDetailsState {
   selectedSurvey: number;
   surveyDetails: ICampaignSurveyDetails | null;
   surveyTemplate: ITemplate | null;
+  form: {
+    survey: any;
+    settings: any;
+  };
 }
 
 export interface ICampaignDetailed {
@@ -103,8 +107,13 @@ export interface ICampaignSurveyDetails {
   commentConfig: any;
   id: number;
   isRequired: boolean;
-  metricConfig: any;
   multipleConfig: {
+    multipleExact: number;
+    multipleMax: number;
+    multipleMin: number;
+    multipleType: number;
+  };
+  metricConfig: {
     customEndLength: number;
     customerStartLength: number;
     metricLeftText: string | null;
