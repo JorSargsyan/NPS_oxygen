@@ -24,7 +24,11 @@ import {
   GetCampaigns,
   selectCampaigns,
 } from "store/slicers/campaigns";
-import { setLoading, setTableLoading } from "store/slicers/common";
+import {
+  setLoading,
+  setSidebarVisible,
+  setTableLoading,
+} from "store/slicers/common";
 import CampaignListViewTypes from "./components/CampaignListTypes";
 import AddCampaign from "./components/AddCampaign";
 import HistoryView from "./components/HistoryView";
@@ -116,6 +120,7 @@ const CampaignsPage = () => {
   };
 
   const handleCampaignDetails = (id: number) => {
+    dispatch(setSidebarVisible(false));
     navigate(`/campaign/${id}`);
   };
 

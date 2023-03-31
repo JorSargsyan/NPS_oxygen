@@ -155,7 +155,7 @@ const LeftSidebar = () => {
   };
 
   const fetchSurveyData = useCallback(
-    async (surveyId: number, needstoSetSelected: boolean = true) => {
+    async (surveyId: number) => {
       await Promise.all([
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
