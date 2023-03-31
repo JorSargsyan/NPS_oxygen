@@ -71,20 +71,6 @@ export interface IAnswer {
   newAnswer?: boolean;
 }
 
-export interface IUpdateSurveyRequest {
-  campaignID: number;
-  title: string;
-  position: number;
-  type: number;
-  buttonText: string;
-  isRequired: boolean;
-  answers?: IAnswer[];
-  metricConfig?: {
-    metricLeftText: string;
-    metricRightText: string;
-  };
-}
-
 export interface IDistributionSchedule {
   isLink: boolean;
   message: string;

@@ -9,6 +9,9 @@ import {
   GetCampaignTriggers,
   GetSurveys,
   GetTemplates,
+  UpdateSurvey,
+  selectCampaignInfo,
+  selectCampaignSurveys,
   selectSelectedSurvey,
   selectSurveyInfo,
 } from "store/slicers/campaignDetail";
@@ -19,16 +22,45 @@ import { GlobalContext } from "App";
 import { EAppReducerTypes } from "shared/helpers/AppContext";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { ERequestStatus } from "store/enums/index.enum";
+import toast from "react-hot-toast";
+import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
 
 const defaultAnswer = {
   value: "",
   position: 0,
 };
 
+interface IFormData {
+  title: string;
+  answers: any[];
+  isRequired: boolean;
+  buttonText: string;
+  multipleConfig?: {
+    multipleType: number;
+    multipleMin: string;
+    multipleMax: string;
+    multipleExact: string;
+  };
+  commentConfig?: {
+    commentType: number;
+    commentMin: string;
+    commentMax: string;
+  };
+  metricConfig?: {
+    metricRightText: string;
+    metricLeftText: string;
+    customStartLength: string;
+    customEndLength: string;
+  };
+}
+
 const CampaignDetail = () => {
+  const surveyList = useSelector(selectCampaignSurveys);
+  const selectedSurvey = useSelector(selectSelectedSurvey);
+  const campaignInfo = useSelector(selectCampaignInfo);
   const { id } = useParams();
   const dispatch = useAsyncDispatch();
-  const selectedSurvey = useSelector(selectSelectedSurvey);
   const surveyDetails = useSelector(selectSurveyInfo);
   const [unsavedModalOpen, setUnsavedModalOpen] = useState(false);
   const {
@@ -36,14 +68,10 @@ const CampaignDetail = () => {
     dispatchContext,
   } = useContext(GlobalContext);
 
-  const methods = useForm({
+  const methods = useForm<IFormData>({
     defaultValues: {
       answers: [defaultAnswer],
       title: "",
-      metricConfig: {
-        metricLeftText: "",
-        metricRightText: "",
-      },
     },
   });
 
@@ -57,8 +85,64 @@ const CampaignDetail = () => {
     });
   };
 
-  const onSubmit = (formData) => {
-    console.log(formData);
+  const onSubmit = async (formData: IFormData) => {
+    const position = surveyList.find((i) => i.id === selectedSurvey).position;
+    let answers = [];
+
+    if (formData.answers?.length) {
+      answers = formData?.answers?.map((answer) => {
+        return {
+          ...answer,
+          newAnswer: !answer.id || false,
+        };
+      });
+    }
+
+    let metricConfigable = [
+      Number(ECampaignSurveyType.Nps),
+      Number(ECampaignSurveyType.Rating),
+      Number(ECampaignSurveyType.ServiceQualityScore),
+    ];
+
+    const config = {
+      ...(surveyDetails.details.type ===
+        Number(ECampaignSurveyType.Comment) && {
+        commentConfig: formData?.commentConfig,
+      }),
+      ...(surveyDetails.details.type ===
+        Number(ECampaignSurveyType.MultipleChoice) && {
+        multipleConfig: formData?.multipleConfig,
+      }),
+      ...(metricConfigable.includes(surveyDetails.details.type) && {
+        metricConfig: formData?.metricConfig,
+      }),
+    };
+
+    const data = {
+      campaignID: campaignInfo.id,
+      title: formData.title,
+      position,
+      isRequired: formData.isRequired,
+      buttonText: formData.buttonText,
+      type: surveyDetails.details.type,
+      answers,
+      ...config,
+    };
+
+    const { meta } = await dispatch(
+      UpdateSurvey({
+        data: data,
+        id: surveyDetails.details.id,
+      })
+    );
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+
+    dispatch(GetSurveys(campaignInfo.id));
+
+    toast.success("Campaign Saved successfully");
   };
 
   const init = useCallback(() => {
@@ -69,6 +153,62 @@ const CampaignDetail = () => {
       dispatch(GetCampaignTriggers()),
     ]);
   }, [dispatch, id]);
+
+  const handleResetForm = useCallback(() => {
+    methods.reset({
+      title: surveyDetails.details?.title || "",
+      answers: surveyDetails.details.answers?.length
+        ? surveyDetails.details.answers
+        : [defaultAnswer],
+      metricConfig: {
+        metricLeftText:
+          surveyDetails.details?.metricConfig?.metricLeftText || "",
+        metricRightText:
+          surveyDetails.details?.metricConfig?.metricRightText || "",
+        customStartLength:
+          surveyDetails.details?.metricConfig?.customStartLength.toString() ||
+          "",
+        customEndLength:
+          surveyDetails.details?.metricConfig?.customEndLength.toString() || "",
+      },
+      buttonText: surveyDetails.details.buttonText,
+      isRequired: surveyDetails.details?.isRequired,
+      multipleConfig: {
+        multipleType: surveyDetails.details?.multipleConfig?.multipleType,
+        multipleExact:
+          surveyDetails.details?.multipleConfig?.multipleExact?.toString() ||
+          "",
+        multipleMin:
+          surveyDetails.details?.multipleConfig?.multipleMin?.toString() || "",
+        multipleMax:
+          surveyDetails.details?.multipleConfig?.multipleMax?.toString() || "",
+      },
+      commentConfig: {
+        commentType: surveyDetails.details?.commentConfig?.commentType,
+        commentMin:
+          surveyDetails.details?.commentConfig?.commentMin?.toString() || "",
+        commentMax:
+          surveyDetails.details?.commentConfig?.commentMax?.toString() || "",
+      },
+    });
+  }, [
+    methods,
+    surveyDetails.details?.answers,
+    surveyDetails.details?.buttonText,
+    surveyDetails.details?.commentConfig?.commentMax,
+    surveyDetails.details?.commentConfig?.commentMin,
+    surveyDetails.details?.commentConfig?.commentType,
+    surveyDetails.details?.isRequired,
+    surveyDetails.details?.metricConfig?.customEndLength,
+    surveyDetails.details?.metricConfig?.customStartLength,
+    surveyDetails.details?.metricConfig?.metricLeftText,
+    surveyDetails.details?.metricConfig?.metricRightText,
+    surveyDetails.details?.multipleConfig?.multipleExact,
+    surveyDetails.details?.multipleConfig?.multipleMax,
+    surveyDetails.details?.multipleConfig?.multipleMin,
+    surveyDetails.details?.multipleConfig?.multipleType,
+    surveyDetails.details?.title,
+  ]);
 
   useEffect(() => {
     init();
@@ -83,19 +223,8 @@ const CampaignDetail = () => {
       return;
     }
 
-    methods.reset({
-      title: surveyDetails.details?.title || "",
-      answers: surveyDetails.details.answers?.length
-        ? surveyDetails.details.answers
-        : [defaultAnswer],
-      metricConfig: {
-        metricLeftText:
-          surveyDetails.details?.metricConfig?.metricLeftText || "",
-        metricRightText:
-          surveyDetails.details?.metricConfig?.metricRightText || "",
-      },
-    });
-  }, [methods, surveyDetails?.details]);
+    handleResetForm();
+  }, [handleResetForm, methods, surveyDetails?.details]);
 
   return (
     <Box>

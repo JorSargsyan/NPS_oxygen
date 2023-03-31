@@ -37,6 +37,7 @@ const ChoiceForm = () => {
     );
 
     reset({
+      ...watch(),
       title: watch("title"),
       answers: newItems,
     });
