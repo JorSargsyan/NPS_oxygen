@@ -273,24 +273,24 @@ const BasicTable = <T extends { id: number }>({
 
   return (
     <Box pt={4}>
+      {toolbar && (
+        <EnhancedToolbar
+          handleToggleFilter={() => setFiltersVisible((state) => !state)}
+          rowsSelected={selectedList.length}
+          filterOptions={filterOptions}
+          onExport={() => onExport?.(selectedList)}
+          hasFilters={!!Filter}
+          fetchData={onChange}
+          hasSearchInput={hasSearchInput}
+        />
+      )}
+      {Filter && filtersVisible && (
+        <Box>
+          <Divider />
+          <Filter />
+        </Box>
+      )}
       <TableContainer component={Paper}>
-        {toolbar && (
-          <EnhancedToolbar
-            handleToggleFilter={() => setFiltersVisible((state) => !state)}
-            rowsSelected={selectedList.length}
-            filterOptions={filterOptions}
-            onExport={() => onExport?.(selectedList)}
-            hasFilters={!!Filter}
-            fetchData={onChange}
-            hasSearchInput={hasSearchInput}
-          />
-        )}
-        {Filter && filtersVisible && (
-          <Box>
-            <Divider />
-            <Filter />
-          </Box>
-        )}
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           {!noResults && (
             <TableHead>

@@ -1,33 +1,29 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import BasicSelect from "shared/ui/Select";
-import { FormProvider, useWatch } from "react-hook-form";
-import { ConditionList, FilterConditionMatchList } from "resources/constants";
-import ButtonLoader from "shared/ui/ButtonLoader";
+import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
-import React, { Fragment, useMemo, useState } from "react";
-import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import React, { Fragment, useMemo } from "react";
+import { FormProvider, useWatch } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { ConditionList, FilterConditionMatchList } from "resources/constants";
+import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicAutocomplete from "shared/ui/Autocomplete";
-import { getQueryParams } from "shared/helpers/getQueryParams";
-import { GetFilterValues } from "store/slicers/users";
-import { ERequestStatus } from "store/enums/index.enum";
-import { IFilterOption } from "store/interfaces/main";
+import ButtonLoader from "shared/ui/ButtonLoader";
+import BasicSelect from "shared/ui/Select";
+import RangeSlider from "shared/ui/Slider";
+import { IAttachedEmployee } from "store/interfaces/directorates";
+import { selectManagers } from "store/slicers/common";
+import {
+  GetFeedbackFilterValues,
+  selectFeedbackFilterValues,
+} from "store/slicers/feedback";
 import {
   defaultFilterRowValue,
   EFeedbackFilterTypes,
   feedbackFilterTypes,
 } from "../constants";
-import RangeSlider from "shared/ui/Slider";
-import { useSelector } from "react-redux";
-import { selectManagers } from "store/slicers/common";
 import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRight/constants";
-import {
-  GetFeedbackFilterValues,
-  selectFeedbackFilterValues,
-} from "store/slicers/feedback";
-import { IAttachedEmployee } from "store/interfaces/directorates";
-import BasicRangePicker from "shared/ui/RangePicker";
 
 const Filters = ({ methods, onChange, fieldsConfig }) => {
   const dispatch = useAsyncDispatch();
@@ -108,13 +104,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
         term: "",
         count: 15,
       };
-      const { meta, payload } = await dispatch(
-        GetFeedbackFilterValues(getQueryParams(formData))
-      );
-
-      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        return;
-      }
+      await dispatch(GetFeedbackFilterValues(getQueryParams(formData)));
     }
   };
 
@@ -129,22 +119,13 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
         term: search,
         count: 15,
       };
-      const { meta, payload } = await dispatch(
-        GetFeedbackFilterValues(getQueryParams(formData))
-      );
-
-      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        return;
-      }
+      await dispatch(GetFeedbackFilterValues(getQueryParams(formData)));
     }
   };
 
   return (
     <Box p={1}>
       <FormProvider {...methods}>
-        <Typography sx={{ pb: 2 }} variant="h6">
-          Conditional filters
-        </Typography>
         <Box display="flex" alignItems={"center"} mb={4}>
           <Box flex={1}>
             <BasicSelect
@@ -263,6 +244,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                       name={`config.filters[${index}].value`}
                       defaultValue={""}
                       optionLabel="label"
+                      async
                       fetchFn={(val: string) =>
                         handleFetchInputValues(val, index)
                       }
@@ -308,12 +290,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             );
           })}
         </Grid>
-        <Box>
-          <Typography sx={{ py: 2 }} variant="h6">
-            Quick filters
-          </Typography>
-          <BasicRangePicker name="range" />
-        </Box>
         <Box
           mt={2}
           sx={{ position: "fixed", bottom: 20, right: 20 }}

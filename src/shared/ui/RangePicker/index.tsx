@@ -1,60 +1,39 @@
-import * as React from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { PickersShortcutsItem } from "@mui/x-date-pickers/PickersShortcuts";
-import {
-  addDays,
-  endOfMonth,
-  endOfWeek,
-  startOfMonth,
-  startOfWeek,
-  subDays,
-} from "date-fns";
-import { Controller, useFormContext } from "react-hook-form";
 import { DatePicker } from "antd";
+import dayjs, { Dayjs } from "dayjs";
+import { Controller, useFormContext } from "react-hook-form";
 
-const shortcutsItems = [
+const shortcutsItems: {
+  label: string;
+  value: [Dayjs, Dayjs];
+}[] = [
   {
     label: "This Week",
-    getValue: () => {
-      const today = new Date();
-      return [startOfWeek(today), endOfWeek(today)];
-    },
+    value: [dayjs().startOf("week"), dayjs().endOf("week")],
   },
   {
     label: "Last Week",
-    getValue: () => {
-      const today = new Date();
-      const prevWeek = subDays(today, 7);
-      return [startOfWeek(prevWeek), endOfWeek(prevWeek)];
-    },
+    value: [
+      dayjs().subtract(7, "day").startOf("week"),
+      dayjs().subtract(7, "day").endOf("week"),
+    ],
   },
   {
     label: "Last 7 Days",
-    getValue: () => {
-      const today = new Date();
-      return [subDays(today, 7), today];
-    },
+    value: [dayjs().subtract(7, "day"), dayjs()],
   },
   {
     label: "Current Month",
-    getValue: () => {
-      const today = new Date();
-
-      return [startOfMonth(today), endOfMonth(today)];
-    },
+    value: [dayjs().startOf("month"), dayjs().endOf("month")],
   },
   {
     label: "Next Month",
-    getValue: () => {
-      const today = new Date();
-
-      const startOfNextMonth = addDays(endOfMonth(today), 1);
-      return [startOfNextMonth, endOfMonth(startOfNextMonth)];
-    },
+    value: [
+      dayjs().endOf("month").add(1, "day"),
+      dayjs().endOf("month").add(1, "day").endOf("month"),
+    ],
   },
-  { label: "Reset", getValue: () => [null, null] },
+  { label: "Reset", value: [null, null] },
 ];
-
 interface IProps {
   name: string;
 }
@@ -62,12 +41,29 @@ interface IProps {
 const BasicRangePicker = ({ name }: IProps) => {
   const { control } = useFormContext();
 
+  const onRangeChange = (dates: any, dateStrings: string[], field: any) => {
+    if (dates) {
+      field.onChange([dates[0], dates[1]]);
+    } else {
+      field.onChange([null, null]);
+    }
+  };
+
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => {
-        return <DatePicker.RangePicker {...field} style={{ zIndex: 1300 }} />;
+        return (
+          <DatePicker.RangePicker
+            {...field}
+            style={{ zIndex: 1300 }}
+            presets={shortcutsItems}
+            onChange={(dates, datesString) =>
+              onRangeChange(dates, datesString, field)
+            }
+          />
+        );
       }}
     />
   );

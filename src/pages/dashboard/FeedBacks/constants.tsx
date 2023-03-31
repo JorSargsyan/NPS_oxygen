@@ -1,4 +1,5 @@
 import { Box } from "@mui/system";
+import { Dayjs } from "dayjs";
 import {
   EFeedbackStatus,
   EMood,
@@ -168,6 +169,18 @@ export const defaultFilterRowValue: IFeedbackDefaultFilterOptionForm = {
   value: "",
 };
 
+export interface IDefaultQuickFilterValues {
+  range: null[] | Dayjs[];
+  campaign: null | IAttachedEmployee;
+  status: IFeedbackStatusList[];
+}
+
+export const defaultQuickFilterValues: IDefaultQuickFilterValues = {
+  range: [null, null],
+  campaign: null,
+  status: [],
+};
+
 export const feedbackFilterTypesLabels = {
   NPS: "NPS",
   SERVICE_QUALITY_SCORE: "Service quality score",
@@ -175,6 +188,9 @@ export const feedbackFilterTypesLabels = {
   TASK_STATUS: "Task status",
   EMPLOYEE: "Employee",
   SERVICE_CATEGORY: "Service category",
+  REDIRECTED: "Redirected",
+  COMMENTED: "Commented",
+  ALL: "All Feedbacks",
 };
 
 export const feedbackFilterTypesKeys = {
@@ -184,6 +200,10 @@ export const feedbackFilterTypesKeys = {
   TASK_STATUS: "taskStatus",
   EMPLOYEE: "employee",
   SERVICE_CATEGORY: "servicecategory",
+  CAMPAIGN_NAME: "campaignname",
+  DATE: "date",
+  REDIRECTED: "redirected",
+  COMMENTED: "commented",
 };
 
 export enum EFeedbackFilterTypes {
@@ -242,3 +262,52 @@ export const feedbackFilterTypes = [
     key: feedbackFilterTypesKeys.SERVICE_CATEGORY,
   },
 ];
+
+export const quickFilterFeedbackTypes = [
+  {
+    label: feedbackFilterTypesLabels.ALL,
+    value: "",
+    key: "",
+  },
+  {
+    label: feedbackFilterTypesLabels.NPS_AGENT,
+    value: feedbackFilterTypesKeys.NPS_AGENT,
+    key: feedbackFilterTypesKeys.NPS_AGENT,
+  },
+  {
+    label: feedbackFilterTypesLabels.REDIRECTED,
+    value: feedbackFilterTypesKeys.REDIRECTED,
+    key: feedbackFilterTypesKeys.REDIRECTED,
+  },
+  {
+    label: feedbackFilterTypesLabels.COMMENTED,
+    value: feedbackFilterTypesKeys.COMMENTED,
+    key: feedbackFilterTypesKeys.COMMENTED,
+  },
+];
+
+export const quickFilterUserVisibilityTypes = [
+  {
+    label: "General",
+    value: 2,
+  },
+  {
+    label: "Personal",
+    value: 3,
+  },
+];
+
+export enum EQuickFilterTypes {
+  Feedback = "feedbackType",
+  User_Visibility = "userVisibility",
+}
+
+export enum EQuickFilterUserVisibilityValues {
+  GENERAL = 2,
+  PERSONAL = 3,
+}
+
+export enum EFeedbackUserTypeId {
+  GENERAL = "feedbackUserTypeId2",
+  PERSONAL = "feedbackUserTypeId3",
+}

@@ -1,7 +1,6 @@
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
 import { Button, MenuItem, Select, SvgIcon, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { DatePicker } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -27,8 +26,13 @@ import QuickFilters from "./components/QuickFilters";
 import ViewComments from "./components/ViewComments";
 import {
   defaultFilterRowValue,
+  defaultQuickFilterValues,
   EFeedbackFilterTypes,
+  EFeedbackUserTypeId,
+  EQuickFilterTypes,
+  EQuickFilterUserVisibilityValues,
   feedbackColumns,
+  feedbackFilterTypesKeys,
   feedbackStatusList,
   viewCommentsDialogConfig,
 } from "./constants";
@@ -41,12 +45,32 @@ export interface IActiveRow {
   state: number;
 }
 
+const defaultUserVisibility = {
+  feedbackUserTypeId: EFeedbackUserTypeId.GENERAL,
+  key: EQuickFilterTypes.User_Visibility,
+  queryCondition: 2,
+  value: EQuickFilterUserVisibilityValues.GENERAL,
+};
+
+const defaultFeedbackFilter = {
+  feedbackTypeId: 1,
+  queryCondition: 2,
+};
+
+export const defaultFeedbackQuickFilterTypes = {
+  feedbackType: "",
+  userVisibility: 2,
+};
+
 const Feedbacks = () => {
   const [activeRow, setActiveRow] = useState<IActiveRow>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isCommentDialogOpen, setCommentDialogOpen] = useState(false);
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
+  const [feedbackQuickFilterTypes, setFeedbackQuickFilterTypes] = useState(
+    defaultFeedbackQuickFilterTypes
+  );
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
 
@@ -59,6 +83,7 @@ const Feedbacks = () => {
       config: {
         ...defaultFilterValues,
         filters: [defaultFilterRowValue],
+        quickFilters: defaultQuickFilterValues,
       },
     },
   });
@@ -125,7 +150,6 @@ const Feedbacks = () => {
     const filtersCombined = methods
       .watch("config.filters")
       .map((filter, index) => {
-        console.log(filter, "filter");
         const data = {
           ...filter,
           rowId: index + 1,
@@ -167,15 +191,106 @@ const Feedbacks = () => {
     const otherFilters = filtersCombined.filter(
       (i) => i.type !== EFeedbackFilterTypes.NPS
     );
-    await dispatch(
-      GetFeedbacks({
-        ...methods.watch("config"),
-        filters: otherFilters,
-        scoreFilter: scoreFilters,
-      })
-    );
+    const formData = {
+      ...methods.watch("config"),
+      filters: otherFilters,
+      scoreFilter: scoreFilters,
+    };
+    delete formData["quickFilters"];
+    await dispatch(GetFeedbacks(formData));
     setFiltersOpen(false);
     await dispatch(setTableLoading(false));
+  };
+
+  const handleSubmit = async () => {
+    const quickFiltersWatch = methods.watch("config.quickFilters");
+    const filterStatusList = quickFiltersWatch?.status?.map((status, index) => {
+      return {
+        conditionalStatusId: index + 1,
+        key: feedbackFilterTypesKeys.TASK_STATUS,
+        queryCondition: 2,
+        value: status.value,
+      };
+    });
+    const quickFiltersData = [
+      ...(quickFiltersWatch?.range?.every((i) => !!i)
+        ? [
+            {
+              dateId: 1,
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 4,
+              value: quickFiltersWatch.range[0].format("MM/DD/YYYY"),
+            },
+            {
+              dateId: 1,
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 5,
+              value: quickFiltersWatch.range[1].format("MM/DD/YYYY"),
+            },
+          ]
+        : []),
+      ...(quickFiltersWatch?.campaign?.id
+        ? [
+            {
+              campaignId: quickFiltersWatch?.campaign?.id,
+              key: feedbackFilterTypesKeys.CAMPAIGN_NAME,
+              queryCondition: 2,
+              value: quickFiltersWatch?.campaign?.value,
+            },
+          ]
+        : []),
+      ...(filterStatusList ? filterStatusList : []),
+      // ...(feedbackQuickFilterTypes.userVisibility ===
+      // EQuickFilterUserVisibilityValues.GENERAL
+      //   ? [defaultUserVisibility]
+      //   : [
+      //       {
+      //         ...defaultUserVisibility,
+      //         feedbackUserTypeId: EFeedbackUserTypeId.PERSONAL,
+      //         value: EQuickFilterUserVisibilityValues.PERSONAL,
+      //       },
+      //     ]),
+      ...(feedbackQuickFilterTypes.feedbackType &&
+      feedbackQuickFilterTypes.feedbackType ===
+        feedbackFilterTypesKeys.NPS_AGENT
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.NPS_AGENT,
+              value: feedbackFilterTypesKeys.NPS_AGENT,
+            },
+          ]
+        : feedbackQuickFilterTypes.feedbackType ===
+          feedbackFilterTypesKeys.REDIRECTED
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.REDIRECTED,
+              value: feedbackFilterTypesKeys.REDIRECTED,
+            },
+          ]
+        : feedbackQuickFilterTypes.feedbackType ===
+          feedbackFilterTypesKeys.COMMENTED
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.COMMENTED,
+              value: feedbackFilterTypesKeys.COMMENTED,
+            },
+          ]
+        : []),
+    ];
+    const filters = [...methods.watch("config.filters"), ...quickFiltersData];
+    const filteredAdditionalFilters = filters.filter(
+      (i: any) => i.type !== null
+    );
+    const data = {
+      ...methods.watch("config"),
+      filters: filteredAdditionalFilters,
+      // scoreFilter: [...methods.watch("config.scoreFilter")],
+    };
+    delete data.quickFilters;
+    await dispatch(GetFeedbacks(data));
   };
 
   const handleChangeSelected = (ids: number[]) => {
@@ -213,7 +328,9 @@ const Feedbacks = () => {
 
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));
-    await dispatch(GetFeedbacks(defaultFilterValues));
+    await dispatch(
+      GetFeedbacks({ ...defaultFilterValues, filters: [defaultUserVisibility] })
+    );
     await dispatch(GetFeedbackCauseAndMoodCategoriesList());
     await dispatch(GetUserManagers());
     await dispatch(setTableLoading(false));
@@ -235,7 +352,12 @@ const Feedbacks = () => {
         selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         Filter={() => (
-          <QuickFilters onChange={refetchFeedbacks} methods={methods} />
+          <QuickFilters
+            handleSubmit={handleSubmit}
+            methods={methods}
+            feedbackTypes={feedbackQuickFilterTypes}
+            setFeedbackTypes={setFeedbackQuickFilterTypes}
+          />
         )}
         columns={[...feedbackColumns, statusColumn, viewCommentColumn]}
         paginatedData={feedbacks}

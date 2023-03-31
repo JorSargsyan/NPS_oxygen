@@ -1,34 +1,9 @@
-import styled from "@emotion/styled";
 import CreditCard from "@heroicons/react/24/solid/CreditCardIcon";
 import GridIcon from "@heroicons/react/24/solid/TableCellsIcon";
-import {
-  SvgIcon,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import { SvgIcon, ToggleButtonGroup, Typography } from "@mui/material";
 import { Fragment } from "react";
+import StyledToggleButton from "shared/ui/ToggleButton";
 import { ECampaignListViewTypes } from "..";
-
-const MyThemeComponent = styled(ToggleButton)(({ theme }) =>
-  theme.unstable_sx({
-    color: "primary.main",
-    border: "1px solid",
-    borderColor: "primary.main",
-    "&:hover": {
-      backgroundColor: "primary.light",
-      color: "white",
-    },
-    "&.Mui-selected": {
-      backgroundColor: "primary.main",
-      color: "white",
-      "&:hover": {
-        backgroundColor: "primary.light",
-        color: "white",
-      },
-    },
-  })
-);
 
 const CampaignListViewTypes = ({
   type,
@@ -37,7 +12,7 @@ const CampaignListViewTypes = ({
   type: ECampaignListViewTypes;
   setType: (type: ECampaignListViewTypes) => void;
 }) => {
-  const handleAlignment = (
+  const chooseType = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: ECampaignListViewTypes | null
   ) => {
@@ -51,10 +26,10 @@ const CampaignListViewTypes = ({
       <ToggleButtonGroup
         value={type}
         exclusive
-        onChange={handleAlignment}
+        onChange={chooseType}
         aria-label="text alignment"
       >
-        <MyThemeComponent
+        <StyledToggleButton
           value={ECampaignListViewTypes.Card}
           selected={type === ECampaignListViewTypes.Card}
         >
@@ -62,8 +37,8 @@ const CampaignListViewTypes = ({
             <CreditCard />
           </SvgIcon>
           <Typography sx={{ marginLeft: 1 }}>Card</Typography>
-        </MyThemeComponent>
-        <MyThemeComponent
+        </StyledToggleButton>
+        <StyledToggleButton
           value={ECampaignListViewTypes.Grid}
           selected={type === ECampaignListViewTypes.Grid}
         >
@@ -71,7 +46,7 @@ const CampaignListViewTypes = ({
             <GridIcon />
           </SvgIcon>
           <Typography sx={{ marginLeft: 1 }}>Grid</Typography>
-        </MyThemeComponent>
+        </StyledToggleButton>
       </ToggleButtonGroup>
     </Fragment>
   );

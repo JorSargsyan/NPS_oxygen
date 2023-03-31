@@ -1,3 +1,7 @@
+export enum EAppReducerTypes {
+  Set_unsaved_modal_open = "is_campaign_details_modal)open",
+}
+
 export const appContextInitialState: IInitialState = {
   campaignDetails: {
     isOpen: false,
@@ -25,8 +29,4 @@ interface IInitialState {
   campaignDetails: {
     isOpen: boolean;
   };
-}
-
-export enum EAppReducerTypes {
-  Set_unsaved_modal_open = "is_campaign_details_modal)open",
 }
