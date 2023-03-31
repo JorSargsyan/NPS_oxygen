@@ -1,20 +1,15 @@
 import { ECampaignSurveyType } from "../LeftSidebar/constants";
-import WelcomeForm from "./components/WelcomeForm";
-import SingleChoiceForm from "./components/SingleChoiceForm";
-import MultipleChoiceForm from "./components/MultipleChoiceForm";
-import CommentForm from "./components/CommentForm";
-import RatingForm from "./components/RatingForm";
-import NpsForm from "./components/NpsForm";
-import ServiceScoreForm from "./components/ServiceScoreForm";
-import FinalForm from "./components/FinalForm";
+import SimpleForm from "./components/SimpleForm";
+import ChoiceForm from "./components/ChoiceForm";
+import MetricForm from "./components/MetricForm";
 
 export const CampaignSurveyForms = {
-  [ECampaignSurveyType.Welcome]: WelcomeForm,
-  [ECampaignSurveyType.SingleChoice]: SingleChoiceForm,
-  [ECampaignSurveyType.MultipleChoice]: MultipleChoiceForm,
-  [ECampaignSurveyType.Comment]: CommentForm,
-  [ECampaignSurveyType.Rating]: RatingForm,
-  [ECampaignSurveyType.Nps]: NpsForm,
-  [ECampaignSurveyType.ServiceQualityScore]: ServiceScoreForm,
-  [ECampaignSurveyType.Final]: FinalForm,
+  [ECampaignSurveyType.Welcome]: SimpleForm,
+  [ECampaignSurveyType.SingleChoice]: ChoiceForm,
+  [ECampaignSurveyType.MultipleChoice]: ChoiceForm,
+  [ECampaignSurveyType.Comment]: SimpleForm,
+  [ECampaignSurveyType.Rating]: MetricForm,
+  [ECampaignSurveyType.Nps]: MetricForm,
+  [ECampaignSurveyType.ServiceQualityScore]: MetricForm,
+  [ECampaignSurveyType.Final]: SimpleForm,
 };

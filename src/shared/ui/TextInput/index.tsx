@@ -14,6 +14,7 @@ interface IInputProps<T> {
   isSecure?: boolean;
   type?: string;
   clearable?: boolean;
+  onBlur?: () => void;
   rules?: Omit<
     RegisterOptions<T>,
     "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
@@ -23,6 +24,15 @@ interface IInputProps<T> {
   disabled?: boolean;
   inputRef?: Ref<HTMLInputElement>;
 }
+
+const formatNameWithIndex = (str) => {
+  let string = str.replace(/[\W_]/g, " ");
+  let [prefix, index] = string.split(" ");
+  return {
+    prefix,
+    index,
+  };
+};
 
 const InputField = <T extends unknown>({
   size,
@@ -36,6 +46,7 @@ const InputField = <T extends unknown>({
   isSecure = false,
   onKeyPress,
   onClear,
+  onBlur,
   inputRef,
   disabled,
 }: IInputProps<T>) => {
@@ -79,7 +90,16 @@ const InputField = <T extends unknown>({
   };
 
   const errorInfo = useCallback(() => {
-    return errors?.[name];
+    if (name.includes(".")) {
+      const [start, end] = name.split(".");
+      if (start.includes("[")) {
+        const { prefix, index } = formatNameWithIndex(start);
+        return errors?.[prefix]?.[index]?.[end];
+      }
+      return errors?.[start]?.[end];
+    } else {
+      return errors?.[name];
+    }
   }, [errors, name]);
 
   return (
@@ -107,6 +127,7 @@ const InputField = <T extends unknown>({
             multiline={multiline}
             variant="filled"
             disabled={disabled}
+            onBlur={onBlur}
             InputProps={{
               endAdornment: getEndAdornment(field),
             }}

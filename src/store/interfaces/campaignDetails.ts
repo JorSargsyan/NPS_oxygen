@@ -6,6 +6,10 @@ export interface ICampaignDetailsState {
   selectedSurvey: number;
   surveyDetails: ICampaignSurveyDetails | null;
   surveyTemplate: ITemplate | null;
+  form: {
+    survey: any;
+    settings: any;
+  };
 }
 
 export interface ICampaignDetailed {
@@ -67,20 +71,6 @@ export interface IAnswer {
   newAnswer?: boolean;
 }
 
-export interface IUpdateSurveyRequest {
-  campaignID: number;
-  title: string;
-  position: number;
-  type: number;
-  buttonText: string;
-  isRequired: boolean;
-  answers?: IAnswer[];
-  metricConfig?: {
-    metricLeftText: string;
-    metricRightText: string;
-  };
-}
-
 export interface IDistributionSchedule {
   isLink: boolean;
   message: string;
@@ -100,13 +90,22 @@ export interface ISurveyAnswer {
 }
 export interface ICampaignSurveyDetails {
   buttonText: string;
-  commentConfig: any;
+  commentConfig?: {
+    commentType: number;
+    commentMin: number;
+    commentMax: number;
+  };
   id: number;
   isRequired: boolean;
-  metricConfig: any;
-  multipleConfig: {
+  multipleConfig?: {
+    multipleExact: number;
+    multipleMax: number;
+    multipleMin: number;
+    multipleType: number;
+  };
+  metricConfig?: {
     customEndLength: number;
-    customerStartLength: number;
+    customStartLength: number;
     metricLeftText: string | null;
     metricRightText: string | null;
   };

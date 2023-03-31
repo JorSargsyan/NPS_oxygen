@@ -25,3 +25,29 @@ export const rightSidebarTabsData = [
     children: <LogicTab />,
   },
 ];
+
+export const MultipleChoiceLimitOptions = [
+  {
+    name: "Unlimited",
+    value: 1,
+  },
+  {
+    name: "Exact number",
+    value: 2,
+  },
+  {
+    name: "Range",
+    value: 3,
+  },
+];
+
+export const CommentCharacterLimit = [
+  {
+    name: "Unlimited",
+    value: 1,
+  },
+  {
+    name: "Range",
+    value: 2,
+  },
+];

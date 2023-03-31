@@ -74,6 +74,7 @@ const LeftSidebar = () => {
   };
 
   const handleClickContentAdd = async (e) => {
+    e.stopPropagation();
     const type = e.currentTarget.id;
 
     handleClose();
@@ -89,7 +90,7 @@ const LeftSidebar = () => {
         type === ECampaignSurveyType.Welcome
           ? 0
           : (surveyList[surveyList.length - 2]?.position || 1) + 1,
-      isRequired: false,
+      isRequired: true,
     };
 
     const { meta, payload } = await dispatch(CreateSurvey(formData));
@@ -158,10 +159,8 @@ const LeftSidebar = () => {
       await Promise.all([
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
+        dispatch(setSelectedSurvey(String(surveyId))),
       ]);
-      if (needstoSetSelected) {
-        dispatch(setSelectedSurvey(String(surveyId)));
-      }
     },
     [dispatch]
   );
