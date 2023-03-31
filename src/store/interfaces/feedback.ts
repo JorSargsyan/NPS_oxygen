@@ -13,6 +13,7 @@ export interface IFeedbacksState {
   feedbackFilterValues: {
     employee: IAttachedEmployee[];
     servicecategory: IAttachedEmployee[];
+    campaign: IAttachedEmployee[];
   } | null;
 }
 

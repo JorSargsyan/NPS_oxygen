@@ -73,7 +73,7 @@ const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
           {list?.map((item: ICampaign) => {
             return (
               <Box key={item.id} sx={{ width: "31%", position: "relative" }}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card>
                   <CardContentNoPadding>
                     <StyledBox>
                       <Typography
@@ -84,7 +84,7 @@ const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
                       >
                         {item.name}
                       </Typography>
-                      <Box sx={{ position: "absolute", right: -7, top: 12 }}>
+                      <Box sx={{ position: "absolute", right: 10, top: 12 }}>
                         <DotsMenu<ICampaign>
                           actions={actions(item)}
                           onActionClick={handleClickAction}

@@ -327,13 +327,23 @@ const FeedbacksSlice = createSlice({
           const data = {
             employee: payload,
             servicecategory: [],
+            campaign: [],
           };
           state.feedbackFilterValues = data;
         }
         if (meta?.arg?.includes(feedbackFilterTypesKeys.SERVICE_CATEGORY)) {
           const data = {
             employee: [],
+            campaign: [],
             servicecategory: payload,
+          };
+          state.feedbackFilterValues = data;
+        }
+        if (meta?.arg?.includes(feedbackFilterTypesKeys.CAMPAIGN_NAME)) {
+          const data = {
+            employee: [],
+            campaign: payload,
+            servicecategory: [],
           };
           state.feedbackFilterValues = data;
         }

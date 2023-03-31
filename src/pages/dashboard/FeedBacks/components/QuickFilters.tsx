@@ -1,24 +1,222 @@
-import { Box, Grid } from "@mui/material";
-import BasicSelect from "shared/ui/Select";
-// import { CustomerStatusList } from "../constants";
+import React, { MouseEvent } from "react";
+import { Box, Button, Grid, ToggleButtonGroup } from "@mui/material";
 import { FormProvider } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { getQueryParams } from "shared/helpers/getQueryParams";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import BasicAutocomplete from "shared/ui/Autocomplete";
 import BasicRangePicker from "shared/ui/RangePicker";
+import { ERequestStatus } from "store/enums/index.enum";
+import { IAttachedEmployee } from "store/interfaces/directorates";
+import {
+  GetFeedbackFilterValues,
+  selectFeedbackFilterValues,
+} from "store/slicers/feedback";
+import {
+  defaultQuickFilterValues,
+  EQuickFilterTypes,
+  feedbackStatusList,
+  quickFilterFeedbackTypes,
+  quickFilterUserVisibilityTypes,
+} from "../constants";
+import StyledToggleButton from "shared/ui/ToggleButton";
+import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+import { defaultFeedbackQuickFilterTypes } from "..";
 
-const onFormatValue = (value: string) => {
-  return {
-    value: value.toString(),
-    key: "CustomerStatus",
-    queryCondition: 2,
+const QuickFilters = ({
+  methods,
+  handleSubmit,
+  feedbackTypes,
+  setFeedbackTypes,
+}) => {
+  const dispatch = useAsyncDispatch();
+  const filterValues = useSelector(selectFeedbackFilterValues);
+
+  const getCampaignDefaultList = async () => {
+    const formData = {
+      filter: "campaignname",
+      term: "",
+      count: 15,
+    };
+    await dispatch(GetFeedbackFilterValues(getQueryParams(formData)));
   };
-};
 
-const QuickFilters = ({ methods, onChange }) => {
+  const getCampaignList = async (val: string) => {
+    if (val) {
+      const formData = {
+        filter: "campaignname",
+        term: val,
+        count: 15,
+      };
+      await dispatch(GetFeedbackFilterValues(getQueryParams(formData)));
+    }
+  };
+
+  const changeFeedbackType = (
+    event: MouseEvent<HTMLElement>,
+    value: string | null
+  ) => {
+    if (value !== null) {
+      setFeedbackTypes((type) => {
+        return { ...type, feedbackType: value };
+      });
+    }
+  };
+
+  const changeUserVisibilityType = (
+    event: MouseEvent<HTMLElement>,
+    value: string | null
+  ) => {
+    if (value !== null) {
+      setFeedbackTypes((type) => {
+        return { ...type, userVisibility: value };
+      });
+    }
+  };
+
+  const resetQuickFilters = () => {
+    methods.reset({
+      config: {
+        ...methods.watch("config"),
+        quickFilters: defaultQuickFilterValues,
+      },
+    });
+    setFeedbackTypes(defaultFeedbackQuickFilterTypes);
+  };
+
   return (
-    <Box p={1}>
+    <Box px={1} py={3}>
       <FormProvider {...methods}>
         <Grid container spacing={3}>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              "& .ant-picker": {
+                height: "50px",
+                width: "100%",
+                borderRadius: "8px",
+                "&.ant-picker-focused": {
+                  borderWidth: 3,
+                  borderColor: "primary.main",
+                  boxShadow: "none",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                  },
+                },
+                "&:hover": {
+                  borderColor: "neutral.200",
+                },
+              },
+            }}
+          >
+            <BasicRangePicker name="config.quickFilters.range" />
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              "& .MuiInputBase-root": {
+                height: "50px",
+              },
+            }}
+          >
+            <BasicAutocomplete<IAttachedEmployee>
+              options={filterValues?.campaign || []}
+              inputLabel={"Campaign"}
+              name={"config.quickFilters.campaign"}
+              optionLabel="label"
+              defaultValue={""}
+              onFocus={getCampaignDefaultList}
+              size="small"
+              async
+              fetchFn={getCampaignList}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              "& .MuiInputBase-root": {
+                height: "50px",
+              },
+            }}
+          >
+            <BasicAutocomplete<any>
+              options={feedbackStatusList}
+              inputLabel={"Status"}
+              name={"config.quickFilters.status"}
+              optionLabel="name"
+              defaultValue={[]}
+              multiple
+              size="small"
+            />
+          </Grid>
+        </Grid>
+        <Grid sx={{ pt: 2 }} container>
+          <Grid item xs={5}>
+            <ToggleButtonGroup
+              value={feedbackTypes?.feedbackType}
+              exclusive
+              onChange={changeFeedbackType}
+              aria-label="text alignment"
+            >
+              {quickFilterFeedbackTypes?.map((type, index) => {
+                return (
+                  <StyledToggleButton
+                    size="small"
+                    key={index}
+                    value={type.value}
+                    selected={feedbackTypes?.feedbackType === type.value}
+                  >
+                    {type.label}
+                  </StyledToggleButton>
+                );
+              })}
+            </ToggleButtonGroup>
+          </Grid>
           <Grid item xs={4}>
-            <BasicRangePicker name="range" />
+            <ToggleButtonGroup
+              value={feedbackTypes?.userVisibility}
+              exclusive
+              onChange={changeUserVisibilityType}
+              aria-label="text alignment"
+            >
+              {quickFilterUserVisibilityTypes?.map((type, index) => {
+                return (
+                  <StyledToggleButton
+                    size="small"
+                    key={index}
+                    value={type.value}
+                    selected={feedbackTypes?.userVisibility === type.value}
+                  >
+                    {type.label}
+                  </StyledToggleButton>
+                );
+              })}
+            </ToggleButtonGroup>
+          </Grid>
+          <Grid item xs={3} sx={{ textAlign: "right" }}>
+            <Box>
+              <Button
+                startIcon={<ResetIcon height={24} width={24} />}
+                size="small"
+                type="submit"
+                onClick={resetQuickFilters}
+                variant="outlined"
+              >
+                Reset
+              </Button>
+              <Button
+                sx={{ ml: 2 }}
+                size="small"
+                type="submit"
+                onClick={handleSubmit}
+                variant="contained"
+              >
+                Apply filters
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </FormProvider>
@@ -26,4 +224,4 @@ const QuickFilters = ({ methods, onChange }) => {
   );
 };
 
-export default QuickFilters;
+export default React.memo(QuickFilters);

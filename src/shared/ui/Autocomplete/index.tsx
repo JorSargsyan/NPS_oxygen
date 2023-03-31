@@ -33,13 +33,14 @@ interface IAutocompleteProps<OptionType> {
   options: OptionType[];
   name: string;
   defaultValue: [] | "";
-  multiple: boolean;
+  multiple?: boolean;
   rules?: any;
   getOptionDisabled?: (option: OptionType) => boolean;
   groupBy?: (option: OptionType) => string;
   hasSelectAllOption?: boolean;
   isEqualByID?: boolean;
   isOptionEqualToValue?: (option: OptionType, value: any) => boolean;
+  onFocus?: () => void;
 }
 
 const BasicAutocomplete = <T extends { id?: number | string }>({
@@ -61,6 +62,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
   groupBy = undefined,
   hasSelectAllOption = false,
   isOptionEqualToValue = undefined,
+  onFocus = undefined,
 }: IAutocompleteProps<T>) => {
   const {
     control,
@@ -134,6 +136,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
             groupBy={groupBy}
             limitTags={multiple ? 1 : undefined}
             options={options}
+            onFocus={onFocus}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
               return multiple && hasSelectAllOption

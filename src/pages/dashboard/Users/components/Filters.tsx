@@ -27,7 +27,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
 
   const [filterValues, setFilterValues] = useState<IFilterOption[][]>([]);
   const { fields, append, remove } = fieldsConfig;
-  console.log(fields);
+
   const handleAppendRow = () => {
     append(defaultFilterRowValue);
   };

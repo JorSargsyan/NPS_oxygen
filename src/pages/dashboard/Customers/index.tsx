@@ -98,7 +98,7 @@ const Customers = () => {
   };
 
   const handleChangeSelected = (ids: number[]) => {
-    console.log(ids);
+    // console.log(ids);
   };
 
   const init = useCallback(async () => {
