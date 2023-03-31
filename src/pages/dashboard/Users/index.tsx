@@ -101,9 +101,15 @@ const Users = () => {
     window.open(fileUrl, "_blank", "noopener,noreferrer");
   };
 
-  useEffect(() => {
-    dispatch(GetUsers(defaultFilterValues));
+  const init = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetUsers(defaultFilterValues));
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   useEffect(() => {
     if (location.state) {

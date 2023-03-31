@@ -22,7 +22,7 @@ export interface IAttachedEmployee {
   id: string;
   label: string;
   value: string;
-  additionalInfo: IAdditionalInfo;
+  additionalInfo: IAdditionalInfo | null;
 }
 
 export interface IAttachedEmployeeAdditionalInfo extends IAttachedEmployee {

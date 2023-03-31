@@ -9,6 +9,7 @@ import {
 } from "../interfaces/auth";
 import { api } from "../services/apiService";
 import { IState } from "store/interfaces/main";
+import thunkOptions from "store/config/thunkOptions";
 
 const name = "AUTH";
 
@@ -19,25 +20,34 @@ const initialState: IAuthState = {
 export const Authorize = createAsyncThunk<
   IAuthorizeResponse,
   IAuthorizeRequest
->(`${name}/Login`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/login`, formData)).data;
-});
+>(
+  `${name}/Login`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/login`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const RefreshToken = createAsyncThunk<IAuthorizeResponse>(
   `${name}/RefreshToken`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/Refresh`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const ForgetPassword = createAsyncThunk<
   IAuthChangePasswordResponse,
   IAuthChangePasswordRequest
->(`${name}/ForgetPassword`, async (formData) => {
-  return (
-    await api.post(`${EBaseUrl.API}/admin/auth/forget-password`, formData)
-  ).data;
-});
+>(
+  `${name}/ForgetPassword`,
+  async (formData) => {
+    return (
+      await api.post(`${EBaseUrl.API}/admin/auth/forget-password`, formData)
+    ).data;
+  },
+  thunkOptions
+);
 
 const authSlicer = createSlice({
   initialState,

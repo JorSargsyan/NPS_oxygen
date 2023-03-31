@@ -9,6 +9,7 @@ import {
   ICampaignLog,
   ICreateCampaignRequest,
 } from "store/interfaces/campaigns";
+import thunkOptions from "store/config/thunkOptions";
 
 const name = "CAMPAIGNS";
 
@@ -19,33 +20,43 @@ const initialState: ICampaignState = {
 export const GetCampaigns = createAsyncThunk<
   IPaginated<ICampaign>,
   IGridRequest
->(`${name}/GetCampaigns`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
-});
+>(
+  `${name}/GetCampaigns`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const CreateCampaign = createAsyncThunk<unknown, ICreateCampaignRequest>(
   `${name}/GetCampaigns`,
   async (formData) => {
     return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const ChangeCampaignState = createAsyncThunk<
   unknown,
   { state: boolean; id: number }
->(`${name}/ChangeCampaignState`, async (formData) => {
-  return (
-    await api.put(`${EBaseUrl.API}/Campaign/Status/${formData.id}`, {
-      state: formData.state,
-    })
-  ).data;
-});
+>(
+  `${name}/ChangeCampaignState`,
+  async (formData) => {
+    return (
+      await api.put(`${EBaseUrl.API}/Campaign/Status/${formData.id}`, {
+        state: formData.state,
+      })
+    ).data;
+  },
+  thunkOptions
+);
 
 export const GetCampaignLogs = createAsyncThunk<ICampaignLog[], number>(
   `${name}/GetCampaignLogs`,
   async (id) => {
     return (await api.get(`${EBaseUrl.API}/Campaign/Logs/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const TestCustomersCampaign = createAsyncThunk<
@@ -54,23 +65,32 @@ export const TestCustomersCampaign = createAsyncThunk<
     campaignID: number;
     phoneNumbers: string[];
   }
->(`${name}/TestCustomersCampaign`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/TestCustomers`, formData)).data;
-});
+>(
+  `${name}/TestCustomersCampaign`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/TestCustomers`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const DeleteCampaign = createAsyncThunk<unknown, number>(
   `${name}/DeleteCampaign`,
   async (id) => {
     return (await api.delete(`${EBaseUrl.API}/Campaign/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const UpdateCampaign = createAsyncThunk<
   ICampaignLog[],
   { formData: { name: string }; id: number }
->(`${name}/GetCampaignLogs`, async ({ formData, id }) => {
-  return (await api.put(`${EBaseUrl.API}/Campaign/${id}`, formData)).data;
-});
+>(
+  `${name}/GetCampaignLogs`,
+  async ({ formData, id }) => {
+    return (await api.put(`${EBaseUrl.API}/Campaign/${id}`, formData)).data;
+  },
+  thunkOptions
+);
 
 const campaignSlicer = createSlice({
   initialState,

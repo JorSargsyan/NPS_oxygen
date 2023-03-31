@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { EBaseUrl } from "store/config/constants";
+import thunkOptions from "store/config/thunkOptions";
 import {
   ICampaignDetailsState,
   ITrigger,
@@ -34,37 +35,54 @@ const initialState: ICampaignDetailsState = {
 export const GetCampaignSurveyById = createAsyncThunk<
   ICampaignSurveyDetails,
   number
->(`${name}/GetCampaignSurveyById`, async (id: number) => {
-  return (await api.get(`${EBaseUrl.API}/Survey/${id}`)).data;
-});
+>(
+  `${name}/GetCampaignSurveyById`,
+  async (id: number) => {
+    return (await api.get(`${EBaseUrl.API}/Survey/${id}`)).data;
+  },
+  thunkOptions
+);
 
 export const ChangeCampaignSurveyPositions = createAsyncThunk<
   unknown,
   { data: ICampaignSurvey[]; id: number }
->(`${name}/ChangeCampaignSurveyPositions`, async ({ data, id }) => {
-  return (await api.put(`${EBaseUrl.API}/Survey/Status/${id}`, data)).data;
-});
+>(
+  `${name}/ChangeCampaignSurveyPositions`,
+  async ({ data, id }) => {
+    return (await api.put(`${EBaseUrl.API}/Survey/Status/${id}`, data)).data;
+  },
+  thunkOptions
+);
 
 export const CreateSurvey = createAsyncThunk<
   ICreateCampaignSurveyResponse,
   ICreateCampaignSurveyRequest
->(`${name}/CreateSurvey`, async (formData) => {
-  return (await api.post(`${EBaseUrl.API}/Survey`, formData)).data;
-});
+>(
+  `${name}/CreateSurvey`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Survey`, formData)).data;
+  },
+  thunkOptions
+);
 
 export const RemoveCampaignSurvey = createAsyncThunk<unknown, number>(
   `${name}/RemoveCampaignSurvey`,
   async (id) => {
     return (await api.delete(`${EBaseUrl.API}/Survey/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetCampaignSurveyTemplateById = createAsyncThunk<
   ITemplate,
   number
->(`${name}/GetCampaignSurveyTemplateById`, async (id: number) => {
-  return (await api.get(`${EBaseUrl.API}/SurveyTemplate/${id}`)).data;
-});
+>(
+  `${name}/GetCampaignSurveyTemplateById`,
+  async (id: number) => {
+    return (await api.get(`${EBaseUrl.API}/SurveyTemplate/${id}`)).data;
+  },
+  thunkOptions
+);
 
 export const GetCampaignTriggers = createAsyncThunk<ITrigger[]>(
   `${name}/GetCampaignTriggers`,
@@ -77,21 +95,24 @@ export const GetCampaignById = createAsyncThunk<ICampaignDetailed, number>(
   `${name}/GetCampaignById`,
   async (id: number) => {
     return (await api.get(`${EBaseUrl.API}/Campaign/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetTemplates = createAsyncThunk<ITemplate[], number>(
   `${name}/GetTemplates`,
   async (id) => {
     return (await api.get(`${EBaseUrl.API}/Templates/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const GetSurveys = createAsyncThunk<ICampaignSurvey[], number>(
   `${name}/GetSurveys`,
   async (id: number) => {
     return (await api.get(`${EBaseUrl.API}/Surveys/${id}`)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const UpdateSurvey = createAsyncThunk<
@@ -101,7 +122,8 @@ export const UpdateSurvey = createAsyncThunk<
   `${name}/UpdateSurvey`,
   async ({ id, data }: { id: number; data: IUpdateSurveyRequest }) => {
     return (await api.put(`${EBaseUrl.API}/Survey/${id}`, data)).data;
-  }
+  },
+  thunkOptions
 );
 
 export const DistributionSchedule = createAsyncThunk<
@@ -112,7 +134,8 @@ export const DistributionSchedule = createAsyncThunk<
   async ({ id, data }: { id: number; data: IDistributionSchedule }) => {
     return (await api.put(`${EBaseUrl.API}/Campaign/Schedule/${id}`, data))
       .data;
-  }
+  },
+  thunkOptions
 );
 
 const campaignDetailSlice = createSlice({

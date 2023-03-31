@@ -7,17 +7,31 @@ import { RouterProvider } from "react-router-dom";
 import { CreateRoutes } from "./routes";
 import { Toaster } from "react-hot-toast";
 import { toastOptions } from "resources/constants";
+import { createContext, useReducer } from "react";
+import { appContextInitialState, AppReducer } from "shared/helpers/AppContext";
+import "antd/dist/reset.css";
+
+export const GlobalContext = createContext(null);
 
 function App() {
+  const [contextInitialState, dispatchContext] = useReducer(
+    AppReducer,
+    appContextInitialState
+  );
   const router = CreateRoutes();
   const theme = createTheme();
+
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Toaster position="top-center" toastOptions={toastOptions} />
-          <RouterProvider router={router} />
+          <GlobalContext.Provider
+            value={{ contextInitialState, dispatchContext }}
+          >
+            <CssBaseline />
+            <Toaster position="top-center" toastOptions={toastOptions} />
+            <RouterProvider router={router} />
+          </GlobalContext.Provider>
         </ThemeProvider>
       </LocalizationProvider>
     </div>
