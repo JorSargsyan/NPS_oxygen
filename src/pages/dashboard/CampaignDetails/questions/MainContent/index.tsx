@@ -90,6 +90,7 @@ const MainContent = () => {
         >
           <Box display={"flex"} justifyContent={"center"}>
             <Box
+              mb={4}
               height="60%"
               width="50%"
               borderRadius="10px"

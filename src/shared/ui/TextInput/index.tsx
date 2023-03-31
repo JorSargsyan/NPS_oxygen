@@ -25,6 +25,15 @@ interface IInputProps<T> {
   inputRef?: Ref<HTMLInputElement>;
 }
 
+const formatNameWithIndex = (str) => {
+  let string = str.replace(/[\W_]/g, " ");
+  let [prefix, index] = string.split(" ");
+  return {
+    prefix,
+    index,
+  };
+};
+
 const InputField = <T extends unknown>({
   size,
   name,
@@ -81,7 +90,17 @@ const InputField = <T extends unknown>({
   };
 
   const errorInfo = useCallback(() => {
-    return errors?.[name];
+    if (name.includes(".")) {
+      const [start, end] = name.split(".");
+      if (start.includes("[")) {
+        const { prefix, index } = formatNameWithIndex(start);
+        debugger;
+        return errors?.[prefix]?.[index]?.[end];
+      }
+      return errors?.[start]?.[end];
+    } else {
+      return errors?.[name];
+    }
   }, [errors, name]);
 
   return (
