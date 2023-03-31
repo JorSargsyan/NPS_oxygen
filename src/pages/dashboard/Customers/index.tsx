@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
@@ -101,9 +101,15 @@ const Customers = () => {
     console.log(ids);
   };
 
-  useEffect(() => {
-    dispatch(GetCustomers(defaultFilterValues));
+  const init = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetCustomers(defaultFilterValues));
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <Box p={4}>

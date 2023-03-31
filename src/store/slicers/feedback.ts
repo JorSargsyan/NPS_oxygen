@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { feedbackFilterTypesKeys } from "pages/dashboard/FeedBacks/constants";
 import { defaultTableData, EBaseUrl } from "store/config/constants";
 import thunkOptions from "store/config/thunkOptions";
 import {
@@ -38,6 +39,7 @@ const initialState: IFeedbacksState = {
   feedbackNoteHistory: [],
   feedbackTasks: [],
   feedbackTaskLogs: [],
+  feedbackFilterValues: null,
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -267,6 +269,15 @@ export const UpdateFeedbackTaskStatus = createAsyncThunk<
   thunkOptions
 );
 
+export const GetFeedbackFilterValues = createAsyncThunk<any, string>(
+  `${name}/GetFeedbackFilterValues`,
+  async (params: string) => {
+    return (await api.post(`${EBaseUrl.API}/Feedback/Filter?${params}`, {}))
+      .data;
+  },
+  thunkOptions
+);
+
 const FeedbacksSlice = createSlice({
   initialState,
   name,
@@ -309,6 +320,25 @@ const FeedbacksSlice = createSlice({
     builder.addCase(GetFeedbackTaskLogs.fulfilled, (state, { payload }) => {
       state.feedbackTaskLogs = payload;
     });
+    builder.addCase(
+      GetFeedbackFilterValues.fulfilled,
+      (state, { meta, payload }) => {
+        if (meta?.arg?.includes(feedbackFilterTypesKeys.EMPLOYEE)) {
+          const data = {
+            employee: payload,
+            servicecategory: [],
+          };
+          state.feedbackFilterValues = data;
+        }
+        if (meta?.arg?.includes(feedbackFilterTypesKeys.SERVICE_CATEGORY)) {
+          const data = {
+            employee: [],
+            servicecategory: payload,
+          };
+          state.feedbackFilterValues = data;
+        }
+      }
+    );
   },
 });
 
@@ -327,5 +357,7 @@ export const selectFeedbackTasks = (state: IState) =>
   state.feedbacks.feedbackTasks;
 export const selectFeedbackTaskLogs = (state: IState) =>
   state.feedbacks.feedbackTaskLogs;
+export const selectFeedbackFilterValues = (state: IState) =>
+  state.feedbacks.feedbackFilterValues;
 
 export default FeedbacksSlice.reducer;

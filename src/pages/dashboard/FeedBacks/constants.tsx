@@ -4,6 +4,7 @@ import {
   EMood,
   EScoreTypes,
 } from "store/enums/feedbacks.enum";
+import { IAttachedEmployee } from "store/interfaces/directorates";
 import { IFeedback, IScore } from "store/interfaces/feedback";
 
 export const scoreColors = {
@@ -147,3 +148,97 @@ export const customerMoodValues = {
   [EFeedbackStatus.Follow_Up]: "Indifferent",
   [EFeedbackStatus.Postponed]: "Bad",
 };
+
+export interface IFeedbackDefaultFilterOptionForm {
+  type: {
+    key: string;
+    label: string;
+    range: number[];
+    type: EFeedbackFilterTypes;
+    value: EFeedbackFilterTypesValues;
+  };
+  queryCondition: string;
+  value: IAttachedEmployee | string;
+  range?: number[];
+}
+
+export const defaultFilterRowValue: IFeedbackDefaultFilterOptionForm = {
+  type: null,
+  queryCondition: "",
+  value: "",
+};
+
+export const feedbackFilterTypesLabels = {
+  NPS: "NPS",
+  SERVICE_QUALITY_SCORE: "Service quality score",
+  NPS_AGENT: "NPS agent",
+  TASK_STATUS: "Task status",
+  EMPLOYEE: "Employee",
+  SERVICE_CATEGORY: "Service category",
+};
+
+export const feedbackFilterTypesKeys = {
+  NPS: "nps",
+  SERVICE_QUALITY_SCORE: "friendliness",
+  NPS_AGENT: "assignedto",
+  TASK_STATUS: "taskStatus",
+  EMPLOYEE: "employee",
+  SERVICE_CATEGORY: "servicecategory",
+};
+
+export enum EFeedbackFilterTypes {
+  NPS = 4,
+  SERVICE_QUALITY_SCORE = 4,
+  NPS_AGENT = 6,
+  TASK_STATUS = 9,
+  EMPLOYEE = 8,
+  SERVICE_CATEGORY = 1,
+}
+
+export enum EFeedbackFilterTypesValues {
+  NPS = "1",
+  SERVICE_QUALITY_SCORE = "2",
+  NPS_AGENT = "3",
+  TASK_STATUS = "4",
+  EMPLOYEE = "5",
+  SERVICE_CATEGORY = "6",
+}
+
+export const feedbackFilterTypes = [
+  {
+    label: feedbackFilterTypesLabels.NPS,
+    value: EFeedbackFilterTypesValues.NPS,
+    type: EFeedbackFilterTypes.NPS,
+    key: feedbackFilterTypesKeys.NPS,
+  },
+  {
+    label: feedbackFilterTypesLabels.SERVICE_QUALITY_SCORE,
+    value: EFeedbackFilterTypesValues.SERVICE_QUALITY_SCORE,
+    type: EFeedbackFilterTypes.SERVICE_QUALITY_SCORE,
+    key: feedbackFilterTypesKeys.SERVICE_QUALITY_SCORE,
+  },
+  {
+    label: feedbackFilterTypesLabels.NPS_AGENT,
+    value: EFeedbackFilterTypesValues.NPS_AGENT,
+    type: EFeedbackFilterTypes.NPS_AGENT,
+    key: feedbackFilterTypesKeys.NPS_AGENT,
+  },
+  {
+    label: feedbackFilterTypesLabels.TASK_STATUS,
+    value: EFeedbackFilterTypesValues.TASK_STATUS,
+    type: EFeedbackFilterTypes.TASK_STATUS,
+    key: feedbackFilterTypesKeys.TASK_STATUS,
+  },
+  {
+    label: feedbackFilterTypesLabels.EMPLOYEE,
+    value: EFeedbackFilterTypesValues.EMPLOYEE,
+    type: EFeedbackFilterTypes.EMPLOYEE,
+    key: feedbackFilterTypesKeys.EMPLOYEE,
+  },
+  {
+    label: feedbackFilterTypesLabels.SERVICE_CATEGORY,
+    value: EFeedbackFilterTypesValues.SERVICE_CATEGORY,
+    type: EFeedbackFilterTypes.SERVICE_CATEGORY,
+    key: feedbackFilterTypesKeys.SERVICE_CATEGORY,
+  },
+];

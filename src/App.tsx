@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import { toastOptions } from "resources/constants";
 import { createContext, useReducer } from "react";
 import { appContextInitialState, AppReducer } from "shared/helpers/AppContext";
+import "antd/dist/reset.css";
 
 export const GlobalContext = createContext(null);
 

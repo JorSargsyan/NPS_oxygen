@@ -10,6 +10,10 @@ export interface IFeedbacksState {
   feedbackNoteHistory: IFeedbackNoteHistory[];
   feedbackTasks: IFeedbackTask[];
   feedbackTaskLogs: IFeedbackTaskLog[];
+  feedbackFilterValues: {
+    employee: IAttachedEmployee[];
+    servicecategory: IAttachedEmployee[];
+  } | null;
 }
 
 export interface IFeedbackNoteHistory {

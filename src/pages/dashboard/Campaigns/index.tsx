@@ -60,8 +60,10 @@ const CampaignsPage = () => {
     defaultValues: { config: defaultFilterValues },
   });
 
-  const refetchData = useCallback(() => {
-    dispatch(GetCampaigns(methods.watch("config")));
+  const refetchData = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(GetCampaigns(methods.watch("config")));
+    await dispatch(setTableLoading(false));
   }, [dispatch, methods]);
 
   const handleChangeSelected = (ids: number[]) => {
@@ -138,9 +140,9 @@ const CampaignsPage = () => {
     ];
   };
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     setDrawerOpen(false);
-    refetchData();
+    await refetchData();
     toast.success("Campaign created successfully");
   };
 
@@ -158,7 +160,7 @@ const CampaignsPage = () => {
   const handleChangeState = useCallback(
     async (id: number, state: boolean) => {
       await dispatch(ChangeCampaignState({ id, state }));
-      refetchData();
+      await refetchData();
     },
     [dispatch, refetchData]
   );
@@ -182,12 +184,8 @@ const CampaignsPage = () => {
 
   const initialFetch = useCallback(async () => {
     await dispatch(setTableLoading(true));
-    const { meta } = await dispatch(GetCampaigns(defaultFilterValues));
-    if (meta.requestStatus === ERequestStatus.FULFILLED) {
-      await dispatch(setTableLoading(false));
-    } else {
-      await dispatch(setTableLoading(false));
-    }
+    await dispatch(GetCampaigns(defaultFilterValues));
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
