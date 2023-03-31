@@ -76,7 +76,6 @@ const CampaignDetail = () => {
           }}
         />
       </Box>
-      <BasicTabs tabsData={campaignDetailsTabList} />
       <SharedDialog
         open={unsavedModalOpen}
         setOpen={handleSetOpen}
