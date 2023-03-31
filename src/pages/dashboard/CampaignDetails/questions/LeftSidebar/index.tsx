@@ -74,6 +74,7 @@ const LeftSidebar = () => {
   };
 
   const handleClickContentAdd = async (e) => {
+    e.stopPropagation();
     const type = e.currentTarget.id;
 
     handleClose();
@@ -158,10 +159,8 @@ const LeftSidebar = () => {
       await Promise.all([
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
+        dispatch(setSelectedSurvey(String(surveyId))),
       ]);
-      if (needstoSetSelected) {
-        dispatch(setSelectedSurvey(String(surveyId)));
-      }
     },
     [dispatch]
   );
