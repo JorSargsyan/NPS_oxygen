@@ -31,6 +31,17 @@ const defaultAnswer = {
   position: 0,
 };
 
+let metricConfigable = [
+  Number(ECampaignSurveyType.Nps),
+  Number(ECampaignSurveyType.Rating),
+  Number(ECampaignSurveyType.ServiceQualityScore),
+];
+
+let answerResettable = [
+  Number(ECampaignSurveyType.MultipleChoice),
+  Number(ECampaignSurveyType.SingleChoice),
+];
+
 interface IFormData {
   title: string;
   answers: any[];
@@ -98,12 +109,6 @@ const CampaignDetail = () => {
       });
     }
 
-    let metricConfigable = [
-      Number(ECampaignSurveyType.Nps),
-      Number(ECampaignSurveyType.Rating),
-      Number(ECampaignSurveyType.ServiceQualityScore),
-    ];
-
     const config = {
       ...(surveyDetails.details.type ===
         Number(ECampaignSurveyType.Comment) && {
@@ -157,9 +162,11 @@ const CampaignDetail = () => {
   const handleResetForm = useCallback(() => {
     methods.reset({
       title: surveyDetails.details?.title || "",
-      answers: surveyDetails.details.answers?.length
-        ? surveyDetails.details.answers
-        : [defaultAnswer],
+      answers:
+        surveyDetails.details.answers?.length &&
+        answerResettable.includes(surveyDetails.details.type)
+          ? surveyDetails.details.answers
+          : [defaultAnswer],
       metricConfig: {
         metricLeftText:
           surveyDetails.details?.metricConfig?.metricLeftText || "",

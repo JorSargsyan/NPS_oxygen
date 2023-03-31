@@ -1,12 +1,38 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
 import { requiredRules } from "shared/helpers/validators";
 import TextInput from "shared/ui/TextInput";
+import { selectSurveyInfo } from "store/slicers/campaignDetail";
 
 const MetricForm = () => {
+  const surveyInfo = useSelector(selectSurveyInfo);
+
   return (
     <Box>
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent={"center"} gap={2}>
+            {surveyInfo.details.answers.map((answer) => (
+              <Box
+                key={answer.id}
+                p={1}
+                borderRadius={"10px"}
+                minWidth={"40px"}
+                sx={{ backgroundColor: "primary.main" }}
+              >
+                <Typography
+                  fontSize={16}
+                  fontWeight={"bold"}
+                  color="white"
+                  textAlign={"center"}
+                >
+                  {answer.value}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Grid>
         <Grid item xs={12}>
           <TextInput
             name="title"

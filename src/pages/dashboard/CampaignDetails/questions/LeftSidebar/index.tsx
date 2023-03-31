@@ -89,7 +89,7 @@ const LeftSidebar = () => {
         type === ECampaignSurveyType.Welcome
           ? 0
           : (surveyList[surveyList.length - 2]?.position || 1) + 1,
-      isRequired: false,
+      isRequired: true,
     };
 
     const { meta, payload } = await dispatch(CreateSurvey(formData));

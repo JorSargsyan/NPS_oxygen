@@ -94,7 +94,6 @@ const InputField = <T extends unknown>({
       const [start, end] = name.split(".");
       if (start.includes("[")) {
         const { prefix, index } = formatNameWithIndex(start);
-        debugger;
         return errors?.[prefix]?.[index]?.[end];
       }
       return errors?.[start]?.[end];
