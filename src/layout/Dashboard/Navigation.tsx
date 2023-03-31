@@ -13,13 +13,22 @@ import { Scrollbar } from "components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./NavigationItem";
 import { useLocation } from "react-router-dom";
+import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { useSelector } from "react-redux";
+import { useCallback } from "react";
 
-export const SideNav = (props) => {
+export const SideNav = () => {
   const location = useLocation();
-  const { open, onClose } = props;
-  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
+  const dispatch = useAsyncDispatch();
+  const open = useSelector(selectSidebarVisible);
 
-  const sidebarBtnVisible = location.pathname.includes("/campaign/");
+  const onClose = useCallback(() => {
+    dispatch(setSidebarVisible(false));
+  }, [dispatch]);
+
+  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
+  const isCampaignDetailsPage = location.pathname.includes("/campaign/");
 
   const content = (
     <Scrollbar
@@ -116,25 +125,6 @@ export const SideNav = (props) => {
     </Scrollbar>
   );
 
-  if (lgUp && !sidebarBtnVisible) {
-    return (
-      <Drawer
-        anchor="left"
-        open
-        PaperProps={{
-          sx: {
-            backgroundColor: "neutral.800",
-            color: "common.white",
-            width: 280,
-          },
-        }}
-        variant="permanent"
-      >
-        {content}
-      </Drawer>
-    );
-  }
-
   return (
     <Drawer
       anchor="left"
@@ -147,15 +137,13 @@ export const SideNav = (props) => {
           width: 280,
         },
       }}
+      ModalProps={{
+        disablePortal: true,
+      }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant="temporary"
+      variant={!lgUp || !isCampaignDetailsPage ? "permanent" : "temporary"}
     >
       {content}
     </Drawer>
   );
-};
-
-SideNav.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
 };

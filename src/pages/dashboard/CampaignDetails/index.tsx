@@ -2,7 +2,13 @@ import { Box } from "@mui/system";
 import { useParams } from "react-router-dom";
 import BasicTabs from "shared/ui/Tabs";
 import { campaignDetailsTabList } from "./constants";
-import { useCallback, useContext, useEffect, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import {
   GetCampaignById,
@@ -25,6 +31,7 @@ import { useSelector } from "react-redux";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
+import { setSidebarVisible } from "store/slicers/common";
 
 const defaultAnswer = {
   value: "",
@@ -215,6 +222,7 @@ const CampaignDetail = () => {
     surveyDetails.details?.multipleConfig?.multipleMin,
     surveyDetails.details?.multipleConfig?.multipleType,
     surveyDetails.details?.title,
+    surveyDetails.details?.type,
   ]);
 
   useEffect(() => {
@@ -232,6 +240,10 @@ const CampaignDetail = () => {
 
     handleResetForm();
   }, [handleResetForm, methods, surveyDetails?.details]);
+
+  useLayoutEffect(() => {
+    dispatch(setSidebarVisible(false));
+  }, [dispatch]);
 
   return (
     <Box>
