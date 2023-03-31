@@ -18,6 +18,8 @@ const EnhancedToolbar = ({
   return (
     <Toolbar
       sx={{
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
         pl: { sm: 1.3 },
         pr: { xs: 1, sm: 2 },
         ...(rowsSelected > 0 && {

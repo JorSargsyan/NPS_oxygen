@@ -57,7 +57,6 @@ const BasicRangePicker = ({ name }: IProps) => {
         return (
           <DatePicker.RangePicker
             {...field}
-            style={{ zIndex: 1300 }}
             presets={shortcutsItems}
             onChange={(dates, datesString) =>
               onRangeChange(dates, datesString, field)
