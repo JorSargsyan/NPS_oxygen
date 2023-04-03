@@ -17,13 +17,13 @@ const initialState: ICommonState = {
   loading: false,
   theme: ETheme.Light,
   tableLoading: true,
-  permissions: [],
+  permissions: null,
   permissionGroups: [],
   managers: [],
   sidebarVisible: true,
 };
 
-export const GetPermissions = createAsyncThunk<IGetPermissionsResponse>(
+export const GetPermissions = createAsyncThunk<{ [key: string]: any }>(
   `${name}/GetPermissions`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/User/Permissions`)).data;

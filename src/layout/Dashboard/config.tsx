@@ -15,85 +15,124 @@ import Roles from "pages/dashboard/Roles";
 import Users from "pages/dashboard/Users";
 import DirectoratesGrid from "pages/dashboard/Directorates";
 
-export const items = [
-  {
-    title: "Overview",
-    path: "overview",
-    element: <HomePage />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <ChartBarIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Feedbacks",
-    path: "feedbacks",
-    element: <Feedbacks />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <FeedbackIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Campaigns",
-    path: "campaigns",
-    element: <Campaigns />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <Megaphone />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Customers",
-    path: "customers",
-    element: <Customers />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <UsersIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Roles",
-    path: "roles",
-    element: <Roles />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserPlusIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Users",
-    path: "users",
-    element: <Users />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Translations",
-    path: "dictionary",
-    element: <Dictionary />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <TranslationIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Directorates",
-    path: "directorates",
-    element: <DirectoratesGrid />,
-    icon: (
-      <SvgIcon fontSize="small">
-        <TranslationIcon />
-      </SvgIcon>
-    ),
-  },
-];
+export const items = ({
+  hasRolesPerm,
+  hasCustomerPerm,
+  hasUsersPerm,
+  hasTranslationPerm,
+  hasDirectoratePerm,
+  hasFeedbackPerm,
+  hasCampaignPerm,
+}) => {
+  return [
+    {
+      title: "Overview",
+      path: "overview",
+      element: <HomePage />,
+      icon: (
+        <SvgIcon fontSize="small">
+          <ChartBarIcon />
+        </SvgIcon>
+      ),
+    },
+    ...(hasFeedbackPerm
+      ? [
+          {
+            title: "Feedbacks",
+            path: "feedbacks",
+            element: <Feedbacks />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <FeedbackIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+    ...(hasCampaignPerm
+      ? [
+          {
+            title: "Campaigns",
+            path: "campaigns",
+            element: <Campaigns />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <Megaphone />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+
+    ...(hasCustomerPerm
+      ? [
+          {
+            title: "Customers",
+            path: "customers",
+            element: <Customers />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <UsersIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+    ...(hasRolesPerm
+      ? [
+          {
+            title: "Roles",
+            path: "roles",
+            element: <Roles />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <UserPlusIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+    ...(hasUsersPerm
+      ? [
+          {
+            title: "Users",
+            path: "users",
+            element: <Users />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <UserIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+    ...(hasTranslationPerm
+      ? [
+          {
+            title: "Translations",
+            path: "dictionary",
+            element: <Dictionary />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <TranslationIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+    ...(hasDirectoratePerm
+      ? [
+          {
+            title: "Directorates",
+            path: "directorates",
+            element: <DirectoratesGrid />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <TranslationIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
+  ];
+};

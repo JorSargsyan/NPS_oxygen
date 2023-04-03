@@ -4,7 +4,7 @@ export interface ICommonState {
   loading: boolean;
   theme: ETheme;
   tableLoading: boolean;
-  permissions: IPermission[];
+  permissions: { [key: string]: number };
   permissionGroups: IPermissionGroup[];
   managers: IManagers[];
   sidebarVisible: boolean;

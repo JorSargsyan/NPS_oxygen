@@ -11,6 +11,7 @@ export const debounce = (func: (...args: any) => void, timeout = 600) => {
 export const hasUserPermission = (arr: string[] | undefined, perm: string) => {
   return arr?.includes(perm);
 };
+
 export const hasOtherPermissionButGet = (
   arr: string[] | undefined,
   permSection: string
