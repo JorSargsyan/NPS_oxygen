@@ -309,7 +309,7 @@ const LeftSidebar = () => {
                                   {index + 1}
                                 </Typography>
                               </Box>
-                              <Typography fontSize={14} ml={1}>
+                              <Typography fontWeight="600" fontSize={14} ml={1}>
                                 {survey.title ||
                                   CampaignSurveyTypeList[survey.type]}
                               </Typography>

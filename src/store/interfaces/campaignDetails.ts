@@ -95,7 +95,7 @@ export interface ICampaignSurveyDetails {
     commentMin: number;
     commentMax: number;
   };
-  id: number;
+  id?: number;
   isRequired: boolean;
   multipleConfig?: {
     multipleExact: number;
@@ -111,7 +111,34 @@ export interface ICampaignSurveyDetails {
   };
   answers: ISurveyAnswer[];
   position: number;
-  questionNumber: number;
+  questionNumber?: number;
+  title: string;
+  type: number;
+}
+
+export interface IUpdateSurveyRequest {
+  campaignID: number;
+  buttonText: string;
+  commentConfig?: {
+    commentType: number;
+    commentMin: string;
+    commentMax: string;
+  };
+  isRequired: boolean;
+  multipleConfig?: {
+    multipleExact: string;
+    multipleMax: string;
+    multipleMin: string;
+    multipleType: number;
+  };
+  metricConfig?: {
+    customEndLength: string;
+    customStartLength: string;
+    metricLeftText: string | null;
+    metricRightText: string | null;
+  };
+  answers: ISurveyAnswer[];
+  position: number;
   title: string;
   type: number;
 }
@@ -137,4 +164,12 @@ export interface ICreateCampaignSurveyRequest {
   selected: boolean;
   title: string;
   type: number;
+}
+
+export interface IUpdateSurveyTemplateRequest {
+  logoImage: {
+    base64Image: string;
+    extension: string;
+    removeImage: boolean;
+  };
 }

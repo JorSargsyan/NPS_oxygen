@@ -32,6 +32,7 @@ import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
 import { setSidebarVisible } from "store/slicers/common";
+import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 
 const defaultAnswer = {
   value: "",
@@ -130,7 +131,7 @@ const CampaignDetail = () => {
       }),
     };
 
-    const data = {
+    const data: IUpdateSurveyRequest = {
       campaignID: campaignInfo.id,
       title: formData.title,
       position,

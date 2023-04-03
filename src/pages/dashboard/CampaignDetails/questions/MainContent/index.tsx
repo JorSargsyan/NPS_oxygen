@@ -1,10 +1,23 @@
-import { Paper } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
 import { selectSurveyInfo } from "store/slicers/campaignDetail";
 import { CampaignSurveyForms } from "./constants";
+import {
+  CampaignSurveyIcons,
+  CampaignSurveyTypeList,
+} from "../LeftSidebar/constants";
+
+const getOptionIcon = (type: number) => {
+  const Comp = CampaignSurveyIcons[type];
+  return (
+    <Box display="flex" p={1} alignItems="center">
+      <Comp height={20} width={20} color="white" />
+    </Box>
+  );
+};
 
 const MainContent = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
@@ -24,6 +37,25 @@ const MainContent = () => {
           height="90vh"
           overflow={"scroll"}
         >
+          <Box mb={2} display={"flex"} alignItems={"center"}>
+            <Box
+              px={1}
+              display="flex"
+              justifyContent={"center"}
+              alignItems={"center"}
+              color="primary.secondary"
+              sx={{
+                backgroundColor: "primary.main",
+                borderRadius: "4px",
+              }}
+            >
+              {getOptionIcon(surveyInfo.details.type)}
+            </Box>
+            <Typography fontWeight="600" fontSize={16} ml={1}>
+              {surveyInfo.details.title ||
+                CampaignSurveyTypeList[surveyInfo.details.type]}
+            </Typography>
+          </Box>
           <Box display={"flex"} justifyContent={"center"}>
             <Box
               mb={4}
@@ -39,10 +71,12 @@ const MainContent = () => {
                 },
               }}
             >
-              <img
-                src={`${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`}
-                alt="sadas"
-              />
+              {surveyInfo?.template?.logoImage && (
+                <img
+                  src={`${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`}
+                  alt="sadas"
+                />
+              )}
             </Box>
           </Box>
           <SurveyFormComp />

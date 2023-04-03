@@ -9,9 +9,10 @@ import {
   ICampaignSurvey,
   IDistributionSchedule,
   ICampaignSurveyDetails,
-  IUpdateSurveyRequest,
+  IUpdateSurveyTemplateRequest,
   ICreateCampaignSurveyRequest,
   ICreateCampaignSurveyResponse,
+  IUpdateSurveyRequest,
 } from "store/interfaces/campaignDetails";
 import { IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -122,6 +123,59 @@ export const UpdateSurvey = createAsyncThunk<
   `${name}/UpdateSurvey`,
   async ({ id, data }: { id: number; data: IUpdateSurveyRequest }) => {
     return (await api.put(`${EBaseUrl.API}/Survey/${id}`, data)).data;
+  },
+  thunkOptions
+);
+
+export const UpdateSurveyTemplate = createAsyncThunk<
+  unknown,
+  { data: IUpdateSurveyTemplateRequest; id: number }
+>(
+  `${name}/UpdateSurveyTemplate`,
+  async ({ id, data }: { id: number; data: IUpdateSurveyTemplateRequest }) => {
+    return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Default/${id}`, data))
+      .data;
+  },
+  thunkOptions
+);
+
+export const DeleteCampaignTemplate = createAsyncThunk<unknown, number>(
+  `${name}/RemoveCampaignTemplate`,
+  async (id) => {
+    return (await api.delete(`${EBaseUrl.API}/SurveyTemplate/Campaign/${id}`))
+      .data;
+  },
+  thunkOptions
+);
+
+export const DeleteSurveyTemplate = createAsyncThunk<unknown, number>(
+  `${name}/RemoveSurveyTemplate`,
+  async (id) => {
+    return (await api.delete(`${EBaseUrl.API}/SurveyTemplate/${id}`)).data;
+  },
+  thunkOptions
+);
+
+export const ApplySurvey = createAsyncThunk<
+  unknown,
+  { surveyID: string; templateID: number }
+>(
+  `${name}/ApplySurvey`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/SurveyTemplate/Apply`, formData))
+      .data;
+  },
+  thunkOptions
+);
+
+export const ApplyForAllSurveys = createAsyncThunk<
+  unknown,
+  { campaignID: string; templateID: number }
+>(
+  `${name}/ApplyForAllSurveys`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/SurveyTemplate/ApplyAll`, formData))
+      .data;
   },
   thunkOptions
 );
