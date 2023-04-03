@@ -16,6 +16,7 @@ import {
   GetSurveys,
   GetTemplates,
   UpdateSurvey,
+  resetCampaignDetails,
   selectCampaignInfo,
   selectCampaignSurveys,
   selectSelectedSurvey,
@@ -250,6 +251,7 @@ const CampaignDetail = () => {
 
   useLayoutEffect(() => {
     dispatch(setSidebarVisible(false));
+    return () => dispatch(resetCampaignDetails());
   }, [dispatch]);
 
   return (

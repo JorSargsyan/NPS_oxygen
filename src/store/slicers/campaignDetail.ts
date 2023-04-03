@@ -205,6 +205,9 @@ const campaignDetailSlice = createSlice({
     setSettingsForm(state, { payload }) {
       state.form.settings = payload;
     },
+    resetCampaignDetails() {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(GetCampaignTriggers.fulfilled, (state, { payload }) => {
@@ -248,6 +251,10 @@ export const selectSurveyInfo = (state: IState) => {
   };
 };
 
-export const { setSelectedSurvey, setSettingsForm, setSurveyForm } =
-  campaignDetailSlice.actions;
+export const {
+  setSelectedSurvey,
+  setSettingsForm,
+  setSurveyForm,
+  resetCampaignDetails,
+} = campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;
