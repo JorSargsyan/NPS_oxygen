@@ -1,27 +1,25 @@
-import React, { MouseEvent } from "react";
+import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import { Box, Button, Grid, ToggleButtonGroup } from "@mui/material";
+import React, { MouseEvent } from "react";
 import { FormProvider } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import BasicRangePicker from "shared/ui/RangePicker";
-import { ERequestStatus } from "store/enums/index.enum";
+import StyledToggleButton from "shared/ui/ToggleButton";
 import { IAttachedEmployee } from "store/interfaces/directorates";
 import {
   GetFeedbackFilterValues,
   selectFeedbackFilterValues,
 } from "store/slicers/feedback";
+import { defaultFeedbackQuickFilterTypes } from "..";
 import {
   defaultQuickFilterValues,
-  EQuickFilterTypes,
   feedbackStatusList,
   quickFilterFeedbackTypes,
   quickFilterUserVisibilityTypes,
 } from "../constants";
-import StyledToggleButton from "shared/ui/ToggleButton";
-import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
-import { defaultFeedbackQuickFilterTypes } from "..";
 
 const QuickFilters = ({
   methods,

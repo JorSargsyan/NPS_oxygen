@@ -2,7 +2,7 @@ import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import DeleteIcon from "@heroicons/react/24/solid/TrashIcon";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useCallback, useMemo } from "react";
 import { FormProvider, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { ConditionList, FilterConditionMatchList } from "resources/constants";
@@ -22,6 +22,7 @@ import {
   defaultFilterRowValue,
   EFeedbackFilterTypes,
   feedbackFilterTypes,
+  feedbackFilterTypesKeys,
 } from "../constants";
 import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRight/constants";
 
@@ -35,7 +36,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
     onChange();
   };
 
-  // const [filterValues, setFilterValues] = useState<any>();
   const { fields, append, remove } = fieldsConfig;
 
   const handleAppendRow = () => {
@@ -123,6 +123,13 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
     }
   };
 
+  const getSliderValues = useCallback(
+    (index: number) => {
+      return methods.watch(`config.filters[${index}].type.range`);
+    },
+    [methods]
+  );
+
   return (
     <Box p={1}>
       <FormProvider {...methods}>
@@ -176,12 +183,33 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                   />
                 </Grid>
                 {filtersWatch?.[index]?.type?.type ===
-                EFeedbackFilterTypes.NPS ? (
+                  EFeedbackFilterTypes.NPS &&
+                filtersWatch?.[index]?.type?.key ===
+                  feedbackFilterTypesKeys.NPS ? (
                   <Fragment>
                     <Grid item xs={3}>
                       <RangeSlider
+                        label="NPS score"
                         name={`config.filters[${index}].type.range`}
                         sx={{ ml: 2 }}
+                        values={methods.watch(
+                          `config.filters[${index}].type.range`
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={3}></Grid>
+                  </Fragment>
+                ) : filtersWatch?.[index]?.type?.type ===
+                    EFeedbackFilterTypes.SERVICE_QUALITY_SCORE &&
+                  filtersWatch?.[index]?.type?.key ===
+                    feedbackFilterTypesKeys.SERVICE_QUALITY_SCORE ? (
+                  <Fragment>
+                    <Grid item xs={3}>
+                      <RangeSlider
+                        label="Employee score"
+                        name={`config.filters[${index}].type.range`}
+                        sx={{ ml: 2 }}
+                        values={getSliderValues(index)}
                       />
                     </Grid>
                     <Grid item xs={3}></Grid>

@@ -27,6 +27,7 @@ export interface IEnhancedToolbar {
   hasFilters: boolean;
   hasSearchInput: boolean;
   handleToggleFilter: () => void;
+  hasCustomActions?: boolean;
 }
 
 export interface IAction<T> {
@@ -42,7 +43,7 @@ export interface ITableProps<T> {
   paginatedData?: IPaginated<T>;
   Filter?: () => JSX.Element;
   onChange?: () => void;
-  onExport?: (arr: number[]) => void;
+  onExport?: (arr?: number[]) => void;
   onChangeSelected?: (list: number[]) => void;
   selectable?: boolean;
   getActions?: (row: T) => IAction<T>[];
@@ -50,6 +51,8 @@ export interface ITableProps<T> {
   filterOptions?: IFilterOptions;
   section?: string;
   hasSearchInput?: boolean;
+  hasCustomActions?: boolean;
+  CustomActions?: () => JSX.Element;
 }
 
 export const rowsPerPageOptions = [5, 10, 20];

@@ -149,7 +149,7 @@ export interface ICauseCategory {
 
 export interface IUpdateManager {
   assignUserID: number;
-  feedbackIDs: string[];
+  feedbackIDs: string[] | number[];
 }
 
 export interface IFeedbackUser {
@@ -253,4 +253,17 @@ export interface IFeedbackTaskUpdateStatus {
     status: number;
     feedbackID: string;
   };
+}
+
+export interface IDateFilter {
+  dateId: number;
+  key: string;
+  queryCondition: number;
+  value: string;
+}
+
+export interface IExportFeedback {
+  conditionMatch: number;
+  scoreFilter: any;
+  filters: IDateFilter[];
 }

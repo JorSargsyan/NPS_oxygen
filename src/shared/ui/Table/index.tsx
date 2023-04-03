@@ -38,6 +38,8 @@ const BasicTable = <T extends { id: number }>({
   filterOptions,
   enablePagination = true,
   hasSearchInput = false,
+  hasCustomActions = false,
+  CustomActions,
 }: ITableProps<T>): JSX.Element => {
   const filters = filterOptions?.watch("config");
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -273,6 +275,7 @@ const BasicTable = <T extends { id: number }>({
 
   return (
     <Box pt={4}>
+      <Box mb={4}>{hasCustomActions ? <CustomActions /> : null}</Box>
       {toolbar && (
         <EnhancedToolbar
           handleToggleFilter={() => setFiltersVisible((state) => !state)}
@@ -281,6 +284,7 @@ const BasicTable = <T extends { id: number }>({
           onExport={() => onExport?.(selectedList)}
           hasFilters={!!Filter}
           fetchData={onChange}
+          hasCustomActions={hasCustomActions}
           hasSearchInput={hasSearchInput}
         />
       )}
