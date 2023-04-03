@@ -41,14 +41,21 @@ interface ITabsData {
 interface ITabsProps {
   tabsData: ITabsData[];
   centered?: boolean;
+  onChange?: (val: number) => void;
   Content?: () => JSX.Element;
 }
 
-const BasicTabs = ({ tabsData, centered = true, Content }: ITabsProps) => {
+const BasicTabs = ({
+  tabsData,
+  centered = true,
+  Content,
+  onChange,
+}: ITabsProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    onChange?.(newValue);
   };
 
   return (

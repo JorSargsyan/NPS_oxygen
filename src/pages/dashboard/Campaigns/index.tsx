@@ -148,7 +148,12 @@ const CampaignsPage = () => {
   const handleSuccess = async () => {
     setDrawerOpen(false);
     await refetchData();
-    toast.success("Campaign created successfully");
+    toast.success("Campaign name changed successfully");
+  };
+
+  const handleSuccessCreation = async (id: number) => {
+    setDrawerOpen(false);
+    navigate(`/campaign/${id}`);
   };
 
   const getDrawerTitle = () => {
@@ -247,7 +252,7 @@ const CampaignsPage = () => {
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
         width={
-          mode === ECampaignAction.Rename
+          mode === ECampaignAction.Rename || mode === ECampaignAction.Add
             ? RIGHT_SIDEBAR_WIDTH
             : RIGHT_SIDEBAR_WIDTH_EXTENDED
         }
@@ -261,7 +266,7 @@ const CampaignsPage = () => {
           <HistoryView data={rowHistory} />
         )}
         {mode === ECampaignAction.Add && (
-          <AddCampaign onSuccess={handleSuccess} />
+          <AddCampaign onSuccess={handleSuccessCreation} />
         )}
       </RightDrawer>
       <SharedDialog

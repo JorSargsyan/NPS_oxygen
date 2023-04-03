@@ -76,7 +76,7 @@ export const Layout = (props: any) => {
             >
               Welcome to{" "}
               <Box component="a" sx={{ color: "#15B79E" }} target="_blank">
-                NPS
+                CX Pro
               </Box>
             </Typography>
             <img alt="" src={Ill} />
