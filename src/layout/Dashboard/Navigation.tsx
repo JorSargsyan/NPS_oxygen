@@ -71,7 +71,7 @@ export const SideNav = () => {
             >
               <Box>
                 <Typography color="inherit" variant="subtitle1">
-                  NPS
+                  CX Pro
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
                   OXYGEN
