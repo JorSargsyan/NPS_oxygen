@@ -234,9 +234,11 @@ const CampaignsPage = () => {
           />
         ) : (
           <CampaignCardsList
-            list={campaigns?.displayData}
+            filterOptions={{ watch: methods.watch, reset: methods.reset }}
+            list={campaigns}
             actions={getActions}
             handleChangeState={handleChangeState}
+            onChange={refetchData}
           />
         )}
       </Box>

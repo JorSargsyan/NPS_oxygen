@@ -4,7 +4,6 @@ import SearchInput from "shared/components/SearchInput";
 import { IEnhancedToolbar } from "../constants";
 import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
 import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
-import { Fragment } from "react";
 
 const EnhancedToolbar = ({
   rowsSelected,
@@ -14,10 +13,13 @@ const EnhancedToolbar = ({
   fetchData,
   hasFilters,
   hasSearchInput,
+  hasCustomActions = false,
 }: IEnhancedToolbar) => {
   return (
     <Toolbar
       sx={{
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
         pl: { sm: 1.3 },
         pr: { xs: 1, sm: 2 },
         ...(rowsSelected > 0 && {
@@ -45,7 +47,7 @@ const EnhancedToolbar = ({
           ) : null}
         </Box>
       )}
-      {rowsSelected > 0 ? (
+      {rowsSelected > 0 && !hasCustomActions ? (
         <Button
           variant="contained"
           onClick={() => onExport?.()}
@@ -54,7 +56,7 @@ const EnhancedToolbar = ({
           <Typography>Export</Typography>
         </Button>
       ) : (
-        <Fragment>
+        <Box>
           {hasFilters && (
             <Tooltip title="Filter list">
               <FilterListIcon
@@ -64,7 +66,7 @@ const EnhancedToolbar = ({
               />
             </Tooltip>
           )}
-        </Fragment>
+        </Box>
       )}
     </Toolbar>
   );

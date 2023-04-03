@@ -16,6 +16,7 @@ import { IAttachedEmployee } from "store/interfaces/directorates";
 import { IFeedback, IFeedbackCauseAndMood } from "store/interfaces/feedback";
 import { GetUserManagers, setTableLoading } from "store/slicers/common";
 import {
+  ExportFeedbacks,
   GetFeedbackCauseAndMoodCategoriesList,
   GetFeedbacks,
   selectFeedbacks,
@@ -37,12 +38,18 @@ import {
   viewCommentsDialogConfig,
 } from "./constants";
 import { changeFeedbackStatus } from "./helpers";
+import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
+import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
+import { EBaseUrl } from "store/config/constants";
+import { ERequestStatus } from "store/enums/index.enum";
+import AssignFeedbackDrawer from "./components/AssignFeedbackDrawer";
 
 export interface IActiveRow {
-  type: number;
-  data: IFeedbackCauseAndMood;
-  rowId: number;
-  state: number;
+  type?: number;
+  data?: IFeedbackCauseAndMood;
+  rowId?: number;
+  state?: number;
+  hasAssignedUser?: boolean;
 }
 
 const defaultUserVisibility = {
@@ -71,13 +78,11 @@ const Feedbacks = () => {
   const [feedbackQuickFilterTypes, setFeedbackQuickFilterTypes] = useState(
     defaultFeedbackQuickFilterTypes
   );
+  const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
+  const [isAssignDrawerOpen, setAssignDrawerOpen] = useState(false);
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
 
-  const handleOpenCommentViewDialog = (row: IFeedback) => {
-    setSelectedFeedbackId({ id: row.id, data: row.comments });
-    setCommentDialogOpen(true);
-  };
   const methods = useForm({
     defaultValues: {
       config: {
@@ -87,11 +92,15 @@ const Feedbacks = () => {
       },
     },
   });
-
   const { append, remove, fields } = useFieldArray({
     name: "config.filters",
     control: methods.control,
   });
+
+  const handleOpenCommentViewDialog = (row: IFeedback) => {
+    setSelectedFeedbackId({ id: row.id, data: row.comments });
+    setCommentDialogOpen(true);
+  };
 
   const viewCommentColumn = {
     label: "Comment",
@@ -191,9 +200,10 @@ const Feedbacks = () => {
     const otherFilters = filtersCombined.filter(
       (i) => i.type !== EFeedbackFilterTypes.NPS
     );
+    const hasOtherFilters = otherFilters.filter((i) => !!i.type);
     const formData = {
       ...methods.watch("config"),
-      filters: otherFilters,
+      filters: hasOtherFilters,
       scoreFilter: scoreFilters,
     };
     delete formData["quickFilters"];
@@ -240,16 +250,16 @@ const Feedbacks = () => {
           ]
         : []),
       ...(filterStatusList ? filterStatusList : []),
-      // ...(feedbackQuickFilterTypes.userVisibility ===
-      // EQuickFilterUserVisibilityValues.GENERAL
-      //   ? [defaultUserVisibility]
-      //   : [
-      //       {
-      //         ...defaultUserVisibility,
-      //         feedbackUserTypeId: EFeedbackUserTypeId.PERSONAL,
-      //         value: EQuickFilterUserVisibilityValues.PERSONAL,
-      //       },
-      //     ]),
+      ...(feedbackQuickFilterTypes.userVisibility ===
+      EQuickFilterUserVisibilityValues.GENERAL
+        ? [defaultUserVisibility]
+        : [
+            {
+              ...defaultUserVisibility,
+              feedbackUserTypeId: EFeedbackUserTypeId.PERSONAL,
+              value: EQuickFilterUserVisibilityValues.PERSONAL,
+            },
+          ]),
       ...(feedbackQuickFilterTypes.feedbackType &&
       feedbackQuickFilterTypes.feedbackType ===
         feedbackFilterTypesKeys.NPS_AGENT
@@ -287,14 +297,13 @@ const Feedbacks = () => {
     const data = {
       ...methods.watch("config"),
       filters: filteredAdditionalFilters,
-      // scoreFilter: [...methods.watch("config.scoreFilter")],
     };
     delete data.quickFilters;
     await dispatch(GetFeedbacks(data));
   };
 
   const handleChangeSelected = (ids: number[]) => {
-    // console.log(ids);
+    setSelectedFeedbackIDs(ids);
   };
 
   const handleViewFeedback = (id: number) => {
@@ -326,6 +335,79 @@ const Feedbacks = () => {
     await refetchFeedbacks();
   };
 
+  const openAssignFeedbackDrawer = () => {
+    const selectedFeedbackList = feedbacks.displayData.filter((feedback) =>
+      selectedFeedbackIDs.includes(feedback.id)
+    );
+    const hasAssignedUser = selectedFeedbackList.find(
+      (feedback) => !!feedback.assignedTo.trim()
+    );
+    setActiveRow({ hasAssignedUser: !!hasAssignedUser });
+    setAssignDrawerOpen(true);
+  };
+
+  const assignFeedbackSubmitCb = async () => {
+    await refetchFeedbacks();
+    setActiveRow(undefined);
+    setAssignDrawerOpen(false);
+  };
+
+  const onExportFeedbacks = useCallback(async () => {
+    const dateQuickFiltersWatch = methods.watch("config.quickFilters.range");
+    const dateFilters = [
+      {
+        dateId: 1,
+        key: feedbackFilterTypesKeys.DATE,
+        queryCondition: 4,
+        value: dateQuickFiltersWatch?.[0].format("MM/DD/YYYY"),
+      },
+      {
+        dateId: 1,
+        key: feedbackFilterTypesKeys.DATE,
+        queryCondition: 5,
+        value: dateQuickFiltersWatch?.[1].format("MM/DD/YYYY"),
+      },
+    ];
+
+    const formData = {
+      conditionMatch: 1,
+      filters: dateFilters,
+      scoreFilter: [],
+    };
+    const { meta, payload } = await dispatch(ExportFeedbacks(formData));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    const fileUrl = EBaseUrl.BaseURL + payload;
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
+  }, [dispatch, methods]);
+
+  const tableCustomActions = useCallback(() => {
+    return (
+      <Box mr={3} display="flex" gap={3}>
+        <Button
+          variant="contained"
+          onClick={openAssignFeedbackDrawer}
+          startIcon={<AssignIcon height={24} width={24} />}
+          disabled={!selectedFeedbackIDs?.length}
+        >
+          <Typography>Assign</Typography>
+        </Button>
+        <Button
+          variant="contained"
+          onClick={onExportFeedbacks}
+          startIcon={<ExportIcon height={24} width={24} />}
+          disabled={
+            !methods.watch("config.quickFilters.range")?.every((i) => !!i)
+          }
+        >
+          <Typography>Export</Typography>
+        </Button>
+      </Box>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFeedbackIDs, methods, onExportFeedbacks]);
+
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));
     await dispatch(
@@ -349,6 +431,8 @@ const Feedbacks = () => {
         </Button>
       </Box>
       <BasicTable<IFeedback>
+        hasCustomActions
+        CustomActions={tableCustomActions}
         selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         Filter={() => (
@@ -386,23 +470,37 @@ const Feedbacks = () => {
         onClose={() => setFiltersOpen(false)}
         title={`Advanced filters`}
       >
-        <Filters
-          fieldsConfig={{ fields, append, remove }}
-          onChange={refetchFeedbacks}
-          methods={methods}
+        {isFiltersOpen ? (
+          <Filters
+            fieldsConfig={{ fields, append, remove }}
+            onChange={refetchFeedbacks}
+            methods={methods}
+          />
+        ) : null}
+      </RightDrawer>
+      <SharedDialog
+        open={isCommentDialogOpen}
+        setOpen={setCommentDialogOpen}
+        textConfig={viewCommentsDialogConfig}
+        handleCloseCb={handleCloseCommentDialog}
+        hasActions={false}
+      >
+        {isCommentDialogOpen ? (
+          <ViewComments editData={selectedFeedbackId} />
+        ) : null}
+      </SharedDialog>
+      <RightDrawer
+        open={isAssignDrawerOpen}
+        setOpen={setAssignDrawerOpen}
+        onClose={handleClose}
+        title="Assign Feedback"
+      >
+        <AssignFeedbackDrawer
+          hasAssignedUser={activeRow?.hasAssignedUser}
+          selectedIDs={selectedFeedbackIDs}
+          onSubmitCb={assignFeedbackSubmitCb}
         />
       </RightDrawer>
-      {isCommentDialogOpen && (
-        <SharedDialog
-          open={isCommentDialogOpen}
-          setOpen={setCommentDialogOpen}
-          textConfig={viewCommentsDialogConfig}
-          handleCloseCb={handleCloseCommentDialog}
-          hasActions={false}
-        >
-          <ViewComments editData={selectedFeedbackId} />
-        </SharedDialog>
-      )}
     </Box>
   );
 };

@@ -68,13 +68,15 @@ const AddCampaign = ({ onSuccess }: { onSuccess: () => void }) => {
         <Box width={"400px"}>
           <TextInput name={"name"} label={"Name"} rules={requiredRules} />
         </Box>
-        <Button
-          onClick={handleReset}
-          startIcon={<ResetIcon height={24} width={24} />}
-          variant="outlined"
-        >
-          <Typography>Reset</Typography>
-        </Button>
+        <Box>
+          <Button
+            onClick={handleReset}
+            startIcon={<ResetIcon height={24} width={24} />}
+            variant="outlined"
+          >
+            <Typography>Reset</Typography>
+          </Button>
+        </Box>
       </Box>
       <Grid container spacing={3} mt={4}>
         <Grid item xs={6}>

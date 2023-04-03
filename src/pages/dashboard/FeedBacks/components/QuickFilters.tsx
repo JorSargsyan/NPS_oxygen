@@ -1,27 +1,25 @@
-import React, { MouseEvent } from "react";
+import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import { Box, Button, Grid, ToggleButtonGroup } from "@mui/material";
+import React, { MouseEvent } from "react";
 import { FormProvider } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import BasicRangePicker from "shared/ui/RangePicker";
-import { ERequestStatus } from "store/enums/index.enum";
+import StyledToggleButton from "shared/ui/ToggleButton";
 import { IAttachedEmployee } from "store/interfaces/directorates";
 import {
   GetFeedbackFilterValues,
   selectFeedbackFilterValues,
 } from "store/slicers/feedback";
+import { defaultFeedbackQuickFilterTypes } from "..";
 import {
   defaultQuickFilterValues,
-  EQuickFilterTypes,
   feedbackStatusList,
   quickFilterFeedbackTypes,
   quickFilterUserVisibilityTypes,
 } from "../constants";
-import StyledToggleButton from "shared/ui/ToggleButton";
-import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
-import { defaultFeedbackQuickFilterTypes } from "..";
 
 const QuickFilters = ({
   methods,
@@ -135,7 +133,7 @@ const QuickFilters = ({
           </Grid>
           <Grid
             item
-            xs={3}
+            xs={4}
             sx={{
               "& .MuiInputBase-root": {
                 height: "50px",
@@ -153,50 +151,52 @@ const QuickFilters = ({
             />
           </Grid>
         </Grid>
-        <Grid sx={{ pt: 2 }} container>
-          <Grid item xs={5}>
-            <ToggleButtonGroup
-              value={feedbackTypes?.feedbackType}
-              exclusive
-              onChange={changeFeedbackType}
-              aria-label="text alignment"
-            >
-              {quickFilterFeedbackTypes?.map((type, index) => {
-                return (
-                  <StyledToggleButton
-                    size="small"
-                    key={index}
-                    value={type.value}
-                    selected={feedbackTypes?.feedbackType === type.value}
-                  >
-                    {type.label}
-                  </StyledToggleButton>
-                );
-              })}
-            </ToggleButtonGroup>
-          </Grid>
-          <Grid item xs={4}>
-            <ToggleButtonGroup
-              value={feedbackTypes?.userVisibility}
-              exclusive
-              onChange={changeUserVisibilityType}
-              aria-label="text alignment"
-            >
-              {quickFilterUserVisibilityTypes?.map((type, index) => {
-                return (
-                  <StyledToggleButton
-                    size="small"
-                    key={index}
-                    value={type.value}
-                    selected={feedbackTypes?.userVisibility === type.value}
-                  >
-                    {type.label}
-                  </StyledToggleButton>
-                );
-              })}
-            </ToggleButtonGroup>
-          </Grid>
-          <Grid item xs={3} sx={{ textAlign: "right" }}>
+        <Box pt={3} display="flex" justifyContent="space-between">
+          <Box display="flex">
+            <Box mr={2}>
+              <ToggleButtonGroup
+                value={feedbackTypes?.feedbackType}
+                exclusive
+                onChange={changeFeedbackType}
+                aria-label="text alignment"
+              >
+                {quickFilterFeedbackTypes?.map((type, index) => {
+                  return (
+                    <StyledToggleButton
+                      size="small"
+                      key={index}
+                      value={type.value}
+                      selected={feedbackTypes?.feedbackType === type.value}
+                    >
+                      {type.label}
+                    </StyledToggleButton>
+                  );
+                })}
+              </ToggleButtonGroup>
+            </Box>
+            <Box>
+              <ToggleButtonGroup
+                value={feedbackTypes?.userVisibility}
+                exclusive
+                onChange={changeUserVisibilityType}
+                aria-label="text alignment"
+              >
+                {quickFilterUserVisibilityTypes?.map((type, index) => {
+                  return (
+                    <StyledToggleButton
+                      size="small"
+                      key={index}
+                      value={type.value}
+                      selected={feedbackTypes?.userVisibility === type.value}
+                    >
+                      {type.label}
+                    </StyledToggleButton>
+                  );
+                })}
+              </ToggleButtonGroup>
+            </Box>
+          </Box>
+          <Box>
             <Box>
               <Button
                 startIcon={<ResetIcon height={24} width={24} />}
@@ -217,8 +217,8 @@ const QuickFilters = ({
                 Apply filters
               </Button>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </FormProvider>
     </Box>
   );

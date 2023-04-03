@@ -76,6 +76,7 @@ export const feedbackColumns = [
     },
   },
   { label: "Submission Date", field: "creationDate" },
+  { label: "NPS agent", field: "assignedTo" },
 ];
 
 export const viewCommentsDialogConfig = {

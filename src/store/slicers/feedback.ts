@@ -11,6 +11,7 @@ import {
   IChangeCustomerRootCause,
   IChangeFeedbackStatus,
   IDeleteTask,
+  IExportFeedback,
   IFeedback,
   IFeedbackDetails,
   IFeedbackLog,
@@ -274,6 +275,14 @@ export const GetFeedbackFilterValues = createAsyncThunk<any, string>(
   async (params: string) => {
     return (await api.post(`${EBaseUrl.API}/Feedback/Filter?${params}`, {}))
       .data;
+  },
+  thunkOptions
+);
+
+export const ExportFeedbacks = createAsyncThunk<string, IExportFeedback>(
+  `${name}/ExportFeedbacks`,
+  async (formData) => {
+    return (await api.post(`${EBaseUrl.API}/Feedback/Export`, formData)).data;
   },
   thunkOptions
 );
