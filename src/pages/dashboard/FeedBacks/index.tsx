@@ -384,7 +384,7 @@ const Feedbacks = () => {
 
   const tableCustomActions = useCallback(() => {
     return (
-      <Box mr={3} display="flex" gap={3}>
+      <Box display="flex" gap={3} justifyContent="flex-end">
         <Button
           variant="contained"
           onClick={openAssignFeedbackDrawer}

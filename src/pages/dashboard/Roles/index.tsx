@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
@@ -11,7 +11,11 @@ import {
   defaultFilterValues,
 } from "resources/constants";
 import SharedDialog from "shared/ui/Dialog";
-import { GetPermissionGroups, setLoading } from "store/slicers/common";
+import {
+  GetPermissionGroups,
+  setLoading,
+  setTableLoading,
+} from "store/slicers/common";
 import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
@@ -93,13 +97,19 @@ const RolesPage = () => {
     ];
   };
 
-  useEffect(() => {
-    Promise.all([
+  const init = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await Promise.all([
       dispatch(GetRoles(defaultFilterValues)),
       dispatch(GetUserGroups()),
       dispatch(GetPermissionGroups()),
     ]);
+    await dispatch(setTableLoading(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <Box p={4}>

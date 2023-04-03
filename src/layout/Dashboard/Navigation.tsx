@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Box,
   Divider,
@@ -16,12 +15,51 @@ import { useLocation } from "react-router-dom";
 import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import usePermission from "shared/helpers/hooks/usePermission";
+import {
+  ECampaignPermissions,
+  ECustomersPermissions,
+  EDirectoratePermissions,
+  EFeedbackPermissions,
+  ERolesPermissions,
+  ETranslationPermissions,
+  EUserPermissions,
+} from "resources/permissions/permissions.enum";
 
 export const SideNav = () => {
   const location = useLocation();
   const dispatch = useAsyncDispatch();
   const open = useSelector(selectSidebarVisible);
+  const hasCustomerPerm = usePermission(ECustomersPermissions.Read);
+  const hasRolesPerm = usePermission(ERolesPermissions.Read);
+  const hasUsersPerm = usePermission(EUserPermissions.Read);
+  const hasTranslationPerm = usePermission(ETranslationPermissions.Read);
+  const hasDirectoratePerm = usePermission(EDirectoratePermissions.Read);
+  const hasFeedbackPerm = usePermission(EFeedbackPermissions.Read);
+  const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
+
+  const hasPerm = useMemo(() => {
+    return {
+      hasCustomerPerm,
+      hasRolesPerm,
+      hasUsersPerm,
+      hasTranslationPerm,
+      hasDirectoratePerm,
+      hasFeedbackPerm,
+      hasCampaignPerm,
+    };
+  }, [
+    hasCustomerPerm,
+    hasRolesPerm,
+    hasUsersPerm,
+    hasTranslationPerm,
+    hasDirectoratePerm,
+    hasFeedbackPerm,
+    hasCampaignPerm,
+  ]);
+
+  const routesList = items(hasPerm);
 
   const onClose = useCallback(() => {
     dispatch(setSidebarVisible(false));
@@ -106,7 +144,7 @@ export const SideNav = () => {
               m: 0,
             }}
           >
-            {items.map((item) => {
+            {routesList.map((item) => {
               const active = location.pathname.includes(item.path);
 
               return (
