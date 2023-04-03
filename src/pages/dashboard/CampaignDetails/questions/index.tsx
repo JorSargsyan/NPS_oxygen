@@ -8,7 +8,7 @@ const Questions = () => {
   return (
     <Box display="flex" pt={2}>
       <Box
-        flex={1}
+        flex={2}
         component={Paper}
         elevation={4}
         maxHeight="90vh"
@@ -16,11 +16,11 @@ const Questions = () => {
       >
         <LeftSidebar />
       </Box>
-      <Box flex={3} mx={2}>
+      <Box flex={4} mx={2}>
         <MainContent />
       </Box>
       <Box
-        flex={1}
+        flex={2}
         component={Paper}
         elevation={4}
         maxHeight="90vh"

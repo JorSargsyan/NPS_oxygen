@@ -12,10 +12,10 @@ export interface ICampaignLog {
 }
 
 export interface ICreateCampaignRequest {
-  name: "asdads (NPS Transactional)";
-  surveyMetric: 1;
-  touchpoint: 1;
-  type: 1;
+  name: string;
+  surveyMetric: string;
+  touchpoint: string;
+  type: string;
 }
 
 export interface ICampaign {
