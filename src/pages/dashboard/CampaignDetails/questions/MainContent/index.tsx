@@ -52,8 +52,7 @@ const MainContent = () => {
               {getOptionIcon(surveyInfo.details.type)}
             </Box>
             <Typography fontWeight="600" fontSize={16} ml={1}>
-              {surveyInfo.details.title ||
-                CampaignSurveyTypeList[surveyInfo.details.type]}
+              {CampaignSurveyTypeList[surveyInfo.details.type]}
             </Typography>
           </Box>
           <Box display={"flex"} justifyContent={"center"}>

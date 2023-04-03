@@ -75,6 +75,7 @@ interface IFormData {
 }
 
 const CampaignDetail = () => {
+  const [tabValue, setTabValue] = useState(0);
   const surveyList = useSelector(selectCampaignSurveys);
   const selectedSurvey = useSelector(selectSelectedSurvey);
   const campaignInfo = useSelector(selectCampaignInfo);
@@ -226,6 +227,11 @@ const CampaignDetail = () => {
     surveyDetails.details?.type,
   ]);
 
+  const onChange = (val) => {
+    console.log(val);
+    setTabValue(val);
+  };
+
   useEffect(() => {
     init();
   }, [init]);
@@ -251,21 +257,25 @@ const CampaignDetail = () => {
       <FormProvider {...methods}>
         <Box display="flex">
           <BasicTabs
+            onChange={onChange}
             tabsData={campaignDetailsTabList}
             Content={() => {
-              return (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    right: 10,
-                  }}
-                  onClick={methods.handleSubmit(onSubmit)}
-                >
-                  <Button variant="contained">
-                    <Typography>Save changes</Typography>
-                  </Button>
-                </Box>
-              );
+              if (tabValue === 0) {
+                return (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      right: 10,
+                    }}
+                    onClick={methods.handleSubmit(onSubmit)}
+                  >
+                    <Button variant="contained">
+                      <Typography>Save changes</Typography>
+                    </Button>
+                  </Box>
+                );
+              }
+              return null;
             }}
           />
         </Box>
