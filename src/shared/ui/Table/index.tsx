@@ -310,7 +310,13 @@ const BasicTable = <T extends { id: number }>({
             </Fragment>
           </TableBody>
 
-          <TableFooter>
+          <TableFooter
+            sx={{
+              "& p": {
+                marginBottom: 0,
+              },
+            }}
+          >
             <TableRow>{getPagination()}</TableRow>
           </TableFooter>
         </Table>

@@ -31,7 +31,7 @@ export const GetCampaigns = createAsyncThunk<
 export const CreateCampaign = createAsyncThunk<unknown, ICreateCampaignRequest>(
   `${name}/GetCampaigns`,
   async (formData) => {
-    return (await api.post(`${EBaseUrl.API}/Campaign/Grid`, formData)).data;
+    return (await api.post(`${EBaseUrl.API}/Campaign`, formData)).data;
   },
   thunkOptions
 );

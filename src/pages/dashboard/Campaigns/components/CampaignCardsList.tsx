@@ -5,17 +5,29 @@ import {
   CardContent,
   Skeleton,
   Switch,
+  Table,
+  TableFooter,
+  TablePagination,
+  TableRow,
   Typography,
 } from "@mui/material";
 import { Fragment, useCallback } from "react";
 import DotsMenu from "shared/ui/DotsMenu";
-import { IAction } from "shared/ui/Table/constants";
+import TablePaginationActions from "shared/ui/Table/components/TablePAginationActions";
+import {
+  IAction,
+  IFilterOptions,
+  rowsPerPageOptions,
+} from "shared/ui/Table/constants";
 import { ICampaign } from "store/interfaces/campaigns";
+import { IPaginated } from "store/interfaces/main";
 
 type Props = {
-  list: ICampaign[];
+  list: IPaginated<ICampaign>;
   actions: any;
   handleChangeState: (id: number, checked: boolean) => void;
+  filterOptions: IFilterOptions;
+  onChange: () => void;
 };
 
 const CardContentNoPadding = styled(CardContent)(`
@@ -56,7 +68,15 @@ const LoadingSkeleton = () => (
   </Box>
 );
 
-const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
+const CampaignCardsList = ({
+  list,
+  actions,
+  handleChangeState,
+  filterOptions,
+  onChange,
+}: Props) => {
+  const filters = filterOptions?.watch("config");
+
   const handleClickAction = useCallback(
     (action: IAction<ICampaign>, row: ICampaign) => {
       action?.onClick(row);
@@ -64,13 +84,36 @@ const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
     []
   );
 
+  const handlePageChange = (_: any, pageNumber: number) => {
+    filterOptions?.reset({
+      ...filterOptions.watch(),
+      config: {
+        ...filters,
+        start: pageNumber * filters?.length,
+      },
+    });
+    onChange?.();
+  };
+
+  const handleRowsPerPageChange = (e: any) => {
+    const value = e.target.value;
+    filterOptions?.reset({
+      ...filterOptions.watch(),
+      config: {
+        ...filters,
+        length: value,
+      },
+    });
+    onChange?.();
+  };
+
   return (
     <Fragment>
-      {list?.length ? (
+      {list?.displayData?.length ? (
         <Box
           sx={{ display: "flex", gap: "18px", flexWrap: "wrap", paddingTop: 4 }}
         >
-          {list?.map((item: ICampaign) => {
+          {list?.displayData?.map((item: ICampaign) => {
             return (
               <Box key={item.id} sx={{ width: "31%", position: "relative" }}>
                 <Card>
@@ -183,6 +226,28 @@ const CampaignCardsList = ({ list, actions, handleChangeState }: Props) => {
               </Box>
             );
           })}
+          <Table>
+            <TableFooter
+              sx={{
+                "& p": {
+                  marginBottom: 0,
+                },
+              }}
+            >
+              <TableRow>
+                <TablePagination
+                  component="td"
+                  count={list?.totalRecords}
+                  rowsPerPage={filters?.length}
+                  rowsPerPageOptions={rowsPerPageOptions}
+                  page={filters?.start / filters?.length}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handleRowsPerPageChange}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
         </Box>
       ) : (
         <LoadingSkeleton />
