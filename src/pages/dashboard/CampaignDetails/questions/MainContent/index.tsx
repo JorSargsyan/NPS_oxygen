@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@mui/material";
+import { Card, CardContent, Paper, Skeleton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment, useCallback } from "react";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import {
   CampaignSurveyIcons,
   CampaignSurveyTypeList,
 } from "../LeftSidebar/constants";
+import { selectCampaignLoading } from "store/slicers/common";
 
 const getOptionIcon = (type: number) => {
   const Comp = CampaignSurveyIcons[type];
@@ -19,7 +20,10 @@ const getOptionIcon = (type: number) => {
   );
 };
 
+const skeletonArr = new Array(4).fill("");
+
 const MainContent = () => {
+  const loadingState = useSelector(selectCampaignLoading);
   const surveyInfo = useSelector(selectSurveyInfo);
 
   const SurveyFormComp = useCallback(() => {
@@ -29,7 +33,7 @@ const MainContent = () => {
 
   return (
     <Fragment>
-      {surveyInfo.details ? (
+      {!loadingState && surveyInfo.details ? (
         <Box
           component={Paper}
           elevation={3}
@@ -82,7 +86,18 @@ const MainContent = () => {
           </Box>
           <SurveyFormComp />
         </Box>
-      ) : null}
+      ) : (
+        <Card sx={{ height: "90vh" }}>
+          <CardContent>
+            <Skeleton variant="rounded" width={"100%"} height="40vh" />
+            {skeletonArr.map(() => (
+              <Box my={1}>
+                <Skeleton variant="rounded" width={"200px"} height="50px" />
+              </Box>
+            ))}
+          </CardContent>
+        </Card>
+      )}
     </Fragment>
   );
 };

@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
-import { setSidebarVisible } from "store/slicers/common";
+import { setCampaignLoading, setSidebarVisible } from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 
 const defaultAnswer = {

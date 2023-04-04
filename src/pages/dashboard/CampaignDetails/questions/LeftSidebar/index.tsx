@@ -15,6 +15,7 @@ import {
   CreateSurvey,
   GetCampaignSurveyById,
   GetCampaignSurveyTemplateById,
+  GetSurveyLogic,
   GetSurveys,
   RemoveCampaignSurvey,
   selectCampaignInfo,
@@ -44,6 +45,7 @@ import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
 import StarIcon from "@heroicons/react/24/outline/StarIcon";
 import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
+import { setCampaignLoading } from "store/slicers/common";
 
 const LeftSidebar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -151,6 +153,7 @@ const LeftSidebar = () => {
     if (selectedSurvey === id) {
       return;
     }
+    dispatch(setCampaignLoading(true));
     fetchSurveyData(id);
   };
 
@@ -159,8 +162,11 @@ const LeftSidebar = () => {
       await Promise.all([
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
+        dispatch(GetSurveyLogic(surveyId)),
         dispatch(setSelectedSurvey(String(surveyId))),
       ]);
+
+      dispatch(setCampaignLoading(false));
     },
     [dispatch]
   );
