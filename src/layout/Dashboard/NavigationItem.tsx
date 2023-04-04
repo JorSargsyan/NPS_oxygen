@@ -3,7 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 export const SideNavItem = (props) => {
   const navigate = useNavigate();
-  const { active = false, disabled, icon, path, title } = props;
+  const {
+    active = false,
+    disabled,
+    icon,
+    path,
+    title,
+    hasChildren = false,
+    onClick,
+    expandableIcon,
+  } = props;
 
   const handleNavigate = () => {
     navigate(path);
@@ -11,7 +20,7 @@ export const SideNavItem = (props) => {
   return (
     <li>
       <ButtonBase
-        onClick={handleNavigate}
+        onClick={!hasChildren ? handleNavigate : onClick}
         sx={{
           alignItems: "center",
           borderRadius: 1,
@@ -47,26 +56,52 @@ export const SideNavItem = (props) => {
             {icon}
           </Box>
         )}
-        <Box
-          component="span"
-          sx={{
-            color: "neutral.400",
-            flexGrow: 1,
-            fontFamily: (theme) => theme.typography.fontFamily,
-            fontSize: 14,
-            fontWeight: 600,
-            lineHeight: "24px",
-            whiteSpace: "nowrap",
-            ...(active && {
-              color: "common.white",
-            }),
-            ...(disabled && {
-              color: "neutral.500",
-            }),
-          }}
-        >
-          {title}
-        </Box>
+        {!hasChildren ? (
+          <Box
+            component="span"
+            sx={{
+              color: "neutral.400",
+              flexGrow: 1,
+              fontFamily: (theme) => theme.typography.fontFamily,
+              fontSize: 14,
+              fontWeight: 600,
+              lineHeight: "24px",
+              whiteSpace: "nowrap",
+              ...(active && {
+                color: "common.white",
+              }),
+              ...(disabled && {
+                color: "neutral.500",
+              }),
+            }}
+          >
+            {title}
+          </Box>
+        ) : (
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Box
+              component="span"
+              sx={{
+                color: "neutral.400",
+                flexGrow: 1,
+                fontFamily: (theme) => theme.typography.fontFamily,
+                fontSize: 14,
+                fontWeight: 600,
+                lineHeight: "24px",
+                whiteSpace: "nowrap",
+                ...(active && {
+                  color: "common.white",
+                }),
+                ...(disabled && {
+                  color: "neutral.500",
+                }),
+              }}
+            >
+              {title}
+            </Box>
+            <Box>{expandableIcon}</Box>
+          </Box>
+        )}
       </ButtonBase>
     </li>
   );

@@ -1,5 +1,6 @@
 import {
   Box,
+  Collapse,
   Divider,
   Drawer,
   Stack,
@@ -15,7 +16,7 @@ import { useLocation } from "react-router-dom";
 import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import usePermission from "shared/helpers/hooks/usePermission";
 import {
   ECampaignPermissions,
@@ -26,6 +27,12 @@ import {
   ETranslationPermissions,
   EUserPermissions,
 } from "resources/permissions/permissions.enum";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+
+enum EExpandedRowsTypes {
+  Settings = "settings",
+}
 
 export const SideNav = () => {
   const location = useLocation();
@@ -67,6 +74,14 @@ export const SideNav = () => {
 
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const isCampaignDetailsPage = location.pathname.includes("/campaign/");
+  const [isExpanded, setExpanded] = useState({ settings: false });
+
+  const handleExpandRow = (type: EExpandedRowsTypes) => {
+    setExpanded({
+      ...isExpanded,
+      [type]: !isExpanded[type],
+    });
+  };
 
   const content = (
     <Scrollbar
@@ -146,16 +161,60 @@ export const SideNav = () => {
           >
             {routesList.map((item) => {
               const active = location.pathname.includes(item.path);
-
-              return (
-                <SideNavItem
-                  active={active}
-                  icon={item.icon}
-                  key={item.title}
-                  path={item.path}
-                  title={item.title}
-                />
-              );
+              if (item?.children?.length) {
+                const activeRoute = item.children.find((i) =>
+                  location.pathname.includes(i.path)
+                );
+                return (
+                  <Fragment key={item.title}>
+                    <SideNavItem
+                      hasChildren
+                      onClick={() =>
+                        handleExpandRow(EExpandedRowsTypes.Settings)
+                      }
+                      active={!!activeRoute}
+                      icon={item.icon}
+                      key={item.title}
+                      path={item.path}
+                      title={item.title}
+                      expandableIcon={
+                        isExpanded.settings ? <ExpandLess /> : <ExpandMore />
+                      }
+                    />
+                    {item.children.map((child) => {
+                      const activeChild = location.pathname.includes(
+                        child.path
+                      );
+                      return (
+                        <Collapse
+                          in={isExpanded.settings}
+                          timeout="auto"
+                          unmountOnExit
+                          key={child.path}
+                        >
+                          <SideNavItem
+                            active={activeChild}
+                            icon={child.icon}
+                            key={child.title}
+                            path={child.path}
+                            title={child.title}
+                          />
+                        </Collapse>
+                      );
+                    })}
+                  </Fragment>
+                );
+              } else {
+                return (
+                  <SideNavItem
+                    active={active}
+                    icon={item.icon}
+                    key={item.title}
+                    path={item.path}
+                    title={item.title}
+                  />
+                );
+              }
             })}
           </Stack>
         </Box>

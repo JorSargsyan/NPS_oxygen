@@ -191,7 +191,7 @@ export const feedbackFilterTypesLabels = {
   SERVICE_CATEGORY: "Service category",
   REDIRECTED: "Redirected",
   COMMENTED: "Commented",
-  ALL: "All Feedbacks",
+  ALL: "All responses",
 };
 
 export const feedbackFilterTypesKeys = {

@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import { selectAuth } from "store/slicers/auth";
 import { useCallback, useEffect, useMemo } from "react";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { GetConfig, GetPermissions } from "store/slicers/common";
+import {
+  GetConfig,
+  GetPermissions,
+  selectPermissions,
+} from "store/slicers/common";
 import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
 import { GetTranslationsByLangId } from "store/slicers/translations";
@@ -23,6 +27,8 @@ import {
   ETranslationPermissions,
   EUserPermissions,
 } from "resources/permissions/permissions.enum";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
@@ -34,6 +40,7 @@ export const CreateRoutes = () => {
   const hasDirectoratePerm = usePermission(EDirectoratePermissions.Read);
   const hasFeedbackPerm = usePermission(EFeedbackPermissions.Read);
   const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
+  const permList = useSelector(selectPermissions);
 
   const hasPerm = useMemo(() => {
     return {
@@ -83,35 +90,69 @@ export const CreateRoutes = () => {
       path: "/login",
       element: isAuthorized ? <Navigate to="/overview" replace /> : <Login />,
     },
-
-    {
-      path: "/",
-      element: isAuthorized ? (
-        <DashboardLayout />
-      ) : (
-        <Navigate to="/login" replace />
-      ),
-      children: [
-        ...routesList.map((item) => {
-          return {
-            path: item.path,
-            element: item.element,
-          };
-        }),
-        {
-          path: "profile",
-          element: <AccountPage />,
-        },
-        {
-          path: "feedback/:id",
-          element: <FeedbackDetails />,
-        },
-        {
-          path: "campaign/:id",
-          element: <CampaignDetails />,
-        },
-      ],
-    },
+    ...(!permList
+      ? [
+          {
+            path: "*",
+            element: (
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "100vh",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ),
+          },
+        ]
+      : [
+          {
+            path: "/",
+            element: isAuthorized ? (
+              <DashboardLayout />
+            ) : (
+              <Navigate to="/login" replace />
+            ),
+            children: [
+              ...routesList.map((item) => {
+                if (item?.children?.length) {
+                  return {
+                    path: item.path,
+                    element: item.element,
+                    children: [
+                      ...item.children.map((child) => {
+                        return {
+                          path: child.path,
+                          element: child.element,
+                        };
+                      }),
+                    ],
+                  };
+                } else {
+                  return {
+                    path: item.path,
+                    element: item.element,
+                  };
+                }
+              }),
+              {
+                path: "profile",
+                element: <AccountPage />,
+              },
+              {
+                path: "response/:id",
+                element: <FeedbackDetails />,
+              },
+              {
+                path: "campaign/:id",
+                element: <CampaignDetails />,
+              },
+            ],
+          },
+        ]),
   ]);
 
   return router;
