@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { EBaseUrl, ETheme } from "../config/constants";
 import {
   ICommonState,
-  IGetPermissionsResponse,
   IPermissionGroup,
   IGetConfigResponse,
   IManagers,

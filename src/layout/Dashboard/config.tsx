@@ -4,6 +4,7 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import FeedbackIcon from "@heroicons/react/24/solid/ChatBubbleLeftEllipsisIcon";
 import TranslationIcon from "@heroicons/react/24/solid/DocumentTextIcon";
+import Cog from "@heroicons/react/24/solid/CogIcon";
 import { SvgIcon } from "@mui/material";
 import Campaigns from "pages/dashboard/Campaigns";
 import Customers from "pages/dashboard/Customers";
@@ -38,8 +39,8 @@ export const items = ({
     ...(hasFeedbackPerm
       ? [
           {
-            title: "Feedbacks",
-            path: "feedbacks",
+            title: "Responses",
+            path: "responses",
             element: <Feedbacks />,
             icon: (
               <SvgIcon fontSize="small">
@@ -106,33 +107,44 @@ export const items = ({
           },
         ]
       : []),
-    ...(hasTranslationPerm
-      ? [
-          {
-            title: "Translations",
-            path: "dictionary",
-            element: <Dictionary />,
-            icon: (
-              <SvgIcon fontSize="small">
-                <TranslationIcon />
-              </SvgIcon>
-            ),
-          },
-        ]
-      : []),
-    ...(hasDirectoratePerm
-      ? [
-          {
-            title: "Directorates",
-            path: "directorates",
-            element: <DirectoratesGrid />,
-            icon: (
-              <SvgIcon fontSize="small">
-                <TranslationIcon />
-              </SvgIcon>
-            ),
-          },
-        ]
-      : []),
+    {
+      title: "Settings",
+      path: "",
+      icon: (
+        <SvgIcon fontSize="small">
+          <Cog />
+        </SvgIcon>
+      ),
+      children: [
+        ...(hasTranslationPerm
+          ? [
+              {
+                title: "Translations",
+                path: "dictionary",
+                element: <Dictionary />,
+                icon: (
+                  <SvgIcon fontSize="small">
+                    <TranslationIcon />
+                  </SvgIcon>
+                ),
+              },
+            ]
+          : []),
+        ...(hasDirectoratePerm
+          ? [
+              {
+                title: "Directorates",
+                path: "directorates",
+                element: <DirectoratesGrid />,
+                icon: (
+                  <SvgIcon fontSize="small">
+                    <TranslationIcon />
+                  </SvgIcon>
+                ),
+              },
+            ]
+          : []),
+      ],
+    },
   ];
 };

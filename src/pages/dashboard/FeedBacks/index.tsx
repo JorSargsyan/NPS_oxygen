@@ -307,7 +307,7 @@ const Feedbacks = () => {
   };
 
   const handleViewFeedback = (id: number) => {
-    const url = `${window.location.origin}/feedback/${id}`;
+    const url = `${window.location.origin}/response/${id}`;
     window.open(url, "_blank");
   };
 
@@ -425,7 +425,7 @@ const Feedbacks = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
-        <Typography variant="h3">Feedbacks</Typography>
+        <Typography variant="h3">Responses</Typography>
         <Button variant="outlined" onClick={() => setFiltersOpen(true)}>
           Advanced filters
         </Button>
