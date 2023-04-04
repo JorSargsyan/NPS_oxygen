@@ -6,8 +6,10 @@ import React, { Fragment, useCallback, useMemo } from "react";
 import { FormProvider, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { ConditionList, FilterConditionMatchList } from "resources/constants";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
@@ -21,8 +23,9 @@ import {
 import {
   defaultFilterRowValue,
   EFeedbackFilterTypes,
-  feedbackFilterTypes,
+  EFeedbackFilterTypesValues,
   feedbackFilterTypesKeys,
+  feedbackFilterTypesLabels,
 } from "../constants";
 import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRight/constants";
 
@@ -31,6 +34,21 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
 
   const managersList = useSelector(selectManagers);
   const filterValues = useSelector(selectFeedbackFilterValues);
+  const hasAdditionalFilterByEmployee = usePermission(
+    EFeedbackPermissions.Additional_filter_by_employee
+  );
+  const hasAdditionalFilterByScore = usePermission(
+    EFeedbackPermissions.Additional_filter_by_nps_es_score
+  );
+  const hasAdditionalFilterByAssigned = usePermission(
+    EFeedbackPermissions.Additional_filter_by_assigned_to
+  );
+  const hasAdditionalFilterByTaskStatus = usePermission(
+    EFeedbackPermissions.Additional_filter_by_task_status
+  );
+  const hasAdditionalFilterByDirectorate = usePermission(
+    EFeedbackPermissions.Additional_filter_by_directorate
+  );
 
   const onSubmit = () => {
     onChange();
@@ -122,6 +140,80 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
       await dispatch(GetFeedbackFilterValues(getQueryParams(formData)));
     }
   };
+
+  const feedbackFilterTypes = useMemo(() => {
+    return [
+      ...(hasAdditionalFilterByScore
+        ? [
+            {
+              label: feedbackFilterTypesLabels.NPS,
+              value: EFeedbackFilterTypesValues.NPS,
+              type: EFeedbackFilterTypes.NPS,
+              key: feedbackFilterTypesKeys.NPS,
+            },
+            {
+              label: feedbackFilterTypesLabels.SERVICE_QUALITY_SCORE,
+              value: EFeedbackFilterTypesValues.SERVICE_QUALITY_SCORE,
+              type: EFeedbackFilterTypes.SERVICE_QUALITY_SCORE,
+              key: feedbackFilterTypesKeys.SERVICE_QUALITY_SCORE,
+            },
+          ]
+        : []),
+
+      ...(hasAdditionalFilterByEmployee
+        ? [
+            {
+              label: feedbackFilterTypesLabels.EMPLOYEE,
+              value: EFeedbackFilterTypesValues.EMPLOYEE,
+              type: EFeedbackFilterTypes.EMPLOYEE,
+              key: feedbackFilterTypesKeys.EMPLOYEE,
+            },
+          ]
+        : []),
+      ...(hasAdditionalFilterByAssigned
+        ? [
+            {
+              label: feedbackFilterTypesLabels.NPS_AGENT,
+              value: EFeedbackFilterTypesValues.NPS_AGENT,
+              type: EFeedbackFilterTypes.NPS_AGENT,
+              key: feedbackFilterTypesKeys.NPS_AGENT,
+            },
+          ]
+        : []),
+      ...(hasAdditionalFilterByTaskStatus
+        ? [
+            {
+              label: feedbackFilterTypesLabels.SERVICE_CATEGORY,
+              value: EFeedbackFilterTypesValues.SERVICE_CATEGORY,
+              type: EFeedbackFilterTypes.SERVICE_CATEGORY,
+              key: feedbackFilterTypesKeys.SERVICE_CATEGORY,
+            },
+            {
+              label: feedbackFilterTypesLabels.TASK_STATUS,
+              value: EFeedbackFilterTypesValues.TASK_STATUS,
+              type: EFeedbackFilterTypes.TASK_STATUS,
+              key: feedbackFilterTypesKeys.TASK_STATUS,
+            },
+          ]
+        : []),
+      ...(hasAdditionalFilterByDirectorate
+        ? [
+            {
+              label: feedbackFilterTypesLabels.DIRECTORATE,
+              value: EFeedbackFilterTypesValues.DIRECTORATE,
+              type: EFeedbackFilterTypes.DIRECTORATE,
+              key: feedbackFilterTypesKeys.DIRECTORATE,
+            },
+          ]
+        : []),
+    ];
+  }, [
+    hasAdditionalFilterByEmployee,
+    hasAdditionalFilterByScore,
+    hasAdditionalFilterByAssigned,
+    hasAdditionalFilterByTaskStatus,
+    hasAdditionalFilterByDirectorate,
+  ]);
 
   const getSliderValues = useCallback(
     (index: number) => {

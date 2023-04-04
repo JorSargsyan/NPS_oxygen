@@ -1,7 +1,7 @@
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
 import { Button, MenuItem, Select, SvgIcon, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import {
@@ -13,7 +13,11 @@ import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
 import BasicTable from "shared/ui/Table";
 import { IAttachedEmployee } from "store/interfaces/directorates";
-import { IFeedback, IFeedbackCauseAndMood } from "store/interfaces/feedback";
+import {
+  IFeedback,
+  IFeedbackCauseAndMood,
+  IScore,
+} from "store/interfaces/feedback";
 import { GetUserManagers, setTableLoading } from "store/slicers/common";
 import {
   ExportFeedbacks,
@@ -32,9 +36,9 @@ import {
   EFeedbackUserTypeId,
   EQuickFilterTypes,
   EQuickFilterUserVisibilityValues,
-  feedbackColumns,
   feedbackFilterTypesKeys,
   feedbackStatusList,
+  scoreColors,
   viewCommentsDialogConfig,
 } from "./constants";
 import { changeFeedbackStatus } from "./helpers";
@@ -43,6 +47,9 @@ import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
 import { EBaseUrl } from "store/config/constants";
 import { ERequestStatus } from "store/enums/index.enum";
 import AssignFeedbackDrawer from "./components/AssignFeedbackDrawer";
+import usePermission from "shared/helpers/hooks/usePermission";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
+import { EScoreTypes } from "store/enums/feedbacks.enum";
 
 export interface IActiveRow {
   type?: number;
@@ -66,7 +73,7 @@ const defaultFeedbackFilter = {
 
 export const defaultFeedbackQuickFilterTypes = {
   feedbackType: "",
-  userVisibility: 2,
+  userVisibility: EQuickFilterUserVisibilityValues.GENERAL,
 };
 
 const Feedbacks = () => {
@@ -83,6 +90,34 @@ const Feedbacks = () => {
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
 
+  const hasGridCampaignColumnPermission = usePermission(
+    EFeedbackPermissions.Grid_view_column_campaign
+  );
+  const hasGridColumnCustomerAssignPermission = usePermission(
+    EFeedbackPermissions.Grid_view_column_customer_assign
+  );
+  const hasGridColumnScorePermission = usePermission(
+    EFeedbackPermissions.Grid_view_column_score
+  );
+  const hasGridColumnDatePermission = usePermission(
+    EFeedbackPermissions.Grid_view_column_date
+  );
+  const hasGridColumnStatusPermission = usePermission(
+    EFeedbackPermissions.Grid_view_column_status
+  );
+  const hasGridViewFeedbackCardPermission = usePermission(
+    EFeedbackPermissions.View_feedback_card
+  );
+  const hasEditFeedbackStatusPermission = usePermission(
+    EFeedbackPermissions.Edit_feedback_status
+  );
+  const hasQuickFilterByUserVisibilityPermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_user_visibility
+  );
+  const hasExportPermission = usePermission(EFeedbackPermissions.Export);
+  const hasAssignPermission = usePermission(EFeedbackPermissions.Assign);
+  const hasSearchPermission = usePermission(EFeedbackPermissions.Search);
+
   const methods = useForm({
     defaultValues: {
       config: {
@@ -92,6 +127,7 @@ const Feedbacks = () => {
       },
     },
   });
+
   const { append, remove, fields } = useFieldArray({
     name: "config.filters",
     control: methods.control,
@@ -101,59 +137,7 @@ const Feedbacks = () => {
     setSelectedFeedbackId({ id: row.id, data: row.comments });
     setCommentDialogOpen(true);
   };
-
-  const viewCommentColumn = {
-    label: "Comment",
-    layout: (row: IFeedback) => {
-      if (!row?.comments?.length) {
-        return;
-      }
-      return (
-        <Box
-          onClick={() => handleOpenCommentViewDialog(row)}
-          textAlign="center"
-        >
-          <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
-            <CommentIcon />
-          </SvgIcon>
-        </Box>
-      );
-    },
-  };
-
-  const statusColumn = {
-    label: "Status",
-    layout: (row: IFeedback) => {
-      return (
-        <Box>
-          <Select
-            size="small"
-            value={row.feedbackStatus.id}
-            onChange={(e) =>
-              changeFeedbackStatus({
-                value: e.target.value,
-                rowId: row.id,
-                dispatch,
-                setDrawerOpen,
-                setActiveRow,
-                refetchFeedbacks,
-              })
-            }
-          >
-            {feedbackStatusList.map((feedbackStatus, index) => {
-              return (
-                <MenuItem key={index} value={feedbackStatus.value}>
-                  {feedbackStatus.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </Box>
-      );
-    },
-  };
-
-  const refetchFeedbacks = async () => {
+  const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
 
     const filtersCombined = methods
@@ -210,7 +194,145 @@ const Feedbacks = () => {
     await dispatch(GetFeedbacks(formData));
     setFiltersOpen(false);
     await dispatch(setTableLoading(false));
-  };
+  }, [dispatch, methods]);
+
+  const feedbackColumns = useMemo(() => {
+    return [
+      { label: "ID", field: "id" },
+      ...(hasGridCampaignColumnPermission
+        ? [{ label: "Campaign", field: "campaignName" }]
+        : []),
+      ...(hasGridColumnCustomerAssignPermission
+        ? [
+            { label: "Customer", field: "customerName" },
+            { label: "NPS agent", field: "assignedTo" },
+          ]
+        : []),
+      ...(hasGridColumnScorePermission
+        ? [
+            {
+              label: "Score",
+              layout: (row: IFeedback) => {
+                const textColor = (score: IScore) => {
+                  const val = Number(score.value);
+                  if (val >= 0 && val <= 6) {
+                    return scoreColors.bad.color;
+                  } else if (val >= 7 && val <= 8) {
+                    return scoreColors.neutral.color;
+                  } else {
+                    return scoreColors.good.color;
+                  }
+                };
+
+                const bgColor = (score: IScore) => {
+                  const val = Number(score.value);
+                  if (val >= 0 && val <= 6) {
+                    return scoreColors.bad.bgColor;
+                  } else if (val >= 7 && val <= 8) {
+                    return scoreColors.neutral.bgColor;
+                  } else {
+                    return scoreColors.good.bgColor;
+                  }
+                };
+
+                return (
+                  <Box sx={{ display: "flex", gap: "12px" }}>
+                    {row.score.map((score: IScore, index) => {
+                      return (
+                        <Box
+                          bgcolor={bgColor(score)}
+                          color={textColor(score)}
+                          key={index}
+                          textAlign="center"
+                          padding="4px"
+                          width="45px"
+                          borderRadius="8px"
+                          fontSize="12px"
+                        >
+                          <Box>{EScoreTypes[score.type]}</Box>
+                          <Box>{score.value}</Box>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                );
+              },
+            },
+          ]
+        : []),
+      ...(hasGridColumnDatePermission
+        ? [{ label: "Submission Date", field: "creationDate" }]
+        : []),
+      ...(hasGridColumnStatusPermission
+        ? [
+            {
+              label: "Status",
+              layout: (row: IFeedback) => {
+                return (
+                  <Box>
+                    <Select
+                      disabled={!hasEditFeedbackStatusPermission}
+                      size="small"
+                      value={row.feedbackStatus.id}
+                      onChange={(e) =>
+                        changeFeedbackStatus({
+                          value: e.target.value,
+                          rowId: row.id,
+                          dispatch,
+                          setDrawerOpen,
+                          setActiveRow,
+                          refetchFeedbacks,
+                        })
+                      }
+                    >
+                      {feedbackStatusList.map((feedbackStatus, index) => {
+                        return (
+                          <MenuItem key={index} value={feedbackStatus.value}>
+                            {feedbackStatus.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </Box>
+                );
+              },
+            },
+          ]
+        : []),
+      ...(hasGridViewFeedbackCardPermission
+        ? [
+            {
+              label: "Comment",
+              layout: (row: IFeedback) => {
+                if (!row?.comments?.length) {
+                  return;
+                }
+                return (
+                  <Box
+                    onClick={() => handleOpenCommentViewDialog(row)}
+                    textAlign="center"
+                  >
+                    <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
+                      <CommentIcon />
+                    </SvgIcon>
+                  </Box>
+                );
+              },
+            },
+          ]
+        : []),
+    ];
+  }, [
+    hasGridCampaignColumnPermission,
+    hasGridColumnCustomerAssignPermission,
+    hasGridColumnScorePermission,
+    hasGridColumnDatePermission,
+    hasGridColumnStatusPermission,
+    hasGridViewFeedbackCardPermission,
+    dispatch,
+    refetchFeedbacks,
+    hasEditFeedbackStatusPermission,
+  ]);
 
   const handleSubmit = async () => {
     const quickFiltersWatch = methods.watch("config.quickFilters");
@@ -312,6 +434,9 @@ const Feedbacks = () => {
   };
 
   const getActions = (row: IFeedback) => {
+    if (!hasGridViewFeedbackCardPermission) {
+      return [];
+    }
     return [
       {
         label: "View",
@@ -385,24 +510,29 @@ const Feedbacks = () => {
   const tableCustomActions = useCallback(() => {
     return (
       <Box display="flex" gap={3} justifyContent="flex-end">
-        <Button
-          variant="contained"
-          onClick={openAssignFeedbackDrawer}
-          startIcon={<AssignIcon height={24} width={24} />}
-          disabled={!selectedFeedbackIDs?.length}
-        >
-          <Typography>Assign</Typography>
-        </Button>
-        <Button
-          variant="contained"
-          onClick={onExportFeedbacks}
-          startIcon={<ExportIcon height={24} width={24} />}
-          disabled={
-            !methods.watch("config.quickFilters.range")?.every((i) => !!i)
-          }
-        >
-          <Typography>Export</Typography>
-        </Button>
+        {hasAssignPermission && (
+          <Button
+            variant="contained"
+            onClick={openAssignFeedbackDrawer}
+            startIcon={<AssignIcon height={24} width={24} />}
+            disabled={!selectedFeedbackIDs?.length}
+          >
+            <Typography>Assign</Typography>
+          </Button>
+        )}
+
+        {hasExportPermission && (
+          <Button
+            variant="contained"
+            onClick={onExportFeedbacks}
+            startIcon={<ExportIcon height={24} width={24} />}
+            disabled={
+              !methods.watch("config.quickFilters.range")?.every((i) => !!i)
+            }
+          >
+            <Typography>Export</Typography>
+          </Button>
+        )}
       </Box>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -411,12 +541,19 @@ const Feedbacks = () => {
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));
     await dispatch(
-      GetFeedbacks({ ...defaultFilterValues, filters: [defaultUserVisibility] })
+      GetFeedbacks({
+        ...defaultFilterValues,
+        filters: [
+          ...(hasQuickFilterByUserVisibilityPermission
+            ? [defaultUserVisibility]
+            : []),
+        ],
+      })
     );
     await dispatch(GetFeedbackCauseAndMoodCategoriesList());
     await dispatch(GetUserManagers());
     await dispatch(setTableLoading(false));
-  }, [dispatch]);
+  }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
 
   useEffect(() => {
     init();
@@ -443,12 +580,12 @@ const Feedbacks = () => {
             setFeedbackTypes={setFeedbackQuickFilterTypes}
           />
         )}
-        columns={[...feedbackColumns, statusColumn, viewCommentColumn]}
+        columns={feedbackColumns}
         paginatedData={feedbacks}
         onChange={refetchFeedbacks}
         onChangeSelected={handleChangeSelected}
         getActions={getActions}
-        hasSearchInput
+        hasSearchInput={hasSearchPermission}
       />
       <RightDrawer
         open={isDrawerOpen}

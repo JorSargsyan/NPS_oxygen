@@ -192,6 +192,7 @@ export const feedbackFilterTypesLabels = {
   REDIRECTED: "Redirected",
   COMMENTED: "Commented",
   ALL: "All responses",
+  DIRECTORATE: "Directorate",
 };
 
 export const feedbackFilterTypesKeys = {
@@ -205,6 +206,7 @@ export const feedbackFilterTypesKeys = {
   DATE: "date",
   REDIRECTED: "redirected",
   COMMENTED: "commented",
+  DIRECTORATE: "directorate",
 };
 
 export enum EFeedbackFilterTypes {
@@ -214,6 +216,7 @@ export enum EFeedbackFilterTypes {
   TASK_STATUS = 9,
   EMPLOYEE = 8,
   SERVICE_CATEGORY = 1,
+  DIRECTORATE = 1,
 }
 
 export enum EFeedbackFilterTypesValues {
@@ -223,46 +226,8 @@ export enum EFeedbackFilterTypesValues {
   TASK_STATUS = "4",
   EMPLOYEE = "5",
   SERVICE_CATEGORY = "6",
+  DIRECTORATE = "7",
 }
-
-export const feedbackFilterTypes = [
-  {
-    label: feedbackFilterTypesLabels.NPS,
-    value: EFeedbackFilterTypesValues.NPS,
-    type: EFeedbackFilterTypes.NPS,
-    key: feedbackFilterTypesKeys.NPS,
-  },
-  {
-    label: feedbackFilterTypesLabels.SERVICE_QUALITY_SCORE,
-    value: EFeedbackFilterTypesValues.SERVICE_QUALITY_SCORE,
-    type: EFeedbackFilterTypes.SERVICE_QUALITY_SCORE,
-    key: feedbackFilterTypesKeys.SERVICE_QUALITY_SCORE,
-  },
-  {
-    label: feedbackFilterTypesLabels.NPS_AGENT,
-    value: EFeedbackFilterTypesValues.NPS_AGENT,
-    type: EFeedbackFilterTypes.NPS_AGENT,
-    key: feedbackFilterTypesKeys.NPS_AGENT,
-  },
-  {
-    label: feedbackFilterTypesLabels.TASK_STATUS,
-    value: EFeedbackFilterTypesValues.TASK_STATUS,
-    type: EFeedbackFilterTypes.TASK_STATUS,
-    key: feedbackFilterTypesKeys.TASK_STATUS,
-  },
-  {
-    label: feedbackFilterTypesLabels.EMPLOYEE,
-    value: EFeedbackFilterTypesValues.EMPLOYEE,
-    type: EFeedbackFilterTypes.EMPLOYEE,
-    key: feedbackFilterTypesKeys.EMPLOYEE,
-  },
-  {
-    label: feedbackFilterTypesLabels.SERVICE_CATEGORY,
-    value: EFeedbackFilterTypesValues.SERVICE_CATEGORY,
-    type: EFeedbackFilterTypes.SERVICE_CATEGORY,
-    key: feedbackFilterTypesKeys.SERVICE_CATEGORY,
-  },
-];
 
 export const quickFilterFeedbackTypes = [
   {

@@ -1,42 +1,84 @@
 import { Box, Paper } from "@mui/material";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import { GetUserManagers } from "store/slicers/common";
 import { GetFeedbackDetail, GetFeedbackNotes } from "store/slicers/feedback";
 import FeedbackDetailsBottomLeft from "./FeedbackDetailsBottomLeft";
 import FeedbackDetailsBottomRight from "./FeedbackDetailsBottomRight";
 import FeedbackDetailsTop from "./FeedbackDetailsTop";
 
-type Props = {};
-
-const FeedbackDetails = (props: Props) => {
+const FeedbackDetails = () => {
   const params = useParams();
   const dispatch = useAsyncDispatch();
 
-  useEffect(() => {
+  const hasFeedbackBottomRightNoteTabViewPermission = usePermission(
+    EFeedbackPermissions.View_notes_tab
+  );
+  const hasFeedbackBottomTopComponentViewPermission = usePermission(
+    EFeedbackPermissions.View_feedback_card_top_component
+  );
+  const hasFeedbackBottomRightTaskTabViewPermission = usePermission(
+    EFeedbackPermissions.View_tasks_tab
+  );
+  const hasFeedbackBottomRightRootCauseTabViewPermission = usePermission(
+    EFeedbackPermissions.View_root_cause_tab
+  );
+  const hasFeedbackBottomRightHistoryTabViewPermission = usePermission(
+    EFeedbackPermissions.View_history_tab
+  );
+  const hasFeedbackBottomLeftTabResponseViewPermission = usePermission(
+    EFeedbackPermissions.View_response_tab
+  );
+  const hasFeedbackBottomLeftSurveyTabViewPermission = usePermission(
+    EFeedbackPermissions.View_survey_tab
+  );
+  const hasFeedbackBottomLeftServiceCauseTabViewPermission = usePermission(
+    EFeedbackPermissions.View_service_tab
+  );
+
+  const init = useCallback(() => {
     const id = Number(params.id);
     Promise.all([
       dispatch(GetFeedbackDetail(id)),
       dispatch(GetUserManagers()),
-      dispatch(GetFeedbackNotes(id)),
+      ...(hasFeedbackBottomRightNoteTabViewPermission
+        ? [dispatch(GetFeedbackNotes(id))]
+        : []),
     ]);
-  }, [params.id, dispatch]);
+  }, [params.id, dispatch, hasFeedbackBottomRightNoteTabViewPermission]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <Box padding={4}>
-      <FeedbackDetailsTop />
+      {hasFeedbackBottomTopComponentViewPermission && <FeedbackDetailsTop />}
+
       <Box display="flex" gap={6} pt={3}>
-        <Box flex={1}>
-          <Paper elevation={3}>
-            <FeedbackDetailsBottomLeft />
-          </Paper>
-        </Box>
-        <Box flex={1}>
-          <Paper elevation={3}>
-            <FeedbackDetailsBottomRight />
-          </Paper>
-        </Box>
+        {hasFeedbackBottomLeftTabResponseViewPermission &&
+          hasFeedbackBottomLeftSurveyTabViewPermission &&
+          hasFeedbackBottomLeftServiceCauseTabViewPermission && (
+            <Box flex={1}>
+              <Paper elevation={3}>
+                <FeedbackDetailsBottomLeft />
+              </Paper>
+            </Box>
+          )}
+
+        {hasFeedbackBottomRightHistoryTabViewPermission &&
+          hasFeedbackBottomRightRootCauseTabViewPermission &&
+          hasFeedbackBottomRightTaskTabViewPermission &&
+          hasFeedbackBottomRightNoteTabViewPermission && (
+            <Box flex={1}>
+              <Paper elevation={3}>
+                <FeedbackDetailsBottomRight />
+              </Paper>
+            </Box>
+          )}
       </Box>
     </Box>
   );

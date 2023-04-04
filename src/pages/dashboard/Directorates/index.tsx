@@ -5,7 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { defaultFilterValues } from "resources/constants";
+import { EDirectoratePermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import RightDrawer from "shared/ui/Drawer";
 import BasicTable from "shared/ui/Table";
 import { ERequestStatus } from "store/enums/index.enum";
@@ -37,6 +39,9 @@ const DirectoratesGrid = () => {
     defaultValues: { config: defaultFilterValues },
   });
 
+  const hasEditPermission = usePermission(EDirectoratePermissions.Edit);
+  const hasCreatePermission = usePermission(EDirectoratePermissions.Create);
+
   const refetchRoles = async () => {
     await dispatch(setTableLoading(true));
     await dispatch(GetDirectorates(methods.watch("config")));
@@ -63,6 +68,9 @@ const DirectoratesGrid = () => {
   };
 
   const getActions = (rowData: IDirectorate) => {
+    if (!hasEditPermission) {
+      return [];
+    }
     return [
       {
         label: "Edit",
@@ -89,17 +97,19 @@ const DirectoratesGrid = () => {
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h3">Directorates</Typography>
-        <Button
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusIcon />
-            </SvgIcon>
-          }
-          variant="outlined"
-          onClick={() => setDrawerOpen(true)}
-        >
-          Add
-        </Button>
+        {hasCreatePermission && (
+          <Button
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+            variant="outlined"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Add
+          </Button>
+        )}
       </Box>
       <BasicTable<IDirectorate>
         toolbar={false}

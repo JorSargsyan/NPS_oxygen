@@ -79,20 +79,7 @@ export const items = ({
           },
         ]
       : []),
-    ...(hasRolesPerm
-      ? [
-          {
-            title: "Roles",
-            path: "roles",
-            element: <Roles />,
-            icon: (
-              <SvgIcon fontSize="small">
-                <UserPlusIcon />
-              </SvgIcon>
-            ),
-          },
-        ]
-      : []),
+
     ...(hasUsersPerm
       ? [
           {
@@ -130,15 +117,15 @@ export const items = ({
               },
             ]
           : []),
-        ...(hasDirectoratePerm
+        ...(hasRolesPerm
           ? [
               {
-                title: "Directorates",
-                path: "directorates",
-                element: <DirectoratesGrid />,
+                title: "Roles",
+                path: "roles",
+                element: <Roles />,
                 icon: (
                   <SvgIcon fontSize="small">
-                    <TranslationIcon />
+                    <UserPlusIcon />
                   </SvgIcon>
                 ),
               },
@@ -146,5 +133,19 @@ export const items = ({
           : []),
       ],
     },
+    ...(hasDirectoratePerm
+      ? [
+          {
+            title: "Directorates",
+            path: "directorates",
+            element: <DirectoratesGrid />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <TranslationIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
   ];
 };

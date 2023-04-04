@@ -42,6 +42,10 @@ export const CreateRoutes = () => {
   const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
   const permList = useSelector(selectPermissions);
 
+  const hasGridViewFeedbackCardPermission = usePermission(
+    EFeedbackPermissions.View_feedback_card
+  );
+
   const hasPerm = useMemo(() => {
     return {
       hasCustomerPerm,
@@ -142,10 +146,15 @@ export const CreateRoutes = () => {
                 path: "profile",
                 element: <AccountPage />,
               },
-              {
-                path: "response/:id",
-                element: <FeedbackDetails />,
-              },
+              ...(hasGridViewFeedbackCardPermission
+                ? [
+                    {
+                      path: "response/:id",
+                      element: <FeedbackDetails />,
+                    },
+                  ]
+                : []),
+
               {
                 path: "campaign/:id",
                 element: <CampaignDetails />,

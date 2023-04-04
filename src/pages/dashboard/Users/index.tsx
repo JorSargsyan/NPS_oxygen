@@ -19,6 +19,8 @@ import Filters from "./components/Filters";
 import { ERequestStatus } from "store/enums/index.enum";
 import { EBaseUrl } from "store/config/constants";
 import { setTableLoading } from "store/slicers/common";
+import usePermission from "shared/helpers/hooks/usePermission";
+import { EUserPermissions } from "resources/permissions/permissions.enum";
 
 const Users = () => {
   const location = useLocation();
@@ -27,6 +29,10 @@ const Users = () => {
   const [activeRow, setActiveRow] = useState(0);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+
+  const hasViewPermission = usePermission(EUserPermissions.View);
+  const hasExportPermission = usePermission(EUserPermissions.Export);
+
   const methods = useForm({
     defaultValues: {
       config: { ...defaultFilterValues, filters: [defaultFilterRowValue] },
@@ -75,6 +81,9 @@ const Users = () => {
   };
 
   const getActions = (rowData: IUserCompact) => {
+    if (!hasViewPermission) {
+      return [];
+    }
     return [
       {
         label: "View",
@@ -126,7 +135,7 @@ const Users = () => {
         </Button>
       </Box>
       <BasicTable<IUserCompact>
-        selectable
+        selectable={hasExportPermission}
         hasSearchInput
         onExport={handleExport}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}

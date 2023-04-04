@@ -18,8 +18,10 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
@@ -67,6 +69,18 @@ const TabNotesComponent = () => {
   const [warningOpen, setWarningOpen] = useState(false);
   const [activeRow, setActiveRow] = useState(0);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+
+  const hasAddNotePermission = usePermission(EFeedbackPermissions.Add_note);
+  const hasEditNotePermission = usePermission(EFeedbackPermissions.Edit_note);
+  const hasDeleteNotePermission = usePermission(
+    EFeedbackPermissions.Delete_note
+  );
+  const hasViewEditedNotePermission = usePermission(
+    EFeedbackPermissions.View_edited_note
+  );
+  const hasViewDeletedNotePermission = usePermission(
+    EFeedbackPermissions.View_deleted_note
+  );
 
   const { id } = useParams();
 
@@ -203,20 +217,25 @@ const TabNotesComponent = () => {
   return (
     <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
       <FormProvider {...methods}>
-        <BasicTextArea
-          name="textarea"
-          aria-label="Add Notes"
-          placeholder="Type your answer here..."
-        />
-        <Box textAlign="right" py={2}>
-          <ButtonLoader
-            disabled={!watchTextArea}
-            onClick={handleAddNote}
-            isLoading={isButtonLoading}
-          >
-            <Typography>Add note</Typography>
-          </ButtonLoader>
-        </Box>
+        {hasAddNotePermission && (
+          <>
+            <BasicTextArea
+              name="textarea"
+              aria-label="Add Notes"
+              placeholder="Type your answer here..."
+            />
+            <Box textAlign="right" py={2}>
+              <ButtonLoader
+                disabled={!watchTextArea}
+                onClick={handleAddNote}
+                isLoading={isButtonLoading}
+              >
+                <Typography>Add note</Typography>
+              </ButtonLoader>
+            </Box>
+          </>
+        )}
+
         <Fragment>
           {watchNotesList?.length ? (
             watchNotesList?.map((note, index) => {
@@ -275,7 +294,8 @@ const TabNotesComponent = () => {
                       <Box>
                         <CardActions>
                           {!note.isDeleted &&
-                            isSameNoteCreator(note.user.id) && (
+                            isSameNoteCreator(note.user.id) &&
+                            hasEditNotePermission && (
                               <Button
                                 onClick={(e) => editNote(note)}
                                 startIcon={<Edit height={15} width={15} />}
@@ -291,7 +311,8 @@ const TabNotesComponent = () => {
                               />
                             )}
                           {!note.isDeleted &&
-                            isSameNoteCreator(note.user.id) && (
+                            isSameNoteCreator(note.user.id) &&
+                            hasDeleteNotePermission && (
                               <Button
                                 onClick={(e) => deleteNote(note)}
                                 startIcon={<Trash height={15} width={15} />}
@@ -307,21 +328,23 @@ const TabNotesComponent = () => {
                               />
                             )}
 
-                          {(note.isDeleted || note.isUpdated) && (
-                            <Button
-                              onClick={() => viewFeedbackHistory(note)}
-                              startIcon={<History height={15} width={15} />}
-                              size="small"
-                              variant="outlined"
-                              sx={{
-                                minWidth: 25,
-                                padding: "10px",
-                                "& .MuiButton-startIcon": {
-                                  marginRight: 0,
-                                },
-                              }}
-                            />
-                          )}
+                          {(note.isDeleted || note.isUpdated) &&
+                            hasViewDeletedNotePermission &&
+                            hasViewEditedNotePermission && (
+                              <Button
+                                onClick={() => viewFeedbackHistory(note)}
+                                startIcon={<History height={15} width={15} />}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  minWidth: 25,
+                                  padding: "10px",
+                                  "& .MuiButton-startIcon": {
+                                    marginRight: 0,
+                                  },
+                                }}
+                              />
+                            )}
                         </CardActions>
                       </Box>
                     </Box>

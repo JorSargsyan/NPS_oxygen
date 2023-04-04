@@ -14,6 +14,7 @@ export interface IFeedbacksState {
     employee: IAttachedEmployee[];
     servicecategory: IAttachedEmployee[];
     campaign: IAttachedEmployee[];
+    directorate: IAttachedEmployee[];
   } | null;
 }
 

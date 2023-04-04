@@ -16,7 +16,9 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
 import BasicSelect from "shared/ui/Select";
@@ -64,6 +66,15 @@ const TabRedirectionComponent = () => {
   const [isLogsDrawerOpen, setLogsDrawerOpen] = useState(false);
   const { id } = useParams();
   const userInfo = useSelector(selectUserInfo);
+
+  const hasAddTaskPermission = usePermission(EFeedbackPermissions.Add_task);
+  const hasEditTaskPermission = usePermission(EFeedbackPermissions.Edit_task);
+  const hasDeleteTaskPermission = usePermission(
+    EFeedbackPermissions.Delete_task
+  );
+  const hasViewEditedTaskPermission = usePermission(
+    EFeedbackPermissions.View_task_logs
+  );
 
   const methods = useForm<IFormData>();
 
@@ -224,19 +235,22 @@ const TabRedirectionComponent = () => {
 
   return (
     <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
-      <Box textAlign="right" pb={3}>
-        <Button
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusIcon />
-            </SvgIcon>
-          }
-          variant="outlined"
-          onClick={openTaskDrawer}
-        >
-          Redirect
-        </Button>
-      </Box>
+      {hasAddTaskPermission && (
+        <Box textAlign="right" pb={3}>
+          <Button
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+            variant="outlined"
+            onClick={openTaskDrawer}
+          >
+            Redirect
+          </Button>
+        </Box>
+      )}
+
       <FormProvider {...methods}>
         {tasksListWatch?.length ? (
           tasksListWatch?.map((task, index) => {
@@ -265,8 +279,8 @@ const TabRedirectionComponent = () => {
                         <CardActions>
                           {!task.isDeleted &&
                             isSameTaskCreator(task.createdBy.id) &&
-                            task.status.id !==
-                              ERedirectTabStatuses.Completed && (
+                            task.status.id !== ERedirectTabStatuses.Completed &&
+                            hasEditTaskPermission && (
                               <Button
                                 onClick={(e) => editFeedbackTask(task)}
                                 startIcon={<Edit height={15} width={15} />}
@@ -282,7 +296,8 @@ const TabRedirectionComponent = () => {
                               />
                             )}
                           {!task.isDeleted &&
-                            isSameTaskCreator(task.createdBy.id) && (
+                            isSameTaskCreator(task.createdBy.id) &&
+                            hasDeleteTaskPermission && (
                               <Button
                                 onClick={(e) => deleteFeedbackTask(task)}
                                 startIcon={<Trash height={15} width={15} />}
@@ -298,21 +313,22 @@ const TabRedirectionComponent = () => {
                               />
                             )}
 
-                          {(task.isDeleted || task.isUpdated) && (
-                            <Button
-                              onClick={() => viewFeedbackTaskHistory(task)}
-                              startIcon={<History height={15} width={15} />}
-                              size="small"
-                              variant="outlined"
-                              sx={{
-                                minWidth: 25,
-                                padding: "10px",
-                                "& .MuiButton-startIcon": {
-                                  marginRight: 0,
-                                },
-                              }}
-                            />
-                          )}
+                          {(task.isDeleted || task.isUpdated) &&
+                            hasViewEditedTaskPermission && (
+                              <Button
+                                onClick={() => viewFeedbackTaskHistory(task)}
+                                startIcon={<History height={15} width={15} />}
+                                size="small"
+                                variant="outlined"
+                                sx={{
+                                  minWidth: 25,
+                                  padding: "10px",
+                                  "& .MuiButton-startIcon": {
+                                    marginRight: 0,
+                                  },
+                                }}
+                              />
+                            )}
                         </CardActions>
                       </Box>
                       <Box mb={2} sx={{ display: "flex", gap: 2 }}>

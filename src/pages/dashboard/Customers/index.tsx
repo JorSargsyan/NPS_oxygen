@@ -18,10 +18,15 @@ import { ERequestStatus } from "store/enums/index.enum";
 import Filters from "./components/Filters";
 import { EBaseUrl } from "store/config/constants";
 import { setTableLoading } from "store/slicers/common";
+import usePermission from "shared/helpers/hooks/usePermission";
+import { ECustomersPermissions } from "resources/permissions/permissions.enum";
 
 const Customers = () => {
   const dispatch = useAsyncDispatch();
   const customers = useSelector(selectCustomers);
+
+  const hasEditPermission = usePermission(ECustomersPermissions.Edit);
+  const hasExportPermission = usePermission(ECustomersPermissions.Export);
 
   const handleChangeStatus = async (e, rowId) => {
     const { meta } = await dispatch(
@@ -44,8 +49,9 @@ const Customers = () => {
     label: "Status",
     layout: (row: ICustomer) => {
       return (
-        <Box>
+        <Box textAlign="center">
           <Select
+            disabled={!hasEditPermission}
             size="small"
             value={row.customerStatus.id}
             onChange={(e) => handleChangeStatus(e, row.id)}
@@ -115,7 +121,7 @@ const Customers = () => {
     <Box p={4}>
       <Typography variant="h3">Customers</Typography>
       <BasicTable<ICustomer>
-        selectable
+        selectable={hasExportPermission}
         hasSearchInput
         onExport={handleExport}
         Filter={() => <Filters onChange={refetchCustomers} methods={methods} />}

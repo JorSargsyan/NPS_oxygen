@@ -19,8 +19,9 @@ export const useAsyncDispatch = () => {
         const { meta, error } = initialActionThunk;
         if (meta.requestStatus !== ERequestStatus.FULFILLED) {
           if (error.status === 401) {
-            await dispatchRedux(signOut());
             localStorage.removeItem(LStorage.AUTH);
+            await dispatchRedux(signOut());
+
             // TODO when ready
             // const refreshTokenThunk = await dispatchRedux(RefreshToken());
             // if (

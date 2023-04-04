@@ -3,8 +3,10 @@ import { Box, Button, Grid, ToggleButtonGroup } from "@mui/material";
 import React, { MouseEvent } from "react";
 import { FormProvider } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import BasicRangePicker from "shared/ui/RangePicker";
 import StyledToggleButton from "shared/ui/ToggleButton";
@@ -29,6 +31,21 @@ const QuickFilters = ({
 }) => {
   const dispatch = useAsyncDispatch();
   const filterValues = useSelector(selectFeedbackFilterValues);
+  const hasQuickFilterByDatePermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_date
+  );
+  const hasQuickFilterByCampaignPermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_campaign
+  );
+  const hasQuickFilterByStatusPermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_status
+  );
+  const hasQuickFilterByFeedbackTypesPermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_feedback_types
+  );
+  const hasQuickFilterByUserVisibilityPermission = usePermission(
+    EFeedbackPermissions.Quick_filter_by_user_visibility
+  );
 
   const getCampaignDefaultList = async () => {
     const formData = {
@@ -86,115 +103,125 @@ const QuickFilters = ({
     <Box px={1} py={3}>
       <FormProvider {...methods}>
         <Grid container spacing={3}>
-          <Grid
-            item
-            xs={3}
-            sx={{
-              "& .ant-picker": {
-                height: "50px",
-                width: "100%",
-                borderRadius: "8px",
-                "&.ant-picker-focused": {
-                  borderWidth: 3,
-                  borderColor: "primary.main",
-                  boxShadow: "none",
-                  "&:hover": {
+          {hasQuickFilterByDatePermission && (
+            <Grid
+              item
+              xs={3}
+              sx={{
+                "& .ant-picker": {
+                  height: "50px",
+                  width: "100%",
+                  borderRadius: "8px",
+                  "&.ant-picker-focused": {
+                    borderWidth: 3,
                     borderColor: "primary.main",
+                    boxShadow: "none",
+                    "&:hover": {
+                      borderColor: "primary.main",
+                    },
+                  },
+                  "&:hover": {
+                    borderColor: "neutral.200",
                   },
                 },
-                "&:hover": {
-                  borderColor: "neutral.200",
+              }}
+            >
+              <BasicRangePicker name="config.quickFilters.range" />
+            </Grid>
+          )}
+          {hasQuickFilterByCampaignPermission && (
+            <Grid
+              item
+              xs={3}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: "50px",
                 },
-              },
-            }}
-          >
-            <BasicRangePicker name="config.quickFilters.range" />
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            sx={{
-              "& .MuiInputBase-root": {
-                height: "50px",
-              },
-            }}
-          >
-            <BasicAutocomplete<IAttachedEmployee>
-              options={filterValues?.campaign || []}
-              inputLabel={"Campaign"}
-              name={"config.quickFilters.campaign"}
-              optionLabel="label"
-              defaultValue={""}
-              onFocus={getCampaignDefaultList}
-              size="small"
-              async
-              fetchFn={getCampaignList}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              "& .MuiInputBase-root": {
-                height: "50px",
-              },
-            }}
-          >
-            <BasicAutocomplete<any>
-              options={feedbackStatusList}
-              inputLabel={"Status"}
-              name={"config.quickFilters.status"}
-              optionLabel="name"
-              defaultValue={[]}
-              multiple
-              size="small"
-            />
-          </Grid>
+              }}
+            >
+              <BasicAutocomplete<IAttachedEmployee>
+                options={filterValues?.campaign || []}
+                inputLabel={"Campaign"}
+                name={"config.quickFilters.campaign"}
+                optionLabel="label"
+                defaultValue={""}
+                onFocus={getCampaignDefaultList}
+                size="small"
+                async
+                fetchFn={getCampaignList}
+              />
+            </Grid>
+          )}
+          {hasQuickFilterByStatusPermission && (
+            <Grid
+              item
+              xs={3}
+              sx={{
+                "& .MuiInputBase-root": {
+                  height: "50px",
+                },
+              }}
+            >
+              <BasicAutocomplete<any>
+                options={feedbackStatusList}
+                inputLabel={"Status"}
+                name={"config.quickFilters.status"}
+                optionLabel="name"
+                defaultValue={[]}
+                multiple
+                size="small"
+              />
+            </Grid>
+          )}
         </Grid>
         <Box pt={3} display="flex" justifyContent="space-between">
           <Box display="flex">
-            <Box mr={2}>
-              <ToggleButtonGroup
-                value={feedbackTypes?.feedbackType}
-                exclusive
-                onChange={changeFeedbackType}
-                aria-label="text alignment"
-              >
-                {quickFilterFeedbackTypes?.map((type, index) => {
-                  return (
-                    <StyledToggleButton
-                      size="small"
-                      key={index}
-                      value={type.value}
-                      selected={feedbackTypes?.feedbackType === type.value}
-                    >
-                      {type.label}
-                    </StyledToggleButton>
-                  );
-                })}
-              </ToggleButtonGroup>
-            </Box>
-            <Box>
-              <ToggleButtonGroup
-                value={feedbackTypes?.userVisibility}
-                exclusive
-                onChange={changeUserVisibilityType}
-                aria-label="text alignment"
-              >
-                {quickFilterUserVisibilityTypes?.map((type, index) => {
-                  return (
-                    <StyledToggleButton
-                      size="small"
-                      key={index}
-                      value={type.value}
-                      selected={feedbackTypes?.userVisibility === type.value}
-                    >
-                      {type.label}
-                    </StyledToggleButton>
-                  );
-                })}
-              </ToggleButtonGroup>
-            </Box>
+            {hasQuickFilterByFeedbackTypesPermission && (
+              <Box mr={2}>
+                <ToggleButtonGroup
+                  value={feedbackTypes?.feedbackType}
+                  exclusive
+                  onChange={changeFeedbackType}
+                  aria-label="text alignment"
+                >
+                  {quickFilterFeedbackTypes?.map((type, index) => {
+                    return (
+                      <StyledToggleButton
+                        size="small"
+                        key={index}
+                        value={type.value}
+                        selected={feedbackTypes?.feedbackType === type.value}
+                      >
+                        {type.label}
+                      </StyledToggleButton>
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+            )}
+            {hasQuickFilterByUserVisibilityPermission && (
+              <Box>
+                <ToggleButtonGroup
+                  value={feedbackTypes?.userVisibility}
+                  exclusive
+                  onChange={changeUserVisibilityType}
+                  aria-label="text alignment"
+                >
+                  {quickFilterUserVisibilityTypes?.map((type, index) => {
+                    return (
+                      <StyledToggleButton
+                        size="small"
+                        key={index}
+                        value={type.value}
+                        selected={feedbackTypes?.userVisibility === type.value}
+                      >
+                        {type.label}
+                      </StyledToggleButton>
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+            )}
           </Box>
           <Box>
             <Box>

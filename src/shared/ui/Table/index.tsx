@@ -225,16 +225,7 @@ const BasicTable = <T extends { id: number }>({
 
   const generateRowsPaginated = () => {
     return paginatedData?.displayData?.map((row, rowIndex) => (
-      <TableRow
-        hover
-        key={rowIndex}
-        sx={{
-          transform: "scale(1)",
-          transition: "0.4s ease",
-          "&:last-child td, &:last-child th": { border: 0 },
-          "&:hover": { transform: "scale(1.02)", transition: "0.4s ease" },
-        }}
-      >
+      <TableRow hover key={rowIndex}>
         {generateSingleRow(row)}
       </TableRow>
     ));
@@ -242,15 +233,7 @@ const BasicTable = <T extends { id: number }>({
 
   const generateSimpleRows = () => {
     return data?.map((row, rowIndex) => (
-      <TableRow
-        key={rowIndex}
-        sx={{
-          "&:last-child td, &:last-child th": { border: 0 },
-          "&:hover": { transform: "scale(1.02)", transition: "0.4s ease" },
-        }}
-      >
-        {generateSingleRow(row)}
-      </TableRow>
+      <TableRow key={rowIndex}>{generateSingleRow(row)}</TableRow>
     ));
   };
 

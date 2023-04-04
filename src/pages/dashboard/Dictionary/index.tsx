@@ -21,6 +21,8 @@ import RightDrawer from "shared/ui/Drawer";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTranslations from "./components/AddEditTranslations";
 import Filters from "./components/Filters";
+import { ETranslationPermissions } from "resources/permissions/permissions.enum";
+import usePermission from "shared/helpers/hooks/usePermission";
 
 const Translations = () => {
   const [activeRow, setActiveRow] = useState<ITranslation>();
@@ -28,6 +30,8 @@ const Translations = () => {
   const [isWarningOpen, setWarningOpen] = useState(false);
   const dispatch = useAsyncDispatch();
   const translations = useSelector(selectTranslations);
+  const hasDeletePermission = usePermission(ETranslationPermissions.Delete);
+  const hasCreatePermission = usePermission(ETranslationPermissions.Create);
   const methods = useForm({
     defaultValues: { config: defaultFilterValues },
   });
@@ -79,15 +83,27 @@ const Translations = () => {
   };
 
   const getActions = (rowData: ITranslation) => {
+    if (!hasCreatePermission && !hasDeletePermission) {
+      return [];
+    }
     return [
-      {
-        label: "Edit",
-        onClick: () => handleEdit(rowData),
-      },
-      {
-        label: "Delete",
-        onClick: () => handleOpenWarning(rowData),
-      },
+      ...(hasCreatePermission
+        ? [
+            {
+              label: "Edit",
+              onClick: () => handleEdit(rowData),
+            },
+          ]
+        : []),
+
+      ...(hasDeletePermission
+        ? [
+            {
+              label: "Delete",
+              onClick: () => handleOpenWarning(rowData),
+            },
+          ]
+        : []),
     ];
   };
 
@@ -109,17 +125,19 @@ const Translations = () => {
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h3">Translations</Typography>
-        <Button
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusIcon />
-            </SvgIcon>
-          }
-          variant="outlined"
-          onClick={() => setDrawerOpen(true)}
-        >
-          Add
-        </Button>
+        {hasCreatePermission && (
+          <Button
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+            variant="outlined"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Add
+          </Button>
+        )}
       </Box>
       <BasicTable<ITranslation>
         filterOptions={{ watch: methods.watch, reset: methods.reset }}

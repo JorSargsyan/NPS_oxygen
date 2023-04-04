@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import usePermission from "shared/helpers/hooks/usePermission";
 import RightDrawer from "shared/ui/Drawer";
 import BasicSelect from "shared/ui/Select";
 import { ERequestStatus } from "store/enums/index.enum";
@@ -35,6 +37,10 @@ const FeedbackDetailsTop = () => {
   const methods = useForm<IFormData>();
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
   const causeCategoriesList = useSelector(selectCauseCategories);
+
+  const hasEditFeedbackStatusPermission = usePermission(
+    EFeedbackPermissions.Edit_feedback_status
+  );
 
   const managersList = useSelector(selectManagers);
   const dispatch = useAsyncDispatch();
@@ -84,6 +90,7 @@ const FeedbackDetailsTop = () => {
                 label="Feedback status"
                 valueProp="value"
                 labelProp="name"
+                disabled={!hasEditFeedbackStatusPermission}
                 options={feedbackStatusList}
                 onChangeCB={(value: number) =>
                   changeFeedbackStatus({

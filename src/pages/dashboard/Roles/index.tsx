@@ -29,6 +29,8 @@ import {
 import { IRole, IRoleDetailed } from "store/interfaces/roles";
 import { GetUserGroups } from "store/slicers/users";
 import { ERequestStatus } from "store/enums/index.enum";
+import { ERolesPermissions } from "resources/permissions/permissions.enum";
+import usePermission from "shared/helpers/hooks/usePermission";
 
 const RolesPage = () => {
   const [activeRow, setActiveRow] = useState<IRoleDetailed>();
@@ -36,6 +38,11 @@ const RolesPage = () => {
   const [isWarningOpen, setWarningOpen] = useState(false);
   const dispatch = useAsyncDispatch();
   const roles = useSelector(selectRoles);
+
+  const hasEditPermission = usePermission(ERolesPermissions.Edit);
+  const hasCreatePermission = usePermission(ERolesPermissions.Create);
+  const hasDeletePermission = usePermission(ERolesPermissions.Create);
+
   const methods = useForm({
     defaultValues: { config: defaultFilterValues },
   });
@@ -86,14 +93,22 @@ const RolesPage = () => {
 
   const getActions = (rowData: IRole) => {
     return [
-      {
-        label: "Edit",
-        onClick: () => handleEdit(rowData),
-      },
-      {
-        label: "Delete",
-        onClick: () => handleOpenWarning(rowData),
-      },
+      ...(hasEditPermission
+        ? [
+            {
+              label: "Edit",
+              onClick: () => handleEdit(rowData),
+            },
+          ]
+        : []),
+      ...(hasDeletePermission
+        ? [
+            {
+              label: "Delete",
+              onClick: () => handleOpenWarning(rowData),
+            },
+          ]
+        : []),
     ];
   };
 
@@ -115,17 +130,19 @@ const RolesPage = () => {
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h3">Roles</Typography>
-        <Button
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusIcon />
-            </SvgIcon>
-          }
-          variant="outlined"
-          onClick={() => setDrawerOpen(true)}
-        >
-          Add
-        </Button>
+        {hasCreatePermission && (
+          <Button
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+            variant="outlined"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Add
+          </Button>
+        )}
       </Box>
       <BasicTable<IRole>
         toolbar={false}

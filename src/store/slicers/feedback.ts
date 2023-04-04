@@ -337,6 +337,7 @@ const FeedbacksSlice = createSlice({
             employee: payload,
             servicecategory: [],
             campaign: [],
+            directorate: [],
           };
           state.feedbackFilterValues = data;
         }
@@ -344,6 +345,7 @@ const FeedbacksSlice = createSlice({
           const data = {
             employee: [],
             campaign: [],
+            directorate: [],
             servicecategory: payload,
           };
           state.feedbackFilterValues = data;
@@ -353,6 +355,17 @@ const FeedbacksSlice = createSlice({
             employee: [],
             campaign: payload,
             servicecategory: [],
+            directorate: [],
+          };
+          state.feedbackFilterValues = data;
+        }
+
+        if (meta?.arg?.includes(feedbackFilterTypesKeys.DIRECTORATE)) {
+          const data = {
+            employee: [],
+            campaign: [],
+            servicecategory: [],
+            directorate: payload,
           };
           state.feedbackFilterValues = data;
         }
