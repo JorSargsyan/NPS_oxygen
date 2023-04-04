@@ -131,35 +131,38 @@ const CampaignsPage = () => {
     navigate(`/campaign/${id}`);
   };
 
-  const getActions = useCallback((rowData: ICampaign) => {
-    return [
-      ...(hasManagePermission
-        ? [
-            {
-              label: "Customize",
-              onClick: () => handleCampaignDetails(rowData.id),
-            },
-            {
-              label: "View History",
-              onClick: () => handleViewHistory(rowData?.id),
-            },
-            {
-              label: "Rename",
-              onClick: () => handleRenameCampaign(rowData),
-            },
-          ]
-        : []),
+  const getActions = useCallback(
+    (rowData: ICampaign) => {
+      return [
+        ...(hasManagePermission
+          ? [
+              {
+                label: "Customize",
+                onClick: () => handleCampaignDetails(rowData.id),
+              },
+              {
+                label: "View History",
+                onClick: () => handleViewHistory(rowData?.id),
+              },
+              {
+                label: "Rename",
+                onClick: () => handleRenameCampaign(rowData),
+              },
+            ]
+          : []),
 
-      ...(hasDeletePermission
-        ? [
-            {
-              label: "Delete",
-              onClick: () => handleOpenWarning(rowData),
-            },
-          ]
-        : []),
-    ];
-  }, []);
+        ...(hasDeletePermission
+          ? [
+              {
+                label: "Delete",
+                onClick: () => handleOpenWarning(rowData),
+              },
+            ]
+          : []),
+      ];
+    },
+    [hasManagePermission, hasDeletePermission]
+  );
 
   const handleSuccess = async () => {
     setDrawerOpen(false);
