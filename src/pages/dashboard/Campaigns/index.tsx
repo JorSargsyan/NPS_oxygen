@@ -35,6 +35,8 @@ import HistoryView from "./components/HistoryView";
 import Rename from "./components/Rename";
 import { columns, deleteCampaignWarningConfig } from "./constants";
 import CampaignCardsList from "./components/CampaignCardsList";
+import usePermission from "shared/helpers/hooks/usePermission";
+import { ECampaignPermissions } from "resources/permissions/permissions.enum";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
@@ -60,9 +62,14 @@ const CampaignsPage = () => {
     ECampaignListViewTypes.Card
   );
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+
   const methods = useForm({
     defaultValues: { config: defaultFilterValues },
   });
+
+  const hasAddPermission = usePermission(ECampaignPermissions.Create);
+  const hasDeletePermission = usePermission(ECampaignPermissions.Delete);
+  const hasManagePermission = usePermission(ECampaignPermissions.Manage);
 
   const refetchData = useCallback(async () => {
     await dispatch(setTableLoading(true));
@@ -124,26 +131,38 @@ const CampaignsPage = () => {
     navigate(`/campaign/${id}`);
   };
 
-  const getActions = (rowData: ICampaign) => {
-    return [
-      {
-        label: "Customize",
-        onClick: () => handleCampaignDetails(rowData.id),
-      },
-      {
-        label: "View History",
-        onClick: () => handleViewHistory(rowData?.id),
-      },
-      {
-        label: "Rename",
-        onClick: () => handleRenameCampaign(rowData),
-      },
-      {
-        label: "Delete",
-        onClick: () => handleOpenWarning(rowData),
-      },
-    ];
-  };
+  const getActions = useCallback(
+    (rowData: ICampaign) => {
+      return [
+        ...(hasManagePermission
+          ? [
+              {
+                label: "Customize",
+                onClick: () => handleCampaignDetails(rowData.id),
+              },
+              {
+                label: "View History",
+                onClick: () => handleViewHistory(rowData?.id),
+              },
+              {
+                label: "Rename",
+                onClick: () => handleRenameCampaign(rowData),
+              },
+            ]
+          : []),
+
+        ...(hasDeletePermission
+          ? [
+              {
+                label: "Delete",
+                onClick: () => handleOpenWarning(rowData),
+              },
+            ]
+          : []),
+      ];
+    },
+    [hasManagePermission, hasDeletePermission]
+  );
 
   const handleSuccess = async () => {
     setDrawerOpen(false);
@@ -183,6 +202,7 @@ const CampaignsPage = () => {
         layout: (rowData: ICampaign) => {
           return (
             <Switch
+              disabled={hasManagePermission}
               onChange={(e, checked) => handleChangeState(rowData.id, checked)}
               checked={rowData.isActive}
             />
@@ -212,17 +232,19 @@ const CampaignsPage = () => {
             type={campaignListVisibilityType}
             setType={setCampaignListVisibilityType}
           />
-          <Button
-            startIcon={
-              <SvgIcon fontSize="small">
-                <PlusIcon />
-              </SvgIcon>
-            }
-            variant="outlined"
-            onClick={handleAdd}
-          >
-            Add
-          </Button>
+          {hasAddPermission && (
+            <Button
+              startIcon={
+                <SvgIcon fontSize="small">
+                  <PlusIcon />
+                </SvgIcon>
+              }
+              variant="outlined"
+              onClick={handleAdd}
+            >
+              Add
+            </Button>
+          )}
         </Box>
       </Box>
 

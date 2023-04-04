@@ -24,19 +24,19 @@ const CustomerMoodRadioGroup = (props: Props) => {
           return (
             <RadioGroup {...field} row>
               <FormControlLabel
-                disabled={hasChangePermission}
+                disabled={!hasChangePermission}
                 value={EMood.Good}
                 control={<Radio />}
                 label="Good"
               />
               <FormControlLabel
-                disabled={hasChangePermission}
+                disabled={!hasChangePermission}
                 value={EMood.Neutral}
                 control={<Radio />}
                 label="Neutral"
               />
               <FormControlLabel
-                disabled={hasChangePermission}
+                disabled={!hasChangePermission}
                 value={EMood.Bad}
                 control={<Radio />}
                 label="Bad"

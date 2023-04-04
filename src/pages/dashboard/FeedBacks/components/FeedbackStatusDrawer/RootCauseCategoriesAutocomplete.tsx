@@ -14,7 +14,7 @@ const RootCauseCategoriesAutocomplete = () => {
       name="causeCategories"
       options={causeCategoriesList}
       inputLabel={"Cause categories"}
-      disabled={hasChangePermission}
+      disabled={!hasChangePermission}
       multiple
       defaultValue={[]}
       prefix="permissions"
