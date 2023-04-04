@@ -60,7 +60,6 @@ const DesignTab = () => {
   };
 
   const uploadImage = async () => {
-    debugger;
     const [prefix, base64Image] = uploadPic.toString().split(",");
 
     const extension = prefix.replace("data:image/", ".").split(";")[0];
