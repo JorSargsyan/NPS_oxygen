@@ -3,7 +3,6 @@ import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
 import ChatIcon from "@heroicons/react/24/outline/ChatBubbleBottomCenterTextIcon";
 import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
-import StarIcon from "@heroicons/react/24/outline/StarIcon";
 import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
 
 export const deleteCampaignSurveyWarningConfig = {

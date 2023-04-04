@@ -1,11 +1,7 @@
-import { useLayoutEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { SideNav } from "./Navigation";
 import { TopNav } from "./Header";
 import { Outlet, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 
 const SIDE_NAV_WIDTH = 280;
 

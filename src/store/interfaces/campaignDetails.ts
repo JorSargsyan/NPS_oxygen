@@ -5,6 +5,7 @@ export interface ICampaignDetailsState {
   details: ICampaignDetailed | null;
   selectedSurvey: number;
   surveyDetails: ICampaignSurveyDetails | null;
+  surveyLogic: ISurveyLogicResponse | null;
   surveyTemplate: ITemplate | null;
   form: {
     survey: any;
@@ -172,4 +173,28 @@ export interface IUpdateSurveyTemplateRequest {
     extension: string;
     removeImage: boolean;
   };
+}
+
+export interface ILinkedSurvey {
+  surveyID: number;
+  surveyTitle: string;
+  surveyType: number;
+}
+
+export interface ISurveyLogic {
+  linkedSurvey: ILinkedSurvey;
+  surveyAnswers: {
+    surveyAnswerID: number;
+    surveyAnswerValue: string;
+  }[];
+}
+
+export interface ISurveyLogicResponse {
+  linkedSurvey: ILinkedSurvey;
+  surveyLogic: ISurveyLogic[];
+}
+
+export interface ICreateSurveyLogic {
+  answerIDs: string[];
+  nextID: string;
 }

@@ -18,6 +18,7 @@ const select_all = 0;
 const selectAllOption = {
   id: select_all,
   name: "Select All",
+  value: "Select All",
 };
 
 interface IAutocompleteProps<OptionType> {
@@ -139,7 +140,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
             onFocus={onFocus}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
-              return multiple && hasSelectAllOption
+              return multiple && hasSelectAllOption && filtered.length
                 ? [selectAllOption, ...filtered]
                 : filtered;
             }}

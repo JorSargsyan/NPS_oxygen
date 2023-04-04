@@ -178,7 +178,6 @@ const LeftSidebar = () => {
     if (!campaignSurveys.length) {
       return;
     }
-    debugger;
     setSurveyList(campaignSurveys);
     const isSelectedSurveyValid = !!campaignSurveys.find(
       (i) => i.id === selectedSurvey

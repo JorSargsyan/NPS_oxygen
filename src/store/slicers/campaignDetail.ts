@@ -13,6 +13,8 @@ import {
   ICreateCampaignSurveyRequest,
   ICreateCampaignSurveyResponse,
   IUpdateSurveyRequest,
+  ICreateSurveyLogic,
+  ISurveyLogicResponse,
 } from "store/interfaces/campaignDetails";
 import { IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -25,6 +27,7 @@ const initialState: ICampaignDetailsState = {
   surveys: [],
   details: null,
   selectedSurvey: 0,
+  surveyLogic: null,
   surveyDetails: null,
   surveyTemplate: null,
   form: {
@@ -180,6 +183,34 @@ export const ApplyForAllSurveys = createAsyncThunk<
   thunkOptions
 );
 
+export const GetSurveyLogic = createAsyncThunk<ISurveyLogicResponse, number>(
+  `${name}/GetSurveyLogic`,
+  async (id: number) => {
+    return (await api.get(`${EBaseUrl.API}/SurveyLogic/${id}`)).data;
+  },
+  thunkOptions
+);
+
+export const CreateSurveyLogic = createAsyncThunk<
+  unknown,
+  { formData: ICreateSurveyLogic; id: number }
+>(
+  `${name}/CreateSurveyLogic`,
+  async ({ formData, id }) => {
+    return (await api.post(`${EBaseUrl.API}/SurveyLogic?id=${id}`, formData))
+      .data;
+  },
+  thunkOptions
+);
+
+export const DeleteSurveyLogic = createAsyncThunk<unknown, number[]>(
+  `${name}/DeleteSurveyLogic`,
+  async (data) => {
+    return (await api.delete(`${EBaseUrl.API}/SurveyLogic`, { data })).data;
+  },
+  thunkOptions
+);
+
 export const DistributionSchedule = createAsyncThunk<
   unknown,
   { data: IDistributionSchedule; id: number }
@@ -225,6 +256,9 @@ const campaignDetailSlice = createSlice({
     builder.addCase(GetCampaignSurveyById.fulfilled, (state, { payload }) => {
       state.surveyDetails = payload;
     });
+    builder.addCase(GetSurveyLogic.fulfilled, (state, { payload }) => {
+      state.surveyLogic = payload;
+    });
     builder.addCase(
       GetCampaignSurveyTemplateById.fulfilled,
       (state, { payload }) => {
@@ -244,6 +278,8 @@ export const selectCampaignSurveys = (state: IState) =>
 export const selectTemplates = (state: IState) =>
   state.campaignDetails.templates;
 export const selectForm = (state: IState) => state.campaignDetails.form;
+export const selectSurveyLogic = (state: IState) =>
+  state.campaignDetails.surveyLogic;
 export const selectSurveyInfo = (state: IState) => {
   return {
     details: state.campaignDetails.surveyDetails,

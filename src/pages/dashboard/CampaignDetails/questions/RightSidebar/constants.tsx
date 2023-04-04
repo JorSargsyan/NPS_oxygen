@@ -1,3 +1,4 @@
+import { ECampaignSurveyType } from "../LeftSidebar/constants";
 import DesignTab from "./DesignTab";
 import LogicTab from "./LogicTab";
 import QuestionTab from "./QuestionTab";
@@ -50,4 +51,10 @@ export const CommentCharacterLimit = [
     name: "Range",
     value: 2,
   },
+];
+
+export const NO_LOGIC_TYPES: string[] = [
+  ECampaignSurveyType.Comment,
+  ECampaignSurveyType.Final,
+  ECampaignSurveyType.Welcome,
 ];
