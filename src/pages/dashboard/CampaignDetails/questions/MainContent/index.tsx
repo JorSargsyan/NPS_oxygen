@@ -58,8 +58,7 @@ const MainContent = () => {
           <Box display={"flex"} justifyContent={"center"}>
             <Box
               mb={4}
-              height="60%"
-              width="50%"
+              width="100%"
               borderRadius="10px"
               sx={{
                 "& img": {
@@ -72,6 +71,9 @@ const MainContent = () => {
             >
               {surveyInfo?.template?.logoImage && (
                 <img
+                  style={{ objectFit: "cover" }}
+                  height="300px"
+                  width="100%"
                   src={`${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`}
                   alt="sadas"
                 />
