@@ -14,6 +14,7 @@ const name = "COMMON";
 
 const initialState: ICommonState = {
   loading: false,
+  campaignLoading: false,
   theme: ETheme.Light,
   tableLoading: true,
   permissions: null,
@@ -61,6 +62,9 @@ const commonSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
+    setCampaignLoading(state, { payload }) {
+      state.campaignLoading = payload;
+    },
     setTheme(state, { payload }) {
       state.theme = payload;
     },
@@ -87,9 +91,16 @@ const commonSlice = createSlice({
   },
 });
 
-export const { setLoading, setTheme, setTableLoading, setSidebarVisible } =
-  commonSlice.actions;
+export const {
+  setLoading,
+  setTheme,
+  setTableLoading,
+  setSidebarVisible,
+  setCampaignLoading,
+} = commonSlice.actions;
 export const selectLoadingState = (state: IState) => state.common.loading;
+export const selectCampaignLoading = (state: IState) =>
+  state.common.campaignLoading;
 export const selectTableLoadingState = (state: IState) =>
   state.common.tableLoading;
 export const selectTheme = (state: IState) => state.common.theme;

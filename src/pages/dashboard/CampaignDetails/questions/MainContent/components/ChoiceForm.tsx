@@ -7,8 +7,11 @@ import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import reorderDragDrop from "shared/helpers/reorderDragDrop";
 import { requiredRules } from "shared/helpers/validators";
+import { setCampaignLoading } from "store/slicers/common";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 
 const ChoiceForm = () => {
+  const dispatch = useAsyncDispatch();
   const { reset, watch, control } = useFormContext();
 
   const { append, remove, fields } = useFieldArray({

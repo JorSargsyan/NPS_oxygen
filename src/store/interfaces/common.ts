@@ -2,6 +2,7 @@ import { ETheme } from "../config/constants";
 
 export interface ICommonState {
   loading: boolean;
+  campaignLoading: boolean;
   theme: ETheme;
   tableLoading: boolean;
   permissions: { [key: string]: number };
