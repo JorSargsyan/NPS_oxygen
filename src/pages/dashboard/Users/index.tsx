@@ -3,7 +3,12 @@ import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import BasicTable from "shared/ui/Table";
 import { IUserCompact } from "store/interfaces/users";
-import { ExportUsers, GetUsers, selectUsers } from "store/slicers/users";
+import {
+  ExportUsers,
+  GetUserRoles,
+  GetUsers,
+  selectUsers,
+} from "store/slicers/users";
 import { defaultFilterRowValue, userColumns } from "./constants";
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
@@ -93,9 +98,11 @@ const Users = () => {
   };
 
   const handlePrefillUser = useCallback(async () => {
-    setActiveRow(location.state.id);
-    setDrawerOpen(true);
-  }, [location.state?.id]);
+    if (location.state?.id && hasViewPermission) {
+      setActiveRow(location.state.id);
+      setDrawerOpen(true);
+    }
+  }, [location.state?.id, hasViewPermission]);
 
   const handleExport = async (selected: number[]) => {
     const { meta, payload } = await dispatch(
@@ -113,6 +120,7 @@ const Users = () => {
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));
     await dispatch(GetUsers(defaultFilterValues));
+    await dispatch(GetUserRoles());
     await dispatch(setTableLoading(false));
   }, [dispatch]);
 
@@ -121,9 +129,7 @@ const Users = () => {
   }, [init]);
 
   useEffect(() => {
-    if (location.state) {
-      handlePrefillUser();
-    }
+    handlePrefillUser();
   }, [handlePrefillUser, location.state]);
 
   return (

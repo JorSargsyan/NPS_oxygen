@@ -1,10 +1,10 @@
-import { Typography } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import {
   customerMoodValues,
   feedbackStatusValues,
 } from "pages/dashboard/FeedBacks/constants";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
@@ -81,22 +81,45 @@ const FeedbackHistoryLogsText = (item: IFeedbackLog) => {
   );
 };
 
+const skeletonArr = new Array(3).fill("");
+
 const TabHistoryComponent = () => {
   const { id } = useParams();
   const feedbackLogs = useSelector(selectFeedbackLogs);
+  const [isDataLoaded, setDataLoaded] = useState(false);
 
   const dispatch = useAsyncDispatch();
+
+  const init = useCallback(async () => {
+    setDataLoaded(false);
+    await dispatch(GetFeedbackLogs(id));
+    setDataLoaded(true);
+  }, [id, dispatch]);
+
   useEffect(() => {
-    dispatch(GetFeedbackLogs(id));
-  }, [dispatch, id]);
+    init();
+  }, [init]);
 
   return (
-    <Box p={2}>
+    <Box sx={{ overflow: "scroll", height: "500px", p: 3 }}>
       {feedbackLogs?.length ? (
         <FeedBackSharedHistoryComponent<IFeedbackLog>
           list={feedbackLogs}
           children={FeedbackHistoryLogsText}
         />
+      ) : !isDataLoaded ? (
+        skeletonArr.map((i, index) => {
+          return (
+            <Skeleton
+              sx={{ mb: 3 }}
+              key={index}
+              variant="rounded"
+              animation="wave"
+              width="100%"
+              height="118px"
+            />
+          );
+        })
       ) : (
         <NoData description="There is no history" />
       )}

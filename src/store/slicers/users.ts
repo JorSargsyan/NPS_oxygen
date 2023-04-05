@@ -15,6 +15,7 @@ import {
   IAddEditUserRequest,
   IUserCompact,
   IUserGroup,
+  IViewUserRoleItem,
 } from "../interfaces/users";
 
 const name = "USERS";
@@ -23,6 +24,7 @@ const initialState: IUsersState = {
   data: defaultTableData,
   userGroups: null,
   userInfo: null,
+  userRoles: [],
 };
 
 export const GetUsers = createAsyncThunk<
@@ -121,6 +123,14 @@ export const ChangePassword = createAsyncThunk<unknown, IChangePasswordRequest>(
   thunkOptions
 );
 
+export const GetUserRoles = createAsyncThunk<IViewUserRoleItem[]>(
+  `${name}/GetUserRoles`,
+  async () => {
+    return (await api.get(`${EBaseUrl.API}/Roles`)).data;
+  },
+  thunkOptions
+);
+
 const usersSlice = createSlice({
   initialState,
   name,
@@ -135,10 +145,14 @@ const usersSlice = createSlice({
     builder.addCase(GetUserGroups.fulfilled, (state, { payload }) => {
       state.userGroups = payload;
     });
+    builder.addCase(GetUserRoles.fulfilled, (state, { payload }) => {
+      state.userRoles = payload;
+    });
   },
 });
 
 export const selectUsers = (state: IState) => state.users.data;
 export const selectUserInfo = (state: IState) => state.users.userInfo;
 export const selectUserGroups = (state: IState) => state.users.userGroups;
+export const selectUserViewRolesList = (state: IState) => state.users.userRoles;
 export default usersSlice.reducer;

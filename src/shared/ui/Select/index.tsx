@@ -27,6 +27,8 @@ export interface ISelectProps<T> {
     "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
   >;
   defaultValue?: number | string;
+  isOptionDisabled?: (opt: T) => boolean;
+  hasDisabledOption?: boolean;
 }
 
 const BasicSelect = <T extends unknown>({
@@ -44,6 +46,8 @@ const BasicSelect = <T extends unknown>({
   size = "medium",
   rules,
   defaultValue,
+  isOptionDisabled = undefined,
+  hasDisabledOption = false,
 }: ISelectProps<T>) => {
   const {
     control,
@@ -107,6 +111,9 @@ const BasicSelect = <T extends unknown>({
                   return (
                     <MenuItem
                       key={index}
+                      disabled={
+                        hasDisabledOption ? isOptionDisabled(option) : false
+                      }
                       value={
                         typeof valueProp === "string"
                           ? option[valueProp as string]

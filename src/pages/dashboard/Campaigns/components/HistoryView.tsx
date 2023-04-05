@@ -22,7 +22,15 @@ const HistoryView = ({ data }: { data: ICampaignLog[] }) => {
   const userIdColumn = {
     layout: (row: ICampaignLog) => {
       return (
-        <Typography onClick={() => handleRedirect(row.userId)}>
+        <Typography
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              color: "primary.main",
+            },
+          }}
+          onClick={() => handleRedirect(row.userId)}
+        >
           {row.username}
         </Typography>
       );

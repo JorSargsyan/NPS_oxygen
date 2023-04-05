@@ -32,7 +32,6 @@ export const TopNav = () => {
   const userInfo = useSelector(selectUserInfo);
 
   const handleClick = () => {
-    console.log("clicking");
     dispatch(setSidebarVisible(!isSidebarVisible));
   };
 

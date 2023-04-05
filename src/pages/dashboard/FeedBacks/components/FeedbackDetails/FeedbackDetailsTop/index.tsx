@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { IActiveRow } from "pages/dashboard/FeedBacks";
 import {
   feedbackStatusList,
@@ -80,7 +80,7 @@ const FeedbackDetailsTop = () => {
 
   return (
     <FormProvider {...methods}>
-      <Paper elevation={3}>
+      <Box>
         <Box p={2} sx={{ minHeight: 330 }}>
           <Box display="flex">
             <Box width="30%" mr={5}>
@@ -186,7 +186,7 @@ const FeedbackDetailsTop = () => {
             ) : null}
           </Box>
         </Box>
-      </Paper>
+      </Box>
 
       <RightDrawer
         open={isDrawerOpen}

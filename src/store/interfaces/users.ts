@@ -4,6 +4,7 @@ export interface IUsersState {
   data: IPaginated<IUserCompact>;
   userGroups: IUserGroup[] | null;
   userInfo: IUser | null;
+  userRoles: IViewUserRoleItem[];
 }
 
 export interface IUser {
@@ -58,4 +59,9 @@ export interface IDefaultFilterOptionForm {
   type: IFilterOption | null;
   queryCondition: string;
   value: IFilterOption | null;
+}
+
+export interface IViewUserRoleItem {
+  id: number;
+  label: string;
 }

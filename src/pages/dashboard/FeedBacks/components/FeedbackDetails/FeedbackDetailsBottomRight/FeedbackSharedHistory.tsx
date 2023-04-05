@@ -1,6 +1,7 @@
 import { Avatar, Card, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { EBaseUrl } from "store/config/constants";
 import { IFeedbackUser } from "store/interfaces/feedback";
 import { CardContentNoPadding } from "./TabNotesComponent";
@@ -21,6 +22,16 @@ const FeedBackSharedHistoryComponent = <
   list,
   children,
 }: IProps<T>) => {
+  const navigate = useNavigate();
+
+  const handleRedirect = (id: number) => {
+    navigate("/users", {
+      state: {
+        id,
+      },
+    });
+  };
+
   return (
     <Fragment>
       {list?.length
@@ -57,7 +68,16 @@ const FeedBackSharedHistoryComponent = <
                         )}
                       </Box>
                       <Box>
-                        <Box fontSize={12}>
+                        <Box
+                          fontSize={12}
+                          sx={{
+                            cursor: "pointer",
+                            "&:hover": {
+                              color: "primary.main",
+                            },
+                          }}
+                          onClick={() => handleRedirect(item.user.id)}
+                        >
                           {`${item?.user?.name} ${item?.user?.surname}`}
                         </Box>
                         <Typography fontSize={12}>

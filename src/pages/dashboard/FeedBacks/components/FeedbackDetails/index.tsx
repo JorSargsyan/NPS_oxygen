@@ -1,5 +1,5 @@
-import { Box, Paper } from "@mui/material";
-import { useCallback, useEffect } from "react";
+import { Box, Paper, Skeleton } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
@@ -13,6 +13,8 @@ import FeedbackDetailsTop from "./FeedbackDetailsTop";
 const FeedbackDetails = () => {
   const params = useParams();
   const dispatch = useAsyncDispatch();
+  // const isLoading = useSelector(selectLoadingState);
+  const [isLoading, setLoading] = useState(true);
 
   const hasFeedbackBottomRightNoteTabViewPermission = usePermission(
     EFeedbackPermissions.View_notes_tab
@@ -39,15 +41,17 @@ const FeedbackDetails = () => {
     EFeedbackPermissions.View_service_tab
   );
 
-  const init = useCallback(() => {
+  const init = useCallback(async () => {
+    setLoading(true);
     const id = Number(params.id);
-    Promise.all([
+    await Promise.all([
       dispatch(GetFeedbackDetail(id)),
       dispatch(GetUserManagers()),
       ...(hasFeedbackBottomRightNoteTabViewPermission
         ? [dispatch(GetFeedbackNotes(id))]
         : []),
     ]);
+    setLoading(false);
   }, [params.id, dispatch, hasFeedbackBottomRightNoteTabViewPermission]);
 
   useEffect(() => {
@@ -56,29 +60,60 @@ const FeedbackDetails = () => {
 
   return (
     <Box padding={4}>
-      {hasFeedbackBottomTopComponentViewPermission && <FeedbackDetailsTop />}
+      {hasFeedbackBottomTopComponentViewPermission ? (
+        !isLoading ? (
+          <Paper elevation={3}>
+            <FeedbackDetailsTop />
+          </Paper>
+        ) : (
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            width="100%"
+            height="470px"
+          />
+        )
+      ) : null}
 
       <Box display="flex" gap={6} pt={3}>
         {hasFeedbackBottomLeftTabResponseViewPermission &&
-          hasFeedbackBottomLeftSurveyTabViewPermission &&
-          hasFeedbackBottomLeftServiceCauseTabViewPermission && (
+        hasFeedbackBottomLeftSurveyTabViewPermission &&
+        hasFeedbackBottomLeftServiceCauseTabViewPermission ? (
+          !isLoading ? (
             <Box flex={1}>
               <Paper elevation={3}>
                 <FeedbackDetailsBottomLeft />
               </Paper>
             </Box>
-          )}
+          ) : (
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              width="48%"
+              height="470px"
+            />
+          )
+        ) : null}
 
         {hasFeedbackBottomRightHistoryTabViewPermission &&
-          hasFeedbackBottomRightRootCauseTabViewPermission &&
-          hasFeedbackBottomRightTaskTabViewPermission &&
-          hasFeedbackBottomRightNoteTabViewPermission && (
+        hasFeedbackBottomRightRootCauseTabViewPermission &&
+        hasFeedbackBottomRightTaskTabViewPermission &&
+        hasFeedbackBottomRightNoteTabViewPermission ? (
+          !isLoading ? (
             <Box flex={1}>
               <Paper elevation={3}>
                 <FeedbackDetailsBottomRight />
               </Paper>
             </Box>
-          )}
+          ) : (
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              width="48%"
+              height="470px"
+            />
+          )
+        ) : null}
       </Box>
     </Box>
   );

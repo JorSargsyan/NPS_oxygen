@@ -1,4 +1,4 @@
-import { Link, Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import Login from "../pages/auth/login";
 import DashboardLayout from "layout/Dashboard";
 import { items } from "layout/Dashboard/config";
@@ -25,7 +25,7 @@ import {
 } from "resources/permissions/permissions.enum";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
-import { Typography } from "antd";
+
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
   const isAuthorized = useSelector(selectAuth);

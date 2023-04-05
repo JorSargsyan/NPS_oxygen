@@ -201,6 +201,7 @@ const CampaignsPage = () => {
     async (id: number, state: boolean) => {
       await dispatch(ChangeCampaignState({ id, state }));
       await refetchData();
+      toast.success("Campaign state changed successfully");
     },
     [dispatch, refetchData]
   );
@@ -213,7 +214,7 @@ const CampaignsPage = () => {
         layout: (rowData: ICampaign) => {
           return (
             <Switch
-              disabled={hasManagePermission}
+              disabled={!hasManagePermission}
               onChange={(e, checked) => handleChangeState(rowData.id, checked)}
               checked={rowData.isActive}
             />

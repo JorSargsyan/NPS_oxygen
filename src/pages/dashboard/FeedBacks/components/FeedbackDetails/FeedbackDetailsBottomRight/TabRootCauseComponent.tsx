@@ -1,7 +1,8 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Skeleton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
@@ -23,10 +24,13 @@ type FormData = {
   mood?: string;
 };
 
+const skeletonArr = new Array(3).fill("");
+
 const TabRootCauseComponent = () => {
   const methods = useForm<FormData>();
   const dispatch = useAsyncDispatch();
   const { id } = useParams();
+  const [isDataLoaded, setDataLoaded] = useState(false);
 
   const isLoading = useSelector(selectLoadingState);
   const causeCategoriesList = useSelector(selectCauseCategories);
@@ -45,6 +49,7 @@ const TabRootCauseComponent = () => {
         dispatch(setLoading(false));
         return;
       }
+      toast.success("Response root cause changed successfully");
     }
     if (formData?.mood) {
       const { meta } = await dispatch(
@@ -57,6 +62,7 @@ const TabRootCauseComponent = () => {
         dispatch(setLoading(false));
         return;
       }
+      toast.success("Response mood changed successfully");
     }
     dispatch(setLoading(false));
   };
@@ -72,6 +78,7 @@ const TabRootCauseComponent = () => {
   ]);
 
   const initialFetch = useCallback(async () => {
+    setDataLoaded(false);
     const { meta, payload } = await dispatch(
       GetFeedbackCauseAndMood(Number(id))
     );
@@ -88,6 +95,7 @@ const TabRootCauseComponent = () => {
       mood: typedPayload.customerMood.toString() ?? "",
       causeCategories: list ?? [],
     });
+    setDataLoaded(true);
   }, [causeCategoriesList, dispatch, id, methods]);
 
   useEffect(() => {
@@ -97,28 +105,45 @@ const TabRootCauseComponent = () => {
   return (
     <Box p={2}>
       <FormProvider {...methods}>
-        <Grid item xs={12}>
-          <RootCauseCategoriesAutocomplete />
-        </Grid>
-        <Grid item xs={12} sx={{ paddingTop: 4 }}>
-          <CustomerMoodRadioGroup />
-        </Grid>
-        <Box
-          sx={{
-            paddingTop: 4,
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <ButtonLoader
-            onClick={methods.handleSubmit(onSubmit)}
-            isLoading={isLoading}
-            type="submit"
-            disabled={isButtonDisabled}
-          >
-            <Typography>{"Save"}</Typography>
-          </ButtonLoader>
-        </Box>
+        {isDataLoaded ? (
+          <>
+            <Grid item xs={12}>
+              <RootCauseCategoriesAutocomplete />
+            </Grid>
+            <Grid item xs={12} sx={{ paddingTop: 4 }}>
+              <CustomerMoodRadioGroup />
+            </Grid>
+            <Box
+              sx={{
+                paddingTop: 4,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <ButtonLoader
+                onClick={methods.handleSubmit(onSubmit)}
+                isLoading={isLoading}
+                type="submit"
+                disabled={isButtonDisabled}
+              >
+                <Typography>{"Save"}</Typography>
+              </ButtonLoader>
+            </Box>
+          </>
+        ) : (
+          skeletonArr.map((i, index) => {
+            return (
+              <Skeleton
+                sx={{ mb: 3 }}
+                key={index}
+                variant="rounded"
+                animation="wave"
+                width="100%"
+                height="50px"
+              />
+            );
+          })
+        )}
       </FormProvider>
     </Box>
   );

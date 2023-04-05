@@ -7,6 +7,7 @@ import {
   Card,
   CardActions,
   Divider,
+  Skeleton,
   SvgIcon,
   Typography,
 } from "@mui/material";
@@ -32,7 +33,7 @@ import {
   IFeedbackTaskUpdateAssignUser,
   IFeedbackTaskUpdateStatus,
 } from "store/interfaces/feedback";
-import { setLoading } from "store/slicers/common";
+import { selectLoadingState, setLoading } from "store/slicers/common";
 import { GetFeedbackRedirectEmployeeList } from "store/slicers/directorates";
 import {
   DeleteFeedbackTask,
@@ -59,11 +60,14 @@ interface IFormData {
   employeeList: IWithAttachedEmployee[][];
 }
 
+const skeletonArr = new Array(2).fill("");
+
 const TabRedirectionComponent = () => {
   const [activeRow, setActiveRow] = useState<IFeedbackTask>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
   const [isLogsDrawerOpen, setLogsDrawerOpen] = useState(false);
+  const isLoading = useSelector(selectLoadingState);
   const { id } = useParams();
   const userInfo = useSelector(selectUserInfo);
 
@@ -118,17 +122,14 @@ const TabRedirectionComponent = () => {
     if (!activeRow) {
       return;
     }
-    dispatch(setLoading(true));
     const { meta } = await dispatch(
       DeleteFeedbackTask({ taskID: activeRow?.id, feedbackID: id })
     );
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
       return;
     }
     setActiveRow(undefined);
     await initialFetch();
-    dispatch(setLoading(false));
     toast.success("Campaign is deleted");
   };
 
@@ -192,6 +193,7 @@ const TabRedirectionComponent = () => {
   );
 
   const initialFetch = useCallback(async () => {
+    dispatch(setLoading(true));
     const res = await Promise.all([
       dispatch(GetFeedbackTasks(id)),
       dispatch(GetFeedbackRedirectEmployeeList(id)),
@@ -227,6 +229,7 @@ const TabRedirectionComponent = () => {
       tasks,
       employeeList: updatedEmployeeList,
     });
+    dispatch(setLoading(false));
   }, [dispatch, id, methods]);
 
   useEffect(() => {
@@ -234,7 +237,7 @@ const TabRedirectionComponent = () => {
   }, [initialFetch]);
 
   return (
-    <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
+    <Box sx={{ overflow: "scroll", height: "500px", p: 3 }}>
       {hasAddTaskPermission && (
         <Box textAlign="right" pb={3}>
           <Button
@@ -445,6 +448,21 @@ const TabRedirectionComponent = () => {
               </Card>
             );
           })
+        ) : isLoading ? (
+          <>
+            {skeletonArr.map((i, index) => {
+              return (
+                <Skeleton
+                  sx={{ mb: 3 }}
+                  key={index}
+                  variant="rounded"
+                  animation="wave"
+                  width="100%"
+                  height="325px"
+                />
+              );
+            })}
+          </>
         ) : (
           <NoData description="There are no tasks yet" />
         )}
