@@ -83,7 +83,7 @@ export const CreateRoutes = () => {
       fetchDashboardData();
     }
   }, [fetchDashboardData, isAuthorized]);
-
+  console.log(isAuthorized);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -94,74 +94,69 @@ export const CreateRoutes = () => {
       path: "/login",
       element: isAuthorized ? <Navigate to="/overview" replace /> : <Login />,
     },
-    ...(!permList && isAuthorized
-      ? [
-          {
-            path: "*",
-            element: (
-              <Box
-                sx={{
-                  display: "flex",
-                  height: "100vh",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            ),
-          },
-        ]
-      : [
-          {
-            path: "/",
-            element: isAuthorized ? (
-              <DashboardLayout />
-            ) : (
-              <Navigate to="/login" replace />
-            ),
-            children: [
-              ...routesList.map((item) => {
-                if (item?.children?.length) {
+    {
+      path: "/",
+      element: isAuthorized ? (
+        <DashboardLayout />
+      ) : (
+        <Navigate to="/login" replace />
+      ),
+      children: [
+        ...routesList.map((item) => {
+          if (item?.children?.length) {
+            return {
+              path: item.path,
+              element: item.element,
+              children: [
+                ...item.children.map((child) => {
                   return {
-                    path: item.path,
-                    element: item.element,
-                    children: [
-                      ...item.children.map((child) => {
-                        return {
-                          path: child.path,
-                          element: child.element,
-                        };
-                      }),
-                    ],
+                    path: child.path,
+                    element: child.element,
                   };
-                } else {
-                  return {
-                    path: item.path,
-                    element: item.element,
-                  };
-                }
-              }),
+                }),
+              ],
+            };
+          } else {
+            return {
+              path: item.path,
+              element: item.element,
+            };
+          }
+        }),
+        {
+          path: "profile",
+          element: <AccountPage />,
+        },
+        ...(hasGridViewFeedbackCardPermission
+          ? [
               {
-                path: "profile",
-                element: <AccountPage />,
+                path: "response/:id",
+                element: <FeedbackDetails />,
               },
-              ...(hasGridViewFeedbackCardPermission
-                ? [
-                    {
-                      path: "response/:id",
-                      element: <FeedbackDetails />,
-                    },
-                  ]
-                : []),
+            ]
+          : []),
 
-              {
-                path: "campaign/:id",
-                element: <CampaignDetails />,
-              },
-            ],
-          },
-        ]),
+        {
+          path: "campaign/:id",
+          element: <CampaignDetails />,
+        },
+      ],
+    },
+    // {
+    //   path: "*",
+    //   element: (
+    //     <Box
+    //       sx={{
+    //         display: "flex",
+    //         height: "100vh",
+    //         alignItems: "center",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       <CircularProgress />
+    //     </Box>
+    //   ),
+    // },
   ]);
 
   return router;
