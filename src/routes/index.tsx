@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Link, Navigate, createBrowserRouter } from "react-router-dom";
 import Login from "../pages/auth/login";
 import DashboardLayout from "layout/Dashboard";
 import { items } from "layout/Dashboard/config";
@@ -25,6 +25,7 @@ import {
 } from "resources/permissions/permissions.enum";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import { Typography } from "antd";
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
   const isAuthorized = useSelector(selectAuth);
@@ -60,23 +61,30 @@ export const CreateRoutes = () => {
     hasCampaignPerm,
   ]);
 
-  const getChildRoutes = (item) => {
-    if (item?.children?.length) {
-      return {
-        path: item.path,
-        element: item.element,
-        children: [
-          ...item.children.map((child) => {
-            return getChildRoutes(child);
-          }),
-        ],
-      };
-    } else {
-      return {
-        path: item.path,
-        element: item.element,
-      };
-    }
+  const getDashboardRoutes = () => {
+    const getChildRoutes = (item) => {
+      if (item?.children?.length) {
+        return {
+          path: item.path,
+          element: item.element,
+          children: [
+            ...item.children.map((child) => {
+              return getChildRoutes(child);
+            }),
+          ],
+        };
+      } else {
+        return {
+          path: item.path,
+          element: item.element,
+        };
+      }
+    };
+
+    return [
+      ...routesList.map(getChildRoutes),
+      { path: "*", element: <ErrorBoundary /> },
+    ];
   };
 
   const routesList = items(hasPerm);
@@ -96,19 +104,18 @@ export const CreateRoutes = () => {
       fetchDashboardData();
     }
   }, [fetchDashboardData, isAuthorized]);
-  console.log(isAuthorized);
 
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: !isAuthorized ? <Login /> : <Navigate to="/overview" replace />,
+      element: !isAuthorized ? <Login /> : <Navigate to="/" replace />,
     },
     {
       path: "/",
       errorElement: <ErrorBoundary />,
-      element: <DashboardLayout />,
+      element: !isAuthorized ? <Navigate to="/login" /> : <DashboardLayout />,
       children: [
-        ...routesList.map(getChildRoutes),
+        ...getDashboardRoutes(),
         {
           path: "profile",
           element: <AccountPage />,
@@ -121,7 +128,6 @@ export const CreateRoutes = () => {
               },
             ]
           : []),
-
         {
           path: "campaign/:id",
           element: <CampaignDetails />,
@@ -130,11 +136,7 @@ export const CreateRoutes = () => {
     },
     {
       path: "*",
-      element: !isAuthorized ? (
-        <Navigate to="/login" replace />
-      ) : (
-        <ErrorBoundary />
-      ),
+      element: !isAuthorized ? <Navigate to="/login" /> : <ErrorBoundary />,
     },
   ]);
 
