@@ -53,8 +53,8 @@ export const items = ({
     ...(hasCampaignPerm
       ? [
           {
-            title: "Campaigns",
-            path: "campaigns",
+            title: "Survey",
+            path: "survey",
             element: <Campaigns />,
             icon: (
               <SvgIcon fontSize="small">

@@ -73,7 +73,7 @@ export const SideNav = () => {
   }, [dispatch]);
 
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
-  const isCampaignDetailsPage = location.pathname.includes("/campaign/");
+  const isCampaignDetailsPage = location.pathname.includes("/survey/");
   const [isExpanded, setExpanded] = useState({ settings: false });
 
   const handleExpandRow = (type: EExpandedRowsTypes) => {

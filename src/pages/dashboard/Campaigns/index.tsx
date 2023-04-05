@@ -132,7 +132,7 @@ const CampaignsPage = () => {
   const handleCampaignDetails = useCallback(
     (id: number) => {
       dispatch(setSidebarVisible(false));
-      navigate(`/campaign/${id}`);
+      navigate(`/survey/${id}`);
     },
     [dispatch, navigate]
   );
@@ -183,7 +183,7 @@ const CampaignsPage = () => {
 
   const handleSuccessCreation = async (id: number) => {
     setDrawerOpen(false);
-    navigate(`/campaign/${id}`);
+    navigate(`/survey/${id}`);
   };
 
   const getDrawerTitle = () => {

@@ -129,7 +129,7 @@ export const CreateRoutes = () => {
             ]
           : []),
         {
-          path: "campaign/:id",
+          path: "survey/:id",
           element: <CampaignDetails />,
         },
       ],

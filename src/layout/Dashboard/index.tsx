@@ -23,7 +23,7 @@ const LayoutContainer = styled("div")({
 
 const DashboardLayout = () => {
   const location = useLocation();
-  const isCampaignDetailsPage = location.pathname.includes("/campaign/");
+  const isCampaignDetailsPage = location.pathname.includes("/survey/");
 
   return (
     <>

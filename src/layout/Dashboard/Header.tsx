@@ -27,7 +27,7 @@ export const TopNav = () => {
   const location = useLocation();
   const lgUp = useMediaQuery<any>((theme) => theme.breakpoints.up("lg"));
   const isSidebarVisible = useSelector(selectSidebarVisible);
-  const isCampaignDetails = location.pathname.includes("/campaign/");
+  const isCampaignDetails = location.pathname.includes("/survey/");
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
 
