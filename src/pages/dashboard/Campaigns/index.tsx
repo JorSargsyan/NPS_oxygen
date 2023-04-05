@@ -81,17 +81,20 @@ const CampaignsPage = () => {
     // console.log(ids);
   };
 
-  const handleViewHistory = async (rowId: number) => {
-    setActiveRow(rowId);
-    setMode(ECampaignAction.ViewHistory);
+  const handleViewHistory = useCallback(
+    async (rowId: number) => {
+      setActiveRow(rowId);
+      setMode(ECampaignAction.ViewHistory);
 
-    const { meta, payload } = await dispatch(GetCampaignLogs(rowId));
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-    setRowHistory(payload);
-    setDrawerOpen(true);
-  };
+      const { meta, payload } = await dispatch(GetCampaignLogs(rowId));
+      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        return;
+      }
+      setRowHistory(payload);
+      setDrawerOpen(true);
+    },
+    [dispatch]
+  );
 
   const handleRenameCampaign = (rowData: ICampaign) => {
     setActiveRow(rowData.id);
@@ -126,10 +129,13 @@ const CampaignsPage = () => {
     toast.success("Campaign is deleted");
   };
 
-  const handleCampaignDetails = (id: number) => {
-    dispatch(setSidebarVisible(false));
-    navigate(`/campaign/${id}`);
-  };
+  const handleCampaignDetails = useCallback(
+    (id: number) => {
+      dispatch(setSidebarVisible(false));
+      navigate(`/campaign/${id}`);
+    },
+    [dispatch, navigate]
+  );
 
   const getActions = useCallback(
     (rowData: ICampaign) => {
@@ -161,7 +167,12 @@ const CampaignsPage = () => {
           : []),
       ];
     },
-    [hasManagePermission, hasDeletePermission]
+    [
+      hasManagePermission,
+      hasDeletePermission,
+      handleCampaignDetails,
+      handleViewHistory,
+    ]
   );
 
   const handleSuccess = async () => {
@@ -210,7 +221,7 @@ const CampaignsPage = () => {
         },
       },
     ];
-  }, [handleChangeState]);
+  }, [handleChangeState, hasManagePermission]);
 
   const initialFetch = useCallback(async () => {
     await dispatch(setTableLoading(true));

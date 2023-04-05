@@ -94,74 +94,74 @@ export const CreateRoutes = () => {
       path: "/login",
       element: isAuthorized ? <Navigate to="/overview" replace /> : <Login />,
     },
-    // ...(!permList
-    //   ? [
-    //       {
-    //         path: "*",
-    //         element: (
-    //           <Box
-    //             sx={{
-    //               display: "flex",
-    //               height: "100vh",
-    //               alignItems: "center",
-    //               justifyContent: "center",
-    //             }}
-    //           >
-    //             <CircularProgress />
-    //           </Box>
-    //         ),
-    //       },
-    //     ]
-    //   : [
-    {
-      path: "/",
-      element: isAuthorized ? (
-        <DashboardLayout />
-      ) : (
-        <Navigate to="/login" replace />
-      ),
-      children: [
-        ...routesList.map((item) => {
-          if (item?.children?.length) {
-            return {
-              path: item.path,
-              element: item.element,
-              children: [
-                ...item.children.map((child) => {
+    ...(!permList && isAuthorized
+      ? [
+          {
+            path: "*",
+            element: (
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "100vh",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ),
+          },
+        ]
+      : [
+          {
+            path: "/",
+            element: isAuthorized ? (
+              <DashboardLayout />
+            ) : (
+              <Navigate to="/login" replace />
+            ),
+            children: [
+              ...routesList.map((item) => {
+                if (item?.children?.length) {
                   return {
-                    path: child.path,
-                    element: child.element,
+                    path: item.path,
+                    element: item.element,
+                    children: [
+                      ...item.children.map((child) => {
+                        return {
+                          path: child.path,
+                          element: child.element,
+                        };
+                      }),
+                    ],
                   };
-                }),
-              ],
-            };
-          } else {
-            return {
-              path: item.path,
-              element: item.element,
-            };
-          }
-        }),
-        {
-          path: "profile",
-          element: <AccountPage />,
-        },
-        ...(hasGridViewFeedbackCardPermission
-          ? [
+                } else {
+                  return {
+                    path: item.path,
+                    element: item.element,
+                  };
+                }
+              }),
               {
-                path: "response/:id",
-                element: <FeedbackDetails />,
+                path: "profile",
+                element: <AccountPage />,
               },
-            ]
-          : []),
+              ...(hasGridViewFeedbackCardPermission
+                ? [
+                    {
+                      path: "response/:id",
+                      element: <FeedbackDetails />,
+                    },
+                  ]
+                : []),
 
-        {
-          path: "campaign/:id",
-          element: <CampaignDetails />,
-        },
-      ],
-    },
-    // ]),
+              {
+                path: "campaign/:id",
+                element: <CampaignDetails />,
+              },
+            ],
+          },
+        ]),
   ]);
 
   return router;
