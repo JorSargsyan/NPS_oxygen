@@ -27,13 +27,15 @@ const DashboardLayout = () => {
 
   return (
     <>
-      <TopNav />
-      <SideNav />
-      <LayoutRoot hasPadding={!isCampaignDetailsPage}>
-        <LayoutContainer>
-          <Outlet />
-        </LayoutContainer>
-      </LayoutRoot>
+      <>
+        <TopNav />
+        <SideNav />
+        <LayoutRoot hasPadding={!isCampaignDetailsPage}>
+          <LayoutContainer>
+            <Outlet />
+          </LayoutContainer>
+        </LayoutRoot>
+      </>
     </>
   );
 };

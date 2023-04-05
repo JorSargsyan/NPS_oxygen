@@ -109,6 +109,7 @@ export const items = ({
                 title: "Translations",
                 path: "dictionary",
                 element: <Dictionary />,
+                errorElement: <div>ERROR ELEMENT</div>,
                 icon: (
                   <SvgIcon fontSize="small">
                     <TranslationIcon />

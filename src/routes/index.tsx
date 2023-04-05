@@ -6,11 +6,7 @@ import { useSelector } from "react-redux";
 import { selectAuth } from "store/slicers/auth";
 import { useCallback, useEffect, useMemo } from "react";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import {
-  GetConfig,
-  GetPermissions,
-  selectPermissions,
-} from "store/slicers/common";
+import { GetConfig, GetPermissions } from "store/slicers/common";
 import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
 import { GetTranslationsByLangId } from "store/slicers/translations";
@@ -29,7 +25,6 @@ import {
 } from "resources/permissions/permissions.enum";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
-
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
   const isAuthorized = useSelector(selectAuth);
@@ -40,7 +35,6 @@ export const CreateRoutes = () => {
   const hasDirectoratePerm = usePermission(EDirectoratePermissions.Read);
   const hasFeedbackPerm = usePermission(EFeedbackPermissions.Read);
   const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
-  const permList = useSelector(selectPermissions);
 
   const hasGridViewFeedbackCardPermission = usePermission(
     EFeedbackPermissions.View_feedback_card
@@ -66,14 +60,33 @@ export const CreateRoutes = () => {
     hasCampaignPerm,
   ]);
 
+  const getChildRoutes = (item) => {
+    if (item?.children?.length) {
+      return {
+        path: item.path,
+        element: item.element,
+        children: [
+          ...item.children.map((child) => {
+            return getChildRoutes(child);
+          }),
+        ],
+      };
+    } else {
+      return {
+        path: item.path,
+        element: item.element,
+      };
+    }
+  };
+
   const routesList = items(hasPerm);
 
-  const fetchDashboardData = useCallback(() => {
+  const fetchDashboardData = useCallback(async () => {
     const activeLang = Number(localStorage.getItem(LStorage.LANG));
-    Promise.all([
+    await Promise.all([
+      dispatch(GetPermissions()),
       dispatch(GetCurrentUser()),
       dispatch(GetConfig()),
-      dispatch(GetPermissions()),
       dispatch(GetTranslationsByLangId(activeLang)),
     ]);
   }, [dispatch]);
@@ -84,45 +97,18 @@ export const CreateRoutes = () => {
     }
   }, [fetchDashboardData, isAuthorized]);
   console.log(isAuthorized);
+
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Navigate to={isAuthorized ? "/overview" : "/login"} />,
-    },
-
-    {
       path: "/login",
-      element: isAuthorized ? <Navigate to="/overview" replace /> : <Login />,
+      element: !isAuthorized ? <Login /> : <Navigate to="/overview" replace />,
     },
     {
       path: "/",
-      element: isAuthorized ? (
-        <DashboardLayout />
-      ) : (
-        <Navigate to="/login" replace />
-      ),
+      errorElement: <ErrorBoundary />,
+      element: <DashboardLayout />,
       children: [
-        ...routesList.map((item) => {
-          if (item?.children?.length) {
-            return {
-              path: item.path,
-              element: item.element,
-              children: [
-                ...item.children.map((child) => {
-                  return {
-                    path: child.path,
-                    element: child.element,
-                  };
-                }),
-              ],
-            };
-          } else {
-            return {
-              path: item.path,
-              element: item.element,
-            };
-          }
-        }),
+        ...routesList.map(getChildRoutes),
         {
           path: "profile",
           element: <AccountPage />,
@@ -142,22 +128,30 @@ export const CreateRoutes = () => {
         },
       ],
     },
-    // {
-    //   path: "*",
-    //   element: (
-    //     <Box
-    //       sx={{
-    //         display: "flex",
-    //         height: "100vh",
-    //         alignItems: "center",
-    //         justifyContent: "center",
-    //       }}
-    //     >
-    //       <CircularProgress />
-    //     </Box>
-    //   ),
-    // },
+    {
+      path: "*",
+      element: !isAuthorized ? (
+        <Navigate to="/login" replace />
+      ) : (
+        <ErrorBoundary />
+      ),
+    },
   ]);
 
   return router;
+};
+
+export const ErrorBoundary = () => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
 };
