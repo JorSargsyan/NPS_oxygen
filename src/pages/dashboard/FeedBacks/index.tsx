@@ -429,7 +429,7 @@ const Feedbacks = () => {
   };
 
   const handleViewFeedback = (id: number) => {
-    const url = `${window.location.origin}/response/${id}`;
+    const url = `${window.location.origin}/admin/response/${id}`;
     window.open(url, "_blank");
   };
 

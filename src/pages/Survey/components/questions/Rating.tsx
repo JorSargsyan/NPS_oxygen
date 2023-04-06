@@ -10,7 +10,7 @@ const CustomRatingQuestion = () => {
   const { details } = questionData;
 
   const handleSelect = (id: number) => {
-    methods.setValue("answerIDs[0]", id);
+    methods.setValue("answerIDs", [id]);
   };
 
   return (

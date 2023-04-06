@@ -21,6 +21,7 @@ import { EMultipleConfigType } from "store/enums/campaignDetails";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
+  const [isLoading, setLoading] = useState(true);
   const methods = useForm({
     defaultValues: {
       answerIDs: [],
@@ -49,6 +50,7 @@ const SurveyPreview = () => {
   const getQuestionData = useCallback(
     async (formData) => {
       await dispatch(GetQuestionDetails(formData));
+      setLoading(false);
     },
     [dispatch]
   );
@@ -78,7 +80,12 @@ const SurveyPreview = () => {
   });
 
   const checkDisabled = useMemo(() => {
-    if (details?.type === Number(ECampaignSurveyType.SingleChoice)) {
+    if (
+      details?.type === Number(ECampaignSurveyType.SingleChoice) ||
+      details?.type === Number(ECampaignSurveyType.Rating) ||
+      details?.type === Number(ECampaignSurveyType.Nps) ||
+      details?.type === Number(ECampaignSurveyType.ServiceQualityScore)
+    ) {
       return !answerIDs.length;
     }
     if (details?.type === Number(ECampaignSurveyType.MultipleChoice)) {
@@ -128,7 +135,7 @@ const SurveyPreview = () => {
       };
     }
     if (details?.type === Number(ECampaignSurveyType.MultipleChoice)) {
-      debugger;
+      // debugger;
       const answerIDs = details.answers
         .filter((i, index) => formData.answerIDs[index])
         .map((i) => i.id);
@@ -172,11 +179,12 @@ const SurveyPreview = () => {
   };
 
   const handleNext = async (formData) => {
-    let requestData = {
+    setLoading(true);
+    let requestData: any = {
       answerIDs: [],
     };
 
-    debugger;
+    // debugger;
 
     if (details.type !== Number(ECampaignSurveyType.Welcome)) {
       requestData = getAnswerRequestData(formData);
@@ -216,7 +224,9 @@ const SurveyPreview = () => {
         backgroundSize: "cover",
       }}
     >
-      {surveyStatus ? (
+      {isLoading ? (
+        <div>loading</div>
+      ) : surveyStatus ? (
         <Box p={2} width="60vw" minHeight={"100vh"}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
@@ -274,6 +284,7 @@ const SurveyPreview = () => {
       ) : (
         <Box>{status}</Box>
       )}
+      {/* {} */}
     </Box>
   );
 };
