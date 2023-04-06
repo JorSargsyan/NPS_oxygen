@@ -335,7 +335,7 @@ const Feedbacks = () => {
     hasEditFeedbackStatusPermission,
   ]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     const quickFiltersWatch = methods.watch("config.quickFilters");
     const filterStatusList = quickFiltersWatch?.status?.map((status, index) => {
       return {
@@ -423,7 +423,12 @@ const Feedbacks = () => {
     };
     delete data.quickFilters;
     await dispatch(GetFeedbacks(data));
-  };
+  }, [
+    dispatch,
+    feedbackQuickFilterTypes?.feedbackType,
+    feedbackQuickFilterTypes?.userVisibility,
+    methods,
+  ]);
 
   const handleChangeSelected = (ids: number[]) => {
     setSelectedFeedbackIDs(ids);
@@ -434,17 +439,20 @@ const Feedbacks = () => {
     window.open(url, "_blank");
   };
 
-  const getActions = (row: IFeedback) => {
-    if (!hasGridViewFeedbackCardPermission) {
-      return [];
-    }
-    return [
-      {
-        label: "View",
-        onClick: () => handleViewFeedback(row.id),
-      },
-    ];
-  };
+  const getActions = useCallback(
+    (row: IFeedback) => {
+      if (!hasGridViewFeedbackCardPermission) {
+        return [];
+      }
+      return [
+        {
+          label: "View",
+          onClick: () => handleViewFeedback(row.id),
+        },
+      ];
+    },
+    [hasGridViewFeedbackCardPermission]
+  );
 
   const handleClose = () => {
     setActiveRow(undefined);
@@ -556,6 +564,18 @@ const Feedbacks = () => {
     await dispatch(setTableLoading(false));
   }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
 
+  const FiltersWrapper = useCallback(
+    () => (
+      <QuickFilters
+        handleSubmit={handleSubmit}
+        methods={methods}
+        feedbackTypes={feedbackQuickFilterTypes}
+        setFeedbackTypes={setFeedbackQuickFilterTypes}
+      />
+    ),
+    [feedbackQuickFilterTypes, handleSubmit, methods]
+  );
+
   useEffect(() => {
     init();
   }, [init]);
@@ -573,14 +593,7 @@ const Feedbacks = () => {
         CustomActions={tableCustomActions}
         selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
-        Filter={() => (
-          <QuickFilters
-            handleSubmit={handleSubmit}
-            methods={methods}
-            feedbackTypes={feedbackQuickFilterTypes}
-            setFeedbackTypes={setFeedbackQuickFilterTypes}
-          />
-        )}
+        Filter={FiltersWrapper}
         columns={feedbackColumns}
         paginatedData={feedbacks}
         onChange={refetchFeedbacks}
