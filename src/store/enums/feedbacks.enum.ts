@@ -7,6 +7,7 @@ enum EScore {
 const EScoreTypes = {
   [EScore.NPS]: "NPS",
   [EScore.ES]: "ES",
+  [EScore.Custom]: "Custom",
 };
 
 enum EFeedbackStatus {
