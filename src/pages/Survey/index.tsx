@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ESurveyPreviewComps, ESurveyPreviewTypes } from "./constants";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
@@ -14,7 +20,14 @@ import {
 import { ERequestStatus } from "store/enums/index.enum";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
-import { Button, Card, CardContent, Slide, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Slide,
+  Typography,
+} from "@mui/material";
 import { EBaseUrl } from "store/config/constants";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
@@ -49,14 +62,18 @@ const SurveyPreview = () => {
       return;
     }
 
-    navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}`);
+    navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}`, {
+      replace: true,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, hash]);
 
   const getQuestionData = useCallback(
     async (formData) => {
       await dispatch(GetQuestionDetails(formData));
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     },
     [dispatch]
   );
@@ -69,11 +86,13 @@ const SurveyPreview = () => {
       setStatus("Survey is finished");
       return false;
     } else if (!details) {
-      setStatus("Survey isn't available");
+      setStatus("");
       return false;
     }
 
-    return true;
+    if (details) {
+      return true;
+    }
   }, [config?.isExpired, config?.isFinished, details]);
 
   const PreviewComp = useCallback(() => {
@@ -238,7 +257,7 @@ const SurveyPreview = () => {
   };
 
   const init = useCallback(() => {
-    if (!(type || hash)) {
+    if (!type || !hash) {
       return;
     }
     if (type === ESurveyPreviewTypes.GENERAL) {
@@ -248,15 +267,28 @@ const SurveyPreview = () => {
     }
   }, [getQuestionConfig, generateCustomer, hash, type]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     init();
   }, [init]);
 
   useEffect(() => {
-    if (details?.isLast && !config.isFinished) {
+    if (
+      details?.isLast &&
+      !config.isFinished &&
+      type !== ESurveyPreviewTypes.GENERAL
+    ) {
       finishSurvey();
     }
-  }, [config?.isFinished, details?.isLast, finishSurvey]);
+  }, [config?.isFinished, details?.isLast, finishSurvey, type]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.history.forward();
+    }, 0);
+    window.onunload = function () {
+      return null;
+    };
+  }, [location.pathname]);
 
   return (
     <Box
@@ -361,7 +393,38 @@ const SurveyPreview = () => {
           </Card>
         </Box>
       ) : (
-        <Box>{status}</Box>
+        <Box alignItems={"center"} display={"flex"}>
+          <Card
+            sx={{
+              height: { xs: "95vh", sm: "80vh" },
+              backgroundColor: "rgb(255 255 255 / 97%)",
+            }}
+          >
+            <CardContent sx={{ height: "100%" }}>
+              <Box
+                sx={{
+                  width: {
+                    xs: "85vw",
+                    sm: "80vw",
+                    md: "60vw",
+                  },
+                  height: "100%",
+                }}
+                display="flex"
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                {status ? (
+                  <Typography fontSize={20} fontWeight={"bold"}>
+                    {status}
+                  </Typography>
+                ) : (
+                  <CircularProgress />
+                )}
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
       )}
     </Box>
   );
