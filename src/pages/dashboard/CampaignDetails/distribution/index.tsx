@@ -18,10 +18,6 @@ const Distribution = () => {
   const [showSmsForm, setShowSmsForm] = useState(false);
   const campaignInfo = useSelector(selectCampaignInfo);
 
-  const handleCopy = () => {
-    const text = navigator.clipboard.readText();
-  };
-
   return (
     <Box p={2}>
       <Card>

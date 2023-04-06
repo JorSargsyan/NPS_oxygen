@@ -1,7 +1,6 @@
-import styled from "@emotion/styled";
-import { ToggleButton } from "@mui/material";
+import { Theme, ToggleButton, styled } from "@mui/material";
 
-const StyledToggleButton = styled(ToggleButton)(({ theme }) =>
+const StyledToggleButton = styled(ToggleButton)<{ theme: Theme }>(({ theme }) =>
   theme.unstable_sx({
     color: "primary.main",
     border: "1px solid",
