@@ -271,7 +271,7 @@ const BasicTable = <T extends { id: number }>({
           hasSearchInput={hasSearchInput}
         />
       )}
-      {Filter && filtersVisible && !selectedList.length && (
+      {!!Filter && filtersVisible && !selectedList.length && (
         <Box>
           <Divider />
           <Filter />
