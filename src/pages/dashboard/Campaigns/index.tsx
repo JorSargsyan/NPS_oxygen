@@ -189,11 +189,11 @@ const CampaignsPage = () => {
   const getDrawerTitle = () => {
     switch (mode) {
       case ECampaignAction.Add:
-        return "Add campaign";
+        return "Add survey";
       case ECampaignAction.Rename:
-        return "Remane campaign";
+        return "Remane survey";
       case ECampaignAction.ViewHistory:
-        return "View campaign history";
+        return "View survey history";
     }
   };
 

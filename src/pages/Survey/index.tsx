@@ -277,11 +277,20 @@ const SurveyPreview = () => {
             sx={{
               height: { xs: "95vh", sm: "80vh" },
               backgroundColor: "rgb(255 255 255 / 97%)",
+              overflow: "scroll",
             }}
           >
             <CardContent>
               <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
-                <Box sx={{ width: { xs: "85vw", sm: "80vw", md: "60vw" } }}>
+                <Box
+                  sx={{
+                    width: {
+                      xs: "85vw",
+                      sm: "80vw",
+                      md: "60vw",
+                    },
+                  }}
+                >
                   <Box>
                     <Box
                       display="flex"
@@ -311,7 +320,7 @@ const SurveyPreview = () => {
                             </Typography>
                           ) : null}
                         </Box>
-                        <Box minHeight="280px">
+                        <Box minHeight="20vh">
                           {ESurveyPreviewComps?.[details.type] && (
                             <PreviewComp />
                           )}
