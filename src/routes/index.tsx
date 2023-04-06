@@ -101,7 +101,11 @@ export const CreateRoutes = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isAuthorized && Number(localStorage.getItem(LStorage.LANG))) {
+    if (
+      isAuthorized &&
+      Number(localStorage.getItem(LStorage.LANG)) &&
+      window.location.pathname.includes("admin")
+    ) {
       fetchDashboardData();
     }
   }, [fetchDashboardData, isAuthorized]);
