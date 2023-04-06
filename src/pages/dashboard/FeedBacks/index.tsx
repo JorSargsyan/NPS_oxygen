@@ -214,7 +214,7 @@ const Feedbacks = () => {
               label: "Score",
               layout: (row: IFeedback) => {
                 const textColor = (score: IScore) => {
-                  const val = Number(score.value);
+                  const val = Number(score?.value);
                   if (val >= 0 && val <= 6) {
                     return scoreColors.bad.color;
                   } else if (val >= 7 && val <= 8) {
@@ -225,7 +225,7 @@ const Feedbacks = () => {
                 };
 
                 const bgColor = (score: IScore) => {
-                  const val = Number(score.value);
+                  const val = Number(score?.value);
                   if (val >= 0 && val <= 6) {
                     return scoreColors.bad.bgColor;
                   } else if (val >= 7 && val <= 8) {
@@ -237,7 +237,7 @@ const Feedbacks = () => {
 
                 return (
                   <Box sx={{ display: "flex", gap: "12px" }}>
-                    {row.score.map((score: IScore, index) => {
+                    {row?.score.map((score: IScore, index) => {
                       return (
                         <Box
                           bgcolor={bgColor(score)}
@@ -245,12 +245,12 @@ const Feedbacks = () => {
                           key={index}
                           textAlign="center"
                           padding="4px"
-                          width="45px"
+                          width="50px"
                           borderRadius="8px"
                           fontSize="12px"
                         >
-                          <Box>{EScoreTypes[score.type]}</Box>
-                          <Box>{score.value}</Box>
+                          <Box>{EScoreTypes[score?.type]}</Box>
+                          <Box>{score?.value}</Box>
                         </Box>
                       );
                     })}
