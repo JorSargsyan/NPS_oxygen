@@ -79,7 +79,7 @@ const MainContent = () => {
                   height="300px"
                   width="100%"
                   src={`${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`}
-                  alt="sadas"
+                  alt="survey"
                 />
               )}
             </Box>
@@ -90,8 +90,8 @@ const MainContent = () => {
         <Card sx={{ height: "90vh" }}>
           <CardContent>
             <Skeleton variant="rounded" width={"100%"} height="40vh" />
-            {skeletonArr.map(() => (
-              <Box my={1}>
+            {skeletonArr.map((i, index) => (
+              <Box my={1} key={index}>
                 <Skeleton variant="rounded" width={"200px"} height="50px" />
               </Box>
             ))}
