@@ -8,6 +8,7 @@ const BasicCheck = ({ name, label }: { name: string; label: string }) => {
     <Controller
       control={control}
       name={name}
+      defaultValue={false}
       render={({ field: { value, ...field } }) => (
         <FormControlLabel
           control={<Checkbox {...field} checked={!!value} />}

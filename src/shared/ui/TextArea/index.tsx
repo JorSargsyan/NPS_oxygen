@@ -1,4 +1,4 @@
-import { TextareaAutosize } from "@mui/material";
+import { Typography, TextareaAutosize } from "@mui/material";
 import { Box } from "@mui/system";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 
@@ -14,8 +14,11 @@ interface ITextareaProps<T> {
 }
 
 const BasicTextArea = <T extends unknown>(props: ITextareaProps<T>) => {
-  const { name, rules, placeholder, label, minRows = 4 } = props;
-  const { control } = useFormContext();
+  const { name, rules, placeholder, minRows = 4 } = props;
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Box
@@ -36,13 +39,17 @@ const BasicTextArea = <T extends unknown>(props: ITextareaProps<T>) => {
         control={control}
         render={({ field }) => {
           return (
-            <TextareaAutosize
-              {...field}
-              aria-label={label}
-              placeholder={placeholder}
-              minRows={minRows}
-              className="textarea"
-            />
+            <Box>
+              <TextareaAutosize
+                {...field}
+                placeholder={placeholder}
+                minRows={minRows}
+                className="textarea"
+              />
+              {errors?.[name]?.message ? (
+                <Typography>{errors?.[name]?.message as string}</Typography>
+              ) : null}
+            </Box>
           );
         }}
       />

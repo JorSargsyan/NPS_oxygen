@@ -25,6 +25,7 @@ import {
 } from "resources/permissions/permissions.enum";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import SurveyPreview from "pages/Survey";
 
 export const CreateRoutes = () => {
   const dispatch = useAsyncDispatch();
@@ -111,7 +112,7 @@ export const CreateRoutes = () => {
       element: !isAuthorized ? <Login /> : <Navigate to="/" replace />,
     },
     {
-      path: "/",
+      path: "/admin",
       errorElement: <ErrorBoundary />,
       element: !isAuthorized ? <Navigate to="/login" /> : <DashboardLayout />,
       children: [
@@ -133,6 +134,10 @@ export const CreateRoutes = () => {
           element: <CampaignDetails />,
         },
       ],
+    },
+    {
+      path: ":type/:hash",
+      element: <SurveyPreview />,
     },
     {
       path: "*",

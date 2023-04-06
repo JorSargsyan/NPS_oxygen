@@ -1,3 +1,8 @@
+import {
+  ECommentConfigType,
+  EMultipleConfigType,
+} from "store/enums/campaignDetails";
+
 export interface ICampaignDetailsState {
   triggers: ITrigger[];
   templates: ITemplate[];
@@ -91,25 +96,11 @@ export interface ISurveyAnswer {
 }
 export interface ICampaignSurveyDetails {
   buttonText: string;
-  commentConfig?: {
-    commentType: number;
-    commentMin: number;
-    commentMax: number;
-  };
+  commentConfig?: ICommentConfig;
   id?: number;
   isRequired: boolean;
-  multipleConfig?: {
-    multipleExact: number;
-    multipleMax: number;
-    multipleMin: number;
-    multipleType: number;
-  };
-  metricConfig?: {
-    customEndLength: number;
-    customStartLength: number;
-    metricLeftText: string | null;
-    metricRightText: string | null;
-  };
+  multipleConfig?: IMultipleConfig;
+  metricConfig?: IMetricConfig;
   answers: ISurveyAnswer[];
   position: number;
   questionNumber?: number;
@@ -117,27 +108,33 @@ export interface ICampaignSurveyDetails {
   type: number;
 }
 
+export interface IMetricConfig {
+  customEndLength: number;
+  customStartLength: number;
+  metricLeftText: string | null;
+  metricRightText: string | null;
+}
+
+export interface IMultipleConfig {
+  multipleExact: number;
+  multipleMax: number;
+  multipleMin: number;
+  multipleType: EMultipleConfigType;
+}
+
+export interface ICommentConfig {
+  commentType: ECommentConfigType;
+  commentMin: number;
+  commentMax: number;
+}
+
 export interface IUpdateSurveyRequest {
   campaignID: number;
   buttonText: string;
-  commentConfig?: {
-    commentType: number;
-    commentMin: string;
-    commentMax: string;
-  };
+  commentConfig?: ICommentConfig;
   isRequired: boolean;
-  multipleConfig?: {
-    multipleExact: string;
-    multipleMax: string;
-    multipleMin: string;
-    multipleType: number;
-  };
-  metricConfig?: {
-    customEndLength: string;
-    customStartLength: string;
-    metricLeftText: string | null;
-    metricRightText: string | null;
-  };
+  multipleConfig?: IMultipleConfig;
+  metricConfig?: IMetricConfig;
   answers: ISurveyAnswer[];
   position: number;
   title: string;
@@ -156,12 +153,7 @@ export interface ICreateCampaignSurveyRequest {
   campaignID: string;
   isRequired: boolean;
   position: number;
-  metricConfig?: {
-    customEndLength: number;
-    customStartLength: number;
-    metricLeftText: string | null;
-    metricRightText: string | null;
-  };
+  metricConfig?: IMetricConfig;
   selected: boolean;
   title: string;
   type: number;

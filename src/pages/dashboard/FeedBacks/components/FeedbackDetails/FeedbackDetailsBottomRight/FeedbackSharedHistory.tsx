@@ -25,7 +25,7 @@ const FeedBackSharedHistoryComponent = <
   const navigate = useNavigate();
 
   const handleRedirect = (id: number) => {
-    navigate("/users", {
+    navigate("/admin/users", {
       state: {
         id,
       },

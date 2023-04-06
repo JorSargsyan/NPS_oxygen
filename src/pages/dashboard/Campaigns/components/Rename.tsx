@@ -29,7 +29,6 @@ const Rename = ({ data, onSuccess }: { data: any; onSuccess: () => void }) => {
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
     }
-    toast.success("Campaign name updated");
     onSuccess?.();
   };
 

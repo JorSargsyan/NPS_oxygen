@@ -35,7 +35,7 @@ const Login = () => {
 
     localStorage.setItem(LStorage.AUTH, payload.accessToken);
     dispatch(setAuth(true));
-    navigate("/overview");
+    navigate("/admin/overview");
   };
 
   return (

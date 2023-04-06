@@ -7,6 +7,7 @@ import roles from "./roles";
 import translations from "./translations";
 import customers from "./customers";
 import feedbacks from "./feedback";
+import surveyPreview from "./surveyPreview";
 import campaigns from "./campaigns";
 import campaignDetails from "./campaignDetail";
 import directorates from "./directorates";
@@ -21,6 +22,7 @@ const reducers = {
   roles,
   translations,
   customers,
+  surveyPreview,
   feedbacks,
   directorates,
 };

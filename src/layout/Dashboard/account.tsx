@@ -25,7 +25,7 @@ const AccountPopover = (props) => {
   };
 
   const handleProfile = () => {
-    navigate("/profile");
+    navigate("/admin/profile");
   };
 
   return (

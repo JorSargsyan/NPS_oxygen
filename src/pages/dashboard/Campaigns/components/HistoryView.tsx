@@ -12,7 +12,7 @@ const HistoryView = ({ data }: { data: ICampaignLog[] }) => {
   const navigate = useNavigate();
 
   const handleRedirect = (id: number) => {
-    navigate("/users", {
+    navigate("/admin/users", {
       state: {
         id,
       },
