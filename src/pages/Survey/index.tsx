@@ -6,6 +6,7 @@ import {
   CreateCustomer,
   GetQuestionConfiguration,
   GetQuestionDetails,
+  SetQuestionFinished,
   SkipQuestion,
   SubmitAnswer,
   selectQuestion,
@@ -13,7 +14,7 @@ import {
 import { ERequestStatus } from "store/enums/index.enum";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardContent, Slide, Typography } from "@mui/material";
 import { EBaseUrl } from "store/config/constants";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
@@ -25,6 +26,8 @@ const SurveyPreview = () => {
   const methods = useForm({
     defaultValues: {
       answerIDs: [],
+      comment: "",
+      singleChoice: "",
     },
   });
   const questionData = useSelector(selectQuestion);
@@ -70,23 +73,31 @@ const SurveyPreview = () => {
     return true;
   }, [config?.isExpired, config?.isFinished, details]);
 
-  const PreviewComp = () => {
+  const PreviewComp = useCallback(() => {
     const Comp = ESurveyPreviewComps[details.type];
     return <Comp />;
-  };
+  }, [details?.type]);
+
   const answerIDs = useWatch({
     control: methods.control,
     name: "answerIDs",
   });
 
+  const singleChoiceVal = useWatch({
+    control: methods.control,
+    name: "singleChoice",
+  });
+
   const checkDisabled = useMemo(() => {
     if (
-      details?.type === Number(ECampaignSurveyType.SingleChoice) ||
       details?.type === Number(ECampaignSurveyType.Rating) ||
       details?.type === Number(ECampaignSurveyType.Nps) ||
       details?.type === Number(ECampaignSurveyType.ServiceQualityScore)
     ) {
       return !answerIDs.length;
+    }
+    if (details?.type === Number(ECampaignSurveyType.SingleChoice)) {
+      return !singleChoiceVal;
     }
     if (details?.type === Number(ECampaignSurveyType.MultipleChoice)) {
       const checkedAnswersCount = answerIDs.filter((i) => i).length;
@@ -109,13 +120,18 @@ const SurveyPreview = () => {
     details?.multipleConfig?.multipleMin,
     details?.multipleConfig?.multipleMax,
     answerIDs,
+    singleChoiceVal,
   ]);
 
   const getQuestionConfig = useCallback(
     async (hash: string) => {
-      const { meta } = await dispatch(GetQuestionConfiguration(hash));
+      console.log("fetching data!");
+      const { meta, payload } = await dispatch(GetQuestionConfiguration(hash));
 
-      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      if (
+        meta.requestStatus !== ERequestStatus.FULFILLED ||
+        payload.isFinished
+      ) {
         return;
       }
 
@@ -129,19 +145,25 @@ const SurveyPreview = () => {
   const getAnswerRequestData = (formData) => {
     if (details?.type === Number(ECampaignSurveyType.SingleChoice)) {
       return {
-        answerIDs: formData.answerIDs,
+        answerIDs: [formData.singleChoice],
         hash,
         surveyID: details.id,
       };
     }
     if (details?.type === Number(ECampaignSurveyType.MultipleChoice)) {
-      // debugger;
       const answerIDs = details.answers
         .filter((i, index) => formData.answerIDs[index])
         .map((i) => i.id);
 
       return {
         answerIDs,
+        hash,
+        surveyID: details.id,
+      };
+    } else if (details?.type === Number(ECampaignSurveyType.Comment)) {
+      return {
+        comment: formData.comment,
+        answerIDs: details?.answers?.map((i) => i.id),
         hash,
         surveyID: details.id,
       };
@@ -178,13 +200,19 @@ const SurveyPreview = () => {
     });
   };
 
+  const finishSurvey = useCallback(async () => {
+    const { meta } = await dispatch(SetQuestionFinished({ hash }));
+
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+  }, [dispatch, hash]);
+
   const handleNext = async (formData) => {
     setLoading(true);
     let requestData: any = {
       answerIDs: [],
     };
-
-    // debugger;
 
     if (details.type !== Number(ECampaignSurveyType.Welcome)) {
       requestData = getAnswerRequestData(formData);
@@ -207,12 +235,21 @@ const SurveyPreview = () => {
   };
 
   useEffect(() => {
+    if (!(type || hash)) {
+      return;
+    }
     if (type === ESurveyPreviewTypes.GENERAL) {
       generateCustomer();
     } else {
       getQuestionConfig(hash);
     }
   }, [generateCustomer, getQuestionConfig, hash, type]);
+
+  useEffect(() => {
+    if (details?.isLast && !config.isFinished) {
+      finishSurvey();
+    }
+  }, [config?.isFinished, details?.isLast, finishSurvey]);
 
   return (
     <Box
@@ -224,67 +261,95 @@ const SurveyPreview = () => {
         backgroundSize: "cover",
       }}
     >
-      {isLoading ? (
-        <div>loading</div>
-      ) : surveyStatus ? (
-        <Box p={2} width="60vw" minHeight={"100vh"}>
-          <Card sx={{ height: "100%" }}>
+      {surveyStatus ? (
+        <Box p={2}>
+          <Card
+            sx={{ height: "100%", backgroundColor: "rgb(255 255 255 / 97%)" }}
+          >
             <CardContent>
-              <Box
-                display="flex"
-                justifyContent={"center"}
-                sx={{
-                  "& img": {
-                    borderRadius: "10px",
-                    maxHeight: "100%",
-                    width: "100%",
-                    height: 250,
-                    objectFit: "cover",
-                  },
-                }}
-              >
-                <img
-                  src={`${EBaseUrl.MediaTemplateURL}/${details?.template?.logoImage}`}
-                  alt={details?.title}
-                />
-              </Box>
-              <Box mt={2}>
-                <FormProvider {...methods}>
-                  <Box display="flex">
-                    <Typography variant="h5">{details.title} </Typography>
-                    {details.isRequired ? (
-                      <Typography ml={2} fontSize={20} color="error">
-                        *
-                      </Typography>
-                    ) : null}
-                  </Box>
-                  <Box minHeight="280px">
-                    <PreviewComp />
-                  </Box>
-                  <Box display="flex" justifyContent={"flex-end"} gap={2}>
-                    {!details?.isRequired &&
-                      details.type !== Number(ECampaignSurveyType.Welcome) && (
-                        <Button onClick={handleSkip} variant="contained">
-                          <Typography>{"Skip"}</Typography>
-                        </Button>
-                      )}
-                    <Button
-                      disabled={checkDisabled}
-                      onClick={methods.handleSubmit(handleNext)}
-                      variant="contained"
+              <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
+                <Box width="60vw" minHeight={"100vh"}>
+                  <Box>
+                    <Box
+                      display="flex"
+                      justifyContent={"center"}
+                      sx={{
+                        "& img": {
+                          borderRadius: "10px",
+                          maxHeight: "100%",
+                          width: "100%",
+                          height: 250,
+                          objectFit: "cover",
+                        },
+                      }}
                     >
-                      <Typography>{details?.buttonText}</Typography>
-                    </Button>
+                      {/* {!isLoading ? ( */}
+                      <img
+                        src={`${EBaseUrl.MediaTemplateURL}/${details?.template?.logoImage}`}
+                        alt={details?.title}
+                      />
+                      {/* ) : (
+                        <Skeleton
+                          sx={{ backgroundColor: "red" }}
+                          variant="rounded"
+                          width={"100%"}
+                          height="250px"
+                          animation="wave"
+                        />
+                      )} */}
+                    </Box>
+                    <Box mt={2}>
+                      <FormProvider {...methods}>
+                        <Box display="flex" justifyContent={"center"}>
+                          <Typography variant="h5">{details.title} </Typography>
+                          {details.isRequired ? (
+                            <Typography ml={2} fontSize={20} color="error">
+                              *
+                            </Typography>
+                          ) : null}
+                        </Box>
+                        <Box minHeight="280px">
+                          {ESurveyPreviewComps?.[details.type] && (
+                            <PreviewComp />
+                          )}
+                        </Box>
+                        {details?.type !==
+                          Number(ECampaignSurveyType.Final) && (
+                          <Box
+                            display="flex"
+                            justifyContent={"flex-end"}
+                            gap={2}
+                          >
+                            {!details?.isRequired &&
+                              details.type !==
+                                Number(ECampaignSurveyType.Welcome) && (
+                                <Button
+                                  onClick={handleSkip}
+                                  variant="contained"
+                                >
+                                  <Typography>{"Skip"}</Typography>
+                                </Button>
+                              )}
+                            <Button
+                              disabled={checkDisabled}
+                              onClick={methods.handleSubmit(handleNext)}
+                              variant="contained"
+                            >
+                              <Typography>{details?.buttonText}</Typography>
+                            </Button>
+                          </Box>
+                        )}
+                      </FormProvider>
+                    </Box>
                   </Box>
-                </FormProvider>
-              </Box>
+                </Box>
+              </Slide>
             </CardContent>
           </Card>
         </Box>
       ) : (
         <Box>{status}</Box>
       )}
-      {/* {} */}
     </Box>
   );
 };

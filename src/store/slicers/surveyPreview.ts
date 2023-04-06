@@ -67,6 +67,14 @@ export const SkipQuestion = createAsyncThunk<unknown, IQuestionAnswerRequest>(
   thunkOptions
 );
 
+export const SetQuestionFinished = createAsyncThunk<unknown, { hash: string }>(
+  `${name}/SetQuestionFinished`,
+  async (formData) => {
+    return (await api.patch(`${EBaseUrl.API}/Question/Finish`, formData)).data;
+  },
+  thunkOptions
+);
+
 const surveyPreviewSlice = createSlice({
   initialState,
   name,

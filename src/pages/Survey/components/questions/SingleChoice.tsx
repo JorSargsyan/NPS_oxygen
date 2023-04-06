@@ -16,7 +16,8 @@ const SingleChoiceQuestion = () => {
   return (
     <Box>
       <Controller
-        name={"answerIDs[0]"}
+        name={"singleChoice"}
+        defaultValue={""}
         control={methods.control}
         rules={requiredRules}
         render={({ field }) => (

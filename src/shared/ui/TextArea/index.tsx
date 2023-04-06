@@ -1,4 +1,5 @@
-import { Typography, TextareaAutosize } from "@mui/material";
+import { FormHelperText } from "@mui/material";
+import { TextareaAutosize } from "@mui/base";
 import { Box } from "@mui/system";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 
@@ -46,13 +47,15 @@ const BasicTextArea = <T extends unknown>(props: ITextareaProps<T>) => {
                 minRows={minRows}
                 className="textarea"
               />
-              {errors?.[name]?.message ? (
-                <Typography>{errors?.[name]?.message as string}</Typography>
-              ) : null}
             </Box>
           );
         }}
       />
+      {errors?.[name]?.message ? (
+        <FormHelperText error>
+          {errors?.[name]?.message as string}
+        </FormHelperText>
+      ) : null}
     </Box>
   );
 };
