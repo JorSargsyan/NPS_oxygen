@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ESurveyPreviewComps, ESurveyPreviewTypes } from "./constants";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import {
@@ -23,6 +23,8 @@ import { EMultipleConfigType } from "store/enums/campaignDetails";
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
   const [isLoading, setLoading] = useState(true);
+  const location = useLocation();
+
   const methods = useForm({
     defaultValues: {
       answerIDs: [],
@@ -48,7 +50,8 @@ const SurveyPreview = () => {
     }
 
     navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}`);
-  }, [dispatch, hash, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, hash]);
 
   const getQuestionData = useCallback(
     async (formData) => {
@@ -234,7 +237,7 @@ const SurveyPreview = () => {
     });
   };
 
-  useEffect(() => {
+  const init = useCallback(() => {
     if (!(type || hash)) {
       return;
     }
@@ -243,7 +246,11 @@ const SurveyPreview = () => {
     } else {
       getQuestionConfig(hash);
     }
-  }, [generateCustomer, getQuestionConfig, hash, type]);
+  }, [getQuestionConfig, generateCustomer, hash, type]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   useEffect(() => {
     if (details?.isLast && !config.isFinished) {
@@ -262,13 +269,19 @@ const SurveyPreview = () => {
       }}
     >
       {surveyStatus ? (
-        <Box p={2}>
+        <Box
+          p={2}
+          sx={{ display: { xs: "flex" }, alignItems: { xs: "center" } }}
+        >
           <Card
-            sx={{ height: "100%", backgroundColor: "rgb(255 255 255 / 97%)" }}
+            sx={{
+              height: { xs: "95vh", sm: "80vh" },
+              backgroundColor: "rgb(255 255 255 / 97%)",
+            }}
           >
             <CardContent>
               <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
-                <Box width="60vw" minHeight={"100vh"}>
+                <Box sx={{ width: { xs: "85vw", sm: "80vw", md: "60vw" } }}>
                   <Box>
                     <Box
                       display="flex"
@@ -283,20 +296,10 @@ const SurveyPreview = () => {
                         },
                       }}
                     >
-                      {/* {!isLoading ? ( */}
                       <img
                         src={`${EBaseUrl.MediaTemplateURL}/${details?.template?.logoImage}`}
                         alt={details?.title}
                       />
-                      {/* ) : (
-                        <Skeleton
-                          sx={{ backgroundColor: "red" }}
-                          variant="rounded"
-                          width={"100%"}
-                          height="250px"
-                          animation="wave"
-                        />
-                      )} */}
                     </Box>
                     <Box mt={2}>
                       <FormProvider {...methods}>
@@ -319,6 +322,7 @@ const SurveyPreview = () => {
                             display="flex"
                             justifyContent={"flex-end"}
                             gap={2}
+                            pt={2}
                           >
                             {!details?.isRequired &&
                               details.type !==

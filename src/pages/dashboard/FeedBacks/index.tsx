@@ -137,6 +137,7 @@ const Feedbacks = () => {
     setSelectedFeedbackId({ id: row.id, data: row.comments });
     setCommentDialogOpen(true);
   };
+
   const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
 

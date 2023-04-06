@@ -35,16 +35,16 @@ const CustomRatingQuestion = () => {
                   backgroundColor: "primary.main",
                   color: "white",
                 },
+                width: { xs: "40px", sm: "8%" },
+                padding: { xs: "9px", sm: 2 },
               }}
               className={
                 answer.id === methods.watch("answerIDs[0]") && "active"
               }
-              width="8%"
               display="flex"
               justifyContent={"center"}
               alignItems={"center"}
               borderRadius={"10px"}
-              p={2}
             >
               <Typography fontSize="20px" fontWeight="bold">
                 {answer.value}

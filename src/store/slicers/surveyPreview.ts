@@ -24,7 +24,7 @@ export const CreateCustomer = createAsyncThunk<
 >(
   `${name}/CreateCustomer`,
   async (formData) => {
-    return (await api.post(`${EBaseUrl.API}/customer`, formData)).data;
+    return (await api.post(`${EBaseUrl.API}/Customer`, formData)).data;
   },
   thunkOptions
 );
