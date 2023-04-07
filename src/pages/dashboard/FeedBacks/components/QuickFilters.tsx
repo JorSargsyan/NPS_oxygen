@@ -1,7 +1,7 @@
 import ResetIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import { Box, Button, Grid, ToggleButtonGroup } from "@mui/material";
-import React, { MouseEvent } from "react";
-import { FormProvider } from "react-hook-form";
+import React, { useMemo } from "react";
+import { Controller, FormProvider } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
@@ -15,7 +15,6 @@ import {
   GetFeedbackFilterValues,
   selectFeedbackFilterValues,
 } from "store/slicers/feedback";
-import { defaultFeedbackQuickFilterTypes } from "..";
 import {
   defaultQuickFilterValues,
   feedbackStatusList,
@@ -23,12 +22,7 @@ import {
   quickFilterUserVisibilityTypes,
 } from "../constants";
 
-const QuickFilters = ({
-  methods,
-  handleSubmit,
-  feedbackTypes,
-  setFeedbackTypes,
-}) => {
+const QuickFilters = ({ methods, handleSubmit }) => {
   const dispatch = useAsyncDispatch();
   const filterValues = useSelector(selectFeedbackFilterValues);
   const hasQuickFilterByDatePermission = usePermission(
@@ -67,28 +61,6 @@ const QuickFilters = ({
     }
   };
 
-  const changeFeedbackType = (
-    event: MouseEvent<HTMLElement>,
-    value: string | null
-  ) => {
-    if (value !== null) {
-      setFeedbackTypes((type) => {
-        return { ...type, feedbackType: value };
-      });
-    }
-  };
-
-  const changeUserVisibilityType = (
-    event: MouseEvent<HTMLElement>,
-    value: string | null
-  ) => {
-    if (value !== null) {
-      setFeedbackTypes((type) => {
-        return { ...type, userVisibility: value };
-      });
-    }
-  };
-
   const resetQuickFilters = () => {
     methods.reset({
       config: {
@@ -96,8 +68,87 @@ const QuickFilters = ({
         quickFilters: defaultQuickFilterValues,
       },
     });
-    setFeedbackTypes(defaultFeedbackQuickFilterTypes);
   };
+
+  const feedbackTypesFilter = useMemo(() => {
+    if (hasQuickFilterByFeedbackTypesPermission) {
+      return (
+        <Controller
+          name="config.quickFilters.feedbackType"
+          defaultValue={""}
+          render={({ field }) => {
+            return (
+              <Box mr={2}>
+                <ToggleButtonGroup
+                  {...field}
+                  exclusive
+                  aria-label="text alignment"
+                >
+                  {quickFilterFeedbackTypes?.map((type, index) => {
+                    return (
+                      <StyledToggleButton
+                        size="small"
+                        key={index}
+                        value={type.value}
+                        selected={
+                          methods.watch("config.quickFilters.feedbackType") ===
+                          type.value
+                        }
+                      >
+                        {type.label}
+                      </StyledToggleButton>
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+            );
+          }}
+        />
+      );
+    }
+    return "";
+  }, [hasQuickFilterByFeedbackTypesPermission, methods]);
+
+  const userVisibilityFilter = useMemo(() => {
+    if (hasQuickFilterByUserVisibilityPermission) {
+      return (
+        <Controller
+          defaultValue="3"
+          name="config.quickFilters.userVisibility"
+          control={methods.control}
+          render={({ field }) => {
+            return (
+              <Box>
+                <ToggleButtonGroup
+                  {...field}
+                  exclusive
+                  aria-label="text alignment"
+                >
+                  {quickFilterUserVisibilityTypes?.map((type, index) => {
+                    return (
+                      <StyledToggleButton
+                        size="small"
+                        key={index}
+                        value={type.value}
+                        selected={
+                          methods.watch(
+                            "config.quickFilters.userVisibility"
+                          ) === String(type.value)
+                        }
+                      >
+                        {type.label}
+                      </StyledToggleButton>
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+            );
+          }}
+        />
+      );
+    }
+    return "";
+  }, [hasQuickFilterByUserVisibilityPermission, methods]);
 
   return (
     <Box px={1} py={3}>
@@ -176,52 +227,8 @@ const QuickFilters = ({
         </Grid>
         <Box pt={3} display="flex" justifyContent="space-between">
           <Box display="flex">
-            {hasQuickFilterByFeedbackTypesPermission && (
-              <Box mr={2}>
-                <ToggleButtonGroup
-                  value={feedbackTypes?.feedbackType}
-                  exclusive
-                  onChange={changeFeedbackType}
-                  aria-label="text alignment"
-                >
-                  {quickFilterFeedbackTypes?.map((type, index) => {
-                    return (
-                      <StyledToggleButton
-                        size="small"
-                        key={index}
-                        value={type.value}
-                        selected={feedbackTypes?.feedbackType === type.value}
-                      >
-                        {type.label}
-                      </StyledToggleButton>
-                    );
-                  })}
-                </ToggleButtonGroup>
-              </Box>
-            )}
-            {hasQuickFilterByUserVisibilityPermission && (
-              <Box>
-                <ToggleButtonGroup
-                  value={feedbackTypes?.userVisibility}
-                  exclusive
-                  onChange={changeUserVisibilityType}
-                  aria-label="text alignment"
-                >
-                  {quickFilterUserVisibilityTypes?.map((type, index) => {
-                    return (
-                      <StyledToggleButton
-                        size="small"
-                        key={index}
-                        value={type.value}
-                        selected={feedbackTypes?.userVisibility === type.value}
-                      >
-                        {type.label}
-                      </StyledToggleButton>
-                    );
-                  })}
-                </ToggleButtonGroup>
-              </Box>
-            )}
+            {feedbackTypesFilter}
+            {userVisibilityFilter}
           </Box>
           <Box>
             <Box>
