@@ -1,23 +1,28 @@
 export enum EAppReducerTypes {
-  Set_unsaved_modal_open = "is_campaign_details_modal)open",
+  SET_UNSAVED_MODAL_DATA = "unsaved_modal_data",
 }
 
 export const appContextInitialState: IInitialState = {
   campaignDetails: {
     isOpen: false,
+    isSuccess: false,
+    questionId: 0,
+    tabId: 0,
   },
 };
 
 export const AppReducer = (state, action) => {
   const { type, payload } = action;
 
+  console.log(action, "adklasldkaskdla");
+
   switch (type) {
-    case EAppReducerTypes.Set_unsaved_modal_open:
+    case EAppReducerTypes.SET_UNSAVED_MODAL_DATA:
       return {
         ...state,
         campaignDetails: {
           ...state.campaignDetails,
-          isOpen: payload,
+          ...payload,
         },
       };
     default:
@@ -28,5 +33,8 @@ export const AppReducer = (state, action) => {
 interface IInitialState {
   campaignDetails: {
     isOpen: boolean;
+    isSuccess: boolean;
+    questionId: number;
+    tabId: number;
   };
 }

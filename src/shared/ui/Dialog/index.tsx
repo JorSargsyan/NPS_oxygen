@@ -40,8 +40,8 @@ const SharedDialog = ({
   sx,
 }: ISharedDialogProps) => {
   const handleSubmit = () => {
-    onSuccess?.();
     setOpen(false);
+    onSuccess?.();
   };
 
   const handleClose = () => {

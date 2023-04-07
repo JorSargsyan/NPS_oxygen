@@ -24,7 +24,7 @@ import {
   setSelectedSurvey,
 } from "store/slicers/campaignDetail";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import reorderDragDrop from "shared/helpers/reorderDragDrop";
 import { ICampaignSurvey } from "store/interfaces/campaignDetails";
@@ -46,10 +46,18 @@ import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
 import StarIcon from "@heroicons/react/24/outline/StarIcon";
 import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
 import { setCampaignLoading } from "store/slicers/common";
+import { useFormContext } from "react-hook-form";
+import { GlobalContext } from "App";
+import { EAppReducerTypes } from "shared/helpers/AppContext";
 
 const LeftSidebar = () => {
+  const { formState } = useFormContext();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const addContentMenuOpen = Boolean(anchorEl);
+  const {
+    contextInitialState: { campaignDetails },
+    dispatchContext,
+  } = useContext(GlobalContext);
   const dispatch = useAsyncDispatch();
   const [warningOpen, setWarningOpen] = useState(false);
   const campaignSurveys = useSelector(selectCampaignSurveys);
@@ -149,12 +157,26 @@ const LeftSidebar = () => {
     dispatch(GetSurveys(campaignInfo.id));
   };
 
+  const handleSetOpen = (questionId: number) => {
+    dispatchContext({
+      type: EAppReducerTypes.SET_UNSAVED_MODAL_DATA,
+      payload: {
+        isOpen: true,
+        questionId,
+      },
+    });
+  };
+
   const handleClickSurvey = (id: number) => {
     if (selectedSurvey === id) {
       return;
     }
-    dispatch(setCampaignLoading(true));
-    fetchSurveyData(id);
+
+    if (formState.isDirty) {
+      handleSetOpen(id);
+      return;
+    }
+    handleClickSuccess(id);
   };
 
   const fetchSurveyData = useCallback(
@@ -169,6 +191,14 @@ const LeftSidebar = () => {
       dispatch(setCampaignLoading(false));
     },
     [dispatch]
+  );
+
+  const handleClickSuccess = useCallback(
+    (id: number) => {
+      dispatch(setCampaignLoading(true));
+      fetchSurveyData(id);
+    },
+    [dispatch, fetchSurveyData]
   );
 
   const getOptionIcon = (type: number) => {
@@ -193,6 +223,26 @@ const LeftSidebar = () => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaignSurveys, dispatch, fetchSurveyData]);
+
+  useEffect(() => {
+    if (campaignDetails.isSuccess && campaignDetails.questionId) {
+      handleClickSuccess(campaignDetails.questionId);
+      dispatchContext({
+        type: EAppReducerTypes.SET_UNSAVED_MODAL_DATA,
+        payload: {
+          questionId: 0,
+          isOpen: false,
+          isSuccess: false,
+        },
+      });
+    }
+  }, [
+    campaignDetails?.id,
+    campaignDetails?.isSuccess,
+    campaignDetails?.questionId,
+    dispatchContext,
+    handleClickSuccess,
+  ]);
 
   return (
     <Box p={1}>

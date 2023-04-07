@@ -1,7 +1,6 @@
 import { Box } from "@mui/system";
 import { useParams } from "react-router-dom";
-import BasicTabs from "shared/ui/Tabs";
-import { campaignDetailsTabList } from "./constants";
+import { campaignDetailsTabList, unsavedDialogWarning } from "./constants";
 import {
   useCallback,
   useContext,
@@ -23,7 +22,6 @@ import {
 } from "store/slicers/campaignDetail";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import SharedDialog from "shared/ui/Dialog";
-import { deleteNoteDialogOptions } from "../FeedBacks/components/FeedbackDetails/FeedbackDetailsBottomRight/constants";
 import { GlobalContext } from "App";
 import { EAppReducerTypes } from "shared/helpers/AppContext";
 import { FormProvider, useForm } from "react-hook-form";
@@ -34,6 +32,8 @@ import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
 import { setSidebarVisible } from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 import SurveyTemplate from "shared/components/SurveyTemplate";
+import CampaignTabs from "components/campaigns/CampaignTabs";
+import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
 
 const defaultAnswer = {
   value: "",
@@ -97,13 +97,31 @@ const CampaignDetail = () => {
     },
   });
 
-  const handleDelete = () => {};
+  const handleSuccess = () => {
+    dispatchContext({
+      type: EAppReducerTypes.SET_UNSAVED_MODAL_DATA,
+      payload: {
+        isSuccess: true,
+      },
+    });
+  };
 
   const handleSetOpen = (val) => {
     setUnsavedModalOpen(val);
     dispatchContext({
-      type: EAppReducerTypes.Set_unsaved_modal_open,
-      payload: val,
+      type: EAppReducerTypes.SET_UNSAVED_MODAL_DATA,
+      payload: {
+        isOpen: true,
+      },
+    });
+  };
+
+  const handleSetClose = () => {
+    dispatchContext({
+      type: EAppReducerTypes.SET_UNSAVED_MODAL_DATA,
+      payload: {
+        isOpen: false,
+      },
     });
   };
 
@@ -229,7 +247,6 @@ const CampaignDetail = () => {
   ]);
 
   const onChange = (val) => {
-    console.log(val);
     setTabValue(val);
   };
 
@@ -260,7 +277,7 @@ const CampaignDetail = () => {
     <Box>
       <FormProvider {...methods}>
         <Box display="flex">
-          <BasicTabs
+          <CampaignTabs
             onChange={onChange}
             tabsData={campaignDetailsTabList}
             Content={() => {
@@ -276,11 +293,13 @@ const CampaignDetail = () => {
                   >
                     <Button
                       onClick={() => setPreviewModalOpen(true)}
-                      variant="contained"
+                      variant="outlined"
+                      startIcon={<EyeIcon height={20} />}
                     >
                       <Typography>Preview</Typography>
                     </Button>
                     <Button
+                      disabled={!methods.formState.isDirty}
                       onClick={methods.handleSubmit(onSubmit)}
                       variant="contained"
                     >
@@ -297,8 +316,9 @@ const CampaignDetail = () => {
       <SharedDialog
         open={unsavedModalOpen}
         setOpen={handleSetOpen}
-        onSuccess={handleDelete}
-        textConfig={deleteNoteDialogOptions}
+        onSuccess={handleSuccess}
+        handleCloseCb={handleSetClose}
+        textConfig={unsavedDialogWarning}
       />
       <SharedDialog
         hasActions={false}

@@ -18,3 +18,8 @@ export const campaignDetailsTabList = [
     children: <Distribution />,
   },
 ];
+
+export const unsavedDialogWarning = {
+  title: "Unsaved changes",
+  description: "Do you want to leave ? Changes you made may not be saved.",
+};
