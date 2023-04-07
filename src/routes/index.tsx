@@ -1,19 +1,14 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
-import Login from "../pages/auth/login";
+import { CircularProgress } from "@mui/material";
+import { Box } from "@mui/system";
 import DashboardLayout from "layout/Dashboard";
 import { items } from "layout/Dashboard/config";
-import { useSelector } from "react-redux";
-import { selectAuth } from "store/slicers/auth";
-import { useCallback, useEffect, useMemo } from "react";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { GetConfig, GetPermissions } from "store/slicers/common";
-import { GetCurrentUser } from "store/slicers/users";
 import AccountPage from "pages/dashboard/Account";
-import { GetTranslationsByLangId } from "store/slicers/translations";
-import { LStorage } from "store/config/constants";
-import FeedbackDetails from "pages/dashboard/FeedBacks/components/FeedbackDetails";
 import CampaignDetails from "pages/dashboard/CampaignDetails";
-import usePermission from "shared/helpers/hooks/usePermission";
+import FeedbackDetails from "pages/dashboard/FeedBacks/components/FeedbackDetails";
+import SurveyPreview from "pages/Survey";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import {
   ECampaignPermissions,
   ECustomersPermissions,
@@ -23,12 +18,11 @@ import {
   ETranslationPermissions,
   EUserPermissions,
 } from "resources/permissions/permissions.enum";
-import { Box } from "@mui/system";
-import { CircularProgress } from "@mui/material";
-import SurveyPreview from "pages/Survey";
+import usePermission from "shared/helpers/hooks/usePermission";
+import { selectAuth } from "store/slicers/auth";
+import Login from "../pages/auth/login";
 
 export const CreateRoutes = () => {
-  const dispatch = useAsyncDispatch();
   const isAuthorized = useSelector(selectAuth);
   const hasCustomerPerm = usePermission(ECustomersPermissions.Read);
   const hasRolesPerm = usePermission(ERolesPermissions.Read);
@@ -90,30 +84,14 @@ export const CreateRoutes = () => {
 
   const routesList = items(hasPerm);
 
-  const fetchDashboardData = useCallback(async () => {
-    const activeLang = Number(localStorage.getItem(LStorage.LANG));
-    await Promise.all([
-      dispatch(GetPermissions()),
-      dispatch(GetCurrentUser()),
-      dispatch(GetConfig()),
-      dispatch(GetTranslationsByLangId(activeLang)),
-    ]);
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (
-      isAuthorized &&
-      Number(localStorage.getItem(LStorage.LANG)) &&
-      window.location.pathname.includes("admin")
-    ) {
-      fetchDashboardData();
-    }
-  }, [fetchDashboardData, isAuthorized]);
-
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: !isAuthorized ? <Login /> : <Navigate to="/" replace />,
+      element: !isAuthorized ? (
+        <Login />
+      ) : (
+        <Navigate to="admin/overview" replace />
+      ),
     },
     {
       path: "/admin",
@@ -123,6 +101,7 @@ export const CreateRoutes = () => {
         ...getDashboardRoutes(),
         {
           path: "profile",
+          index: true,
           element: <AccountPage />,
         },
         ...(hasGridViewFeedbackCardPermission
@@ -145,7 +124,11 @@ export const CreateRoutes = () => {
     },
     {
       path: "*",
-      element: !isAuthorized ? <Navigate to="/login" /> : <ErrorBoundary />,
+      element: !isAuthorized ? (
+        <Navigate to="/login" />
+      ) : (
+        <Navigate to="admin/overview" />
+      ),
     },
   ]);
 
