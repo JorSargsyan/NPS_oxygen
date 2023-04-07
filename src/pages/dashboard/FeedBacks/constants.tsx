@@ -174,13 +174,9 @@ export interface IDefaultQuickFilterValues {
   range: null[] | Dayjs[];
   campaign: null | IAttachedEmployee;
   status: IFeedbackStatusList[];
+  feedbackType: string;
+  userVisibility: string;
 }
-
-export const defaultQuickFilterValues: IDefaultQuickFilterValues = {
-  range: [null, null],
-  campaign: null,
-  status: [],
-};
 
 export const feedbackFilterTypesLabels = {
   NPS: "NPS",
@@ -269,9 +265,17 @@ export enum EQuickFilterTypes {
 }
 
 export enum EQuickFilterUserVisibilityValues {
-  GENERAL = 2,
-  PERSONAL = 3,
+  GENERAL = "2",
+  PERSONAL = "3",
 }
+
+export const defaultQuickFilterValues: IDefaultQuickFilterValues = {
+  range: [null, null],
+  campaign: null,
+  status: [],
+  feedbackType: "",
+  userVisibility: EQuickFilterUserVisibilityValues.GENERAL,
+};
 
 export enum EFeedbackUserTypeId {
   GENERAL = "feedbackUserTypeId2",

@@ -71,20 +71,13 @@ const defaultFeedbackFilter = {
   queryCondition: 2,
 };
 
-export const defaultFeedbackQuickFilterTypes = {
-  feedbackType: "",
-  userVisibility: EQuickFilterUserVisibilityValues.GENERAL,
-};
-
 const Feedbacks = () => {
   const [activeRow, setActiveRow] = useState<IActiveRow>();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isCommentDialogOpen, setCommentDialogOpen] = useState(false);
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
-  const [feedbackQuickFilterTypes, setFeedbackQuickFilterTypes] = useState(
-    defaultFeedbackQuickFilterTypes
-  );
+
   const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
   const [isAssignDrawerOpen, setAssignDrawerOpen] = useState(false);
   const dispatch = useAsyncDispatch();
@@ -245,8 +238,8 @@ const Feedbacks = () => {
                           color={textColor(score)}
                           key={index}
                           textAlign="center"
-                          padding="4px"
-                          width="50px"
+                          padding="7px"
+                          width="55px"
                           borderRadius="8px"
                           fontSize="12px"
                         >
@@ -373,7 +366,7 @@ const Feedbacks = () => {
           ]
         : []),
       ...(filterStatusList ? filterStatusList : []),
-      ...(feedbackQuickFilterTypes.userVisibility ===
+      ...(quickFiltersWatch.userVisibility ===
       EQuickFilterUserVisibilityValues.GENERAL
         ? [defaultUserVisibility]
         : [
@@ -383,9 +376,8 @@ const Feedbacks = () => {
               value: EQuickFilterUserVisibilityValues.PERSONAL,
             },
           ]),
-      ...(feedbackQuickFilterTypes.feedbackType &&
-      feedbackQuickFilterTypes.feedbackType ===
-        feedbackFilterTypesKeys.NPS_AGENT
+      ...(quickFiltersWatch.feedbackType &&
+      quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.NPS_AGENT
         ? [
             {
               ...defaultFeedbackFilter,
@@ -393,8 +385,7 @@ const Feedbacks = () => {
               value: feedbackFilterTypesKeys.NPS_AGENT,
             },
           ]
-        : feedbackQuickFilterTypes.feedbackType ===
-          feedbackFilterTypesKeys.REDIRECTED
+        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.REDIRECTED
         ? [
             {
               ...defaultFeedbackFilter,
@@ -402,8 +393,7 @@ const Feedbacks = () => {
               value: feedbackFilterTypesKeys.REDIRECTED,
             },
           ]
-        : feedbackQuickFilterTypes.feedbackType ===
-          feedbackFilterTypesKeys.COMMENTED
+        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.COMMENTED
         ? [
             {
               ...defaultFeedbackFilter,
@@ -423,12 +413,7 @@ const Feedbacks = () => {
     };
     delete data.quickFilters;
     await dispatch(GetFeedbacks(data));
-  }, [
-    dispatch,
-    feedbackQuickFilterTypes?.feedbackType,
-    feedbackQuickFilterTypes?.userVisibility,
-    methods,
-  ]);
+  }, [dispatch, methods]);
 
   const handleChangeSelected = (ids: number[]) => {
     setSelectedFeedbackIDs(ids);
@@ -565,15 +550,8 @@ const Feedbacks = () => {
   }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
 
   const FiltersWrapper = useCallback(
-    () => (
-      <QuickFilters
-        handleSubmit={handleSubmit}
-        methods={methods}
-        feedbackTypes={feedbackQuickFilterTypes}
-        setFeedbackTypes={setFeedbackQuickFilterTypes}
-      />
-    ),
-    [feedbackQuickFilterTypes, handleSubmit, methods]
+    () => <QuickFilters handleSubmit={handleSubmit} methods={methods} />,
+    [handleSubmit, methods]
   );
 
   useEffect(() => {
