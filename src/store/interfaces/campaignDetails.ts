@@ -109,23 +109,23 @@ export interface ICampaignSurveyDetails {
 }
 
 export interface IMetricConfig {
-  customEndLength: number;
-  customStartLength: number;
+  customEndLength: string;
+  customStartLength: string;
   metricLeftText: string | null;
   metricRightText: string | null;
 }
 
 export interface IMultipleConfig {
-  multipleExact: number;
-  multipleMax: number;
-  multipleMin: number;
+  multipleExact: string;
+  multipleMax: string;
+  multipleMin: string;
   multipleType: EMultipleConfigType;
 }
 
 export interface ICommentConfig {
   commentType: ECommentConfigType;
-  commentMin: number;
-  commentMax: number;
+  commentMin: string;
+  commentMax: string;
 }
 
 export interface IUpdateSurveyRequest {

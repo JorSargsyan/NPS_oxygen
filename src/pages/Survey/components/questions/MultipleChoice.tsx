@@ -1,14 +1,10 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import BasicCheck from "shared/ui/Checkbox";
 import { EMultipleConfigType } from "store/enums/campaignDetails";
-import { selectQuestion } from "store/slicers/surveyPreview";
 
-const MultipleChoiceQuestion = () => {
-  const questionData = useSelector(selectQuestion);
-
+const MultipleChoiceQuestion = ({ questionData }) => {
   const multipleHint = useMemo(() => {
     if (!questionData.details.multipleConfig) {
       return "";

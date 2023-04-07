@@ -1,37 +1,36 @@
 import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { ESurveyPreviewComps, ESurveyPreviewTypes } from "./constants";
-import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import {
-  CreateCustomer,
-  GetQuestionConfiguration,
-  GetQuestionDetails,
-  SetQuestionFinished,
-  SkipQuestion,
-  SubmitAnswer,
-  selectQuestion,
-} from "store/slicers/surveyPreview";
-import { ERequestStatus } from "store/enums/index.enum";
-import { useSelector } from "react-redux";
-import { Box } from "@mui/system";
-import {
-  Button,
   Card,
   CardContent,
   CircularProgress,
   Slide,
   Typography,
 } from "@mui/material";
-import { EBaseUrl } from "store/config/constants";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { Box } from "@mui/system";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import SurveyTemplate, { ESurveyTypes } from "shared/components/SurveyTemplate";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { EMultipleConfigType } from "store/enums/campaignDetails";
+import { ERequestStatus } from "store/enums/index.enum";
+import {
+  CreateCustomer,
+  GetQuestionConfiguration,
+  GetQuestionDetails,
+  selectQuestion,
+  SetQuestionFinished,
+  SkipQuestion,
+  SubmitAnswer,
+} from "store/slicers/surveyPreview";
+import { ESurveyPreviewTypes } from "./constants";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
@@ -95,11 +94,6 @@ const SurveyPreview = () => {
     }
   }, [config?.isExpired, config?.isFinished, details]);
 
-  const PreviewComp = useCallback(() => {
-    const Comp = ESurveyPreviewComps[details.type];
-    return <Comp />;
-  }, [details?.type]);
-
   const answerIDs = useWatch({
     control: methods.control,
     name: "answerIDs",
@@ -124,13 +118,15 @@ const SurveyPreview = () => {
     if (details?.type === Number(ECampaignSurveyType.MultipleChoice)) {
       const checkedAnswersCount = answerIDs.filter((i) => i).length;
       if (details?.multipleConfig.multipleType === EMultipleConfigType.EXACT) {
-        return checkedAnswersCount !== details?.multipleConfig.multipleExact;
+        return (
+          checkedAnswersCount !== Number(details?.multipleConfig.multipleExact)
+        );
       } else if (
         details?.multipleConfig.multipleType === EMultipleConfigType.RANGE
       ) {
         return !(
-          checkedAnswersCount >= details?.multipleConfig.multipleMin &&
-          checkedAnswersCount <= details?.multipleConfig.multipleMax
+          checkedAnswersCount >= Number(details?.multipleConfig.multipleMin) &&
+          checkedAnswersCount <= Number(details?.multipleConfig.multipleMax)
         );
       }
       return !checkedAnswersCount;
@@ -147,7 +143,6 @@ const SurveyPreview = () => {
 
   const getQuestionConfig = useCallback(
     async (hash: string) => {
-      console.log("fetching data!");
       const { meta, payload } = await dispatch(GetQuestionConfiguration(hash));
 
       if (
@@ -320,73 +315,19 @@ const SurveyPreview = () => {
                       xs: "85vw",
                       sm: "80vw",
                       md: "60vw",
+                      lg: "50vw",
+                      xl: "40vw",
                     },
                   }}
                 >
-                  <Box>
-                    <Box
-                      display="flex"
-                      justifyContent={"center"}
-                      sx={{
-                        "& img": {
-                          borderRadius: "10px",
-                          maxHeight: "100%",
-                          width: "100%",
-                          height: 250,
-                          objectFit: "cover",
-                        },
-                      }}
-                    >
-                      <img
-                        src={`${EBaseUrl.MediaTemplateURL}/${details?.template?.logoImage}`}
-                        alt={details?.title}
-                      />
-                    </Box>
-                    <Box mt={2}>
-                      <FormProvider {...methods}>
-                        <Box display="flex" justifyContent={"center"}>
-                          <Typography variant="h5">{details.title} </Typography>
-                          {details.isRequired ? (
-                            <Typography ml={2} fontSize={20} color="error">
-                              *
-                            </Typography>
-                          ) : null}
-                        </Box>
-                        <Box minHeight="20vh">
-                          {ESurveyPreviewComps?.[details.type] && (
-                            <PreviewComp />
-                          )}
-                        </Box>
-                        {details?.type !==
-                          Number(ECampaignSurveyType.Final) && (
-                          <Box
-                            display="flex"
-                            justifyContent={"flex-end"}
-                            gap={2}
-                            pt={2}
-                          >
-                            {!details?.isRequired &&
-                              details.type !==
-                                Number(ECampaignSurveyType.Welcome) && (
-                                <Button
-                                  onClick={handleSkip}
-                                  variant="contained"
-                                >
-                                  <Typography>{"Skip"}</Typography>
-                                </Button>
-                              )}
-                            <Button
-                              disabled={checkDisabled}
-                              onClick={methods.handleSubmit(handleNext)}
-                              variant="contained"
-                            >
-                              <Typography>{details?.buttonText}</Typography>
-                            </Button>
-                          </Box>
-                        )}
-                      </FormProvider>
-                    </Box>
-                  </Box>
+                  <SurveyTemplate
+                    checkDisabled={checkDisabled}
+                    methods={methods}
+                    type={ESurveyTypes.Customer}
+                    handleSkip={handleSkip}
+                    handleNext={handleNext}
+                    questionData={questionData}
+                  />
                 </Box>
               </Slide>
             </CardContent>

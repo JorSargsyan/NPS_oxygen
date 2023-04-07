@@ -1,12 +1,9 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormContext } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { selectQuestion } from "store/slicers/surveyPreview";
 
-const CustomRatingQuestion = () => {
+const CustomRatingQuestion = ({ questionData }) => {
   const methods = useFormContext();
-  const questionData = useSelector(selectQuestion);
   const { details } = questionData;
 
   const handleSelect = (id: number) => {
@@ -22,7 +19,7 @@ const CustomRatingQuestion = () => {
         flexWrap={"wrap"}
         justifyContent={"center"}
       >
-        {details.answers?.map((answer) => {
+        {details?.answers?.map((answer) => {
           return (
             <Box
               key={answer.id}

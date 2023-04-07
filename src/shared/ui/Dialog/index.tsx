@@ -8,6 +8,7 @@ import {
   Button,
   Box,
   Divider,
+  SxProps,
 } from "@mui/material";
 import CrossIcon from "@mui/icons-material/Close";
 import React, { ReactNode } from "react";
@@ -23,6 +24,8 @@ export interface ISharedDialogProps {
   onSuccess?: () => void;
   children?: ReactNode;
   handleCloseCb?: () => void;
+  fullScreen?: boolean;
+  sx?: SxProps<any>;
 }
 
 const SharedDialog = ({
@@ -33,6 +36,8 @@ const SharedDialog = ({
   hasActions = true,
   children,
   handleCloseCb = undefined,
+  fullScreen = false,
+  sx,
 }: ISharedDialogProps) => {
   const handleSubmit = () => {
     onSuccess?.();
@@ -45,7 +50,13 @@ const SharedDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} PaperComponent={Paper}>
+    <Dialog
+      sx={sx}
+      open={open}
+      onClose={handleClose}
+      PaperComponent={Paper}
+      fullScreen={fullScreen}
+    >
       <Box display="flex" alignItems="center" justifyContent={"space-between"}>
         <DialogTitle style={{ cursor: "move" }}>{title}</DialogTitle>
         <Box mr={2}>

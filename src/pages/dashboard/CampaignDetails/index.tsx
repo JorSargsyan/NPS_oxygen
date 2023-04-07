@@ -22,7 +22,7 @@ import {
   selectSelectedSurvey,
   selectSurveyInfo,
 } from "store/slicers/campaignDetail";
-import { Button, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import SharedDialog from "shared/ui/Dialog";
 import { deleteNoteDialogOptions } from "../FeedBacks/components/FeedbackDetails/FeedbackDetailsBottomRight/constants";
 import { GlobalContext } from "App";
@@ -34,6 +34,7 @@ import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
 import { setSidebarVisible } from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
+import SurveyTemplate from "shared/components/SurveyTemplate";
 
 const defaultAnswer = {
   value: "",
@@ -84,6 +85,7 @@ const CampaignDetail = () => {
   const dispatch = useAsyncDispatch();
   const surveyDetails = useSelector(selectSurveyInfo);
   const [unsavedModalOpen, setUnsavedModalOpen] = useState(false);
+  const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
   const {
     contextInitialState: { campaignDetails },
     dispatchContext,
@@ -270,10 +272,20 @@ const CampaignDetail = () => {
                     sx={{
                       position: "absolute",
                       right: 10,
+                      display: "flex",
+                      gap: 1,
                     }}
-                    onClick={methods.handleSubmit(onSubmit)}
                   >
-                    <Button variant="contained">
+                    <Button
+                      onClick={() => setPreviewModalOpen(true)}
+                      variant="contained"
+                    >
+                      <Typography>Preview</Typography>
+                    </Button>
+                    <Button
+                      onClick={methods.handleSubmit(onSubmit)}
+                      variant="contained"
+                    >
                       <Typography>Save changes</Typography>
                     </Button>
                   </Box>
@@ -290,6 +302,66 @@ const CampaignDetail = () => {
         onSuccess={handleDelete}
         textConfig={deleteNoteDialogOptions}
       />
+      <SharedDialog
+        hasActions={false}
+        open={isPreviewModalOpen}
+        setOpen={setPreviewModalOpen}
+        fullScreen
+        textConfig={{ title: "Preview" }}
+        sx={{
+          "& .MuiDialog-container": {
+            "& .MuiDialogContent-root": {
+              padding: 0,
+            },
+          },
+        }}
+      >
+        <Box
+          display="flex"
+          justifyContent={"center"}
+          sx={{
+            backgroundImage: `url(${require("assets/images/bg.jpg")})`,
+            height: "94.4vh",
+            backgroundSize: "cover",
+          }}
+        >
+          <Box
+            p={2}
+            sx={{
+              display: { xs: "flex" },
+              alignItems: { xs: "center" },
+              justifyContent: "center",
+            }}
+          >
+            <Card
+              sx={{
+                height: { xs: "95vh", sm: "80vh" },
+                backgroundColor: "rgb(255 255 255 / 97%)",
+                overflow: "scroll",
+              }}
+            >
+              <CardContent>
+                <Box
+                  sx={{
+                    width: {
+                      xs: "85vw",
+                      sm: "80vw",
+                      md: "60vw",
+                      lg: "50vw",
+                      xl: "40vw",
+                    },
+                  }}
+                >
+                  <SurveyTemplate
+                    methods={methods}
+                    questionData={surveyDetails}
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        </Box>
+      </SharedDialog>
     </Box>
   );
 };
