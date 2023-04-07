@@ -154,59 +154,10 @@ const CampaignCardsList = ({
                           color="text.secondary"
                           fontWeight={600}
                         >
-                          Sent
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.sent}
-                        </Typography>
-                      </StyledBox>
-
-                      <StyledBox>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={600}
-                        >
-                          Delivered
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.delivered}
-                        </Typography>
-                      </StyledBox>
-                      <StyledBox>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={600}
-                        >
-                          Opened
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.opened}
-                        </Typography>
-                      </StyledBox>
-                      <StyledBox>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={600}
-                        >
                           Responded
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {item.responded}
-                        </Typography>
-                      </StyledBox>
-                      <StyledBox>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={600}
-                        >
-                          Bounced
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.bounced}
                         </Typography>
                       </StyledBox>
                     </Box>
