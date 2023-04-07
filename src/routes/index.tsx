@@ -21,6 +21,7 @@ import {
 import usePermission from "shared/helpers/hooks/usePermission";
 import { selectAuth } from "store/slicers/auth";
 import Login from "../pages/auth/login";
+import SmsDistributionForm from "pages/dashboard/CampaignDetails/distribution/SmsDistributionForm";
 
 export const CreateRoutes = () => {
   const isAuthorized = useSelector(selectAuth);
@@ -115,6 +116,10 @@ export const CreateRoutes = () => {
         {
           path: "survey/:id",
           element: <CampaignDetails />,
+        },
+        {
+          path: "sms-share/:surveyID",
+          element: <SmsDistributionForm />,
         },
       ],
     },

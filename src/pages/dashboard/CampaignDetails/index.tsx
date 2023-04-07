@@ -12,7 +12,6 @@ import {
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import {
   GetCampaignById,
-  GetCampaignTriggers,
   GetSurveys,
   GetTemplates,
   UpdateSurvey,
@@ -167,7 +166,6 @@ const CampaignDetail = () => {
       dispatch(GetCampaignById(Number(id))),
       dispatch(GetTemplates(Number(id))),
       dispatch(GetSurveys(Number(id))),
-      dispatch(GetCampaignTriggers()),
     ]);
   }, [dispatch, id]);
 
