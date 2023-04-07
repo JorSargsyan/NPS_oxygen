@@ -48,7 +48,7 @@ export const DeleteTranslation = createAsyncThunk<
   async (params) => {
     return (
       await api.delete(
-        `${EBaseUrl.API}/admin/translations/${params.key}/${params.module}`
+        `${EBaseUrl.API}/Translation/${params.key}/${params.module}`
       )
     ).data;
   },
