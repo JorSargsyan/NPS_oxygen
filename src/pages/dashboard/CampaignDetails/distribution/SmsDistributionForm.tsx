@@ -8,6 +8,8 @@ import LinkIcon from "@heroicons/react/24/outline/LinkIcon";
 import EnvelopeIcon from "@heroicons/react/24/outline/EnvelopeIcon";
 import {
   DistributionSchedule,
+  GetCampaignById,
+  GetCampaignTriggers,
   selectCampaignInfo,
   selectTriggers,
 } from "store/slicers/campaignDetail";
@@ -19,6 +21,7 @@ import { requiredRules } from "shared/helpers/validators";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import toast from "react-hot-toast";
 import { ERequestStatus } from "store/enums/index.enum";
+import { useParams } from "react-router-dom";
 
 const defaultValues = {
   ignoreQuarantine: false,
@@ -32,6 +35,7 @@ const defaultValues = {
 };
 
 const SmsDistributionForm = () => {
+  const { surveyID } = useParams();
   const campaignInfo = useSelector(selectCampaignInfo);
   const dispatch = useAsyncDispatch();
   const [testSmsOpen, setTestSmsOpen] = useState(false);
@@ -56,7 +60,7 @@ const SmsDistributionForm = () => {
     };
 
     const { meta } = await dispatch(
-      DistributionSchedule({ id: campaignInfo.id, data })
+      DistributionSchedule({ id: Number(surveyID), data })
     );
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
@@ -83,8 +87,15 @@ const SmsDistributionForm = () => {
     }
   }, [campaignInfo, methods, triggers]);
 
+  useEffect(() => {
+    Promise.all([
+      dispatch(GetCampaignTriggers()),
+      dispatch(GetCampaignById(Number(surveyID))),
+    ]);
+  }, [dispatch, surveyID]);
+
   return (
-    <Fragment>
+    <Box p={4}>
       <FormProvider {...methods}>
         <Box display="flex">
           <Box flex={1}>
@@ -176,11 +187,7 @@ const SmsDistributionForm = () => {
           </Box>
           <Box flex={1}>
             <Box ml={6}>
-              <TextInput
-                rules={requiredRules}
-                name="message"
-                label="Message text"
-              />
+              <TextInput name="message" label="Message text" />
               <Box mt={2}>
                 <Box display="flex">
                   <Tooltip title="Click on the button to add the link where you want it to be appeared in the text. ">
@@ -345,7 +352,7 @@ const SmsDistributionForm = () => {
       >
         <TestSMSForm onSuccess={() => setTestSmsOpen(false)} />
       </RightDrawer>
-    </Fragment>
+    </Box>
   );
 };
 

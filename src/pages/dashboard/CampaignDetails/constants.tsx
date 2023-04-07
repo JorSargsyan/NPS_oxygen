@@ -14,7 +14,7 @@ export const campaignDetailsTabList = [
   },
   {
     index: ECampaignTabs.DISTRIBUTION,
-    label: "Distribution",
+    label: "Share",
     children: <Distribution />,
   },
 ];
