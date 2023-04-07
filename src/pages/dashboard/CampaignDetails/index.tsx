@@ -85,6 +85,7 @@ const CampaignDetail = () => {
   const surveyDetails = useSelector(selectSurveyInfo);
   const [unsavedModalOpen, setUnsavedModalOpen] = useState(false);
   const [isPreviewModalOpen, setPreviewModalOpen] = useState(false);
+  const [previewModalData, setPreviewModalData] = useState(null);
   const {
     contextInitialState: { campaignDetails },
     dispatchContext,
@@ -250,6 +251,64 @@ const CampaignDetail = () => {
     setTabValue(val);
   };
 
+  const openPreviewModal = () => {
+    const watchValues = methods.watch();
+    let data = {
+      details: {
+        ...surveyDetails?.details,
+        title: watchValues.title,
+        button: watchValues.buttonText,
+      },
+      template: { ...surveyDetails?.template },
+    };
+    if (
+      surveyDetails?.details?.type === Number(ECampaignSurveyType.Rating) ||
+      surveyDetails?.details?.type === Number(ECampaignSurveyType.Nps) ||
+      surveyDetails?.details?.type ===
+        Number(ECampaignSurveyType.ServiceQualityScore)
+    ) {
+      const {
+        metricConfig: { customEndLength, customStartLength },
+      } = watchValues;
+      let answersArr = [];
+      for (
+        let i = Number(customStartLength);
+        i <= Number(customEndLength);
+        i++
+      ) {
+        answersArr.push({
+          id: i,
+          value: i,
+        });
+      }
+      data = {
+        details: {
+          ...data?.details,
+          metricConfig: watchValues?.metricConfig,
+          answers: answersArr,
+        },
+        template: { ...data?.template },
+      };
+    }
+    if (
+      surveyDetails?.details?.type ===
+        Number(ECampaignSurveyType.SingleChoice) ||
+      surveyDetails?.details?.type ===
+        Number(ECampaignSurveyType.MultipleChoice)
+    ) {
+      data = {
+        details: {
+          ...data?.details,
+          answers: watchValues?.answers,
+        },
+        template: { ...data?.template },
+      };
+    }
+
+    setPreviewModalData(data);
+    setPreviewModalOpen(true);
+  };
+
   useEffect(() => {
     init();
   }, [init]);
@@ -292,7 +351,7 @@ const CampaignDetail = () => {
                     }}
                   >
                     <Button
-                      onClick={() => setPreviewModalOpen(true)}
+                      onClick={openPreviewModal}
                       variant="outlined"
                       startIcon={<EyeIcon height={20} />}
                     >
@@ -372,7 +431,7 @@ const CampaignDetail = () => {
                 >
                   <SurveyTemplate
                     methods={methods}
-                    questionData={surveyDetails}
+                    questionData={previewModalData}
                   />
                 </Box>
               </CardContent>
