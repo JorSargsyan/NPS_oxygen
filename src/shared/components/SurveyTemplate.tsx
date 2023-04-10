@@ -5,19 +5,29 @@ import { ESurveyPreviewComps } from "pages/Survey/constants";
 import { memo, useCallback } from "react";
 import { FormProvider } from "react-hook-form";
 import { EBaseUrl } from "store/config/constants";
+import { ITemplate } from "store/interfaces/campaignDetails";
+import {
+  IQuestionConfig,
+  IQuestionDetails,
+} from "store/interfaces/surveyPreview";
 
 export enum ESurveyTypes {
   Preview = "preview",
   Customer = "customer",
 }
 
+export interface ISurveyTemplateQuestionData {
+  details: IQuestionDetails;
+  config: IQuestionConfig;
+  template?: ITemplate;
+}
 interface IProps {
   methods: any;
   type?: ESurveyTypes;
   handleSkip?: () => void;
   handleNext?: (data: any) => void;
   checkDisabled?: boolean;
-  questionData: any;
+  questionData: ISurveyTemplateQuestionData;
 }
 
 const SurveyTemplate = ({
