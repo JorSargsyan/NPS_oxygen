@@ -128,6 +128,7 @@ const AddEditTranslations = ({
                 label="Translation key"
                 name="key"
                 rules={requiredRules}
+                disabled={!!editData}
               />
             </Grid>
             <Grid item xs={12}>

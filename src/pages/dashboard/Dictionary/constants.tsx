@@ -77,5 +77,5 @@ export const translationModuleOptions: ITranslationModuleOptions[] = [
 
 export const deleteTranslationWarningConfig = {
   title: "Warning",
-  description: "Are you sure you want to delete this translation???",
+  description: "Are you sure you want to delete this translation?",
 };

@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { getQueryParams } from "shared/helpers/getQueryParams";
+import { requiredRules } from "shared/helpers/validators";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import TextInput from "shared/ui/TextInput";
@@ -120,7 +121,17 @@ const AddEditDirectorate = ({
         <FormProvider {...methods}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="Directorate name" name="name" />
+              <TextInput<IFormData>
+                label="Directorate name"
+                name="name"
+                rules={{
+                  ...requiredRules,
+                  maxLength: {
+                    value: 300,
+                    message: "Max 300 characters",
+                  },
+                }}
+              />
             </Grid>
             <Grid item xs={12}>
               <BasicAutocomplete<IAttachedEmployee>
@@ -130,6 +141,7 @@ const AddEditDirectorate = ({
                 defaultValue={[]}
                 optionLabel="label"
                 multiple
+                rules={{ ...requiredRules }}
                 fetchFn={fetchEmployeeList}
                 async
                 isOptionEqualToValue={(option, value) => {

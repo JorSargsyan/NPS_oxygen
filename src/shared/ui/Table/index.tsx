@@ -117,12 +117,11 @@ const BasicTable = <T extends { id: number }>({
     });
     onChange?.();
   };
-
   const handleSort = useCallback(
     (prop: string, direction: string) => (_: any) => {
       filterOptions?.reset({
         ...filterOptions.watch(),
-        filters: {
+        config: {
           ...filters,
           sortDirection: direction,
           sortColumn: prop,
