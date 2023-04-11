@@ -12,15 +12,27 @@ export const scoreColors = {
   good: {
     bgColor: "#AFF9DA",
     color: "#146D48",
+    chartColor: "#73a110",
   },
   neutral: {
     bgColor: "#FBFCBF",
     color: "#99733B",
+    chartColor: "#FFE159",
   },
   bad: {
     bgColor: "#F9AFAF",
     color: "#6D1414",
+    chartColor: "#FF7361",
   },
+  veryBad: {
+    chartColor: "#B3191",
+  },
+};
+
+export const scoreRanges = {
+  good: [9, 10],
+  neutral: [7, 8],
+  bad: [0, 6],
 };
 
 export const feedbackColumns = [

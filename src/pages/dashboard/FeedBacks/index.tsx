@@ -39,6 +39,7 @@ import {
   feedbackFilterTypesKeys,
   feedbackStatusList,
   scoreColors,
+  scoreRanges,
   viewCommentsDialogConfig,
 } from "./constants";
 import { changeFeedbackStatus } from "./helpers";
@@ -209,9 +210,12 @@ const Feedbacks = () => {
               layout: (row: IFeedback) => {
                 const textColor = (score: IScore) => {
                   const val = Number(score?.value);
-                  if (val >= 0 && val <= 6) {
+                  if (val >= scoreRanges.bad[0] && val <= scoreRanges.bad[1]) {
                     return scoreColors.bad.color;
-                  } else if (val >= 7 && val <= 8) {
+                  } else if (
+                    val >= scoreRanges.neutral[0] &&
+                    val <= scoreRanges.neutral[1]
+                  ) {
                     return scoreColors.neutral.color;
                   } else {
                     return scoreColors.good.color;
@@ -220,9 +224,12 @@ const Feedbacks = () => {
 
                 const bgColor = (score: IScore) => {
                   const val = Number(score?.value);
-                  if (val >= 0 && val <= 6) {
+                  if (val >= scoreRanges.bad[0] && val <= scoreRanges.bad[1]) {
                     return scoreColors.bad.bgColor;
-                  } else if (val >= 7 && val <= 8) {
+                  } else if (
+                    val >= scoreRanges.neutral[0] &&
+                    val <= scoreRanges.neutral[1]
+                  ) {
                     return scoreColors.neutral.bgColor;
                   } else {
                     return scoreColors.good.bgColor;
