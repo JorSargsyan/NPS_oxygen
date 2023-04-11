@@ -77,7 +77,69 @@ const Dashboard = () => {
     <Box p={4}>
       <Box component={Paper} elevation={3}>
         <FormProvider {...methods}>
-          <Box display="flex" justifyContent="end" py={4}>
+          <Box display="flex" justifyContent="space-around" py={4}>
+            <Box sx={{ width: "50%" }}>
+              <Card>
+                <CardContent>
+                  <Box display="flex" justifyContent="space-around">
+                    <Box textAlign="center">
+                      <Typography fontSize={18} fontWeight="bold">
+                        Survey completed
+                      </Typography>
+                      <Typography fontSize={24} fontWeight="bold">
+                        {deliveredData?.responded}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={18} fontWeight="bold">
+                        Response rate
+                      </Typography>
+                      <Typography fontSize={24} fontWeight="bold">
+                        {deliveredData?.opened &&
+                          deliveredData?.responded &&
+                          (deliveredData?.opened / deliveredData?.responded) *
+                            100}
+                        %
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box display="flex" pt={4} justifyContent="space-between">
+                    <Box textAlign="center">
+                      <Typography fontSize={14} fontWeight="bold">
+                        Sent
+                      </Typography>
+                      <Typography fontSize={20} fontWeight="bold">
+                        {deliveredData?.sent}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14} fontWeight="bold">
+                        Delivered
+                      </Typography>
+                      <Typography fontSize={20} fontWeight="bold">
+                        {deliveredData?.delivered}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14} fontWeight="bold">
+                        Opened
+                      </Typography>
+                      <Typography fontSize={20} fontWeight="bold">
+                        {deliveredData?.opened}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14} fontWeight="bold">
+                        Bounced
+                      </Typography>
+                      <Typography fontSize={20} fontWeight="bold">
+                        {deliveredData?.bounced}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
             <Box width="30%">
               <BasicRangePicker
                 name="range"
@@ -85,65 +147,7 @@ const Dashboard = () => {
               />
             </Box>
           </Box>
-          <Card sx={{ width: "50%", ml: 2, p: 4 }}>
-            <CardContent>
-              <Box display="flex" justifyContent="space-around">
-                <Box textAlign="center">
-                  <Typography fontSize={18} fontWeight="bold">
-                    Total Survey completed
-                  </Typography>
-                  <Typography fontSize={24} fontWeight="bold">
-                    {deliveredData?.responded}
-                  </Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography fontSize={18} fontWeight="bold">
-                    Total response rate
-                  </Typography>
-                  <Typography fontSize={24} fontWeight="bold">
-                    {deliveredData?.opened &&
-                      deliveredData?.responded &&
-                      (deliveredData?.opened / deliveredData?.responded) * 100}
-                    %
-                  </Typography>
-                </Box>
-              </Box>
-              <Box display="flex" pt={4} justifyContent="space-between">
-                <Box textAlign="center">
-                  <Typography fontSize={14} fontWeight="bold">
-                    Sent
-                  </Typography>
-                  <Typography fontSize={20} fontWeight="bold">
-                    {deliveredData?.sent}
-                  </Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography fontSize={14} fontWeight="bold">
-                    Delivered
-                  </Typography>
-                  <Typography fontSize={20} fontWeight="bold">
-                    {deliveredData?.delivered}
-                  </Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography fontSize={14} fontWeight="bold">
-                    Opened
-                  </Typography>
-                  <Typography fontSize={20} fontWeight="bold">
-                    {deliveredData?.opened}
-                  </Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography fontSize={14} fontWeight="bold">
-                    Bounced
-                  </Typography>
-                  <Typography fontSize={20} fontWeight="bold">
-                    {deliveredData?.bounced}
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
+
           <Box mt={5}>
             <ScoreCharts
               label="NPS"
