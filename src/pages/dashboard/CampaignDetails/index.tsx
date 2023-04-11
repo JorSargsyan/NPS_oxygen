@@ -40,7 +40,7 @@ const defaultAnswer = {
   position: 0,
 };
 
-let metricConfigable = [
+export const metricConfigable = [
   Number(ECampaignSurveyType.Nps),
   Number(ECampaignSurveyType.Rating),
   Number(ECampaignSurveyType.ServiceQualityScore),
@@ -49,7 +49,7 @@ let metricConfigable = [
   Number(ECampaignSurveyType.CustomerSatisfactionScore),
 ];
 
-let answerResettable = [
+const answerResettable = [
   Number(ECampaignSurveyType.MultipleChoice),
   Number(ECampaignSurveyType.SingleChoice),
 ];

@@ -1,7 +1,6 @@
-import PropTypes from "prop-types";
-import { Box, Typography, Unstable_Grid2 as Grid } from "@mui/material";
+import { Box, Unstable_Grid2 as Grid } from "@mui/material";
 import { Logo } from "../components/logo";
-import Ill from "assets/icons/auth-illustration.svg";
+import Auth from "assets/images/auth.jpeg";
 
 export const Layout = (props: any) => {
   const { children } = props;
@@ -53,8 +52,8 @@ export const Layout = (props: any) => {
           lg={6}
           sx={{
             alignItems: "center",
-            background:
-              "radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)",
+            // background:
+            //   "radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)",
             color: "white",
             display: "flex",
             justifyContent: "center",
@@ -64,29 +63,10 @@ export const Layout = (props: any) => {
           }}
         >
           <Box sx={{ p: 3 }}>
-            <Typography
-              align="center"
-              color="inherit"
-              sx={{
-                fontSize: "24px",
-                lineHeight: "32px",
-                mb: 1,
-              }}
-              variant="h1"
-            >
-              Welcome to{" "}
-              <Box component="a" sx={{ color: "#15B79E" }} target="_blank">
-                CX Pro
-              </Box>
-            </Typography>
-            <img alt="" src={Ill} />
+            <img alt="" src={Auth} />
           </Box>
         </Grid>
       </Grid>
     </Box>
   );
-};
-
-Layout.prototypes = {
-  children: PropTypes.node,
 };

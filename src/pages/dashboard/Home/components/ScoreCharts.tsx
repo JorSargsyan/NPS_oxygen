@@ -25,7 +25,7 @@ const ScoreCharts = ({ dashboardDataChopChart, scoreData, label }: Props) => {
                 mb: 2,
               }}
             >
-              {label}
+              <Typography fontWeight={"bold"}>{label}</Typography>
             </Box>
             <Box display="flex" alignItems="center">
               <Box
