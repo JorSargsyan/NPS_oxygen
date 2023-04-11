@@ -169,7 +169,7 @@ const AddEditRoles = ({
                 <BasicAutocomplete<IPermGroupPermission>
                   name="permissions.customer"
                   hasSelectAllOption
-                  options={permGroups[0]?.permissions}
+                  options={permGroups?.[0]?.permissions}
                   inputLabel={"Customer Permissions"}
                   multiple
                   defaultValue={[]}
@@ -182,7 +182,7 @@ const AddEditRoles = ({
                   inputLabel="Feedbacks Permissions"
                   name="permissions.feedbacks"
                   hasSelectAllOption
-                  options={permGroups[1].permissions}
+                  options={permGroups?.[1].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -194,7 +194,7 @@ const AddEditRoles = ({
                   inputLabel="Dashboard Permissions"
                   name="permissions.dashboard"
                   hasSelectAllOption
-                  options={permGroups[2].permissions}
+                  options={permGroups?.[2].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -206,7 +206,7 @@ const AddEditRoles = ({
                   inputLabel="Campaign Permissions"
                   name="permissions.campaign"
                   hasSelectAllOption
-                  options={permGroups[3].permissions}
+                  options={permGroups?.[3].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -218,7 +218,7 @@ const AddEditRoles = ({
                   inputLabel="Roles Permissions"
                   name="permissions.roles"
                   hasSelectAllOption
-                  options={permGroups[4].permissions}
+                  options={permGroups?.[4].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -230,7 +230,7 @@ const AddEditRoles = ({
                   inputLabel="Users Permissions"
                   name="permissions.users"
                   hasSelectAllOption
-                  options={permGroups[5].permissions}
+                  options={permGroups?.[5].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -242,7 +242,7 @@ const AddEditRoles = ({
                   inputLabel="Translation Permissions"
                   name="permissions.translations"
                   hasSelectAllOption
-                  options={permGroups[6].permissions}
+                  options={permGroups?.[6].permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -254,7 +254,7 @@ const AddEditRoles = ({
                   inputLabel="Directorate Permissions"
                   name="permissions.directorate"
                   hasSelectAllOption
-                  options={permGroups[7].permissions}
+                  options={permGroups?.[7]?.permissions || []}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"

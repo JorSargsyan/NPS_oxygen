@@ -12,43 +12,47 @@ type Props = {
 
 const ScoreCharts = ({ dashboardDataChopChart, scoreData, label }: Props) => {
   return (
-    <Card sx={{ m: 2 }}>
+    <Card sx={{ m: 2, minHeight: 485 }}>
       <CardContent>
-        <>
-          <Box
-            sx={{
-              backgroundColor: "primary.main",
-              color: "white",
-              padding: "8px",
-              borderRadius: "8px",
-              mb: 2,
-            }}
-          >
-            {label}
-          </Box>
-          <Box display="flex" alignItems="center">
+        {scoreData ? (
+          <>
             <Box
-              width="48%"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              gap={5}
+              sx={{
+                backgroundColor: "primary.main",
+                color: "white",
+                padding: "8px",
+                borderRadius: "8px",
+                mb: 2,
+              }}
             >
-              <RadialBar series={[scoreData?.score]} label={label} />
+              {label}
+            </Box>
+            <Box display="flex" alignItems="center">
+              <Box
+                width="48%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                gap={5}
+              >
+                <RadialBar series={[scoreData?.score]} label={label} />
 
-              <Box>
-                <Typography>Bad count: {scoreData?.badCount}</Typography>
-                <Typography>
-                  Neutral count: {scoreData?.ordinaryCount}
-                </Typography>
-                <Typography>Good count: {scoreData?.goodCount}</Typography>
+                <Box>
+                  <Typography>Bad count: {scoreData?.badCount}</Typography>
+                  <Typography>
+                    Neutral count: {scoreData?.ordinaryCount}
+                  </Typography>
+                  <Typography>Good count: {scoreData?.goodCount}</Typography>
+                </Box>
+              </Box>
+              <Box width="48%">
+                <ColumnsChart series={dashboardDataChopChart} label={label} />
               </Box>
             </Box>
-            <Box width="48%">
-              <ColumnsChart series={dashboardDataChopChart} label={label} />
-            </Box>
-          </Box>
-        </>
+          </>
+        ) : (
+          <div />
+        )}
       </CardContent>
     </Card>
   );

@@ -425,7 +425,7 @@ const CampaignDetail = () => {
           >
             <Card
               sx={{
-                height: { xs: "95vh", sm: "80vh" },
+                height: { xs: "95vh", sm: "85vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
                 overflow: "scroll",
               }}
@@ -438,7 +438,6 @@ const CampaignDetail = () => {
                       sm: "80vw",
                       md: "60vw",
                       lg: "50vw",
-                      xl: "40vw",
                     },
                   }}
                 >

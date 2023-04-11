@@ -132,6 +132,10 @@ export enum ESurveyType {
   Friendliness,
   Custom,
   EndPage,
+  ContactInformation,
+  CustomStar,
+  CustomerEffortScore,
+  CustomerSatisfactionScore,
 }
 
 export const feedbackStatusValues = {

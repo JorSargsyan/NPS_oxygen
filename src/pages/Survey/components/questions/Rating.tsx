@@ -16,8 +16,6 @@ const CustomRatingQuestion = ({
     methods.setValue("answerIDs", [id]);
   };
 
-  console.log(methods.watch());
-
   return (
     <Box>
       <Box
@@ -35,6 +33,12 @@ const CustomRatingQuestion = ({
               return (
                 <Rating
                   size="large"
+                  sx={{
+                    "& svg": {
+                      width: { xs: "1em", md: "40px" },
+                      height: { xs: "1em", md: "40px" },
+                    },
+                  }}
                   max={details?.answers?.length}
                   {...field}
                   value={
@@ -64,7 +68,7 @@ const CustomRatingQuestion = ({
                     backgroundColor: "primary.main",
                     color: "white",
                   },
-                  width: { xs: "40px", sm: "8%" },
+                  width: { xs: "40px", sm: "7.5%", lg: "8%" },
                   padding: { xs: "9px", sm: 2 },
                 }}
                 className={

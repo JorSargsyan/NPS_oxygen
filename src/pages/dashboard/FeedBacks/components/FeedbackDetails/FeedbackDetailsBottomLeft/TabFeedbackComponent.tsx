@@ -31,8 +31,25 @@ const TabFeedbackComponent = () => {
       return scoreColors.good.bgColor;
     }
   };
+
+  const getScoreTitles = (type: number) => {
+    switch (type) {
+      case ESurveyType.NPS:
+        return "NPS";
+      case ESurveyType.Friendliness:
+        return "ES";
+      case ESurveyType.CustomStar:
+        return "Star Rating";
+      case ESurveyType.CustomerEffortScore:
+        return "Effort Score";
+      case ESurveyType.CustomerSatisfactionScore:
+        return "Satisfaction Score";
+    }
+  };
+
+  console.log(feedbackDetails, "feedbackDetails");
   return (
-    <Box sx={{ overflow: "scroll", height: "500px", p: 3 }}>
+    <Box sx={{ overflow: "scroll", height: "500px", p: "18px 12px" }}>
       {!feedbackDetails?.feedbacks?.length ? (
         <NoData description="There is no feedback" />
       ) : (
@@ -93,33 +110,23 @@ const TabFeedbackComponent = () => {
                           {answer.value}
                         </Typography>
                       )}
-                      {feedback.type === ESurveyType.NPS && (
-                        <Box
-                          bgcolor={bgColor(Number(answer.value))}
-                          color={textColor(Number(answer.value))}
-                          textAlign="center"
-                          padding="8px 4px"
-                          width="100px"
-                          borderRadius="8px"
-                          fontSize="12px"
-                        >
-                          <Typography>
-                            {"NPS"} <span>{answer.value}.00</span>
-                          </Typography>
-                        </Box>
-                      )}
-                      {feedback.type === ESurveyType.Friendliness && (
-                        <Box
-                          bgcolor={bgColor(Number(answer.value))}
-                          color={textColor(Number(answer.value))}
-                          textAlign="center"
-                          padding="8px 4px"
-                          width="100px"
-                          borderRadius="8px"
-                          fontSize="12px"
-                        >
-                          <Typography>
-                            {"ES"} <span>{answer.value}.00</span>
+                      {(feedback.type === ESurveyType.NPS ||
+                        feedback.type === ESurveyType.Friendliness ||
+                        feedback.type === ESurveyType.CustomStar ||
+                        feedback.type === ESurveyType.CustomerEffortScore ||
+                        feedback.type ===
+                          ESurveyType.CustomerSatisfactionScore) && (
+                        <Box>
+                          <Typography
+                            fontSize={14}
+                            bgcolor={bgColor(Number(answer.value))}
+                            color={textColor(Number(answer.value))}
+                            padding="12px 18px"
+                            borderRadius="8px"
+                            display="inline"
+                          >
+                            {getScoreTitles(feedback.type)}{" "}
+                            <span>{answer.value}.00</span>
                           </Typography>
                         </Box>
                       )}

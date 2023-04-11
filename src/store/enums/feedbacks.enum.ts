@@ -1,13 +1,19 @@
 enum EScore {
   NPS = 5,
-  ES,
-  Custom,
+  ES = 6,
+  Custom = 7,
+  CustomRating = 10,
+  CustomerEffortScore = 11,
+  CustomerSatisfactionScore = 12,
 }
 
 const EScoreTypes = {
   [EScore.NPS]: "NPS",
   [EScore.ES]: "ES",
   [EScore.Custom]: "Custom",
+  [EScore.CustomRating]: "Rating",
+  [EScore.CustomerEffortScore]: "Effort",
+  [EScore.CustomerSatisfactionScore]: "Satisfaction",
 };
 
 enum EFeedbackStatus {

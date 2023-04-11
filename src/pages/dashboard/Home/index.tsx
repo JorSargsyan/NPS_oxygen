@@ -28,7 +28,7 @@ const Dashboard = () => {
     },
   });
 
-  const getDashboardData = useCallback(
+  const getFilteredDashboardData = useCallback(
     async (dates: Dayjs[]) => {
       const data = {
         filters: [
@@ -58,7 +58,7 @@ const Dashboard = () => {
   );
 
   const getFilteredDashboardStatistics = async (dates: Dayjs[]) => {
-    await getDashboardData(dates);
+    await getFilteredDashboardData(dates);
   };
 
   const init = useCallback(async () => {
@@ -66,8 +66,8 @@ const Dashboard = () => {
     methods.reset({
       range: dates,
     });
-    await getDashboardData(dates);
-  }, [dispatch, methods]);
+    await getFilteredDashboardData(dates);
+  }, [methods, getFilteredDashboardData]);
 
   useEffect(() => {
     init();
@@ -97,8 +97,10 @@ const Dashboard = () => {
                       <Typography fontSize={24} fontWeight="bold">
                         {deliveredData?.opened &&
                           deliveredData?.responded &&
-                          (deliveredData?.opened / deliveredData?.responded) *
-                            100}
+                          Math.floor(
+                            (deliveredData?.responded / deliveredData?.opened) *
+                              100
+                          )}
                         %
                       </Typography>
                     </Box>

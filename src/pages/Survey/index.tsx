@@ -334,7 +334,6 @@ const SurveyPreview = () => {
                       sm: "80vw",
                       md: "60vw",
                       lg: "50vw",
-                      xl: "40vw",
                     },
                   }}
                 >
