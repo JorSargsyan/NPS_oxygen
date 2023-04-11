@@ -13,6 +13,7 @@ import {
 } from "store/slicers/dashboard";
 import { feedbackFilterTypesKeys } from "../FeedBacks/constants";
 import ScoreCharts from "./components/ScoreCharts";
+import TrendChart from "./components/TrendChart";
 
 interface IFormData {
   range: Array<Dayjs | null>;
@@ -74,10 +75,16 @@ const Dashboard = () => {
   }, [init]);
 
   return (
-    <Box p={4}>
-      <Box component={Paper} elevation={3}>
+    <Box>
+      <Box>
         <FormProvider {...methods}>
-          <Box display="flex" justifyContent="space-around" py={4}>
+          <Box
+            m={2}
+            gap={4}
+            display="flex"
+            justifyContent="space-between"
+            py={4}
+          >
             <Box sx={{ width: "50%" }}>
               <Card>
                 <CardContent>
@@ -148,7 +155,7 @@ const Dashboard = () => {
             </Box>
           </Box>
 
-          <Box mt={5}>
+          <Box>
             <ScoreCharts
               label="NPS"
               dashboardDataChopChart={dashboardData?.npsChopChart}
@@ -159,6 +166,7 @@ const Dashboard = () => {
               dashboardDataChopChart={dashboardData?.friendlinessChopChart}
               scoreData={dashboardData?.friendliness}
             />
+            <TrendChart chartsData={dashboardData?.lineChartData} />
           </Box>
         </FormProvider>
       </Box>

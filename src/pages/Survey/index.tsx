@@ -31,6 +31,7 @@ import {
   SubmitAnswer,
 } from "store/slicers/surveyPreview";
 import { ESurveyPreviewTypes } from "./constants";
+import { metricConfigable } from "pages/dashboard/CampaignDetails";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
@@ -113,11 +114,7 @@ const SurveyPreview = () => {
   });
 
   const checkDisabled = useMemo(() => {
-    if (
-      details?.type === Number(ECampaignSurveyType.Rating) ||
-      details?.type === Number(ECampaignSurveyType.Nps) ||
-      details?.type === Number(ECampaignSurveyType.ServiceQualityScore)
-    ) {
+    if (metricConfigable.includes(Number(details?.type))) {
       return !answerIDs.length;
     }
     if (details?.type === Number(ECampaignSurveyType.SingleChoice)) {
