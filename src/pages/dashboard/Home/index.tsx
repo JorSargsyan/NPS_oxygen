@@ -78,14 +78,8 @@ const Dashboard = () => {
     <Box>
       <Box>
         <FormProvider {...methods}>
-          <Box
-            m={2}
-            gap={4}
-            display="flex"
-            justifyContent="space-between"
-            py={4}
-          >
-            <Box sx={{ width: "50%" }}>
+          <Box mx={2} gap={4} display="flex" py={2}>
+            <Box flex={1}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-around">
@@ -112,49 +106,56 @@ const Dashboard = () => {
                       </Typography>
                     </Box>
                   </Box>
-                  <Box display="flex" pt={4} justifyContent="space-between">
-                    <Box textAlign="center">
-                      <Typography fontSize={14} fontWeight="bold">
-                        Sent
-                      </Typography>
-                      <Typography fontSize={20} fontWeight="bold">
-                        {deliveredData?.sent}
-                      </Typography>
-                    </Box>
-                    <Box textAlign="center">
-                      <Typography fontSize={14} fontWeight="bold">
-                        Delivered
-                      </Typography>
-                      <Typography fontSize={20} fontWeight="bold">
-                        {deliveredData?.delivered}
-                      </Typography>
-                    </Box>
-                    <Box textAlign="center">
-                      <Typography fontSize={14} fontWeight="bold">
-                        Opened
-                      </Typography>
-                      <Typography fontSize={20} fontWeight="bold">
-                        {deliveredData?.opened}
-                      </Typography>
-                    </Box>
-                    <Box textAlign="center">
-                      <Typography fontSize={14} fontWeight="bold">
-                        Bounced
-                      </Typography>
-                      <Typography fontSize={20} fontWeight="bold">
-                        {deliveredData?.bounced}
-                      </Typography>
-                    </Box>
-                  </Box>
                 </CardContent>
               </Card>
             </Box>
-            <Box width="30%">
+            <Box flex={1}>
               <BasicRangePicker
                 name="range"
                 onSubmit={getFilteredDashboardStatistics}
               />
             </Box>
+          </Box>
+
+          <Box mx={2}>
+            <Card>
+              <CardContent>
+                <Box display="flex" justifyContent="space-between">
+                  <Box textAlign="center">
+                    <Typography fontSize={14} fontWeight="bold">
+                      Sent
+                    </Typography>
+                    <Typography fontSize={20} fontWeight="bold">
+                      {deliveredData?.sent}
+                    </Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography fontSize={14} fontWeight="bold">
+                      Delivered
+                    </Typography>
+                    <Typography fontSize={20} fontWeight="bold">
+                      {deliveredData?.delivered}
+                    </Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography fontSize={14} fontWeight="bold">
+                      Opened
+                    </Typography>
+                    <Typography fontSize={20} fontWeight="bold">
+                      {deliveredData?.opened}
+                    </Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography fontSize={14} fontWeight="bold">
+                      Bounced
+                    </Typography>
+                    <Typography fontSize={20} fontWeight="bold">
+                      {deliveredData?.bounced}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
           </Box>
 
           <Box>
@@ -167,6 +168,16 @@ const Dashboard = () => {
               label="Friendliness"
               dashboardDataChopChart={dashboardData?.friendlinessChopChart}
               scoreData={dashboardData?.friendliness}
+            />
+            <ScoreCharts
+              label="CES"
+              dashboardDataChopChart={dashboardData?.effortScoreChopChart}
+              scoreData={dashboardData?.effortScore}
+            />
+            <ScoreCharts
+              label="CSAT"
+              dashboardDataChopChart={dashboardData?.satisfactionScoreChopChart}
+              scoreData={dashboardData?.satisfactionScore}
             />
             <TrendChart chartsData={dashboardData?.lineChartData} />
           </Box>

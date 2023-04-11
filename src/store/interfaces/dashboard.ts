@@ -37,6 +37,10 @@ export interface ILineChartData {
 
 export interface IDashboardData {
   nps: IScoreValues;
+  satisfactionScore: IScoreValues;
+  satisfactionScoreChopChart: { key: number; value: number }[];
+  effortScore: IScoreValues;
+  effortScoreChopChart: { key: number; value: number }[];
   friendliness: IScoreValues;
   npsChopChart: { key: number; value: number }[];
   friendlinessChopChart: { key: number; value: number }[];

@@ -7,18 +7,17 @@ import { scoreColors, scoreRanges } from "pages/dashboard/FeedBacks/constants";
 const state = {
   options: {
     chart: {
-      height: 350,
+      height: 300,
       type: "radialBar",
     },
     plotOptions: {
       radialBar: {
         hollow: {
-          size: "60%",
+          size: "40%",
         },
       },
     },
     type: "radialBar",
-    labels: ["NPS"],
   } as ApexOptions,
 };
 
@@ -34,7 +33,7 @@ const RadialBar = ({ series, label }: { series: number[]; label: string }) => {
     } else {
       return scoreColors.veryBad.chartColor;
     }
-  }, [series?.[0]]);
+  }, [series]);
 
   return (
     <ReactApexChart

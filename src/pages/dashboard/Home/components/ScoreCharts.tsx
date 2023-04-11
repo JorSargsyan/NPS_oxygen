@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import { IScoreValues } from "store/interfaces/dashboard";
 import ColumnsChart from "./ColumnChart";
 import RadialBar from "./RadialBar";
+import PieChart from "./PieChart";
 
 type Props = {
   dashboardDataChopChart: { key: number; value: number }[];
@@ -27,25 +28,20 @@ const ScoreCharts = ({ dashboardDataChopChart, scoreData, label }: Props) => {
             >
               <Typography fontWeight={"bold"}>{label}</Typography>
             </Box>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" gap={1} alignItems="center">
               <Box
-                width="48%"
+                flex={2}
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
                 gap={5}
               >
                 <RadialBar series={[scoreData?.score]} label={label} />
-
-                <Box>
-                  <Typography>Bad count: {scoreData?.badCount}</Typography>
-                  <Typography>
-                    Neutral count: {scoreData?.ordinaryCount}
-                  </Typography>
-                  <Typography>Good count: {scoreData?.goodCount}</Typography>
-                </Box>
               </Box>
-              <Box width="48%">
+              <Box flex={2}>
+                <PieChart chartData={scoreData} />
+              </Box>
+              <Box flex={4}>
                 <ColumnsChart series={dashboardDataChopChart} label={label} />
               </Box>
             </Box>
