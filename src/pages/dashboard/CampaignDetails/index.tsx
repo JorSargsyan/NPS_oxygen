@@ -44,6 +44,9 @@ let metricConfigable = [
   Number(ECampaignSurveyType.Nps),
   Number(ECampaignSurveyType.Rating),
   Number(ECampaignSurveyType.ServiceQualityScore),
+  Number(ECampaignSurveyType.CustomerEffortScore),
+  Number(ECampaignSurveyType.CustomStar),
+  Number(ECampaignSurveyType.CustomerSatisfactionScore),
 ];
 
 let answerResettable = [
@@ -72,6 +75,12 @@ interface IFormData {
     metricLeftText: string;
     customStartLength: string;
     customEndLength: string;
+  };
+  contactConfig?: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
   };
 }
 
@@ -143,6 +152,10 @@ const CampaignDetail = () => {
       ...(surveyDetails.details.type ===
         Number(ECampaignSurveyType.Comment) && {
         commentConfig: formData?.commentConfig,
+      }),
+      ...(surveyDetails.details.type ===
+        Number(ECampaignSurveyType.ContactInformation) && {
+        commentConfig: formData?.contactConfig,
       }),
       ...(surveyDetails.details.type ===
         Number(ECampaignSurveyType.MultipleChoice) && {

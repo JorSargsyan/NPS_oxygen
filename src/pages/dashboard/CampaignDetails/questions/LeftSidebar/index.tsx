@@ -24,7 +24,7 @@ import {
   setSelectedSurvey,
 } from "store/slicers/campaignDetail";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import reorderDragDrop from "shared/helpers/reorderDragDrop";
 import { ICampaignSurvey } from "store/interfaces/campaignDetails";
@@ -45,6 +45,10 @@ import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
 import StarIcon from "@heroicons/react/24/outline/StarIcon";
 import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
+import UserIcon from "@heroicons/react/24/outline/UserIcon";
+import RatingIcon from "@heroicons/react/24/outline/PresentationChartLineIcon";
+import PieChartIcon from "@heroicons/react/24/outline/ChartPieIcon";
+import SatisfactionIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import { setCampaignLoading } from "store/slicers/common";
 import { useFormContext } from "react-hook-form";
 import { GlobalContext } from "App";
@@ -65,19 +69,12 @@ const LeftSidebar = () => {
   const selectedSurvey = useSelector(selectSelectedSurvey);
   const campaignInfo = useSelector(selectCampaignInfo);
 
-  const addContentConfig = useMemo(() => {
-    return {
-      hasWelcome: surveyList.find(
-        (i) => i.type === Number(ECampaignSurveyType.Welcome)
-      ),
-      hasNPS: surveyList.find(
-        (i) => i.type === Number(ECampaignSurveyType.Nps)
-      ),
-      hasServiceQualityScore: surveyList.find(
-        (i) => i.type === Number(ECampaignSurveyType.ServiceQualityScore)
-      ),
-    };
-  }, [surveyList]);
+  const alreadyHasType = useCallback(
+    (type: ECampaignSurveyType) => {
+      return surveyList.find((i) => i.type === Number(type));
+    },
+    [surveyList]
+  );
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -260,7 +257,7 @@ const LeftSidebar = () => {
           open={addContentMenuOpen}
           onClose={handleClose}
         >
-          {!addContentConfig.hasWelcome && (
+          {!alreadyHasType(ECampaignSurveyType.Welcome) && (
             <MenuItem
               id={ECampaignSurveyType.Welcome}
               onClick={handleClickContentAdd}
@@ -291,7 +288,7 @@ const LeftSidebar = () => {
             <ChatIcon height={20} width={40} />
             Comment
           </MenuItem>
-          {!addContentConfig.hasNPS && (
+          {!alreadyHasType(ECampaignSurveyType.Nps) && (
             <MenuItem
               id={ECampaignSurveyType.Nps}
               onClick={handleClickContentAdd}
@@ -300,7 +297,7 @@ const LeftSidebar = () => {
               NPS
             </MenuItem>
           )}
-          {!addContentConfig.hasServiceQualityScore && (
+          {!alreadyHasType(ECampaignSurveyType.ServiceQualityScore) && (
             <MenuItem
               id={ECampaignSurveyType.ServiceQualityScore}
               onClick={handleClickContentAdd}
@@ -313,9 +310,45 @@ const LeftSidebar = () => {
             id={ECampaignSurveyType.Rating}
             onClick={handleClickContentAdd}
           >
-            <StarIcon height={20} width={40} />
+            <RatingIcon height={20} width={40} />
             Rating
           </MenuItem>
+          {!alreadyHasType(ECampaignSurveyType.ContactInformation) && (
+            <MenuItem
+              id={ECampaignSurveyType.ContactInformation}
+              onClick={handleClickContentAdd}
+            >
+              <UserIcon height={20} width={40} />
+              Contact Information
+            </MenuItem>
+          )}
+          {!alreadyHasType(ECampaignSurveyType.CustomStar) && (
+            <MenuItem
+              id={ECampaignSurveyType.CustomStar}
+              onClick={handleClickContentAdd}
+            >
+              <StarIcon height={20} width={40} />
+              Star Rating
+            </MenuItem>
+          )}
+          {!alreadyHasType(ECampaignSurveyType.CustomerEffortScore) && (
+            <MenuItem
+              id={ECampaignSurveyType.CustomerEffortScore}
+              onClick={handleClickContentAdd}
+            >
+              <PieChartIcon height={20} width={40} />
+              Effort Score
+            </MenuItem>
+          )}
+          {!alreadyHasType(ECampaignSurveyType.CustomerSatisfactionScore) && (
+            <MenuItem
+              id={ECampaignSurveyType.CustomerSatisfactionScore}
+              onClick={handleClickContentAdd}
+            >
+              <SatisfactionIcon height={20} width={40} />
+              Customer Satisfaction
+            </MenuItem>
+          )}
         </Menu>
       </Box>
       <List>

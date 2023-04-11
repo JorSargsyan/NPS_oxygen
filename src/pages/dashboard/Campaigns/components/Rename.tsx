@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";

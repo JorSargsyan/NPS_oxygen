@@ -4,6 +4,11 @@ import ChatIcon from "@heroicons/react/24/outline/ChatBubbleBottomCenterTextIcon
 import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import SmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
 import HandIcon from "@heroicons/react/24/outline/HandRaisedIcon";
+import UserIcon from "@heroicons/react/24/outline/UserIcon";
+import RatingIcon from "@heroicons/react/24/outline/PresentationChartLineIcon";
+import PieChartIcon from "@heroicons/react/24/outline/ChartPieIcon";
+import SatisfactionIcon from "@heroicons/react/24/outline/ChartBarIcon";
+import StarIcon from "@heroicons/react/24/outline/StarIcon";
 
 export const deleteCampaignSurveyWarningConfig = {
   title: "Warning",
@@ -19,6 +24,10 @@ export enum ECampaignSurveyType {
   ServiceQualityScore = "6",
   Rating = "7",
   Final = "8",
+  ContactInformation = "9",
+  CustomStar = "10",
+  CustomerEffortScore = "11",
+  CustomerSatisfactionScore = "12",
 }
 
 export const CampaignSurveyTypeList = {
@@ -29,6 +38,11 @@ export const CampaignSurveyTypeList = {
   [ECampaignSurveyType.Nps]: "NPS",
   [ECampaignSurveyType.ServiceQualityScore]: "Service quality score",
   [ECampaignSurveyType.Rating]: "Rating",
+  [ECampaignSurveyType.ContactInformation]: "Contact Information",
+  [ECampaignSurveyType.CustomStar]: "Star Rating",
+  [ECampaignSurveyType.CustomerEffortScore]: "Customer effort score",
+  [ECampaignSurveyType.CustomerSatisfactionScore]:
+    "Customer satisfaction score",
   [ECampaignSurveyType.Final]: "Thank you",
 };
 
@@ -39,7 +53,11 @@ export const CampaignSurveyIcons = {
   [ECampaignSurveyType.Comment]: ChatIcon,
   [ECampaignSurveyType.Nps]: ChartIcon,
   [ECampaignSurveyType.ServiceQualityScore]: SmileIcon,
-  [ECampaignSurveyType.Rating]: SmileIcon,
+  [ECampaignSurveyType.Rating]: RatingIcon,
+  [ECampaignSurveyType.ContactInformation]: UserIcon,
+  [ECampaignSurveyType.CustomStar]: StarIcon,
+  [ECampaignSurveyType.CustomerEffortScore]: PieChartIcon,
+  [ECampaignSurveyType.CustomerSatisfactionScore]: SatisfactionIcon,
   [ECampaignSurveyType.Final]: HandIcon,
 };
 
@@ -60,6 +78,30 @@ export const SurveyTypeConfig = {
     },
   },
   [ECampaignSurveyType.Rating]: {
+    metricConfig: {
+      metricLeftText: null,
+      metricRightText: null,
+      customStartLength: 0,
+      customEndLength: 10,
+    },
+  },
+  [ECampaignSurveyType.CustomStar]: {
+    metricConfig: {
+      metricLeftText: null,
+      metricRightText: null,
+      customStartLength: 0,
+      customEndLength: 10,
+    },
+  },
+  [ECampaignSurveyType.CustomerSatisfactionScore]: {
+    metricConfig: {
+      metricLeftText: null,
+      metricRightText: null,
+      customStartLength: 0,
+      customEndLength: 10,
+    },
+  },
+  [ECampaignSurveyType.CustomerEffortScore]: {
     metricConfig: {
       metricLeftText: null,
       metricRightText: null,

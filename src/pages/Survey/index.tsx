@@ -42,6 +42,14 @@ const SurveyPreview = () => {
       answerIDs: [],
       comment: "",
       singleChoice: "",
+      contact: "",
+      rate: 0,
+      contactConfig: {
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+      },
     },
   });
   const questionData = useSelector(selectQuestion);
@@ -180,6 +188,16 @@ const SurveyPreview = () => {
     } else if (details?.type === Number(ECampaignSurveyType.Comment)) {
       return {
         comment: formData.comment,
+        answerIDs: details?.answers?.map((i) => i.id),
+        hash,
+        surveyID: details.id,
+      };
+    } else if (
+      details?.type === Number(ECampaignSurveyType.ContactInformation)
+    ) {
+      const { firstName, lastName, phone, email } = formData.contactConfig;
+      return {
+        comment: `${firstName} ${lastName} ${phone} ${email}`,
         answerIDs: details?.answers?.map((i) => i.id),
         hash,
         surveyID: details.id,
