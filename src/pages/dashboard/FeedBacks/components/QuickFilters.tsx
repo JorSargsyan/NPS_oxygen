@@ -155,28 +155,7 @@ const QuickFilters = ({ methods, handleSubmit }) => {
       <FormProvider {...methods}>
         <Grid container spacing={3}>
           {hasQuickFilterByDatePermission && (
-            <Grid
-              item
-              xs={3}
-              sx={{
-                "& .ant-picker": {
-                  height: "50px",
-                  width: "100%",
-                  borderRadius: "8px",
-                  "&.ant-picker-focused": {
-                    borderWidth: 3,
-                    borderColor: "primary.main",
-                    boxShadow: "none",
-                    "&:hover": {
-                      borderColor: "primary.main",
-                    },
-                  },
-                  "&:hover": {
-                    borderColor: "neutral.200",
-                  },
-                },
-              }}
-            >
+            <Grid item xs={3}>
               <BasicRangePicker name="config.quickFilters.range" />
             </Grid>
           )}

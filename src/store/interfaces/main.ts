@@ -10,6 +10,7 @@ import { IFeedbacksState } from "./feedback";
 import { ICampaignDetailsState } from "./campaignDetails";
 import { IDirectoratesState } from "./directorates";
 import { ISurveyPreviewState } from "./surveyPreview";
+import { IDashboardState } from "./dashboard";
 export interface IPaginated<T> {
   totalDisplayRecords: number;
   totalRecords: number;
@@ -42,6 +43,7 @@ export interface IState {
   feedbacks: IFeedbacksState;
   surveyPreview: ISurveyPreviewState;
   directorates: IDirectoratesState;
+  dashboard: IDashboardState;
 }
 
 export interface IFilterOption {

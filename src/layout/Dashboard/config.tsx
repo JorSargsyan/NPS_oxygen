@@ -11,7 +11,7 @@ import Customers from "pages/dashboard/Customers";
 import Dictionary from "pages/dashboard/Dictionary";
 import Feedbacks from "pages/dashboard/FeedBacks";
 import Megaphone from "@heroicons/react/24/solid/MegaphoneIcon";
-import HomePage from "pages/dashboard/Home";
+import Dashboard from "pages/dashboard/Home";
 import Roles from "pages/dashboard/Roles";
 import Users from "pages/dashboard/Users";
 import DirectoratesGrid from "pages/dashboard/Directorates";
@@ -29,7 +29,7 @@ export const items = ({
     {
       title: "Overview",
       path: "overview",
-      element: <HomePage />,
+      element: <Dashboard />,
       icon: (
         <SvgIcon fontSize="small">
           <ChartBarIcon />

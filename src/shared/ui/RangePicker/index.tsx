@@ -1,3 +1,4 @@
+import { Box } from "@mui/system";
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { Controller, useFormContext } from "react-hook-form";
@@ -36,9 +37,10 @@ const shortcutsItems: {
 ];
 interface IProps {
   name: string;
+  onSubmit?: (dates: any) => void;
 }
 
-const BasicRangePicker = ({ name }: IProps) => {
+const BasicRangePicker = ({ name, onSubmit }: IProps) => {
   const { control } = useFormContext();
 
   const onRangeChange = (dates: any, dateStrings: string[], field: any) => {
@@ -47,24 +49,46 @@ const BasicRangePicker = ({ name }: IProps) => {
     } else {
       field.onChange([null, null]);
     }
+    onSubmit?.(dates);
   };
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field }) => {
-        return (
-          <DatePicker.RangePicker
-            {...field}
-            presets={shortcutsItems}
-            onChange={(dates, datesString) =>
-              onRangeChange(dates, datesString, field)
-            }
-          />
-        );
+    <Box
+      sx={{
+        "& .ant-picker": {
+          height: "50px",
+          width: "100%",
+          borderRadius: "8px",
+          "&.ant-picker-focused": {
+            borderWidth: 3,
+            borderColor: "primary.main",
+            boxShadow: "none",
+            "&:hover": {
+              borderColor: "primary.main",
+            },
+          },
+          "&:hover": {
+            borderColor: "neutral.200",
+          },
+        },
       }}
-    />
+    >
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => {
+          return (
+            <DatePicker.RangePicker
+              {...field}
+              presets={shortcutsItems}
+              onChange={(dates, datesString) =>
+                onRangeChange(dates, datesString, field)
+              }
+            />
+          );
+        }}
+      />
+    </Box>
   );
 };
 

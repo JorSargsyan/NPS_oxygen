@@ -11,6 +11,7 @@ import surveyPreview from "./surveyPreview";
 import campaigns from "./campaigns";
 import campaignDetails from "./campaignDetail";
 import directorates from "./directorates";
+import dashboard from "./dashboard";
 
 const reducers = {
   errors,
@@ -25,6 +26,7 @@ const reducers = {
   surveyPreview,
   feedbacks,
   directorates,
+  dashboard,
 };
 
 const combinedReducers = combineReducers(reducers);
