@@ -25,11 +25,11 @@ export const neutral = {
 };
 
 export const indigo = withAlphas({
-  lightest: "#73a11014",
-  light: "#8ea856",
-  main: "#73a110",
-  dark: "#5b7e0e",
-  darkest: "#3e5609",
+  lightest: "#83b3e6",
+  light: "#4e9cef",
+  main: "#017AFD",
+  dark: "#0a6ad2",
+  darkest: "#222D43",
   contrastText: "#FFFFFF",
 });
 
@@ -62,7 +62,7 @@ export const warning = withAlphas({
 
 export const error = withAlphas({
   lightest: "#FEF3F2",
-  light: "#FEE4E2",
+  light: "#ee695f",
   main: "#F04438",
   dark: "#B42318",
   darkest: "#7A271A",

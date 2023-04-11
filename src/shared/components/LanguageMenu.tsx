@@ -91,16 +91,7 @@ const LanguageMenu = () => {
           onClick={handleClick}
         >
           <Box display="flex" height="20px" margin="5px 0">
-            <img
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                borderRadius: "5px",
-              }}
-              src={selectedLanguage?.icon}
-              alt="language"
-            />
+            <Typography>{selectedLanguage.label}</Typography>
           </Box>
         </Button>
       ) : (
@@ -146,17 +137,6 @@ const LanguageMenu = () => {
                 height="15px"
                 margin="5px 0"
               >
-                <img
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                    marginRight: "10px",
-                    borderRadius: "2px",
-                  }}
-                  src={item.icon}
-                  alt="language"
-                />
                 <Typography> {item.label}</Typography>
               </Box>
             </MenuItem>

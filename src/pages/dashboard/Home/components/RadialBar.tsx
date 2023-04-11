@@ -11,6 +11,7 @@ const state = {
       type: "radialBar",
     },
     plotOptions: {
+      label: {},
       radialBar: {
         hollow: {
           size: "40%",

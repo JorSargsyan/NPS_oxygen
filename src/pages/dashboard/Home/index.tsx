@@ -78,23 +78,32 @@ const Dashboard = () => {
     <Box>
       <Box>
         <FormProvider {...methods}>
+          <Box display="flex" px={2} alignItems={"center"}>
+            <Box flex={3}>
+              <Typography variant="h5" fontWeight={"normal"}>
+                Statistics
+              </Typography>
+            </Box>
+            <Box flex={1}>
+              <BasicRangePicker
+                name="range"
+                onSubmit={getFilteredDashboardStatistics}
+              />
+            </Box>
+          </Box>
           <Box mx={2} gap={4} display="flex" py={2}>
             <Box flex={1}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-around">
                     <Box textAlign="center">
-                      <Typography fontSize={18} fontWeight="bold">
-                        Survey completed
-                      </Typography>
+                      <Typography fontSize={14}>Surveys completed</Typography>
                       <Typography fontSize={24} fontWeight="bold">
                         {deliveredData?.responded}
                       </Typography>
                     </Box>
                     <Box textAlign="center">
-                      <Typography fontSize={18} fontWeight="bold">
-                        Response rate
-                      </Typography>
+                      <Typography fontSize={14}>Response rate</Typography>
                       <Typography fontSize={24} fontWeight="bold">
                         {deliveredData?.opened &&
                           deliveredData?.responded &&
@@ -110,52 +119,37 @@ const Dashboard = () => {
               </Card>
             </Box>
             <Box flex={1}>
-              <BasicRangePicker
-                name="range"
-                onSubmit={getFilteredDashboardStatistics}
-              />
+              <Card sx={{ padding: "5px" }}>
+                <CardContent>
+                  <Box display="flex" justifyContent="space-between">
+                    <Box textAlign="center">
+                      <Typography fontSize={14}>Sent</Typography>
+                      <Typography fontSize={18}>
+                        {deliveredData?.sent}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14}>Delivered</Typography>
+                      <Typography fontSize={18}>
+                        {deliveredData?.delivered}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14}>Opened</Typography>
+                      <Typography fontSize={18}>
+                        {deliveredData?.opened}
+                      </Typography>
+                    </Box>
+                    <Box textAlign="center">
+                      <Typography fontSize={14}>Bounced</Typography>
+                      <Typography fontSize={18}>
+                        {deliveredData?.bounced}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
             </Box>
-          </Box>
-
-          <Box mx={2}>
-            <Card>
-              <CardContent>
-                <Box display="flex" justifyContent="space-between">
-                  <Box textAlign="center">
-                    <Typography fontSize={14} fontWeight="bold">
-                      Sent
-                    </Typography>
-                    <Typography fontSize={20} fontWeight="bold">
-                      {deliveredData?.sent}
-                    </Typography>
-                  </Box>
-                  <Box textAlign="center">
-                    <Typography fontSize={14} fontWeight="bold">
-                      Delivered
-                    </Typography>
-                    <Typography fontSize={20} fontWeight="bold">
-                      {deliveredData?.delivered}
-                    </Typography>
-                  </Box>
-                  <Box textAlign="center">
-                    <Typography fontSize={14} fontWeight="bold">
-                      Opened
-                    </Typography>
-                    <Typography fontSize={20} fontWeight="bold">
-                      {deliveredData?.opened}
-                    </Typography>
-                  </Box>
-                  <Box textAlign="center">
-                    <Typography fontSize={14} fontWeight="bold">
-                      Bounced
-                    </Typography>
-                    <Typography fontSize={20} fontWeight="bold">
-                      {deliveredData?.bounced}
-                    </Typography>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
           </Box>
 
           <Box>

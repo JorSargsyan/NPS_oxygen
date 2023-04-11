@@ -14,10 +14,12 @@ const PieChart = ({ chartData }: { chartData: IScoreValues }) => {
             type: "pie",
             width: 300,
           },
-          labels: ["Bad", "Ordinary", "Good"],
+
+          labels: ["Detractors", "Passives", "Promoters"],
+          colors: ["#ee695f", "#D2D6DB", "#00BC8A"],
         }}
         series={[badCount, ordinaryCount, goodCount]}
-        type="pie"
+        type="donut"
         width={300}
       />
     </div>
