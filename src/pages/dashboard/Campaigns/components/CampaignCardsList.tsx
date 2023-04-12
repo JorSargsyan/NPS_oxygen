@@ -115,63 +115,64 @@ const CampaignCardsList = ({
         >
           {list?.displayData?.map((item: ICampaign) => {
             return (
-              <Box key={item.id} sx={{ width: "31%", position: "relative" }}>
+              <Box key={item.id} sx={{ width: "23%", position: "relative" }}>
                 <Card>
                   <CardContentNoPadding>
-                    <StyledBox>
+                    <Box
+                      display="flex"
+                      minHeight="180px"
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      borderRadius={"16px"}
+                      sx={{ backgroundColor: "#FBDA69" }}
+                    >
                       <Typography
                         gutterBottom
                         variant="h6"
+                        fontWeight={"normal"}
                         component="div"
                         width="85%"
+                        textAlign={"center"}
                       >
                         {item.name}
                       </Typography>
-                      <Box sx={{ position: "absolute", right: 10, top: 12 }}>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: 20,
+                          top: 30,
+                        }}
+                      >
                         <DotsMenu<ICampaign>
                           actions={actions(item)}
                           onActionClick={handleClickAction}
                           row={item}
                         />
                       </Box>
-                    </StyledBox>
-                    <Typography
-                      gutterBottom
-                      sx={{ fontSize: 13, fontWeight: 600 }}
-                    >
-                      Created on {item.creationDate}
-                    </Typography>
-                    <Typography
-                      gutterBottom
-                      sx={{ fontSize: 13, fontWeight: 600, pt: 1 }}
-                    >
-                      Delivery statistics
-                    </Typography>
-                    <Box>
+                    </Box>
+                    <Box display="flex" justifyContent={"space-between"}>
                       <StyledBox>
                         <Typography
                           variant="body2"
                           color="text.secondary"
                           fontWeight={600}
                         >
-                          Responded
+                          {item.responded || "No"} responses
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.responded}
-                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                        ></Typography>
+                      </StyledBox>
+                      <StyledBox>
+                        <Switch
+                          onChange={(e, checked) =>
+                            handleChangeState(item.id, checked)
+                          }
+                          checked={item.isActive}
+                        />
                       </StyledBox>
                     </Box>
-                    <StyledBox>
-                      <Typography sx={{ fontSize: 13, fontWeight: 600, pt: 1 }}>
-                        Change survey state
-                      </Typography>
-                      <Switch
-                        onChange={(e, checked) =>
-                          handleChangeState(item.id, checked)
-                        }
-                        checked={item.isActive}
-                      />
-                    </StyledBox>
                   </CardContentNoPadding>
                 </Card>
               </Box>

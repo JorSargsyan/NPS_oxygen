@@ -199,26 +199,26 @@ const QuestionTab = () => {
               )}
             </Fragment>
           )}
-          {surveyInfo.details?.type === Number(ECampaignSurveyType.Rating) ||
-            (surveyInfo.details?.type ===
-              Number(ECampaignSurveyType.CustomStar) && (
-              <Fragment>
-                <Box mt={2}>
-                  <TextInput
-                    name="metricConfig.customStartLength"
-                    label="Range Start"
-                    rules={{ ...requiredRules, ...metricRules }}
-                  />
-                </Box>
-                <Box mt={2}>
-                  <TextInput
-                    name="metricConfig.customEndLength"
-                    label="Range End"
-                    rules={{ ...requiredRules, ...metricRules }}
-                  />
-                </Box>
-              </Fragment>
-            ))}
+          {(surveyInfo.details?.type === Number(ECampaignSurveyType.Rating) ||
+            surveyInfo.details?.type ===
+              Number(ECampaignSurveyType.CustomStar)) && (
+            <Fragment>
+              <Box mt={2}>
+                <TextInput
+                  name="metricConfig.customStartLength"
+                  label="Range Start"
+                  rules={{ ...requiredRules, ...metricRules }}
+                />
+              </Box>
+              <Box mt={2}>
+                <TextInput
+                  name="metricConfig.customEndLength"
+                  label="Range End"
+                  rules={{ ...requiredRules, ...metricRules }}
+                />
+              </Box>
+            </Fragment>
+          )}
         </Fragment>
       )}
     </Box>

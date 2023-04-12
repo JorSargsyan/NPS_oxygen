@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import { nanoid } from "@reduxjs/toolkit";
 import { Fragment, useCallback, useState } from "react";
 import { IAction } from "../Table/constants";
-import MoreIcon from "@mui/icons-material/More";
+import MoreIcon from "@heroicons/react/24/outline/EllipsisHorizontalIcon";
 
 export interface IDotMenuProps<T> {
   actions: IAction<T>[];
@@ -38,7 +38,7 @@ const DotsMenu = <T extends unknown>({
         onClick={handleClick}
         disabled={!actions?.length}
         id={`basic-button-${nanoid(2)}`}
-        startIcon={<MoreIcon />}
+        startIcon={<MoreIcon height={24} width={24} color="white" />}
       ></Button>
       <Menu
         anchorEl={anchorEl}
