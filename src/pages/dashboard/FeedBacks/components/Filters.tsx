@@ -104,7 +104,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
       arr.splice(index, 1, newValue);
       methods.setValue("config.filters", arr);
     }
-    if (actual.type === EFeedbackFilterTypes.NPS) {
+    if (actual?.type === EFeedbackFilterTypes.NPS) {
       const arr = [...filtersWatch];
       arr.splice(index, 1, scoreValues);
       methods.setValue("config.filters", arr);

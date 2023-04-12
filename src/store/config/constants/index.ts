@@ -1,9 +1,9 @@
 export const EBaseUrl = {
   API: "https://api.satisfai.cx/api",
   // API: "https://npsapi.verifie.ai/Api",
-  MediaTemplateURL: "https://npsapi.verifie.ai/media/template",
-  BaseURL: "https://npsapi.verifie.ai",
-  MediaUserURL: "https://npsapi.verifie.ai/media/user",
+  MediaTemplateURL: "https://api.satisfai.cx/media/template",
+  BaseURL: "https://api.satisfai.cx",
+  MediaUserURL: "https://api.satisfai.cx/media/user",
 };
 
 export const LStorage = {

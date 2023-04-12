@@ -29,17 +29,8 @@ const ScoreCharts = ({ dashboardDataChopChart, scoreData, label }: Props) => {
               <Typography fontWeight={"bold"}>{label}</Typography>
             </Box>
             <Box display="flex" gap={1} alignItems="center">
-              <Box
-                flex={2}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                gap={5}
-              >
-                <RadialBar series={[scoreData?.score]} label={label} />
-              </Box>
-              <Box flex={2}>
-                <PieChart chartData={scoreData} />
+              <Box flex={3}>
+                <PieChart chartData={scoreData} label={label} />
               </Box>
               <Box flex={4}>
                 <ColumnsChart series={dashboardDataChopChart} label={label} />
