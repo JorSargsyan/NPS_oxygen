@@ -65,3 +65,9 @@ export interface IViewUserRoleItem {
   id: number;
   label: string;
 }
+
+export interface IUpdateUserProfileImage {
+  base64Image: string | ArrayBuffer;
+  extension: string;
+  removeImage: boolean;
+}

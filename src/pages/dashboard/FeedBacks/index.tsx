@@ -614,17 +614,17 @@ const Feedbacks = () => {
           />
         ) : null}
       </RightDrawer>
-      <SharedDialog
-        open={isCommentDialogOpen}
-        setOpen={setCommentDialogOpen}
-        textConfig={viewCommentsDialogConfig}
-        handleCloseCb={handleCloseCommentDialog}
-        hasActions={false}
-      >
-        {isCommentDialogOpen ? (
+      {isCommentDialogOpen ? (
+        <SharedDialog
+          open={isCommentDialogOpen}
+          setOpen={setCommentDialogOpen}
+          textConfig={viewCommentsDialogConfig}
+          handleCloseCb={handleCloseCommentDialog}
+          hasActions={false}
+        >
           <ViewComments editData={selectedFeedbackId} />
-        ) : null}
-      </SharedDialog>
+        </SharedDialog>
+      ) : null}
       <RightDrawer
         open={isAssignDrawerOpen}
         setOpen={setAssignDrawerOpen}

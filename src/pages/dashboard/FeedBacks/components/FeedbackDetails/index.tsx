@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
-import { GetUserManagers } from "store/slicers/common";
 import { GetFeedbackDetail, GetFeedbackNotes } from "store/slicers/feedback";
 import FeedbackDetailsBottomLeft from "./FeedbackDetailsBottomLeft";
 import FeedbackDetailsBottomRight from "./FeedbackDetailsBottomRight";
@@ -13,7 +12,6 @@ import FeedbackDetailsTop from "./FeedbackDetailsTop";
 const FeedbackDetails = () => {
   const params = useParams();
   const dispatch = useAsyncDispatch();
-  // const isLoading = useSelector(selectLoadingState);
   const [isLoading, setLoading] = useState(true);
 
   const hasFeedbackBottomRightNoteTabViewPermission = usePermission(
@@ -46,7 +44,7 @@ const FeedbackDetails = () => {
     const id = Number(params.id);
     await Promise.all([
       dispatch(GetFeedbackDetail(id)),
-      dispatch(GetUserManagers()),
+      // dispatch(GetUserManagers()),
       ...(hasFeedbackBottomRightNoteTabViewPermission
         ? [dispatch(GetFeedbackNotes(id))]
         : []),

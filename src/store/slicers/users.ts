@@ -16,6 +16,7 @@ import {
   IUserCompact,
   IUserGroup,
   IViewUserRoleItem,
+  IUpdateUserProfileImage,
 } from "../interfaces/users";
 
 const name = "USERS";
@@ -93,6 +94,17 @@ export const GetCurrentUser = createAsyncThunk<IUser>(
   `${name}/GetCurrentUser`,
   async () => {
     return (await api.get(`${EBaseUrl.API}/Profile`)).data;
+  },
+  thunkOptions
+);
+
+export const UpdateCurrentUserImage = createAsyncThunk<
+  IUser,
+  IUpdateUserProfileImage
+>(
+  `${name}/UpdateCurrentUserImage`,
+  async (formData: IUpdateUserProfileImage) => {
+    return (await api.put(`${EBaseUrl.API}/Profile`, formData)).data;
   },
   thunkOptions
 );

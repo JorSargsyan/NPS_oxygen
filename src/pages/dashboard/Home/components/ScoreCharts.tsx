@@ -2,7 +2,6 @@ import { Card, CardContent, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { IScoreValues } from "store/interfaces/dashboard";
 import ColumnsChart from "./ColumnChart";
-import RadialBar from "./RadialBar";
 import PieChart from "./PieChart";
 
 type Props = {

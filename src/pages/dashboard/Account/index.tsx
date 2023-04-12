@@ -12,24 +12,36 @@ import {
 import { Box, Container, Stack } from "@mui/system";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { EBaseUrl } from "store/config/constants";
-import { selectUserInfo } from "store/slicers/users";
+import {
+  GetCurrentUser,
+  selectUserInfo,
+  UpdateCurrentUserImage,
+} from "store/slicers/users";
 
 const AccountPage = () => {
   const userInfo = useSelector(selectUserInfo);
   const fileInputRef = useRef<HTMLInputElement>();
+  const dispatch = useAsyncDispatch();
 
   const handleFileUploadOpen = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileUpload = (event) => {
-    console.log(event);
+  const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-
+    console.log(file);
     const reader = new FileReader();
-    reader.onload = function () {
-      console.log(reader.result);
+    reader.onload = async function () {
+      const fileExtension = file?.name.split(".");
+      const formData = {
+        base64Image: reader.result,
+        extension: `.${fileExtension?.[1]}`,
+        removeImage: false,
+      };
+      await dispatch(UpdateCurrentUserImage(formData));
+      await dispatch(GetCurrentUser());
     };
 
     if (file) {

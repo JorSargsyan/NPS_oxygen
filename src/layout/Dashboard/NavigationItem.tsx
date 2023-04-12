@@ -99,7 +99,9 @@ export const SideNavItem = (props) => {
             >
               {title}
             </Box>
-            <Box>{expandableIcon}</Box>
+            <Box display="flex" alignItems="center">
+              {expandableIcon}
+            </Box>
           </Box>
         )}
       </ButtonBase>

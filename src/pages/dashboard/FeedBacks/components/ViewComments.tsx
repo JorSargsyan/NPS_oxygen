@@ -8,7 +8,7 @@ type Props = {
 const ViewComments = ({ editData }: Props) => {
   return (
     <Box>
-      {editData.data.map((comment: IComments, index) => {
+      {editData?.data?.map((comment: IComments, index) => {
         return (
           <Box
             key={index}

@@ -92,7 +92,7 @@ const TabRootCauseComponent = () => {
     );
 
     methods.reset({
-      mood: typedPayload.customerMood.toString() ?? "",
+      mood: typedPayload?.customerMood?.toString() ?? "",
       causeCategories: list ?? [],
     });
     setDataLoaded(true);

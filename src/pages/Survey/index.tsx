@@ -93,15 +93,15 @@ const SurveyPreview = () => {
     } else if (config?.isFinished) {
       setStatus("Survey is finished");
       return false;
-    } else if (!details) {
-      setStatus("");
+    } else if (!details && !isLoading) {
+      setStatus("Survey is unavailable");
       return false;
     }
 
     if (details) {
       return true;
     }
-  }, [config?.isExpired, config?.isFinished, details]);
+  }, [config?.isExpired, config?.isFinished, details, isLoading]);
 
   const answerIDs = useWatch({
     control: methods.control,

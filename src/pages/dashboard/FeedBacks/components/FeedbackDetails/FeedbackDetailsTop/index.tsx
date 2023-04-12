@@ -14,15 +14,10 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
 import RightDrawer from "shared/ui/Drawer";
 import BasicSelect from "shared/ui/Select";
-import { ERequestStatus } from "store/enums/index.enum";
-import { IManagerUser } from "store/interfaces/common";
-import { selectManagers } from "store/slicers/common";
 import {
   GetFeedbackCauseAndMoodCategoriesList,
-  GetFeedbackLogs,
   selectCauseCategories,
   selectFeedbackDetails,
-  UpdateFeedbackManager,
 } from "store/slicers/feedback";
 import FeedbackStatusDrawer from "../../FeedbackStatusDrawer";
 
@@ -42,7 +37,7 @@ const FeedbackDetailsTop = () => {
     EFeedbackPermissions.Edit_feedback_status
   );
 
-  const managersList = useSelector(selectManagers);
+  // const managersList = useSelector(selectManagers);
   const dispatch = useAsyncDispatch();
   const { id } = useParams();
 
@@ -55,15 +50,15 @@ const FeedbackDetailsTop = () => {
     setActiveRow(undefined);
   };
 
-  const handleChangeManager = async (value: number) => {
-    const { meta } = await dispatch(
-      UpdateFeedbackManager({ assignUserID: value, feedbackIDs: [id] })
-    );
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-    await dispatch(GetFeedbackLogs(id));
-  };
+  // const handleChangeManager = async (value: number) => {
+  //   const { meta } = await dispatch(
+  //     UpdateFeedbackManager({ assignUserID: value, feedbackIDs: [id] })
+  //   );
+  //   if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+  //     return;
+  //   }
+  //   await dispatch(GetFeedbackLogs(id));
+  // };
 
   useEffect(() => {
     methods.reset({
@@ -104,7 +99,7 @@ const FeedbackDetailsTop = () => {
                 }
               />
             </Box>
-            <Box width="30%">
+            {/* <Box width="30%">
               <BasicSelect<IManagerUser>
                 name="manager"
                 defaultValue={""}
@@ -114,7 +109,7 @@ const FeedbackDetailsTop = () => {
                 options={managersList?.[0]?.users || []}
                 onChangeCB={(value: number) => handleChangeManager(value)}
               />
-            </Box>
+            </Box> */}
           </Box>
           <Box
             display="grid"
@@ -154,8 +149,6 @@ const FeedbackDetailsTop = () => {
                 </Typography>
               </Box>
             ) : null}
-          </Box>
-          <Box>
             {feedbackItemDetails?.id ? (
               <Box>
                 <Typography fontSize={14} fontWeight="bold" mb={1}>
