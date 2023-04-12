@@ -1,5 +1,4 @@
-import { FormHelperText } from "@mui/material";
-import { TextareaAutosize } from "@mui/base";
+import { FormHelperText, TextareaAutosize } from "@mui/material";
 import { Box } from "@mui/system";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 
