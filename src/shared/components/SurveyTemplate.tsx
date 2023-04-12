@@ -2,9 +2,10 @@ import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
 import { ESurveyPreviewComps } from "pages/Survey/constants";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { FormProvider } from "react-hook-form";
 import { EBaseUrl } from "store/config/constants";
+import defaultImg from "assets/images/survey_bg.png";
 import { ITemplate } from "store/interfaces/campaignDetails";
 import {
   IQuestionConfig,
@@ -43,6 +44,22 @@ const SurveyTemplate = ({
     return <Comp questionData={questionData} />;
   }, [questionData]);
 
+  const getImage = useMemo(() => {
+    if (type !== ESurveyTypes.Preview) {
+      return questionData?.details?.template?.logoImage
+        ? `${EBaseUrl.MediaTemplateURL}/${questionData?.details?.template?.logoImage}`
+        : defaultImg;
+    } else {
+      return questionData?.template?.logoImage
+        ? `${EBaseUrl.MediaTemplateURL}/${questionData?.template?.logoImage}`
+        : defaultImg;
+    }
+  }, [
+    questionData?.details?.template?.logoImage,
+    questionData?.template?.logoImage,
+    type,
+  ]);
+
   return (
     <Box>
       <Box
@@ -58,14 +75,7 @@ const SurveyTemplate = ({
           },
         }}
       >
-        <img
-          src={
-            type !== ESurveyTypes.Preview
-              ? `${EBaseUrl.MediaTemplateURL}/${questionData?.details?.template?.logoImage}`
-              : `${EBaseUrl.MediaTemplateURL}/${questionData?.template?.logoImage}`
-          }
-          alt={questionData?.details?.title}
-        />
+        <img src={getImage} alt={questionData?.details?.title} />
       </Box>
       <Box mt={2}>
         <FormProvider {...methods}>

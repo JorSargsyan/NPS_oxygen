@@ -22,6 +22,7 @@ import {
   selectSurveyInfo,
   GetCampaignSurveyTemplateById,
 } from "store/slicers/campaignDetail";
+import defaultImg from "assets/images/survey_bg.png";
 import UploadIcon from "@heroicons/react/24/outline/ArrowUpOnSquareIcon";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -178,7 +179,9 @@ const DesignTab = () => {
     if (!surveyInfo.details?.id) {
       return;
     }
-    setUploadPicture(surveyInfo.template.logoImage);
+    setUploadPicture(
+      surveyInfo.template.logoImage ? surveyInfo.template.logoImage : defaultImg
+    );
     setUploadableImage(false);
   }, [
     setUploadPicture,

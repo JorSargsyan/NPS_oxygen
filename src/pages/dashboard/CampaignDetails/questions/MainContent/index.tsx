@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import { Fragment, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { EBaseUrl } from "store/config/constants";
+import defaultImg from "assets/images/survey_bg.png";
 import { selectSurveyInfo } from "store/slicers/campaignDetail";
 import { CampaignSurveyForms } from "./constants";
 import {
@@ -78,7 +79,11 @@ const MainContent = () => {
                   style={{ objectFit: "cover" }}
                   height="300px"
                   width="100%"
-                  src={`${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`}
+                  src={
+                    surveyInfo?.template?.logoImage
+                      ? `${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`
+                      : defaultImg
+                  }
                   alt="survey"
                 />
               )}

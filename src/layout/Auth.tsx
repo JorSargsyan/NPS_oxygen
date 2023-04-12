@@ -1,5 +1,5 @@
 import { Box, Unstable_Grid2 as Grid } from "@mui/material";
-import { Logo } from "../components/logo";
+import Logo from "assets/icons/logo_light_horisontal.png";
 import Auth from "assets/images/auth.jpeg";
 
 export const Layout = (props: any) => {
@@ -38,11 +38,11 @@ export const Layout = (props: any) => {
             <Box
               sx={{
                 display: "inline-flex",
-                height: 32,
-                width: 32,
+                height: 60,
+                width: 60,
               }}
             >
-              <Logo />
+              <img src={Logo} alt="" />
             </Box>
           </Box>
           {children}

@@ -357,6 +357,16 @@ const LeftSidebar = () => {
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {surveyList.map((survey, index) => {
+                  const getLabel = () => {
+                    let label =
+                      survey.title || CampaignSurveyTypeList[survey.type];
+
+                    if (label.length > 30) {
+                      return label.substring(0, 30) + "...";
+                    } else {
+                      return label;
+                    }
+                  };
                   return (
                     <Draggable
                       isDragDisabled={
@@ -399,8 +409,7 @@ const LeftSidebar = () => {
                                 </Typography>
                               </Box>
                               <Typography fontWeight="600" fontSize={14} ml={1}>
-                                {survey.title ||
-                                  CampaignSurveyTypeList[survey.type]}
+                                {getLabel()}
                               </Typography>
                             </Box>
                             {String(survey.type) !==

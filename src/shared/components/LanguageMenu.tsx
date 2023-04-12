@@ -24,17 +24,17 @@ const languagesList: ILanguage[] = [
   {
     icon: Am,
     value: ELanguageIds.Armenian,
-    label: "Armenian",
+    label: "ARM",
   },
   {
     icon: Ru,
     value: ELanguageIds.Russian,
-    label: "Russian",
+    label: "RU",
   },
   {
     icon: En,
     value: ELanguageIds.English,
-    label: "English",
+    label: "ENG",
   },
 ];
 
@@ -107,8 +107,8 @@ const LanguageMenu = () => {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
         sx={{
           "& .MuiPaper-root": {
             "& .MuiList-root": {

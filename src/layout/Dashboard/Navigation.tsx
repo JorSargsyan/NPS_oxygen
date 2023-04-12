@@ -6,10 +6,10 @@ import {
   Skeleton,
   Stack,
   Theme,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Logo } from "components/logo";
+
+import Logo from "assets/icons/logo_dark_transparent.png";
 import { Scrollbar } from "components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./NavigationItem";
@@ -130,21 +130,13 @@ export const SideNav = () => {
               justifyContent={"space-between"}
               alignItems="center"
             >
-              <Box>
-                <Typography color="inherit" variant="subtitle1">
-                  CX Pro
-                </Typography>
-                <Typography color="neutral.400" variant="body2">
-                  OXYGEN
-                </Typography>
-              </Box>
               <Box
                 sx={{
-                  height: 32,
-                  width: 32,
+                  display: "inline-flex",
+                  height: 60,
                 }}
               >
-                <Logo />
+                <img src={Logo} alt="" />
               </Box>
             </Box>
           </Box>
