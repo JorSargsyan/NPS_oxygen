@@ -33,6 +33,18 @@ const QuestionTab = () => {
     },
   };
 
+  const multipleRuleExact = {
+    max: {
+      message: `The value must be less than or equal to 
+  ${watch("answers").length}`,
+      value: watch("answers").length,
+    },
+    min: {
+      message: "The value must be more than 1",
+      value: 1,
+    },
+  };
+
   const commentRules = {
     validate: () => {
       return (
@@ -125,7 +137,7 @@ const QuestionTab = () => {
                     label="Limit"
                     rules={{
                       ...requiredRules,
-                      ...multipleRule,
+                      ...multipleRuleExact,
                     }}
                   />
                 </Box>
