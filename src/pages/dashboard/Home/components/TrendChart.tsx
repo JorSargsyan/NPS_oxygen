@@ -19,8 +19,6 @@ const TrendChart = ({ chartsData }) => {
     });
   }, [chartsData, t]);
 
-  console.log(chartsData);
-
   return (
     <Box m={2}>
       <Card>
