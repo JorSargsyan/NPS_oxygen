@@ -102,7 +102,8 @@ const TabFeedbackComponent = () => {
                           </Typography>
                         </Box>
                       )}
-                      {feedback.type === ESurveyType.Comment && (
+                      {(feedback.type === ESurveyType.Comment ||
+                        feedback.type === ESurveyType.ContactInformation) && (
                         <Typography
                           fontSize={14}
                           sx={{ color: "text.primary" }}
@@ -112,7 +113,6 @@ const TabFeedbackComponent = () => {
                       )}
                       {(feedback.type === ESurveyType.NPS ||
                         feedback.type === ESurveyType.Friendliness ||
-                        feedback.type === ESurveyType.CustomStar ||
                         feedback.type === ESurveyType.CustomerEffortScore ||
                         feedback.type ===
                           ESurveyType.CustomerSatisfactionScore) && (
@@ -130,7 +130,8 @@ const TabFeedbackComponent = () => {
                           </Typography>
                         </Box>
                       )}
-                      {feedback.type === ESurveyType.Custom && (
+                      {(feedback.type === ESurveyType.Custom ||
+                        feedback.type === ESurveyType.CustomStar) && (
                         <Typography>
                           {"Score"} <span>{answer.value}.00</span>
                         </Typography>

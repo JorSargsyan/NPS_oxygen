@@ -37,6 +37,22 @@ export const trendChartOptionsData = {
           return y;
         },
       },
+      {
+        formatter: function (y) {
+          if (typeof y !== "undefined") {
+            return y + " %";
+          }
+          return y;
+        },
+      },
+      {
+        formatter: function (y) {
+          if (typeof y !== "undefined") {
+            return y + " %";
+          }
+          return y;
+        },
+      },
     ],
   },
   markers: {
