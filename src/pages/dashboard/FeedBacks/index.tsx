@@ -511,7 +511,7 @@ const Feedbacks = () => {
   const tableCustomActions = useCallback(() => {
     return (
       <Box display="flex" gap={3} justifyContent="flex-end">
-        {hasAssignPermission && (
+        {/* {hasAssignPermission && (
           <Button
             variant="contained"
             onClick={openAssignFeedbackDrawer}
@@ -520,7 +520,7 @@ const Feedbacks = () => {
           >
             <Typography>Assign</Typography>
           </Button>
-        )}
+        )} */}
 
         {hasExportPermission && (
           <Button
@@ -552,7 +552,7 @@ const Feedbacks = () => {
       })
     );
     await dispatch(GetFeedbackCauseAndMoodCategoriesList());
-    await dispatch(GetUserManagers());
+    // await dispatch(GetUserManagers());
     await dispatch(setTableLoading(false));
   }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
 
@@ -625,7 +625,7 @@ const Feedbacks = () => {
           <ViewComments editData={selectedFeedbackId} />
         </SharedDialog>
       ) : null}
-      <RightDrawer
+      {/* <RightDrawer
         open={isAssignDrawerOpen}
         setOpen={setAssignDrawerOpen}
         onClose={handleClose}
@@ -636,7 +636,7 @@ const Feedbacks = () => {
           selectedIDs={selectedFeedbackIDs}
           onSubmitCb={assignFeedbackSubmitCb}
         />
-      </RightDrawer>
+      </RightDrawer> */}
     </Box>
   );
 };

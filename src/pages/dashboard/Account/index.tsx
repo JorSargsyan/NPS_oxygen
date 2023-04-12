@@ -36,7 +36,10 @@ const AccountPage = () => {
     reader.onload = async function () {
       const fileExtension = file?.name.split(".");
       const formData = {
-        base64Image: reader.result,
+        base64Image:
+          typeof reader.result === "string"
+            ? reader.result.replace("data:image/jpeg;base64,", "")
+            : "",
         extension: `.${fileExtension?.[1]}`,
         removeImage: false,
       };
