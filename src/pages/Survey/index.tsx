@@ -67,6 +67,7 @@ const SurveyPreview = () => {
     );
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      setStatus("Survey is unavailable");
       return;
     }
 
