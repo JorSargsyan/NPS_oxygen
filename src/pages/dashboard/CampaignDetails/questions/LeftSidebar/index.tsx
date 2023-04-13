@@ -304,13 +304,6 @@ const LeftSidebar = () => {
           <Box p={2}>
             <Typography fontWeight="bold">Ratings</Typography>
           </Box>
-          <MenuItem
-            id={ECampaignSurveyType.Rating}
-            onClick={handleClickContentAdd}
-          >
-            <RatingIcon height={20} width={40} />
-            Rating
-          </MenuItem>
 
           {!alreadyHasType(ECampaignSurveyType.Nps) && (
             <MenuItem
@@ -321,6 +314,15 @@ const LeftSidebar = () => {
               NPS
             </MenuItem>
           )}
+          {!alreadyHasType(ECampaignSurveyType.ServiceQualityScore) && (
+            <MenuItem
+              id={ECampaignSurveyType.ServiceQualityScore}
+              onClick={handleClickContentAdd}
+            >
+              <SmileIcon height={20} width={40} />
+              eNPS
+            </MenuItem>
+          )}
 
           {!alreadyHasType(ECampaignSurveyType.CustomerEffortScore) && (
             <MenuItem
@@ -328,7 +330,7 @@ const LeftSidebar = () => {
               onClick={handleClickContentAdd}
             >
               <PieChartIcon height={20} width={40} />
-              Customer Effort Score
+              Customer Effort score
             </MenuItem>
           )}
 
@@ -341,15 +343,14 @@ const LeftSidebar = () => {
               Customer Satisfaction score
             </MenuItem>
           )}
-          {!alreadyHasType(ECampaignSurveyType.ServiceQualityScore) && (
-            <MenuItem
-              id={ECampaignSurveyType.ServiceQualityScore}
-              onClick={handleClickContentAdd}
-            >
-              <SmileIcon height={20} width={40} />
-              Service quality score
-            </MenuItem>
-          )}
+
+          <MenuItem
+            id={ECampaignSurveyType.Rating}
+            onClick={handleClickContentAdd}
+          >
+            <RatingIcon height={20} width={40} />
+            Custom
+          </MenuItem>
 
           {!alreadyHasType(ECampaignSurveyType.CustomStar) && (
             <MenuItem
@@ -357,7 +358,7 @@ const LeftSidebar = () => {
               onClick={handleClickContentAdd}
             >
               <StarIcon height={20} width={40} />
-              Star Rating
+              Star
             </MenuItem>
           )}
         </Menu>
