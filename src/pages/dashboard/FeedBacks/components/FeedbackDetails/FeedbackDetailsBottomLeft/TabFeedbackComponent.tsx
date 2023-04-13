@@ -37,7 +37,7 @@ const TabFeedbackComponent = () => {
       case ESurveyType.NPS:
         return "NPS";
       case ESurveyType.Friendliness:
-        return "ES";
+        return "eNPS";
       case ESurveyType.CustomStar:
         return "Star Rating";
       case ESurveyType.CustomerEffortScore:

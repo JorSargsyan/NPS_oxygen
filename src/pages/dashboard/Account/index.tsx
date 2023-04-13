@@ -109,6 +109,13 @@ const AccountPage = () => {
                       onChange={handleFileUpload}
                       hidden
                     />
+                    <Button
+                      onClick={handleFileUploadOpen}
+                      fullWidth
+                      variant="text"
+                    >
+                      Delete picture
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>

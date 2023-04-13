@@ -56,15 +56,15 @@ const AddEditTranslations = ({
       key: data.key,
       captions: [
         {
-          value: data.am?.trim() ? data.am : "N/A",
+          value: data.am?.trim() ? data.am?.trim() : "N/A",
           languageID: 1,
         },
         {
-          value: data.en?.trim() ? data.en : "N/A",
+          value: data.en?.trim() ? data.en?.trim() : "N/A",
           languageID: 2,
         },
         {
-          value: data.ru?.trim() ? data.ru : "N/A",
+          value: data.ru?.trim() ? data.ru?.trim() : "N/A",
           languageID: 3,
         },
       ],

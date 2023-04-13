@@ -159,7 +159,7 @@ const Dashboard = () => {
               scoreData={dashboardData?.nps}
             />
             <ScoreCharts
-              label="Friendliness"
+              label="eNPS"
               dashboardDataChopChart={dashboardData?.friendlinessChopChart}
               scoreData={dashboardData?.friendliness}
             />

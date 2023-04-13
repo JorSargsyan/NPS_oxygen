@@ -52,71 +52,73 @@ const ChoiceForm = () => {
         rules={requiredRules}
       />
       <Box display="flex" gap={3}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable-list">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Box flex={1}>
-                  {fields.map((answer, index) => {
-                    return (
-                      <Draggable
-                        key={answer.id}
-                        draggableId={answer.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <Box
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            sx={{ position: "relative" }}
-                            my={1}
-                            display="flex"
-                            alignItems={"center"}
-                          >
+        <Box flex={2}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-list">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <Box flex={1}>
+                    {fields.map((answer, index) => {
+                      return (
+                        <Draggable
+                          key={answer.id}
+                          draggableId={answer.id}
+                          index={index}
+                        >
+                          {(provided) => (
                             <Box
-                              px={2}
-                              mr={1}
-                              sx={{
-                                backgroundColor: "primary.main",
-                                borderRadius: "5px",
-                              }}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              sx={{ position: "relative" }}
+                              my={1}
+                              display="flex"
+                              alignItems={"center"}
                             >
-                              <Typography color="white" fontWeight={"800"}>
-                                {index + 1}
-                              </Typography>
-                            </Box>
-                            <TextInput
-                              size="small"
-                              rules={{
-                                required: { value: true, message: "" },
-                              }}
-                              label="Choice"
-                              name={`answers[${index}].value`}
-                            />
-                            {fields.length > 1 && (
                               <Box
-                                onClick={() => onRemoveRow(index)}
-                                sx={{ position: "absolute", right: 0 }}
-                                ml={2}
-                                display="flex"
-                                alignItems={"center"}
+                                px={2}
+                                mr={1}
+                                sx={{
+                                  backgroundColor: "primary.main",
+                                  borderRadius: "5px",
+                                }}
                               >
-                                <IconButton>
-                                  <BackspaceIcon height={20} width={20} />
-                                </IconButton>
+                                <Typography color="white" fontWeight={"800"}>
+                                  {index + 1}
+                                </Typography>
                               </Box>
-                            )}
-                          </Box>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                </Box>
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+                              <TextInput
+                                size="small"
+                                rules={{
+                                  required: { value: true, message: "" },
+                                }}
+                                label="Choice"
+                                name={`answers[${index}].value`}
+                              />
+                              {fields.length > 1 && (
+                                <Box
+                                  onClick={() => onRemoveRow(index)}
+                                  sx={{ position: "absolute", right: 0 }}
+                                  ml={2}
+                                  display="flex"
+                                  alignItems={"center"}
+                                >
+                                  <IconButton>
+                                    <BackspaceIcon height={20} width={20} />
+                                  </IconButton>
+                                </Box>
+                              )}
+                            </Box>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  </Box>
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </Box>
         <Box flex={1} mt={"11px"}>
           <Button
             onClick={onAddRow}
