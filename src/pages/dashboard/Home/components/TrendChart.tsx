@@ -38,7 +38,7 @@ const TrendChart = ({ chartsData }) => {
             <ReactApexChart
               options={trendChartOptionsData}
               series={chartsDataTranslated}
-              type="area"
+              type="line"
               height="380px"
               width="100%"
             />
