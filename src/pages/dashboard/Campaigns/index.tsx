@@ -49,6 +49,11 @@ export enum ECampaignListViewTypes {
   Grid = "Grid",
 }
 
+const surveyFilterValues = {
+  ...defaultFilterValues,
+  length: 10,
+};
+
 const CampaignsPage = () => {
   const dispatch = useAsyncDispatch();
   const navigate = useNavigate();
@@ -64,7 +69,7 @@ const CampaignsPage = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const methods = useForm({
-    defaultValues: { config: defaultFilterValues },
+    defaultValues: { config: surveyFilterValues },
   });
 
   const hasAddPermission = usePermission(ECampaignPermissions.Create);
@@ -201,7 +206,7 @@ const CampaignsPage = () => {
     async (id: number, state: boolean) => {
       await dispatch(ChangeCampaignState({ id, state }));
       await refetchData();
-      toast.success("Campaign state changed successfully");
+      toast.success(`Survey is ${!state ? "inactive" : "active"}`);
     },
     [dispatch, refetchData]
   );
@@ -226,7 +231,7 @@ const CampaignsPage = () => {
 
   const initialFetch = useCallback(async () => {
     await dispatch(setTableLoading(true));
-    await dispatch(GetCampaigns(defaultFilterValues));
+    await dispatch(GetCampaigns(surveyFilterValues));
     await dispatch(setTableLoading(false));
   }, [dispatch]);
 
