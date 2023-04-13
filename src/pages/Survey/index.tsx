@@ -317,7 +317,7 @@ const SurveyPreview = () => {
         >
           <Card
             sx={{
-              height: { xs: "95vh", sm: "80vh" },
+              height: { xs: "95vh" },
               backgroundColor: "rgb(255 255 255 / 97%)",
               overflow: "scroll",
             }}

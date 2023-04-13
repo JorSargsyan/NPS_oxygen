@@ -9,11 +9,11 @@ enum EScore {
 
 const EScoreTypes = {
   [EScore.NPS]: "NPS",
-  [EScore.ES]: "ES",
+  [EScore.ES]: "eNPS",
   [EScore.Custom]: "Custom",
   [EScore.CustomRating]: "Rating",
-  [EScore.CustomerEffortScore]: "Effort",
-  [EScore.CustomerSatisfactionScore]: "Satisfaction",
+  [EScore.CustomerEffortScore]: "CES",
+  [EScore.CustomerSatisfactionScore]: "CSAT",
 };
 
 enum EFeedbackStatus {
