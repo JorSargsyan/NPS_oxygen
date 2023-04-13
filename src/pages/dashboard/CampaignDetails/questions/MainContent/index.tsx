@@ -74,7 +74,7 @@ const MainContent = () => {
                 },
               }}
             >
-              {surveyInfo?.template?.logoImage && (
+              {(surveyInfo?.template?.logoImage || defaultImg) && (
                 <img
                   style={{ objectFit: "cover" }}
                   height="300px"
