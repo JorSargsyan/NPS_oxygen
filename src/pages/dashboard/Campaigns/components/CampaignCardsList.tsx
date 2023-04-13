@@ -124,7 +124,6 @@ const CampaignCardsList = ({
                       alignItems={"center"}
                       justifyContent={"center"}
                       borderRadius={"16px"}
-                      sx={{ backgroundColor: "#FBDA69" }}
                     >
                       <Typography
                         gutterBottom
@@ -139,8 +138,8 @@ const CampaignCardsList = ({
                       <Box
                         sx={{
                           position: "absolute",
-                          right: 20,
-                          top: 30,
+                          right: 10,
+                          top: 10,
                         }}
                       >
                         <DotsMenu<ICampaign>

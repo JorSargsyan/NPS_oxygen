@@ -38,7 +38,7 @@ const DotsMenu = <T extends unknown>({
         onClick={handleClick}
         disabled={!actions?.length}
         id={`basic-button-${nanoid(2)}`}
-        startIcon={<MoreIcon height={24} width={24} color="white" />}
+        startIcon={<MoreIcon height={24} width={24} />}
       ></Button>
       <Menu
         anchorEl={anchorEl}
