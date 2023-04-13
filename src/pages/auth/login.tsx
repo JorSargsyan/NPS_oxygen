@@ -52,10 +52,11 @@ const Login = () => {
       sx={{
         height: "100vh",
         backgroundImage: `url(${require("assets/images/auth_bg.jpg")})`,
-        backgroundSize: "contain",
+        backgroundSize: "cover",
         alignItems: "center",
         display: "flex",
         justifyContent: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <Card
@@ -64,7 +65,7 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           p: 2,
-          width: "30%",
+          width: { md: "40%", lg: "35%", xl: "25%" },
         }}
       >
         <CardContent
