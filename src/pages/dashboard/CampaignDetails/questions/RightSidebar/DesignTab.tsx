@@ -179,9 +179,12 @@ const DesignTab = () => {
     if (!surveyInfo.details?.id) {
       return;
     }
-    setUploadPicture(
-      surveyInfo.template.logoImage ? surveyInfo.template.logoImage : defaultImg
-    );
+    if (surveyInfo.template.logoImage) {
+      setUploadPicture(surveyInfo.template.logoImage);
+    } else {
+      setUploadPic(defaultImg);
+    }
+
     setUploadableImage(false);
   }, [
     setUploadPicture,
