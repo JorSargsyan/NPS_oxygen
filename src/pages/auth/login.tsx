@@ -2,14 +2,22 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { LStorage } from "store/config/constants";
 
-import { Alert, Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { emailRegex, requiredRules } from "shared/helpers/validators";
 import Checkbox from "shared/ui/Checkbox";
 import TextInput from "shared/ui/TextInput";
 import { ERequestStatus } from "store/enums/index.enum";
 import { Authorize, setAuth } from "store/slicers/auth";
-import { Layout as AuthLayout } from "../../layout/Auth";
+import Logo from "assets/icons/logo_light_horisontal.png";
 
 interface IFormValues {
   email: string;
@@ -39,32 +47,54 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout>
-      <Box
+    <Box
+      component="main"
+      sx={{
+        height: "100vh",
+        backgroundImage: `url(${require("assets/images/auth_bg.jpg")})`,
+        backgroundSize: "cover",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <Card
         sx={{
-          backgroundColor: "background.paper",
-          flex: "1 1 auto",
           alignItems: "center",
           display: "flex",
           justifyContent: "center",
+          p: 2,
+          width: { md: "40%", lg: "35%", xl: "25%" },
         }}
       >
-        <Box
+        <CardContent
           sx={{
-            maxWidth: 550,
-            px: 3,
+            p: "20px",
             py: "100px",
             width: "100%",
+            paddingTop: 2,
           }}
         >
+          <Box
+            sx={{
+              display: "inline-flex",
+              width: "100%",
+              justifyContent: "center",
+              height: 70,
+              mb: 2,
+            }}
+          >
+            <img src={Logo} alt="" />
+          </Box>
           <div>
-            <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="h4">Login</Typography>
+            <Stack spacing={1} sx={{ mb: 1 }}>
+              <Typography variant="h6">Login</Typography>
             </Stack>
 
             <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
               <FormProvider {...form}>
-                <Stack spacing={3}>
+                <Stack spacing={2}>
                   <TextInput<IFormValues>
                     label="Email Address"
                     name="email"
@@ -95,16 +125,12 @@ const Login = () => {
                 >
                   Continue
                 </Button>
-
-                <Alert severity="info" sx={{ mt: 3 }}>
-                  <div>powered by Oxygen LLC</div>
-                </Alert>
               </FormProvider>
             </form>
           </div>
-        </Box>
-      </Box>
-    </AuthLayout>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
