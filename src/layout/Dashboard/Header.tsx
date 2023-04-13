@@ -107,11 +107,12 @@ export const TopNav = () => {
                   height: 40,
                   width: 40,
                 }}
-                src={
-                  EBaseUrl.MediaUserURL
-                    ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
-                    : "/assets/avatars/avatar-anika-visser.png"
-                }
+                // src={
+                //   EBaseUrl.MediaUserURL
+                //     ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
+                //     : "/assets/avatars/avatar-anika-visser.png"
+                // }
+                src=""
               />
             ) : (
               <Skeleton width={40} height={60} sx={{ borderRadius: "50%" }} />

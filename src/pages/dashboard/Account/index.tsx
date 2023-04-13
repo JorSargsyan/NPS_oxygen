@@ -52,6 +52,15 @@ const AccountPage = () => {
     }
   };
 
+  const deleteAccountPhoto = async () => {
+    const formData = {
+      base64Image: "",
+      extension: "",
+      removeImage: true,
+    };
+    await dispatch(UpdateCurrentUserImage(formData));
+  };
+
   return (
     <Box
       component="main"
@@ -78,7 +87,7 @@ const AccountPage = () => {
                       }}
                     >
                       <Avatar
-                        src={`${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`}
+                        src={""}
                         sx={{
                           height: 80,
                           mb: 2,
@@ -109,13 +118,15 @@ const AccountPage = () => {
                       onChange={handleFileUpload}
                       hidden
                     />
-                    <Button
-                      onClick={handleFileUploadOpen}
-                      fullWidth
-                      variant="text"
-                    >
-                      Delete picture
-                    </Button>
+                    {userInfo?.imagePath && (
+                      <Button
+                        onClick={deleteAccountPhoto}
+                        fullWidth
+                        variant="text"
+                      >
+                        Delete picture
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               </Grid>
