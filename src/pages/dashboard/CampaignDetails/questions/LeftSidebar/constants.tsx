@@ -32,17 +32,17 @@ export enum ECampaignSurveyType {
 
 export const CampaignSurveyTypeList = {
   [ECampaignSurveyType.Welcome]: "Welcome",
-  [ECampaignSurveyType.SingleChoice]: "Single choice",
-  [ECampaignSurveyType.MultipleChoice]: "Multiple choice",
+  [ECampaignSurveyType.SingleChoice]: "Select One",
+  [ECampaignSurveyType.MultipleChoice]: "Select Multiple",
   [ECampaignSurveyType.Comment]: "Comment",
   [ECampaignSurveyType.Nps]: "NPS",
-  [ECampaignSurveyType.ServiceQualityScore]: "Service quality score",
-  [ECampaignSurveyType.Rating]: "Rating",
+  [ECampaignSurveyType.ServiceQualityScore]: "eNPS",
+  [ECampaignSurveyType.Rating]: "Custom Rating",
   [ECampaignSurveyType.ContactInformation]: "Contact Information",
   [ECampaignSurveyType.CustomStar]: "Star Rating",
-  [ECampaignSurveyType.CustomerEffortScore]: "Customer effort score",
+  [ECampaignSurveyType.CustomerEffortScore]: "CES (Customer effort)",
   [ECampaignSurveyType.CustomerSatisfactionScore]:
-    "Customer satisfaction score",
+    "CSAT (Customer satisfaction)",
   [ECampaignSurveyType.Final]: "Thank you",
 };
 
