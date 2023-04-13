@@ -92,148 +92,136 @@ export const SideNav = () => {
   };
 
   const content = (
-    <Scrollbar
+    <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
         height: "100%",
-        "& .simplebar-content": {
-          height: "100%",
-        },
-        "& .simplebar-scrollbar:before": {
-          background: "neutral.400",
-        },
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-        }}
-      >
-        <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3 }}>
+        <Box
+          sx={{
+            alignItems: "center",
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
+            borderRadius: 1,
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: "space-between",
+            mt: 2,
+            p: "12px",
+          }}
+        >
           <Box
-            sx={{
-              alignItems: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.04)",
-              borderRadius: 1,
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              mt: 2,
-              p: "12px",
-            }}
+            flexDirection={"row"}
+            width="100%"
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
           >
             <Box
-              flexDirection={"row"}
-              width="100%"
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
+              sx={{
+                display: "inline-flex",
+                height: 60,
+              }}
             >
-              <Box
-                sx={{
-                  display: "inline-flex",
-                  height: 60,
-                }}
-              >
-                <img src={Logo} alt="" />
-              </Box>
+              <img src={Logo} alt="" />
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ borderColor: "neutral.700" }} />
-        {!permList ? (
-          <Box pt={3}>
-            {skeletonArr.map((i, index) => (
-              <Skeleton
-                key={index}
-                sx={{ backgroundColor: "neutral.400", my: 2, mx: 1 }}
-                variant="rounded"
-                width={"90%"}
-                height="40px"
-              />
-            ))}
-          </Box>
-        ) : (
-          <Box
-            component="nav"
+      </Box>
+      <Divider sx={{ borderColor: "neutral.700" }} />
+      {!permList ? (
+        <Box pt={3}>
+          {skeletonArr.map((i, index) => (
+            <Skeleton
+              key={index}
+              sx={{ backgroundColor: "neutral.400", my: 2, mx: 1 }}
+              variant="rounded"
+              width={"90%"}
+              height="40px"
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          component="nav"
+          sx={{
+            flexGrow: 1,
+            px: 2,
+            py: 3,
+          }}
+        >
+          <Stack
+            component="ul"
+            spacing={0.5}
             sx={{
-              flexGrow: 1,
-              px: 2,
-              py: 3,
+              listStyle: "none",
+              p: 0,
+              m: 0,
             }}
           >
-            <Stack
-              component="ul"
-              spacing={0.5}
-              sx={{
-                listStyle: "none",
-                p: 0,
-                m: 0,
-              }}
-            >
-              {routesList.map((item) => {
-                const active = location.pathname.includes(item.path);
-                if (item?.children?.length) {
-                  const activeRoute = item.children.find((i) =>
-                    location.pathname.includes(i.path)
-                  );
-                  return (
-                    <Fragment key={item.title}>
-                      <SideNavItem
-                        hasChildren
-                        onClick={() =>
-                          handleExpandRow(EExpandedRowsTypes.Settings)
-                        }
-                        active={!!activeRoute}
-                        icon={item.icon}
-                        key={item.title}
-                        path={item.path}
-                        title={item.title}
-                        expandableIcon={
-                          isExpanded.settings ? <ExpandLess /> : <ExpandMore />
-                        }
-                      />
-                      {item.children.map((child) => {
-                        const activeChild = location.pathname.includes(
-                          child.path
-                        );
-                        return (
-                          <Collapse
-                            in={isExpanded.settings}
-                            timeout="auto"
-                            unmountOnExit
-                            key={child.path}
-                          >
-                            <SideNavItem
-                              active={activeChild}
-                              icon={child.icon}
-                              key={child.title}
-                              path={child.path}
-                              title={child.title}
-                            />
-                          </Collapse>
-                        );
-                      })}
-                    </Fragment>
-                  );
-                } else {
-                  return (
+            {routesList.map((item) => {
+              const active = location.pathname.includes(item.path);
+              if (item?.children?.length) {
+                const activeRoute = item.children.find((i) =>
+                  location.pathname.includes(i.path)
+                );
+                return (
+                  <Fragment key={item.title}>
                     <SideNavItem
-                      active={active}
+                      hasChildren
+                      onClick={() =>
+                        handleExpandRow(EExpandedRowsTypes.Settings)
+                      }
+                      active={!!activeRoute}
                       icon={item.icon}
                       key={item.title}
                       path={item.path}
                       title={item.title}
+                      expandableIcon={
+                        isExpanded.settings ? <ExpandLess /> : <ExpandMore />
+                      }
                     />
-                  );
-                }
-              })}
-            </Stack>
-          </Box>
-        )}
-      </Box>
-    </Scrollbar>
+                    {item.children.map((child) => {
+                      const activeChild = location.pathname.includes(
+                        child.path
+                      );
+                      return (
+                        <Collapse
+                          in={isExpanded.settings}
+                          timeout="auto"
+                          unmountOnExit
+                          key={child.path}
+                        >
+                          <SideNavItem
+                            active={activeChild}
+                            icon={child.icon}
+                            key={child.title}
+                            path={child.path}
+                            title={child.title}
+                          />
+                        </Collapse>
+                      );
+                    })}
+                  </Fragment>
+                );
+              } else {
+                return (
+                  <SideNavItem
+                    active={active}
+                    icon={item.icon}
+                    key={item.title}
+                    path={item.path}
+                    title={item.title}
+                  />
+                );
+              }
+            })}
+          </Stack>
+        </Box>
+      )}
+    </Box>
   );
 
   return (

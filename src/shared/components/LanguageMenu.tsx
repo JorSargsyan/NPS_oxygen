@@ -91,7 +91,7 @@ const LanguageMenu = () => {
           onClick={handleClick}
         >
           <Box display="flex" height="20px" margin="5px 0">
-            <Typography>{selectedLanguage.label}</Typography>
+            <Typography fontSize={14}>{selectedLanguage.label}</Typography>
           </Box>
         </Button>
       ) : (
