@@ -53,7 +53,7 @@ export const items = ({
     ...(hasCampaignPerm
       ? [
           {
-            title: "Survey",
+            title: "Surveys",
             path: "survey",
             element: <Campaigns />,
             icon: (
