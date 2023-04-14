@@ -99,13 +99,21 @@ const Dashboard = () => {
                   <Box display="flex" justifyContent="space-around">
                     <Box textAlign="center">
                       <Typography fontSize={14}>Surveys completed</Typography>
-                      <Typography fontSize={24} fontWeight="bold">
+                      <Typography
+                        fontSize={24}
+                        fontWeight="bold"
+                        color="primary.main"
+                      >
                         {deliveredData?.responded}
                       </Typography>
                     </Box>
                     <Box textAlign="center">
                       <Typography fontSize={14}>Response rate</Typography>
-                      <Typography fontSize={24} fontWeight="bold">
+                      <Typography
+                        fontSize={24}
+                        color="primary.dark"
+                        fontWeight="bold"
+                      >
                         {deliveredData?.opened &&
                           deliveredData?.responded &&
                           Math.floor(

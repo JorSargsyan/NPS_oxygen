@@ -33,7 +33,7 @@ const TrendChart = ({ chartsData }) => {
             }}
           >
             <Typography fontWeight={"bold"} color="text.secondary">
-              Trend chart title
+              Compare metrics
             </Typography>
           </Box>
           {chartsData && (
