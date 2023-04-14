@@ -88,7 +88,7 @@ export const feedbackColumns = [
     },
   },
   { label: "Submission Date", field: "creationDate" },
-  { label: "NPS agent", field: "assignedTo" },
+  { label: "CX agent", field: "assignedTo" },
 ];
 
 export const viewCommentsDialogConfig = {
@@ -197,7 +197,7 @@ export interface IDefaultQuickFilterValues {
 export const feedbackFilterTypesLabels = {
   NPS: "NPS",
   SERVICE_QUALITY_SCORE: "Service quality score",
-  NPS_AGENT: "NPS agent",
+  NPS_AGENT: "CX agent",
   TASK_STATUS: "Task status",
   EMPLOYEE: "Employee",
   SERVICE_CATEGORY: "Service category",

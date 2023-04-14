@@ -45,6 +45,7 @@ import {
 import { changeFeedbackStatus } from "./helpers";
 import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
 import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
+import ViewIcon from "@heroicons/react/24/solid/EyeIcon";
 import { EBaseUrl } from "store/config/constants";
 import { ERequestStatus } from "store/enums/index.enum";
 import AssignFeedbackDrawer from "./components/AssignFeedbackDrawer";
@@ -200,7 +201,7 @@ const Feedbacks = () => {
       ...(hasGridColumnCustomerAssignPermission
         ? [
             { label: "Customer", field: "customerName" },
-            { label: "NPS agent", field: "assignedTo" },
+            { label: "CX agent", field: "assignedTo" },
           ]
         : []),
       ...(hasGridColumnScorePermission
@@ -322,6 +323,25 @@ const Feedbacks = () => {
             },
           ]
         : []),
+      ...(hasGridViewFeedbackCardPermission
+        ? [
+            {
+              label: "Details",
+              layout: (row: IFeedback) => {
+                return (
+                  <Box
+                    onClick={() => handleViewFeedback(row.id)}
+                    textAlign="center"
+                  >
+                    <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
+                      <ViewIcon />
+                    </SvgIcon>
+                  </Box>
+                );
+              },
+            },
+          ]
+        : []),
     ];
   }, [
     hasGridCampaignColumnPermission,
@@ -430,21 +450,6 @@ const Feedbacks = () => {
     const url = `${window.location.origin}/admin/response/${id}`;
     window.open(url, "_blank");
   };
-
-  const getActions = useCallback(
-    (row: IFeedback) => {
-      if (!hasGridViewFeedbackCardPermission) {
-        return [];
-      }
-      return [
-        {
-          label: "View",
-          onClick: () => handleViewFeedback(row.id),
-        },
-      ];
-    },
-    [hasGridViewFeedbackCardPermission]
-  );
 
   const handleClose = () => {
     setActiveRow(undefined);
@@ -583,7 +588,6 @@ const Feedbacks = () => {
         paginatedData={feedbacks}
         onChange={refetchFeedbacks}
         onChangeSelected={handleChangeSelected}
-        getActions={getActions}
         hasSearchInput={hasSearchPermission}
       />
       <RightDrawer

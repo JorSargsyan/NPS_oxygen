@@ -249,18 +249,6 @@ const AddEditRoles = ({
                   multiple
                 />
               </Grid>
-              <Grid item xs={6}>
-                <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Directorate Permissions"
-                  name="permissions.directorate"
-                  hasSelectAllOption
-                  options={permGroups?.[7]?.permissions || []}
-                  defaultValue={[]}
-                  optionLabel="name"
-                  prefix="permissions"
-                  multiple
-                />
-              </Grid>
             </Grid>
           </Grid>
           <Box

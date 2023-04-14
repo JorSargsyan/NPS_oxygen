@@ -204,7 +204,10 @@ const CampaignsPage = () => {
 
   const handleChangeState = useCallback(
     async (id: number, state: boolean) => {
-      await dispatch(ChangeCampaignState({ id, state }));
+      const { meta } = await dispatch(ChangeCampaignState({ id, state }));
+      if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        return;
+      }
       await refetchData();
       toast.success(`Survey is ${!state ? "inactive" : "active"}`);
     },
