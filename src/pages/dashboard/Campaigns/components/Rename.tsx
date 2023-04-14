@@ -41,17 +41,13 @@ const Rename = ({ data, onSuccess }: { data: any; onSuccess: () => void }) => {
         Please enter new name for the campaign
       </Typography>
       <TextInput name="name" rules={requiredRules} label={"Name"} />
-      <Box
-        mt={2}
-        sx={{ position: "fixed", bottom: 20, right: 20 }}
-        display="flex"
-        justifyContent={"flex-end"}
-      >
+      <Box mt={2} display="flex" justifyContent={"flex-end"}>
         <ButtonLoader
+          variant="outlined"
           onClick={methods.handleSubmit(onSubmit)}
           isLoading={false}
         >
-          <Typography>Save</Typography>
+          <Typography>Submit</Typography>
         </ButtonLoader>
       </Box>
     </FormProvider>

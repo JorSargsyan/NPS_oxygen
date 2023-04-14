@@ -23,6 +23,7 @@ export interface ISharedDialogProps {
   hasActions?: boolean;
   onSuccess?: () => void;
   children?: ReactNode;
+  minWidth?: string;
   handleCloseCb?: () => void;
   fullScreen?: boolean;
   sx?: SxProps<any>;
@@ -35,6 +36,7 @@ const SharedDialog = ({
   onSuccess,
   hasActions = true,
   children,
+  minWidth,
   handleCloseCb = undefined,
   fullScreen = false,
   sx,
@@ -57,7 +59,12 @@ const SharedDialog = ({
       PaperComponent={Paper}
       fullScreen={fullScreen}
     >
-      <Box display="flex" alignItems="center" justifyContent={"space-between"}>
+      <Box
+        minWidth={minWidth}
+        display="flex"
+        alignItems="center"
+        justifyContent={"space-between"}
+      >
         <DialogTitle style={{ cursor: "move" }}>{title}</DialogTitle>
         <Box mr={2}>
           <Button onClick={handleClose}>
