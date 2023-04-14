@@ -57,6 +57,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
       }}
     >
       <Card

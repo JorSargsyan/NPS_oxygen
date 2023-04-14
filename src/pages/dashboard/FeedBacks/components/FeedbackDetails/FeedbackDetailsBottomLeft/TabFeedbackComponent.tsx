@@ -47,7 +47,6 @@ const TabFeedbackComponent = () => {
     }
   };
 
-  console.log(feedbackDetails, "feedbackDetails");
   return (
     <Box sx={{ overflow: "scroll", height: "500px", p: "18px 12px" }}>
       {!feedbackDetails?.feedbacks?.length ? (

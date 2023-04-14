@@ -196,23 +196,22 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             },
           ]
         : []),
-      ...(hasAdditionalFilterByDirectorate
-        ? [
-            {
-              label: feedbackFilterTypesLabels.DIRECTORATE,
-              value: EFeedbackFilterTypesValues.DIRECTORATE,
-              type: EFeedbackFilterTypes.DIRECTORATE,
-              key: feedbackFilterTypesKeys.DIRECTORATE,
-            },
-          ]
-        : []),
+      // ...(hasAdditionalFilterByDirectorate
+      //   ? [
+      //       {
+      //         label: feedbackFilterTypesLabels.DIRECTORATE,
+      //         value: EFeedbackFilterTypesValues.DIRECTORATE,
+      //         type: EFeedbackFilterTypes.DIRECTORATE,
+      //         key: feedbackFilterTypesKeys.DIRECTORATE,
+      //       },
+      //     ]
+      //   : []),
     ];
   }, [
     hasAdditionalFilterByEmployee,
     hasAdditionalFilterByScore,
     hasAdditionalFilterByAssigned,
     hasAdditionalFilterByTaskStatus,
-    hasAdditionalFilterByDirectorate,
   ]);
 
   const getSliderValues = useCallback(

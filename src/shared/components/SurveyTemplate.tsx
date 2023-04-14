@@ -11,6 +11,7 @@ import {
   IQuestionConfig,
   IQuestionDetails,
 } from "store/interfaces/surveyPreview";
+import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
 
 export enum ESurveyTypes {
   Preview = "preview",
@@ -29,6 +30,7 @@ interface IProps {
   handleNext?: (data: any) => void;
   checkDisabled?: boolean;
   questionData: ISurveyTemplateQuestionData;
+  viewType?: number;
 }
 
 const SurveyTemplate = ({
@@ -38,11 +40,17 @@ const SurveyTemplate = ({
   handleNext,
   checkDisabled,
   questionData,
+  viewType,
 }: IProps) => {
   const PreviewComp = useCallback(() => {
     const Comp = ESurveyPreviewComps[questionData?.details.type];
-    return <Comp questionData={questionData} />;
-  }, [questionData]);
+    return (
+      <Comp
+        questionData={questionData}
+        hasMode={type === ESurveyTypes.Preview}
+      />
+    );
+  }, [questionData, type]);
 
   const getImage = useMemo(() => {
     if (type !== ESurveyTypes.Preview) {
@@ -70,8 +78,12 @@ const SurveyTemplate = ({
             borderRadius: "10px",
             maxHeight: "100%",
             width: "100%",
-            height: 250,
-            objectFit: "cover",
+            height:
+              type === ESurveyTypes.Preview &&
+              viewType === EQuestionPreviewType.MOBILE
+                ? 200
+                : { xs: 200, sm: 250 },
+            objectFit: "contain",
           },
         }}
       >
@@ -80,8 +92,8 @@ const SurveyTemplate = ({
       <Box mt={2}>
         <FormProvider {...methods}>
           <Box display="flex" justifyContent={"center"}>
-            <Typography variant="h5">
-              {questionData?.details?.title}{" "}
+            <Typography variant="h5" sx={{ fontSize: { xs: 16 } }}>
+              {questionData?.details?.title}
             </Typography>
             {questionData?.details?.isRequired ? (
               <Typography ml={2} fontSize={20} color="error">

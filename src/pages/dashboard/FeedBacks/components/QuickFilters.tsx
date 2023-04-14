@@ -68,6 +68,7 @@ const QuickFilters = ({ methods, handleSubmit }) => {
         quickFilters: defaultQuickFilterValues,
       },
     });
+    handleSubmit?.();
   };
 
   const feedbackTypesFilter = useMemo(() => {

@@ -212,6 +212,7 @@ export const feedbackFilterTypesKeys = {
   SERVICE_QUALITY_SCORE: "friendliness",
   NPS_AGENT: "assignedto",
   TASK_STATUS: "taskStatus",
+  GRID_TASK_STATUS: "status",
   EMPLOYEE: "employee",
   SERVICE_CATEGORY: "servicecategory",
   CAMPAIGN_NAME: "campaignname",

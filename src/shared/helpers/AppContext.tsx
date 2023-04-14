@@ -14,8 +14,6 @@ export const appContextInitialState: IInitialState = {
 export const AppReducer = (state, action) => {
   const { type, payload } = action;
 
-  console.log(action, "adklasldkaskdla");
-
   switch (type) {
     case EAppReducerTypes.SET_UNSAVED_MODAL_DATA:
       return {
