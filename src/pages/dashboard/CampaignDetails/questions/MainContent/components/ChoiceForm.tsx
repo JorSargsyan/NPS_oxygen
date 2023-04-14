@@ -83,7 +83,7 @@ const ChoiceForm = () => {
                                   borderRadius: "5px",
                                 }}
                               >
-                                <Typography color="white" fontWeight={"800"}>
+                                <Typography color="white" >
                                   {index + 1}
                                 </Typography>
                               </Box>

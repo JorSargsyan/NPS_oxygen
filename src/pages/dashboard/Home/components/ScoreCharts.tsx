@@ -74,7 +74,7 @@ const ScoreCharts = ({
                 sx={{ backgroundColor: scoreColor }}
               >
                 {getOptionIcon(type)}
-                <Typography fontWeight={"bold"}>{label}</Typography>
+                <Typography>{label}</Typography>
               </Box>
             </Box>
             <Box display="flex" gap={1} alignItems="center">

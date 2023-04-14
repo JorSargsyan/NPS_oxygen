@@ -99,9 +99,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             />
           </Box>
           <Box flex={3}>
-            <Typography fontWeight={500} ml={2}>
-              of the users match following filters
-            </Typography>
+            <Typography ml={2}>of the users match following filters</Typography>
           </Box>
           <Box flex={1} justifyContent={"flex-end"} display="flex">
             <Button

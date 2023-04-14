@@ -96,7 +96,9 @@ const DirectoratesGrid = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h3">Directorates</Typography>
+        <Typography variant="h4" fontWeight={500}>
+          Directorates
+        </Typography>
         {hasCreatePermission && (
           <Button
             startIcon={

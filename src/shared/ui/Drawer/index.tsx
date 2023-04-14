@@ -29,7 +29,9 @@ const RightDrawer = ({
     <Drawer anchor={"right"} open={open} onClose={handleClose}>
       <Box p={2} width={width}>
         <Box mt={2} mb={4} display="flex" justifyContent={"space-between"}>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6" fontWeight={500}>
+            {title}
+          </Typography>
           <Box sx={{ cursor: "pointer" }}>
             <CloseIcon onClick={handleClose} />
           </Box>

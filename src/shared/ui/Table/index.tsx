@@ -172,7 +172,7 @@ const BasicTable = <T extends { id: number }>({
                 {column.label}
               </TableSortLabel>
             ) : (
-              <Typography fontSize={12} fontWeight={500}>
+              <Typography fontSize={12} >
                 {column.label}
               </Typography>
             )}

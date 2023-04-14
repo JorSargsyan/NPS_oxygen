@@ -33,7 +33,6 @@ const MetricForm = () => {
                   >
                     <Typography
                       fontSize={16}
-                      fontWeight={"bold"}
                       color="white"
                       textAlign={"center"}
                     >

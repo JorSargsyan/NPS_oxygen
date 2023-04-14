@@ -37,7 +37,7 @@ const Rename = ({ data, onSuccess }: { data: any; onSuccess: () => void }) => {
 
   return (
     <FormProvider {...methods}>
-      <Typography mb={2} fontSize={16} fontWeight={500}>
+      <Typography mb={2} fontSize={16}>
         Please enter new name for the campaign
       </Typography>
       <TextInput name="name" rules={requiredRules} label={"Name"} />

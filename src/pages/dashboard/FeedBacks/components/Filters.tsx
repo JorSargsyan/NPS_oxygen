@@ -236,7 +236,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             />
           </Box>
           <Box flex={3}>
-            <Typography fontWeight={500} ml={2}>
+            <Typography ml={2}>
               of the responses match following filters
             </Typography>
           </Box>

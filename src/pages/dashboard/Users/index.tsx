@@ -135,7 +135,7 @@ const Users = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
-        <Typography variant="h4" color="text.secondary">
+        <Typography variant="h4" fontWeight={500} color="text.secondary">
           Users
         </Typography>
         <Button variant="outlined" onClick={() => setFiltersOpen(true)}>

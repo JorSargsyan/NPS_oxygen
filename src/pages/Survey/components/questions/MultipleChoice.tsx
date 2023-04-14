@@ -28,12 +28,7 @@ const MultipleChoiceQuestion = ({ questionData }) => {
     <Box>
       {questionData.details.multipleConfig?.multipleType !==
       EMultipleConfigType.UNLIMITED ? (
-        <Typography
-          fontSize={"12px"}
-          fontStyle={"italic"}
-          fontWeight={"500"}
-          color="info.main"
-        >
+        <Typography fontSize={"12px"} fontStyle={"italic"} color="info.main">
           {multipleHint}
         </Typography>
       ) : null}

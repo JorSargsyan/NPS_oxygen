@@ -39,7 +39,7 @@ const TabSurveyComponent = () => {
       {!survey && <NoData description="There is no data" />}
       {survey?.surveyMetric ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Campaign metric
           </Typography>
           <Typography mb={2}>{getMetricLabel}</Typography>
@@ -47,7 +47,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.touchpoint ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Campaign touchpoint
           </Typography>
           <Typography mb={2}>{getTouchpointLabel}</Typography>
@@ -55,7 +55,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.channel ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Campaign channel
           </Typography>
           <Typography mb={2}>{getChannelLabel}</Typography>
@@ -63,7 +63,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.type ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Campaign type
           </Typography>
           <Typography mb={2}>{getCampaignTypeLabel}</Typography>
@@ -71,7 +71,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.sentDate ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Sent
           </Typography>
           <Typography mb={2}>{survey?.sentDate}</Typography>
@@ -79,7 +79,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.openedDate ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Opened
           </Typography>
           <Typography mb={2}>{survey?.openedDate}</Typography>
@@ -87,7 +87,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.startedDate ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Started
           </Typography>
           <Typography mb={2}>{survey?.startedDate}</Typography>
@@ -95,7 +95,7 @@ const TabSurveyComponent = () => {
       ) : null}
       {survey?.finishedDate ? (
         <Box>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Finished
           </Typography>
           <Typography mb={2}>{survey?.finishedDate}</Typography>

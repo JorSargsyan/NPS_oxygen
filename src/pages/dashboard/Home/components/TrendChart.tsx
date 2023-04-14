@@ -33,9 +33,7 @@ const TrendChart = ({ chartsData }) => {
             sx={{ backgroundColor: "primary.darkest", padding: "8px" }}
           >
             <ChartIcon height={20} width={20} color="white" />
-            <Typography fontWeight={"bold"} color="white">
-              Compare metrics
-            </Typography>
+            <Typography color="white">Compare metrics</Typography>
           </Box>
           {chartsData && (
             <ReactApexChart
