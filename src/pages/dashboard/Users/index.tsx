@@ -141,7 +141,7 @@ const Users = () => {
         </Button>
       </Box>
       <BasicTable<IUserCompact>
-        selectable={hasExportPermission}
+        // selectable={hasExportPermission}
         hasSearchInput
         onExport={handleExport}
         filterOptions={{ watch: methods.watch, reset: methods.reset }}

@@ -68,7 +68,7 @@ export const campaignTypes = {
   touchpoint: [
     {
       id: ETouchPoint.Postal_office,
-      label: "Postal Offices",
+      label: "Head Office",
       value: ETouchPointValues.Postal_office,
     },
   ],

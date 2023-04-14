@@ -92,15 +92,14 @@ const UserDetails = ({ userId }: { userId: number }) => {
                       {userInfo?.position}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  {/* <Grid item xs={12} md={6}>
                     <Typography fontSize={14} sx={{ wordBreak: "break-word" }}>
-                      {" "}
                       Department
                     </Typography>
                     <Typography fontWeight={"bold"}>
                       {userInfo?.department}
                     </Typography>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Box>
               <Box mt={4}>

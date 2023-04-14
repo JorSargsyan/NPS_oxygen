@@ -121,7 +121,7 @@ const Customers = () => {
     <Box p={4}>
       <Typography variant="h3">Customers</Typography>
       <BasicTable<ICustomer>
-        selectable={hasExportPermission}
+        // selectable={hasExportPermission}
         hasSearchInput
         onExport={handleExport}
         Filter={() => <Filters onChange={refetchCustomers} methods={methods} />}

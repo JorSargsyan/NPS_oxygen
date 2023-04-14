@@ -63,17 +63,18 @@ const CustomRatingQuestion = ({
                 key={answer.id}
                 onClick={() => handleSelect(answer.id)}
                 sx={{
-                  border: "2px solid",
-                  borderColor: "primary.main",
+                  color: "primary.black",
                   cursor: "pointer",
+                  border: "1px solid rgba(0, 122, 255, 0.32)",
                   "&.active": {
-                    backgroundColor: "primary.main",
+                    backgroundColor: "primary.selected",
                     color: "white",
+                    border: "none",
                   },
                   width: hasMode
                     ? "40px"
                     : { xs: "40px", sm: "7.5%", lg: "8%" },
-                  padding: hasMode ? "9px" : { xs: "9px", sm: 2 },
+                  padding: hasMode ? "9px" : { xs: "9px", sm: "14px" },
                 }}
                 className={
                   answer.id === methods.watch("answerIDs[0]") && "active"
@@ -81,9 +82,9 @@ const CustomRatingQuestion = ({
                 display="flex"
                 justifyContent={"center"}
                 alignItems={"center"}
-                borderRadius={"10px"}
+                borderRadius={"8px"}
               >
-                <Typography fontSize="20px" fontWeight="bold">
+                <Typography fontSize="16px" fontWeight="600">
                   {answer.value}
                 </Typography>
               </Box>
@@ -95,8 +96,7 @@ const CustomRatingQuestion = ({
         <Typography
           sx={{
             fontSize: hasMode ? 12 : { xs: 12, sm: 14 },
-            fontWeight: "bold",
-            fontStyle: "italic",
+            color: "primary.lightText",
           }}
         >
           {details?.metricConfig?.metricLeftText}
@@ -104,8 +104,7 @@ const CustomRatingQuestion = ({
         <Typography
           sx={{
             fontSize: hasMode ? 12 : { xs: 12, sm: 14 },
-            fontWeight: "bold",
-            fontStyle: "italic",
+            color: "primary.lightText",
           }}
         >
           {details?.metricConfig?.metricRightText}

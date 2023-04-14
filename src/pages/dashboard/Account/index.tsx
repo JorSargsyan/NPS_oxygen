@@ -160,12 +160,12 @@ const AccountPage = () => {
                             {userInfo?.position}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        {/* <Grid item xs={12} md={6}>
                           <Typography fontSize={14}> Department</Typography>
                           <Typography fontWeight={"bold"}>
                             {userInfo?.department}
                           </Typography>
-                        </Grid>
+                        </Grid> */}
                       </Grid>
                     </Box>
                   </CardContent>

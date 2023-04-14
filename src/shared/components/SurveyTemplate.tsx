@@ -92,7 +92,10 @@ const SurveyTemplate = ({
       <Box mt={2}>
         <FormProvider {...methods}>
           <Box display="flex" justifyContent={"center"}>
-            <Typography variant="h5" sx={{ fontSize: { xs: 16 } }}>
+            <Typography
+              variant="h5"
+              sx={{ fontSize: { xs: 16 }, fontWeight: "400" }}
+            >
               {questionData?.details?.title}
             </Typography>
             {questionData?.details?.isRequired ? (
@@ -117,6 +120,7 @@ const SurveyTemplate = ({
                       type === ESurveyTypes.Customer ? handleSkip : undefined
                     }
                     variant="contained"
+                    sx={{ borderRadius: "8px" }}
                   >
                     <Typography>{"Skip"}</Typography>
                   </Button>
@@ -129,6 +133,7 @@ const SurveyTemplate = ({
                     : undefined
                 }
                 variant="contained"
+                sx={{ borderRadius: "8px" }}
               >
                 <Typography>{questionData?.details?.buttonText}</Typography>
               </Button>

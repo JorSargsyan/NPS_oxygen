@@ -32,6 +32,8 @@ import {
 } from "store/slicers/surveyPreview";
 import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
+import { createSurveyTheme } from "theme/survey";
+import { ThemeProvider } from "@mui/material/styles";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
@@ -58,6 +60,8 @@ const SurveyPreview = () => {
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
   const { hash, type } = useParams();
+
+  const theme = createSurveyTheme();
 
   const generateCustomer = useCallback(async () => {
     const { meta, payload } = await dispatch(
@@ -302,87 +306,95 @@ const SurveyPreview = () => {
   }, [location.pathname]);
 
   return (
-    <Box
-      display="flex"
-      justifyContent={"center"}
-      sx={{
-        backgroundImage: `url(${require("assets/images/bg.jpg")})`,
-        height: "100vh",
-        backgroundSize: "cover",
-      }}
-    >
-      {surveyStatus ? (
-        <Box
-          p={2}
-          sx={{ display: { xs: "flex" }, alignItems: { xs: "center" } }}
-        >
-          <Card
+    <ThemeProvider theme={theme}>
+      <Box
+        display="flex"
+        fontFamily="Roboto"
+        justifyContent={"center"}
+        sx={{
+          backgroundImage: `url(${require("assets/images/bg.jpg")})`,
+          height: "100vh",
+          backgroundSize: "cover",
+        }}
+      >
+        {surveyStatus ? (
+          <Box
             sx={{
-              height: { xs: "95vh" },
-              backgroundColor: "rgb(255 255 255 / 97%)",
-              overflow: "scroll",
+              display: { xs: "flex" },
+              alignItems: { xs: "center" },
+              margin: { xs: "16px 0", sm: 2 },
             }}
           >
-            <CardContent>
-              <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
+            <Card
+              sx={{
+                height: { xs: "95vh" },
+                backgroundColor: "rgb(255 255 255 / 97%)",
+                overflow: "scroll",
+                borderRadius: "24px",
+              }}
+            >
+              <CardContent>
+                <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
+                  <Box
+                    sx={{
+                      width: {
+                        xs: "85vw",
+                        sm: "80vw",
+                        md: "60vw",
+                        lg: "50vw",
+                      },
+                    }}
+                  >
+                    <SurveyTemplate
+                      checkDisabled={checkDisabled}
+                      methods={methods}
+                      type={ESurveyTypes.Customer}
+                      handleSkip={handleSkip}
+                      handleNext={handleNext}
+                      questionData={questionData}
+                    />
+                  </Box>
+                </Slide>
+              </CardContent>
+            </Card>
+          </Box>
+        ) : (
+          <Box alignItems={"center"} display={"flex"}>
+            <Card
+              sx={{
+                height: { xs: "95vh", sm: "80vh" },
+                backgroundColor: "rgb(255 255 255 / 97%)",
+                borderRadius: "24px",
+              }}
+            >
+              <CardContent sx={{ height: "100%" }}>
                 <Box
                   sx={{
                     width: {
                       xs: "85vw",
                       sm: "80vw",
                       md: "60vw",
-                      lg: "50vw",
                     },
+                    height: "100%",
                   }}
+                  display="flex"
+                  justifyContent={"center"}
+                  alignItems={"center"}
                 >
-                  <SurveyTemplate
-                    checkDisabled={checkDisabled}
-                    methods={methods}
-                    type={ESurveyTypes.Customer}
-                    handleSkip={handleSkip}
-                    handleNext={handleNext}
-                    questionData={questionData}
-                  />
+                  {status ? (
+                    <Typography fontSize={20} fontWeight={"bold"}>
+                      {status}
+                    </Typography>
+                  ) : (
+                    <CircularProgress />
+                  )}
                 </Box>
-              </Slide>
-            </CardContent>
-          </Card>
-        </Box>
-      ) : (
-        <Box alignItems={"center"} display={"flex"}>
-          <Card
-            sx={{
-              height: { xs: "95vh", sm: "80vh" },
-              backgroundColor: "rgb(255 255 255 / 97%)",
-            }}
-          >
-            <CardContent sx={{ height: "100%" }}>
-              <Box
-                sx={{
-                  width: {
-                    xs: "85vw",
-                    sm: "80vw",
-                    md: "60vw",
-                  },
-                  height: "100%",
-                }}
-                display="flex"
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                {status ? (
-                  <Typography fontSize={20} fontWeight={"bold"}>
-                    {status}
-                  </Typography>
-                ) : (
-                  <CircularProgress />
-                )}
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
-      )}
-    </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        )}
+      </Box>
+    </ThemeProvider>
   );
 };
 
