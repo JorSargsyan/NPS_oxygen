@@ -123,7 +123,7 @@ const Customers = () => {
         Customers
       </Typography>
       <BasicTable<ICustomer>
-        selectable={hasExportPermission}
+        // selectable={hasExportPermission}
         hasSearchInput
         onExport={handleExport}
         Filter={() => <Filters onChange={refetchCustomers} methods={methods} />}

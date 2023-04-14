@@ -335,7 +335,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                     />
                   </Grid>
                 )}
-
                 {filtersWatch?.[index]?.type?.type ===
                 EFeedbackFilterTypes.NPS ? null : filtersWatch?.[index]?.type
                     ?.type ===

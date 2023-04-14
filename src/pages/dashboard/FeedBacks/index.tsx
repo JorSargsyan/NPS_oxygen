@@ -175,7 +175,7 @@ const Feedbacks = () => {
         if (filter.type?.type === EFeedbackFilterTypes.TASK_STATUS) {
           return {
             ...data,
-            value: filter.type?.value,
+            value: filter?.value,
           };
         }
         return data;
@@ -526,7 +526,7 @@ const Feedbacks = () => {
   const tableCustomActions = useCallback(() => {
     return (
       <Box display="flex" gap={3} justifyContent="flex-end">
-        {/* {hasAssignPermission && (
+        {hasAssignPermission && (
           <Button
             variant="contained"
             onClick={openAssignFeedbackDrawer}
@@ -535,7 +535,7 @@ const Feedbacks = () => {
           >
             <Typography>Assign</Typography>
           </Button>
-        )} */}
+        )}
 
         {hasExportPermission && (
           <Button
@@ -591,8 +591,8 @@ const Feedbacks = () => {
         </Button>
       </Box>
       <BasicTable<IFeedback>
-        hasCustomActions
-        CustomActions={tableCustomActions}
+        // hasCustomActions
+        // CustomActions={tableCustomActions}
         selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         Filter={FiltersWrapper}
