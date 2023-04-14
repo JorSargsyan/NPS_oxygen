@@ -84,7 +84,7 @@ const CustomRatingQuestion = ({
                 alignItems={"center"}
                 borderRadius={"8px"}
               >
-                <Typography fontSize="16px" fontWeight="600">
+                <Typography fontSize="16px" >
                   {answer.value}
                 </Typography>
               </Box>

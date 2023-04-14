@@ -129,7 +129,7 @@ const CampaignCardsList = ({
                       <Typography
                         gutterBottom
                         variant="h6"
-                        fontWeight={"normal"}
+                        fontWeight={500}
                         component="div"
                         width="85%"
                         textAlign={"center"}
@@ -153,11 +153,7 @@ const CampaignCardsList = ({
                     <Divider />
                     <Box display="flex" justifyContent={"space-between"}>
                       <StyledBox>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={600}
-                        >
+                        <Typography variant="body2" color="text.secondary">
                           {item.responded || "No"} responses
                         </Typography>
                         <Typography

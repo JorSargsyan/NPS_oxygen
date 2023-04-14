@@ -213,9 +213,7 @@ const DesignTab = () => {
                 alt="templateImage"
               />
             ) : (
-              <Typography fontSize={18} fontWeight="bold">
-                No image
-              </Typography>
+              <Typography fontSize={18}>No image</Typography>
             )}
           </Box>
           <Box display="flex" justifyContent={"flex-end"}>

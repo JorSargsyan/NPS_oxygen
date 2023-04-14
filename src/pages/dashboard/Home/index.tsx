@@ -83,7 +83,7 @@ const Dashboard = () => {
         <FormProvider {...methods}>
           <Box display="flex" px={2} alignItems={"center"}>
             <Box flex={3}>
-              <Typography variant="h4" color="text.secondary">
+              <Typography variant="h4" fontWeight={500} color="text.secondary">
                 Statistics
               </Typography>
             </Box>
@@ -101,21 +101,13 @@ const Dashboard = () => {
                   <Box display="flex" justifyContent="space-around">
                     <Box textAlign="center">
                       <Typography fontSize={14}>Surveys completed</Typography>
-                      <Typography
-                        fontSize={24}
-                        fontWeight="bold"
-                        color="#083A8B"
-                      >
+                      <Typography fontSize={24} color="#083A8B">
                         {deliveredData?.responded}
                       </Typography>
                     </Box>
                     <Box textAlign="center">
                       <Typography fontSize={14}>Response rate</Typography>
-                      <Typography
-                        fontSize={24}
-                        color="#083A8B"
-                        fontWeight="bold"
-                      >
+                      <Typography fontSize={24} color="#083A8B">
                         {deliveredData?.opened &&
                           deliveredData?.responded &&
                           Math.floor(

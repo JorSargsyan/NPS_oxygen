@@ -72,7 +72,9 @@ const AccountPage = () => {
       <Container maxWidth="lg">
         <Stack spacing={6}>
           <div>
-            <Typography variant="h4">Account</Typography>
+            <Typography variant="h4" fontWeight={500} color="text.secondary">
+              Account
+            </Typography>
           </div>
           <div>
             <Grid container spacing={3}>
@@ -94,7 +96,7 @@ const AccountPage = () => {
                           width: 80,
                         }}
                       />
-                      <Typography gutterBottom variant="h5">
+                      <Typography gutterBottom variant="h5" fontWeight={500}>
                         {userInfo?.name}
                       </Typography>
                       <Typography color="text.secondary" variant="body2">
@@ -138,31 +140,25 @@ const AccountPage = () => {
                       <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
                           <Typography fontSize={14}>Full Name</Typography>
-                          <Typography fontWeight={"bold"}>
+                          <Typography>
                             {userInfo?.name} {userInfo?.surname}
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <Typography fontSize={14}>Email Address</Typography>
-                          <Typography fontWeight={"bold"}>
-                            {userInfo?.email}
-                          </Typography>
+                          <Typography>{userInfo?.email}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <Typography fontSize={14}>Role</Typography>
-                          <Typography fontWeight={"bold"}>
-                            {userInfo?.role.label}
-                          </Typography>
+                          <Typography>{userInfo?.role.label}</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <Typography fontSize={14}>Position</Typography>
-                          <Typography fontWeight={"bold"}>
-                            {userInfo?.position}
-                          </Typography>
+                          <Typography>{userInfo?.position}</Typography>
                         </Grid>
                         {/* <Grid item xs={12} md={6}>
                           <Typography fontSize={14}> Department</Typography>
-                          <Typography fontWeight={"bold"}>
+                          <Typography >
                             {userInfo?.department}
                           </Typography>
                         </Grid> */}

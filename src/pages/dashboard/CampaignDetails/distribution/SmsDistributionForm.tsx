@@ -99,12 +99,12 @@ const SmsDistributionForm = () => {
       <FormProvider {...methods}>
         <Box display="flex">
           <Box flex={1}>
-            <Typography fontSize={18} fontWeight={600} mb={2}>
+            <Typography fontSize={18} mb={2}>
               Schedule
             </Typography>
           </Box>
           <Box flex={1}>
-            <Typography ml={6} fontSize={18} fontWeight={600} mb={2}>
+            <Typography ml={6} fontSize={18} mb={2}>
               Message details
             </Typography>
           </Box>
@@ -123,7 +123,7 @@ const SmsDistributionForm = () => {
                     "Here you can select the trigger source from where you want to receive the triggers. "
                   }
                 >
-                  <Typography fontWeight={500}>Trigger source</Typography>
+                  <Typography>Trigger source</Typography>
                 </Tooltip>
               </Box>
               <Box flex={1}>
@@ -151,7 +151,7 @@ const SmsDistributionForm = () => {
                     "In case activating this function the survey will be sent to the customer after the predefined minutes.  "
                   }
                 >
-                  <Typography fontWeight={500}>Postpone survey</Typography>
+                  <Typography>Postpone survey</Typography>
                 </Tooltip>
               </Box>
               <Box flex={1}>
@@ -172,7 +172,7 @@ const SmsDistributionForm = () => {
                 mb={2}
               >
                 <Box flex={1} display="flex" alignItems="center">
-                  <Typography fontWeight={500}>Postpone survey for</Typography>
+                  <Typography>Postpone survey for</Typography>
                 </Box>
                 <Box flex={1}>
                   <TextInput
@@ -214,7 +214,7 @@ const SmsDistributionForm = () => {
             </Box>
           </Box>
         </Box>
-        <Typography mt={2} fontSize={18} fontWeight={600} mb={2}>
+        <Typography mt={2} fontSize={18} mb={2}>
           Quarantine
         </Typography>
         <Box display="flex" justifyContent={"space-between"}>
@@ -231,7 +231,7 @@ const SmsDistributionForm = () => {
                     "In case activating this function the customers will be quarantined after the predefined transactions."
                   }
                 >
-                  <Typography fontWeight={500}>Customer quarantine</Typography>
+                  <Typography>Customer quarantine</Typography>
                 </Tooltip>
               </Box>
               <Box flex={1}>
@@ -253,9 +253,7 @@ const SmsDistributionForm = () => {
                   mb={2}
                 >
                   <Box flex={1} display="flex" alignItems="center">
-                    <Typography fontWeight={500}>
-                      Quarantine the customer after
-                    </Typography>
+                    <Typography>Quarantine the customer after</Typography>
                   </Box>
                   <Box flex={1}>
                     <TextInput
@@ -272,9 +270,7 @@ const SmsDistributionForm = () => {
                   mb={2}
                 >
                   <Box flex={1} display="flex" alignItems="center">
-                    <Typography fontWeight={500}>
-                      Quarantine the customer for
-                    </Typography>
+                    <Typography>Quarantine the customer for</Typography>
                   </Box>
                   <Box flex={1}>
                     <TextInput
@@ -298,9 +294,7 @@ const SmsDistributionForm = () => {
                     "In case activation of this function the survey will be sent the quarantined customers as well after receiving the trigger."
                   }
                 >
-                  <Typography fontWeight={500}>
-                    Include the quarantined customers
-                  </Typography>
+                  <Typography>Include the quarantined customers</Typography>
                 </Tooltip>
               </Box>
               <Box flex={1}>

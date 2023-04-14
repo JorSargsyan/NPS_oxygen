@@ -59,12 +59,7 @@ const MainContent = () => {
             >
               {getOptionIcon(surveyInfo.details.type)}
             </Box>
-            <Typography
-              fontWeight="500"
-              fontSize={16}
-              color="text.secondary"
-              ml={1}
-            >
+            <Typography fontSize={16} color="text.secondary" ml={1}>
               {CampaignSurveyTypeList[surveyInfo.details.type]}
             </Typography>
           </Box>

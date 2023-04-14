@@ -67,7 +67,7 @@ const Customers = () => {
             </MenuItem>
           </Select>
           {row.customerStatus.id === 3 && (
-            <Typography mt={0.4} fontWeight={"bold"} fontSize={12}>
+            <Typography mt={0.4} fontSize={12}>
               Until {row.quarantineEndDate}
             </Typography>
           )}
@@ -119,7 +119,7 @@ const Customers = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h4" color="text.secondary">
+      <Typography variant="h4" fontWeight={500} color="text.secondary">
         Customers
       </Typography>
       <BasicTable<ICustomer>

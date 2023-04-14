@@ -6,7 +6,7 @@ const NoRows = () => {
     <TableRow>
       <TableCell>
         <Box display="flex">
-          <Typography ml={2} fontWeight={600} fontSize={14} textAlign={"left"}>
+          <Typography ml={2} fontSize={14} textAlign={"left"}>
             Nothing found, try to change filters
           </Typography>
           <Box ml={1} mt={0.2}>

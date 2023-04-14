@@ -20,7 +20,7 @@ const TabServiceComponent = () => {
       {!service && <NoData description="There is no data" />}
       {service?.employeeName ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Employee name
           </Typography>
           <Typography mb={2}>{service?.employeeName}</Typography>
@@ -28,7 +28,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.employeeEmail ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Employee email
           </Typography>
           <Typography mb={2}>{service?.employeeEmail}</Typography>
@@ -36,7 +36,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.employeePosition ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Employee position
           </Typography>
           <Typography mb={2}>{service?.employeePosition}</Typography>
@@ -44,7 +44,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.employeeCode ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Employee code
           </Typography>
           <Typography mb={2}>{service?.employeeCode}</Typography>
@@ -52,7 +52,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.serviceCategory ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Service category
           </Typography>
           <Typography mb={2}>{service?.serviceCategory}</Typography>
@@ -60,7 +60,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.serviceDate ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Service date
           </Typography>
           <Typography mb={2}>{service?.serviceDate}</Typography>
@@ -68,7 +68,7 @@ const TabServiceComponent = () => {
       ) : null}
       {service?.transactionId ? (
         <Box mr={1}>
-          <Typography fontSize={14} fontWeight="bold" mb={1}>
+          <Typography fontSize={14} mb={1}>
             Transaction ID
           </Typography>
           <Typography mb={2}>{service?.transactionId}</Typography>

@@ -382,7 +382,7 @@ const SurveyPreview = () => {
                   alignItems={"center"}
                 >
                   {status ? (
-                    <Typography fontSize={20} fontWeight={"bold"}>
+                    <Typography fontSize={20} >
                       {status}
                     </Typography>
                   ) : (

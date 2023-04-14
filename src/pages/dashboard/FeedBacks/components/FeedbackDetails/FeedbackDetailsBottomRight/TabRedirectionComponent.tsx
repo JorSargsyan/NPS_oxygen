@@ -274,7 +274,7 @@ const TabRedirectionComponent = () => {
                           <Typography fontSize={13} mr={1}>
                             Deadline:
                           </Typography>
-                          <Typography fontWeight="bold" fontSize={13}>
+                          <Typography fontSize={13}>
                             {task.deadline}
                           </Typography>
                         </Box>

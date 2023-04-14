@@ -8,11 +8,9 @@ import {
   SvgIcon,
   useMediaQuery,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import LanguageMenu from "shared/components/LanguageMenu";
 import { usePopover } from "shared/helpers/hooks/usePopover";
-import { EBaseUrl } from "store/config/constants";
 import { selectUserInfo } from "store/slicers/users";
 import AccountPopover from "./account";
 import { useLocation } from "react-router-dom";
@@ -41,7 +39,7 @@ export const TopNav = () => {
         component="header"
         sx={{
           backdropFilter: "blur(6px)",
-          backgroundColor: "#F3F4F6",
+          backgroundColor: "white",
           position: "sticky",
           left: {
             lg: `${!isCampaignDetails ? SIDE_NAV_WIDTH : 0}px`,

@@ -131,12 +131,12 @@ const LogicTab = () => {
           </Box>
           {!surveyLogic?.surveyLogic?.length &&
             !NO_LOGIC_TYPES.includes(String(surveyInfo.details.type)) && (
-              <Typography textAlign={"center"} fontWeight="600">
+              <Typography textAlign={"center"}>
                 Please add logic paths
               </Typography>
             )}
           {!NO_LOGIC_TYPES.includes(String(surveyInfo.details.type)) ? (
-            <Box display="flex" mt={2} justifyContent={"flex-end"}>
+            <Box display="flex" mt={2} justifyContent={"center"}>
               <Button
                 variant="outlined"
                 startIcon={
@@ -151,7 +151,7 @@ const LogicTab = () => {
             </Box>
           ) : (
             <Box textAlign={"center"}>
-              <Typography fontWeight={"600"}>
+              <Typography>
                 This question type cannot have a logical path
               </Typography>
               <Typography>

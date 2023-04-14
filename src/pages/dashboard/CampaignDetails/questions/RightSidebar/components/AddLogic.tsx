@@ -103,9 +103,7 @@ const AddLogic = ({
     <Box p={2}>
       <FormProvider {...methods}>
         <Box my={2}>
-          <Typography fontWeight={"600"}>
-            If any of the following answers is selected
-          </Typography>
+          <Typography>If any of the following answers is selected</Typography>
         </Box>
         <BasicAutocomplete
           inputLabel={"Options"}
@@ -118,7 +116,7 @@ const AddLogic = ({
           defaultValue={[]}
         />
         <Box my={2}>
-          <Typography fontWeight={"600"}>Then go to</Typography>
+          <Typography>Then go to</Typography>
         </Box>
         <BasicAutocomplete
           inputLabel={"Next Question"}

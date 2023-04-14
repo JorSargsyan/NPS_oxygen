@@ -270,6 +270,11 @@ const LeftSidebar = () => {
               <Box
                 borderRadius={"4px"}
                 display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.Welcome
+                  ] as string,
+                }}
                 alignItems={"center"}
                 p={"2px"}
                 mr={1}
@@ -284,21 +289,60 @@ const LeftSidebar = () => {
             id={ECampaignSurveyType.SingleChoice}
             onClick={handleClickContentAdd}
           >
-            <CircleIcon height={20} width={40} />
+            <Box
+              borderRadius={"4px"}
+              display={"flex"}
+              sx={{
+                backgroundColor: CampaignSurveyColors[
+                  ECampaignSurveyType.SingleChoice
+                ] as string,
+              }}
+              alignItems={"center"}
+              p={"2px"}
+              mr={1}
+            >
+              <CircleIcon color="white" height={20} width={40} />
+            </Box>
             Select One
           </MenuItem>
           <MenuItem
             id={ECampaignSurveyType.MultipleChoice}
             onClick={handleClickContentAdd}
           >
-            <CheckIcon height={20} width={40} />
+            <Box
+              borderRadius={"4px"}
+              display={"flex"}
+              sx={{
+                backgroundColor: CampaignSurveyColors[
+                  ECampaignSurveyType.MultipleChoice
+                ] as string,
+              }}
+              alignItems={"center"}
+              p={"2px"}
+              mr={1}
+            >
+              <CheckIcon color="white" height={20} width={40} />
+            </Box>
             Select Multiple
           </MenuItem>
           <MenuItem
             id={ECampaignSurveyType.Comment}
             onClick={handleClickContentAdd}
           >
-            <ChatIcon height={20} width={40} />
+            <Box
+              borderRadius={"4px"}
+              display={"flex"}
+              sx={{
+                backgroundColor: CampaignSurveyColors[
+                  ECampaignSurveyType.Comment
+                ] as string,
+              }}
+              alignItems={"center"}
+              p={"2px"}
+              mr={1}
+            >
+              <ChatIcon color="white" height={20} width={40} />
+            </Box>
             Comment
           </MenuItem>
           {!alreadyHasType(ECampaignSurveyType.ContactInformation) && (
@@ -306,7 +350,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.ContactInformation}
               onClick={handleClickContentAdd}
             >
-              <UserIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.ContactInformation
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <UserIcon color="white" height={20} width={40} />
+              </Box>
               Contact Information
             </MenuItem>
           )}
@@ -505,11 +562,11 @@ const LeftSidebar = () => {
                                 }}
                               >
                                 {getOptionIcon(survey.type)}
-                                <Typography color={"white"} fontWeight={600}>
+                                <Typography color={"white"}>
                                   {index + 1}
                                 </Typography>
                               </Box>
-                              <Typography fontWeight="600" fontSize={14} ml={1}>
+                              <Typography fontSize={14} ml={1}>
                                 {getLabel()}
                               </Typography>
                             </Box>

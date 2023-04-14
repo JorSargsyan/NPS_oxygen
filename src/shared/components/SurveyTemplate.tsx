@@ -94,7 +94,7 @@ const SurveyTemplate = ({
           <Box display="flex" justifyContent={"center"}>
             <Typography
               variant="h5"
-              sx={{ fontSize: { xs: 16 }, fontWeight: "400" }}
+              sx={{ fontSize: { xs: 16 }, fontWeight: "500" }}
             >
               {questionData?.details?.title}
             </Typography>
