@@ -215,7 +215,7 @@ const TabNotesComponent = () => {
   }, [initialFetch]);
 
   return (
-    <Box p={3} sx={{ overflow: "scroll", height: "500px", p: 3 }}>
+    <Box p={3} sx={{ overflow: "scroll", p: 3 }}>
       <FormProvider {...methods}>
         {hasAddNotePermission && (
           <>

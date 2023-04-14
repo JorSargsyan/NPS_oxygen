@@ -31,7 +31,7 @@ export const userColumns: IColumn[] = [
     label: "Status",
     layout: (row: IUserCompact) => {
       return row.status ? (
-        <Chip label="Active" color="primary" />
+        <Chip label="Active" color="success" />
       ) : (
         <Chip label="Inactive" color="error" />
       );
