@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   defaultFilterValues,
-  RIGHT_SIDEBAR_WIDTH,
   RIGHT_SIDEBAR_WIDTH_EXTENDED,
 } from "resources/constants";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
@@ -59,6 +58,7 @@ const CampaignsPage = () => {
   const navigate = useNavigate();
   const campaigns = useSelector(selectCampaigns);
   const [activeRow, setActiveRow] = useState(0);
+  const [addEditOpen, setAddEditOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
   const [rowHistory, setRowHistory] = useState([]);
   const [mode, setMode] = useState<ECampaignAction>();
@@ -105,7 +105,7 @@ const CampaignsPage = () => {
     setActiveRow(rowData.id);
     setEditData(rowData);
     setMode(ECampaignAction.Rename);
-    setDrawerOpen(true);
+    setAddEditOpen(true);
   };
 
   const handleOpenWarning = (rowData: ICampaign) => {
@@ -114,7 +114,7 @@ const CampaignsPage = () => {
   };
 
   const handleAdd = () => {
-    setDrawerOpen(true);
+    setAddEditOpen(true);
     setMode(ECampaignAction.Add);
   };
 
@@ -181,7 +181,7 @@ const CampaignsPage = () => {
   );
 
   const handleSuccess = async () => {
-    setDrawerOpen(false);
+    setAddEditOpen(false);
     await refetchData();
     toast.success("Campaign name changed successfully");
   };
@@ -196,7 +196,7 @@ const CampaignsPage = () => {
       case ECampaignAction.Add:
         return "Add survey";
       case ECampaignAction.Rename:
-        return "Remane survey";
+        return "Rename survey";
       case ECampaignAction.ViewHistory:
         return "View survey history";
     }
@@ -222,6 +222,7 @@ const CampaignsPage = () => {
         layout: (rowData: ICampaign) => {
           return (
             <Switch
+              color="success"
               disabled={!hasManagePermission}
               onChange={(e, checked) => handleChangeState(rowData.id, checked)}
               checked={rowData.isActive}
@@ -245,7 +246,9 @@ const CampaignsPage = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h3">Survey</Typography>
+        <Typography variant="h4" color="text.secondary">
+          Surveys
+        </Typography>
 
         <Box display="flex" alignItems="center" gap={2}>
           <CampaignListViewTypes
@@ -289,27 +292,14 @@ const CampaignsPage = () => {
           />
         )}
       </Box>
-
       <RightDrawer
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
-        width={
-          mode === ECampaignAction.Rename || mode === ECampaignAction.Add
-            ? RIGHT_SIDEBAR_WIDTH
-            : RIGHT_SIDEBAR_WIDTH_EXTENDED
-        }
+        width={RIGHT_SIDEBAR_WIDTH_EXTENDED}
         onClose={() => setDrawerOpen(false)}
         title={getDrawerTitle()}
       >
-        {mode === ECampaignAction.Rename && (
-          <Rename data={editData} onSuccess={handleSuccess} />
-        )}
-        {mode === ECampaignAction.ViewHistory && (
-          <HistoryView data={rowHistory} />
-        )}
-        {mode === ECampaignAction.Add && (
-          <AddCampaign onSuccess={handleSuccessCreation} />
-        )}
+        <HistoryView data={rowHistory} />
       </RightDrawer>
       <SharedDialog
         open={warningOpen}
@@ -317,6 +307,22 @@ const CampaignsPage = () => {
         onSuccess={handleDelete}
         textConfig={deleteCampaignWarningConfig}
       />
+      <SharedDialog
+        open={addEditOpen}
+        setOpen={setAddEditOpen}
+        hasActions={false}
+        minWidth="400px"
+        textConfig={{
+          title: getDrawerTitle(),
+        }}
+      >
+        {mode === ECampaignAction.Add && (
+          <AddCampaign onSuccess={handleSuccessCreation} />
+        )}
+        {mode === ECampaignAction.Rename && (
+          <Rename data={editData} onSuccess={handleSuccess} />
+        )}
+      </SharedDialog>
     </Box>
   );
 };

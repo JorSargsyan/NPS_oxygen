@@ -7,6 +7,7 @@ import defaultImg from "assets/images/survey_bg.png";
 import { selectSurveyInfo } from "store/slicers/campaignDetail";
 import { CampaignSurveyForms } from "./constants";
 import {
+  CampaignSurveyColors,
   CampaignSurveyIcons,
   CampaignSurveyTypeList,
 } from "../LeftSidebar/constants";
@@ -50,13 +51,20 @@ const MainContent = () => {
               alignItems={"center"}
               color="primary.secondary"
               sx={{
-                backgroundColor: "primary.main",
+                backgroundColor: String(
+                  CampaignSurveyColors[surveyInfo.details.type]
+                ),
                 borderRadius: "4px",
               }}
             >
               {getOptionIcon(surveyInfo.details.type)}
             </Box>
-            <Typography fontWeight="600" fontSize={16} ml={1}>
+            <Typography
+              fontWeight="500"
+              fontSize={16}
+              color="text.secondary"
+              ml={1}
+            >
               {CampaignSurveyTypeList[surveyInfo.details.type]}
             </Typography>
           </Box>

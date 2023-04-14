@@ -159,7 +159,7 @@ const SmsDistributionForm = () => {
                   name="postpone"
                   control={methods.control}
                   render={({ field }) => (
-                    <Switch {...field} checked={field.value} />
+                    <Switch color="success" {...field} checked={field.value} />
                   )}
                 />
               </Box>
@@ -239,7 +239,7 @@ const SmsDistributionForm = () => {
                   name="surveyQuarantine"
                   control={methods.control}
                   render={({ field }) => (
-                    <Switch {...field} checked={field.value} />
+                    <Switch color="success" {...field} checked={field.value} />
                   )}
                 />
               </Box>
@@ -308,7 +308,7 @@ const SmsDistributionForm = () => {
                   name="ignoreQuarantine"
                   control={methods.control}
                   render={({ field }) => (
-                    <Switch {...field} checked={field.value} />
+                    <Switch color="success" {...field} checked={field.value} />
                   )}
                 />
               </Box>

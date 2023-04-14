@@ -119,7 +119,9 @@ const Customers = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h3">Customers</Typography>
+      <Typography variant="h4" color="text.secondary">
+        Customers
+      </Typography>
       <BasicTable<ICustomer>
         // selectable={hasExportPermission}
         hasSearchInput

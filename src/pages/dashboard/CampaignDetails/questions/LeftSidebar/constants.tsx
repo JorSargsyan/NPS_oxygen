@@ -61,6 +61,21 @@ export const CampaignSurveyIcons = {
   [ECampaignSurveyType.Final]: HandIcon,
 };
 
+export const CampaignSurveyColors = {
+  [ECampaignSurveyType.Welcome]: HandIcon,
+  [ECampaignSurveyType.SingleChoice]: CircleIcon,
+  [ECampaignSurveyType.MultipleChoice]: CheckIcon,
+  [ECampaignSurveyType.Comment]: ChatIcon,
+  [ECampaignSurveyType.ContactInformation]: UserIcon,
+  [ECampaignSurveyType.Nps]: "#5AB4FD",
+  [ECampaignSurveyType.ServiceQualityScore]: "#CD8BDF",
+  [ECampaignSurveyType.Rating]: "#82D389",
+  [ECampaignSurveyType.CustomStar]: "#DEE581",
+  [ECampaignSurveyType.CustomerEffortScore]: "#AA8FDF",
+  [ECampaignSurveyType.CustomerSatisfactionScore]: "#71CFC1",
+  [ECampaignSurveyType.Final]: HandIcon,
+};
+
 export const SurveyTypeConfig = {
   [ECampaignSurveyType.MultipleChoice]: {
     multipleConfig: {

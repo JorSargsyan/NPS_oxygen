@@ -10,6 +10,7 @@ import { selectAuth } from "store/slicers/auth";
 import { GetPermissions, GetConfig } from "store/slicers/common";
 import { GetTranslationsByLangId } from "store/slicers/translations";
 import { GetCurrentUser } from "store/slicers/users";
+import { Box } from "@mui/system";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -56,17 +57,15 @@ const DashboardLayout = () => {
   }, [fetchDashboardData, isAuthorized]);
 
   return (
-    <>
-      <>
-        <TopNav />
-        <SideNav />
-        <LayoutRoot theme={theme} hasPadding={!isCampaignDetailsPage}>
-          <LayoutContainer>
-            <Outlet />
-          </LayoutContainer>
-        </LayoutRoot>
-      </>
-    </>
+    <Box sx={{ backgroundColor: "#F3F4F6" }}>
+      <TopNav />
+      <SideNav />
+      <LayoutRoot theme={theme} hasPadding={!isCampaignDetailsPage}>
+        <LayoutContainer>
+          <Outlet />
+        </LayoutContainer>
+      </LayoutRoot>
+    </Box>
   );
 };
 

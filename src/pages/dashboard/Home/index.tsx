@@ -80,7 +80,7 @@ const Dashboard = () => {
         <FormProvider {...methods}>
           <Box display="flex" px={2} alignItems={"center"}>
             <Box flex={3}>
-              <Typography variant="h5" fontWeight={"normal"}>
+              <Typography variant="h4" color="text.secondary">
                 Statistics
               </Typography>
             </Box>
