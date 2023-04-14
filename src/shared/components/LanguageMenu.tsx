@@ -24,17 +24,17 @@ const languagesList: ILanguage[] = [
   {
     icon: Am,
     value: ELanguageIds.Armenian,
-    label: "ARM",
+    label: "Arm",
   },
   {
     icon: Ru,
     value: ELanguageIds.Russian,
-    label: "RU",
+    label: "Rus",
   },
   {
     icon: En,
     value: ELanguageIds.English,
-    label: "ENG",
+    label: "Eng",
   },
 ];
 

@@ -6,8 +6,10 @@ import { ISurveyTemplateQuestionData } from "shared/components/SurveyTemplate";
 
 const CustomRatingQuestion = ({
   questionData,
+  hasMode,
 }: {
   questionData: ISurveyTemplateQuestionData;
+  hasMode: boolean;
 }) => {
   const methods = useFormContext();
   const { details } = questionData;
@@ -68,8 +70,10 @@ const CustomRatingQuestion = ({
                     backgroundColor: "primary.main",
                     color: "white",
                   },
-                  width: { xs: "40px", sm: "7.5%", lg: "8%" },
-                  padding: { xs: "9px", sm: 2 },
+                  width: hasMode
+                    ? "40px"
+                    : { xs: "40px", sm: "7.5%", lg: "8%" },
+                  padding: hasMode ? "9px" : { xs: "9px", sm: 2 },
                 }}
                 className={
                   answer.id === methods.watch("answerIDs[0]") && "active"
@@ -88,10 +92,22 @@ const CustomRatingQuestion = ({
         )}
       </Box>
       <Box mt={1} display={"flex"} justifyContent={"space-between"}>
-        <Typography fontWeight={"bold"} fontSize={"14px"} fontStyle="italic">
+        <Typography
+          sx={{
+            fontSize: hasMode ? 12 : { xs: 12, sm: 14 },
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
           {details?.metricConfig?.metricLeftText}
         </Typography>
-        <Typography fontWeight={"bold"} fontSize={"14px"} fontStyle="italic">
+        <Typography
+          sx={{
+            fontSize: hasMode ? 12 : { xs: 12, sm: 14 },
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
           {details?.metricConfig?.metricRightText}
         </Typography>
       </Box>

@@ -4,6 +4,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) =>
   theme.unstable_sx({
     color: "primary.main",
     border: "1px solid",
+    backgroundColor: "white",
     borderColor: "primary.main",
     "&:hover": {
       backgroundColor: "primary.light",

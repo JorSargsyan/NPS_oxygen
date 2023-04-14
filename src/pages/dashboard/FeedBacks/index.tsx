@@ -172,6 +172,12 @@ const Feedbacks = () => {
             value: filter.type?.range,
           };
         }
+        if (filter.type?.type === EFeedbackFilterTypes.TASK_STATUS) {
+          return {
+            ...data,
+            value: filter.type?.value,
+          };
+        }
         return data;
       });
     const scoreFilters = filtersCombined.filter(
@@ -357,14 +363,16 @@ const Feedbacks = () => {
 
   const handleSubmit = useCallback(async () => {
     const quickFiltersWatch = methods.watch("config.quickFilters");
+
     const filterStatusList = quickFiltersWatch?.status?.map((status, index) => {
       return {
         conditionalStatusId: index + 1,
-        key: feedbackFilterTypesKeys.TASK_STATUS,
+        key: feedbackFilterTypesKeys.GRID_TASK_STATUS,
         queryCondition: 2,
         value: status.value,
       };
     });
+
     const quickFiltersData = [
       ...(quickFiltersWatch?.range?.every((i) => !!i)
         ? [
@@ -431,6 +439,7 @@ const Feedbacks = () => {
         : []),
     ];
     const filters = [...methods.watch("config.filters"), ...quickFiltersData];
+
     const filteredAdditionalFilters = filters.filter(
       (i: any) => i.type !== null
     );
@@ -439,6 +448,7 @@ const Feedbacks = () => {
       filters: filteredAdditionalFilters,
     };
     delete data.quickFilters;
+
     await dispatch(GetFeedbacks(data));
   }, [dispatch, methods]);
 

@@ -58,30 +58,45 @@ const UserDetails = ({ userId }: { userId: number }) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <Typography fontSize={14}>Full Name</Typography>
-                    <Typography fontWeight={"bold"}>
+                    <Typography
+                      fontWeight={"bold"}
+                      sx={{ wordBreak: "break-word" }}
+                    >
                       {userInfo?.name} {userInfo?.surname}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography fontSize={14}>Email Address</Typography>
-                    <Typography fontWeight={"bold"}>
+                    <Typography
+                      fontWeight={"bold"}
+                      sx={{ wordBreak: "break-word" }}
+                    >
                       {userInfo?.email}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography fontSize={14}>Role</Typography>
-                    <Typography fontWeight={"bold"}>
+                    <Typography
+                      fontWeight={"bold"}
+                      sx={{ wordBreak: "break-word" }}
+                    >
                       {userInfo?.role.label}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography fontSize={14}>Position</Typography>
-                    <Typography fontWeight={"bold"}>
+                    <Typography
+                      fontWeight={"bold"}
+                      sx={{ wordBreak: "break-word" }}
+                    >
                       {userInfo?.position}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography fontSize={14}> Department</Typography>
+                    <Typography fontSize={14} sx={{ wordBreak: "break-word" }}>
+                      {" "}
+                      Department
+                    </Typography>
                     <Typography fontWeight={"bold"}>
                       {userInfo?.department}
                     </Typography>
