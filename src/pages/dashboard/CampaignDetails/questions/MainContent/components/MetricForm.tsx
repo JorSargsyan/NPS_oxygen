@@ -58,7 +58,6 @@ const MetricForm = () => {
             name="metricConfig.metricLeftText"
             placeholder={"Type left text here"}
             label="Not Likely"
-            rules={requiredRules}
           />
         </Grid>
         <Grid item xs={6}>
@@ -66,7 +65,6 @@ const MetricForm = () => {
             name="metricConfig.metricRightText"
             placeholder={"Type right text here"}
             label="Likely"
-            rules={requiredRules}
           />
         </Grid>
       </Grid>

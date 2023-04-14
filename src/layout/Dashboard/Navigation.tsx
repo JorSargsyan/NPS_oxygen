@@ -13,7 +13,7 @@ import Logo from "assets/icons/logo_dark_transparent.png";
 import { Scrollbar } from "components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./NavigationItem";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   selectPermissions,
   selectSidebarVisible,
@@ -42,6 +42,7 @@ enum EExpandedRowsTypes {
 const skeletonArr = new Array(7).fill("");
 
 export const SideNav = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAsyncDispatch();
   const open = useSelector(selectSidebarVisible);
@@ -91,6 +92,10 @@ export const SideNav = () => {
     });
   };
 
+  const handleNavigateToDashboard = () => {
+    navigate("/admin/overview");
+  };
+
   const content = (
     <Box
       sx={{
@@ -116,6 +121,7 @@ export const SideNav = () => {
             flexDirection={"row"}
             width="100%"
             display="flex"
+            onClick={handleNavigateToDashboard}
             justifyContent={"space-between"}
             alignItems="center"
           >

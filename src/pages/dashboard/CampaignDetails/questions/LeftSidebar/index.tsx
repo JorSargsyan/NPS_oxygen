@@ -53,7 +53,6 @@ import { setCampaignLoading } from "store/slicers/common";
 import { useFormContext } from "react-hook-form";
 import { GlobalContext } from "App";
 import { EAppReducerTypes } from "shared/helpers/AppContext";
-import { Divider } from "antd";
 
 const LeftSidebar = () => {
   const { formState } = useFormContext();
@@ -107,8 +106,7 @@ const LeftSidebar = () => {
     }
 
     await dispatch(GetSurveys(campaignInfo.id));
-
-    fetchSurveyData(payload.surveyId);
+    dispatch(setSelectedSurvey(String(payload.surveyId)));
   };
 
   const onDragEnd = ({ destination, source, draggableId }) => {
@@ -152,7 +150,11 @@ const LeftSidebar = () => {
       return;
     }
 
-    dispatch(GetSurveys(campaignInfo.id));
+    const { meta, payload } = await dispatch(GetSurveys(campaignInfo.id));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+    dispatch(setSelectedSurvey(String(payload[0].id)));
   };
 
   const handleSetOpen = (questionId: number) => {
@@ -183,7 +185,6 @@ const LeftSidebar = () => {
         dispatch(GetCampaignSurveyById(surveyId)),
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
         dispatch(GetSurveyLogic(surveyId)),
-        dispatch(setSelectedSurvey(String(surveyId))),
       ]);
 
       dispatch(setCampaignLoading(false));
@@ -194,9 +195,9 @@ const LeftSidebar = () => {
   const handleClickSuccess = useCallback(
     (id: number) => {
       dispatch(setCampaignLoading(true));
-      fetchSurveyData(id);
+      dispatch(setSelectedSurvey(id));
     },
-    [dispatch, fetchSurveyData]
+    [dispatch]
   );
 
   const getOptionIcon = (type: number) => {
@@ -213,14 +214,13 @@ const LeftSidebar = () => {
       return;
     }
     setSurveyList(campaignSurveys);
-    const isSelectedSurveyValid = !!campaignSurveys.find(
-      (i) => i.id === selectedSurvey
-    );
-    fetchSurveyData(
-      isSelectedSurveyValid ? selectedSurvey : campaignSurveys[0]?.id
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaignSurveys, dispatch, fetchSurveyData]);
+  }, [campaignSurveys, dispatch]);
+
+  useEffect(() => {
+    if (selectedSurvey) {
+      fetchSurveyData(selectedSurvey);
+    }
+  }, [fetchSurveyData, selectedSurvey]);
 
   useEffect(() => {
     if (campaignDetails.isSuccess && campaignDetails.questionId) {
