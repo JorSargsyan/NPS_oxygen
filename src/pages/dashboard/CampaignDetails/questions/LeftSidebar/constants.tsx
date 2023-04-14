@@ -62,18 +62,18 @@ export const CampaignSurveyIcons = {
 };
 
 export const CampaignSurveyColors = {
-  [ECampaignSurveyType.Welcome]: HandIcon,
-  [ECampaignSurveyType.SingleChoice]: CircleIcon,
-  [ECampaignSurveyType.MultipleChoice]: CheckIcon,
-  [ECampaignSurveyType.Comment]: ChatIcon,
-  [ECampaignSurveyType.ContactInformation]: UserIcon,
-  [ECampaignSurveyType.Nps]: "#5AB4FD",
-  [ECampaignSurveyType.ServiceQualityScore]: "#CD8BDF",
-  [ECampaignSurveyType.Rating]: "#82D389",
-  [ECampaignSurveyType.CustomStar]: "#DEE581",
-  [ECampaignSurveyType.CustomerEffortScore]: "#AA8FDF",
-  [ECampaignSurveyType.CustomerSatisfactionScore]: "#71CFC1",
-  [ECampaignSurveyType.Final]: HandIcon,
+  [ECampaignSurveyType.Welcome]: "#1B7FFC", //Blue 600
+  [ECampaignSurveyType.SingleChoice]: "#3EB84F", //Green 600
+  [ECampaignSurveyType.MultipleChoice]: "#B7CA39", //Olive 600
+  [ECampaignSurveyType.Comment]: "#F7B937", //Yellow 600
+  [ECampaignSurveyType.ContactInformation]: "#FCA16A", //Orange 600
+  [ECampaignSurveyType.Nps]: "#5AB4FD", //Blue 400
+  [ECampaignSurveyType.ServiceQualityScore]: "#CD8BDF", //Purple 400
+  [ECampaignSurveyType.Rating]: "#82D389", //Green 400
+  [ECampaignSurveyType.CustomStar]: "#DEE581", //Olive 400
+  [ECampaignSurveyType.CustomerEffortScore]: "#AA8FDF", //Violet 400,
+  [ECampaignSurveyType.CustomerSatisfactionScore]: "#71CFC1", //Teal 400,
+  [ECampaignSurveyType.Final]: "#EF7576", //Red 400
 };
 
 export const SurveyTypeConfig = {

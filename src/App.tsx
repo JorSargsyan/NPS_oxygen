@@ -22,19 +22,17 @@ function App() {
   const theme = createTheme();
 
   return (
-    <div>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ThemeProvider theme={theme}>
-          <GlobalContext.Provider
-            value={{ contextInitialState, dispatchContext }}
-          >
-            <CssBaseline />
-            <Toaster position="top-center" toastOptions={toastOptions} />
-            <RouterProvider router={router} />
-          </GlobalContext.Provider>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ThemeProvider theme={theme}>
+        <GlobalContext.Provider
+          value={{ contextInitialState, dispatchContext }}
+        >
+          <CssBaseline />
+          <Toaster position="top-center" toastOptions={toastOptions} />
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 
