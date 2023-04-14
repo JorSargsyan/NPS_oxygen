@@ -245,7 +245,9 @@ const CampaignsPage = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h3">Survey</Typography>
+        <Typography variant="h4" color="text.secondary">
+          Surveys
+        </Typography>
 
         <Box display="flex" alignItems="center" gap={2}>
           <CampaignListViewTypes

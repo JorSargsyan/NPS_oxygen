@@ -41,8 +41,7 @@ export const TopNav = () => {
         component="header"
         sx={{
           backdropFilter: "blur(6px)",
-          backgroundColor: (theme) =>
-            alpha(theme.palette.background.default, 0.8),
+          backgroundColor: "#F3F4F6",
           position: "sticky",
           left: {
             lg: `${!isCampaignDetails ? SIDE_NAV_WIDTH : 0}px`,

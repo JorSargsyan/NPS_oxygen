@@ -3,6 +3,7 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
   Skeleton,
   Switch,
   Table,
@@ -149,6 +150,7 @@ const CampaignCardsList = ({
                         />
                       </Box>
                     </Box>
+                    <Divider />
                     <Box display="flex" justifyContent={"space-between"}>
                       <StyledBox>
                         <Typography
