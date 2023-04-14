@@ -44,7 +44,11 @@ const PieChart = ({
             },
           },
           labels: ["Detractors", "Passives", "Promoters"],
-          colors: ["#ee695f", "#D2D6DB", "#00BC8A"],
+          colors: [
+            "#E3474F" /* Red 500*/,
+            "#D2D6DB",
+            "#B7CA39" /* Olive 500 */,
+          ],
         }}
         series={[badCount, ordinaryCount, goodCount]}
         type="donut"

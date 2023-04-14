@@ -14,6 +14,7 @@ import {
 import { feedbackFilterTypesKeys } from "../FeedBacks/constants";
 import ScoreCharts from "./components/ScoreCharts";
 import TrendChart from "./components/TrendChart";
+import { ECampaignSurveyType } from "../CampaignDetails/questions/LeftSidebar/constants";
 
 interface IFormData {
   range: Array<Dayjs | null>;
@@ -157,21 +158,25 @@ const Dashboard = () => {
               label="NPS"
               dashboardDataChopChart={dashboardData?.npsChopChart}
               scoreData={dashboardData?.nps}
+              type={ECampaignSurveyType.Nps}
             />
             <ScoreCharts
               label="eNPS"
               dashboardDataChopChart={dashboardData?.friendlinessChopChart}
               scoreData={dashboardData?.friendliness}
+              type={ECampaignSurveyType.ServiceQualityScore}
             />
             <ScoreCharts
               label="CES"
               dashboardDataChopChart={dashboardData?.effortScoreChopChart}
               scoreData={dashboardData?.effortScore}
+              type={ECampaignSurveyType.CustomerEffortScore}
             />
             <ScoreCharts
               label="CSAT"
               dashboardDataChopChart={dashboardData?.satisfactionScoreChopChart}
               scoreData={dashboardData?.satisfactionScore}
+              type={ECampaignSurveyType.CustomerSatisfactionScore}
             />
             <TrendChart chartsData={dashboardData?.lineChartData} />
           </Box>
