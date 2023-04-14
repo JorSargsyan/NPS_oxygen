@@ -1,5 +1,5 @@
 export const trendChartOptionsData = {
-  colors: ["#017AFD", "#222D43", "#D2D6DB", "#4F891D"],
+  colors: ["#369BFD", "#B663D2", "#8767D2", "#50C2B5"], //Blue, Purple, Violet, Teal
   plotOptions: {
     area: {
       fillTo: "end",

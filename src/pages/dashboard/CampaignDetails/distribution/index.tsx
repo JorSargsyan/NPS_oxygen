@@ -40,7 +40,10 @@ const Distribution = () => {
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Card>
-            <CardHeader title="Get the link" />
+            <CardHeader
+              titleTypographyProps={{ textAlign: "center" }}
+              title="Get the link"
+            />
             <CardContent sx={{ height: 180 }}>
               <TextField
                 fullWidth
@@ -72,50 +75,45 @@ const Distribution = () => {
         </Grid>
         <Grid item xs={3}>
           <Card onClick={handleShareSMS}>
-            <CardHeader title="Share via SMS" />
+            <CardHeader
+              titleTypographyProps={{ textAlign: "center" }}
+              title="Share via SMS"
+            />
             <CardContent
               sx={{ height: 180, overflow: "hidden", position: "relative" }}
             >
-              <Box
-                display="flex"
-                sx={{ position: "absolute", right: -30, top: 20 }}
-                justifyContent={"center"}
-              >
-                <SmsIcon height={200} color="#73a110" />
+              <Box display="flex" justifyContent={"center"} alignItems="center">
+                <SmsIcon height={100} color="#0E4EB1" />
               </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={3}>
           <Card>
-            <CardHeader title="Share via Email" />
+            <CardHeader
+              titleTypographyProps={{ textAlign: "center" }}
+              title="Share via Email"
+            />
             <CardContent
               sx={{ height: 180, overflow: "hidden", position: "relative" }}
             >
-              <Box
-                display="flex"
-                sx={{ position: "absolute", right: -30, top: 20 }}
-                justifyContent={"center"}
-              >
-                <EmailIcon height={200} color="#73a110" />
+              <Box display="flex" justifyContent={"center"} alignItems="center">
+                <EmailIcon height={100} color="#0E4EB1" />
               </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={3}>
           <Card>
-            <CardHeader title="Push Notifications" />
+            <CardHeader
+              titleTypographyProps={{ textAlign: "center" }}
+              title="Push Notifications"
+            />
             <CardContent
               sx={{ height: 180, overflow: "hidden", position: "relative" }}
             >
-              <Box display="flex" justifyContent={"center"}>
-                <Box
-                  display="flex"
-                  sx={{ position: "absolute", right: -30, top: 20 }}
-                  justifyContent={"center"}
-                >
-                  <BellIcon height={200} color="#73a110" />
-                </Box>
+              <Box display="flex" justifyContent={"center"} alignItems="center">
+                <BellIcon height={100} color="#0E4EB1" />
               </Box>
             </CardContent>
           </Card>

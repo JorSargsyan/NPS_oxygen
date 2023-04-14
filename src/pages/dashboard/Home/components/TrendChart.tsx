@@ -25,14 +25,16 @@ const TrendChart = ({ chartsData }) => {
         <CardContent>
           <Box
             sx={{
-              backgroundColor: "primary.darkest",
+              backgroundColor: "neutral.100",
               color: "white",
               padding: "8px",
               borderRadius: "8px",
               mb: 2,
             }}
           >
-            <Typography fontWeight={"bold"}>Trend chart title</Typography>
+            <Typography fontWeight={"bold"} color="text.secondary">
+              Trend chart title
+            </Typography>
           </Box>
           {chartsData && (
             <ReactApexChart
