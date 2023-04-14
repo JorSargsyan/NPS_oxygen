@@ -2,6 +2,7 @@ import { Box } from "@mui/system";
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { Controller, useFormContext } from "react-hook-form";
+import { neutral } from "theme/colors";
 
 const shortcutsItems: {
   label: string;
@@ -58,6 +59,7 @@ const BasicRangePicker = ({ name, onSubmit }: IProps) => {
         "& .ant-picker": {
           height: "50px",
           width: "100%",
+          backgroundColor: "transparent",
           borderRadius: "8px",
           "&.ant-picker-focused": {
             borderWidth: 3,
@@ -65,6 +67,11 @@ const BasicRangePicker = ({ name, onSubmit }: IProps) => {
             boxShadow: "none",
             "&:hover": {
               borderColor: "primary.main",
+            },
+          },
+          "& input": {
+            "::placeholder": {
+              color: neutral[500],
             },
           },
           "&:hover": {
