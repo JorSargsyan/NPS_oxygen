@@ -111,7 +111,11 @@ const QuestionTab = () => {
                   name="isRequired"
                   control={control}
                   render={({ field }) => (
-                    <Switch {...field} checked={field.value || false} />
+                    <Switch
+                      color="success"
+                      {...field}
+                      checked={field.value || false}
+                    />
                   )}
                 />
               </Box>

@@ -222,6 +222,7 @@ const CampaignsPage = () => {
         layout: (rowData: ICampaign) => {
           return (
             <Switch
+              color="success"
               disabled={!hasManagePermission}
               onChange={(e, checked) => handleChangeState(rowData.id, checked)}
               checked={rowData.isActive}

@@ -63,16 +63,6 @@ export function createComponents(
         },
       },
     },
-    // MuiSwitch: {
-    //   styleOverrides: {
-    //     track: {
-    //       backgroundColor: "red",
-    //     },
-    //     thumb: {
-    //       backgroundColor: "red",
-    //     },
-    //   },
-    // },
     MuiCardContent: {
       styleOverrides: {
         root: {
