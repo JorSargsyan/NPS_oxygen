@@ -31,6 +31,7 @@ import { ICampaignSurvey } from "store/interfaces/campaignDetails";
 import { ERequestStatus } from "store/enums/index.enum";
 import SharedDialog from "shared/ui/Dialog";
 import {
+  CampaignSurveyColors,
   CampaignSurveyIcons,
   CampaignSurveyTypeList,
   ECampaignSurveyType,
@@ -259,14 +260,22 @@ const LeftSidebar = () => {
           onClose={handleClose}
         >
           <Box p={2}>
-            <Typography fontWeight="bold">Questions</Typography>
+            <Typography color="text.secondary">Questions</Typography>
           </Box>
           {!alreadyHasType(ECampaignSurveyType.Welcome) && (
             <MenuItem
               id={ECampaignSurveyType.Welcome}
               onClick={handleClickContentAdd}
             >
-              <HandIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <HandIcon height={20} color="white" width={40} />
+              </Box>
               Welcome
             </MenuItem>
           )}
@@ -302,7 +311,7 @@ const LeftSidebar = () => {
             </MenuItem>
           )}
           <Box p={2}>
-            <Typography fontWeight="bold">Ratings</Typography>
+            <Typography color="text.secondary">Ratings</Typography>
           </Box>
 
           {!alreadyHasType(ECampaignSurveyType.Nps) && (
@@ -310,7 +319,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.Nps}
               onClick={handleClickContentAdd}
             >
-              <ChartIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.Nps
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <ChartIcon color="white" height={20} width={40} />
+              </Box>
               NPS
             </MenuItem>
           )}
@@ -319,7 +341,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.ServiceQualityScore}
               onClick={handleClickContentAdd}
             >
-              <SmileIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.ServiceQualityScore
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <SmileIcon color="white" height={20} width={40} />
+              </Box>
               eNPS
             </MenuItem>
           )}
@@ -329,7 +364,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.CustomerEffortScore}
               onClick={handleClickContentAdd}
             >
-              <PieChartIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.CustomerEffortScore
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <PieChartIcon color="white" height={20} width={40} />
+              </Box>
               Customer Effort score
             </MenuItem>
           )}
@@ -339,7 +387,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.CustomerSatisfactionScore}
               onClick={handleClickContentAdd}
             >
-              <SatisfactionIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.CustomerSatisfactionScore
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <SatisfactionIcon color="white" height={20} width={40} />
+              </Box>
               Customer Satisfaction score
             </MenuItem>
           )}
@@ -348,7 +409,20 @@ const LeftSidebar = () => {
             id={ECampaignSurveyType.Rating}
             onClick={handleClickContentAdd}
           >
-            <RatingIcon height={20} width={40} />
+            <Box
+              borderRadius={"4px"}
+              display={"flex"}
+              sx={{
+                backgroundColor: CampaignSurveyColors[
+                  ECampaignSurveyType.Rating
+                ] as string,
+              }}
+              alignItems={"center"}
+              p={"2px"}
+              mr={1}
+            >
+              <RatingIcon color="white" height={20} width={40} />
+            </Box>
             Custom
           </MenuItem>
 
@@ -357,7 +431,20 @@ const LeftSidebar = () => {
               id={ECampaignSurveyType.CustomStar}
               onClick={handleClickContentAdd}
             >
-              <StarIcon height={20} width={40} />
+              <Box
+                borderRadius={"4px"}
+                display={"flex"}
+                sx={{
+                  backgroundColor: CampaignSurveyColors[
+                    ECampaignSurveyType.CustomStar
+                  ] as string,
+                }}
+                alignItems={"center"}
+                p={"2px"}
+                mr={1}
+              >
+                <StarIcon color="white" height={20} width={40} />
+              </Box>
               Star
             </MenuItem>
           )}
@@ -411,7 +498,9 @@ const LeftSidebar = () => {
                                 alignItems={"center"}
                                 color="primary.secondary"
                                 sx={{
-                                  backgroundColor: "primary.main",
+                                  backgroundColor: String(
+                                    CampaignSurveyColors[survey.type]
+                                  ),
                                   borderRadius: "4px",
                                 }}
                               >
