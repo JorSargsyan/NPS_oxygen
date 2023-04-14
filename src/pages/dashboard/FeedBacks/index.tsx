@@ -295,7 +295,11 @@ const Feedbacks = () => {
                     >
                       {feedbackStatusList.map((feedbackStatus, index) => {
                         return (
-                          <MenuItem key={index} value={feedbackStatus.value}>
+                          <MenuItem
+                            key={index}
+                            value={feedbackStatus.value}
+                            sx={{ fontSize: 14 }}
+                          >
                             {feedbackStatus.name}
                           </MenuItem>
                         );

@@ -32,29 +32,31 @@ const Dashboard = () => {
 
   const getFilteredDashboardData = useCallback(
     async (dates: Dayjs[]) => {
-      const data = {
-        filters: [
-          {
-            key: feedbackFilterTypesKeys.DATE,
-            queryCondition: 4,
-            value: dates[0].format("MM/DD/YYYY"),
-          },
-          {
-            key: feedbackFilterTypesKeys.DATE,
-            queryCondition: 5,
-            value: dates[1].format("MM/DD/YYYY"),
-          },
-        ],
-      };
-      const dashboardDataReq = {
-        ...data,
-        userVisibility: 2,
-      };
+      if (dates) {
+        const data = {
+          filters: [
+            {
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 4,
+              value: dates?.[0].format("MM/DD/YYYY"),
+            },
+            {
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 5,
+              value: dates?.[1].format("MM/DD/YYYY"),
+            },
+          ],
+        };
+        const dashboardDataReq = {
+          ...data,
+          userVisibility: 2,
+        };
 
-      await Promise.all([
-        dispatch(GetSurveyDeliveredData(data)),
-        dispatch(GetDashboardData(dashboardDataReq)),
-      ]);
+        await Promise.all([
+          dispatch(GetSurveyDeliveredData(data)),
+          dispatch(GetDashboardData(dashboardDataReq)),
+        ]);
+      }
     },
     [dispatch]
   );

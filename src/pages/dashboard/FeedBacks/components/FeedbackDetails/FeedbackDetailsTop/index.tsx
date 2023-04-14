@@ -76,7 +76,7 @@ const FeedbackDetailsTop = () => {
   return (
     <FormProvider {...methods}>
       <Box>
-        <Box p={2} sx={{ minHeight: 330 }}>
+        <Box p={2}>
           <Box display="flex">
             <Box width="30%" mr={5}>
               <BasicSelect<IFeedbackStatusList>
@@ -111,7 +111,7 @@ const FeedbackDetailsTop = () => {
               />
             </Box> */}
           </Box>
-          <Box
+          {/* <Box
             display="grid"
             sx={{
               gridTemplateRows: "auto 1fr auto",
@@ -177,7 +177,7 @@ const FeedbackDetailsTop = () => {
                 </Typography>
               </Box>
             ) : null}
-          </Box>
+          </Box> */}
         </Box>
       </Box>
 

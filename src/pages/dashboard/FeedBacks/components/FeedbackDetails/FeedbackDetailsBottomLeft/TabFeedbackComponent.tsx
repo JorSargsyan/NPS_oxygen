@@ -41,9 +41,9 @@ const TabFeedbackComponent = () => {
       case ESurveyType.CustomStar:
         return "Star Rating";
       case ESurveyType.CustomerEffortScore:
-        return "Effort Score";
+        return "CAS";
       case ESurveyType.CustomerSatisfactionScore:
-        return "Satisfaction Score";
+        return "CSAT";
     }
   };
 

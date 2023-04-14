@@ -110,6 +110,7 @@ const BasicSelect = <T extends unknown>({
                 {options?.map((option: T, index: number) => {
                   return (
                     <MenuItem
+                      sx={{ fontSize: 14 }}
                       key={index}
                       disabled={
                         hasDisabledOption ? isOptionDisabled(option) : false
