@@ -12,6 +12,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import {
   GetCampaignById,
   GetSurveys,
+  GetSurveysInitial,
   GetTemplates,
   UpdateSurvey,
   resetCampaignDetails,
@@ -197,7 +198,7 @@ const CampaignDetail = () => {
     Promise.all([
       dispatch(GetCampaignById(Number(id))),
       dispatch(GetTemplates(Number(id))),
-      dispatch(GetSurveys(Number(id))),
+      dispatch(GetSurveysInitial(Number(id))),
     ]);
   }, [dispatch, id]);
 

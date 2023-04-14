@@ -119,6 +119,14 @@ export const GetSurveys = createAsyncThunk<ICampaignSurvey[], number>(
   thunkOptions
 );
 
+export const GetSurveysInitial = createAsyncThunk<ICampaignSurvey[], number>(
+  `${name}/GetSurveysInitial`,
+  async (id: number) => {
+    return (await api.get(`${EBaseUrl.API}/Surveys/${id}`)).data;
+  },
+  thunkOptions
+);
+
 export const UpdateSurvey = createAsyncThunk<
   unknown,
   { data: IUpdateSurveyRequest; id: number }
@@ -252,6 +260,10 @@ const campaignDetailSlice = createSlice({
     });
     builder.addCase(GetSurveys.fulfilled, (state, { payload }) => {
       state.surveys = payload;
+    });
+    builder.addCase(GetSurveysInitial.fulfilled, (state, { payload }) => {
+      state.surveys = payload;
+      state.selectedSurvey = payload[0].id;
     });
     builder.addCase(GetCampaignSurveyById.fulfilled, (state, { payload }) => {
       state.surveyDetails = payload;
