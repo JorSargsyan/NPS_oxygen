@@ -83,7 +83,7 @@ const SurveyTemplate = ({
               viewType === EQuestionPreviewType.MOBILE
                 ? 200
                 : { xs: 200, sm: 250 },
-            objectFit: "cover",
+            objectFit: "contain",
           },
         }}
       >
