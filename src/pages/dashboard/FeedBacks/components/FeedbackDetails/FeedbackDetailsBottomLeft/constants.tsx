@@ -1,5 +1,5 @@
 export enum EFeedbackDetailsBottomLeftTabsOptions {
   Feedback = 0,
-  Survey,
-  Service,
+  // Survey = 1,
+  Service = 1,
 }

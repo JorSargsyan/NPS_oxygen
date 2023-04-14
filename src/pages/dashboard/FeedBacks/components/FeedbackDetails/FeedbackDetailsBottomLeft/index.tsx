@@ -30,15 +30,6 @@ const FeedbackDetailsBottomLeft = () => {
             },
           ]
         : []),
-      ...(hasFeedbackBottomLeftSurveyTabViewPermission
-        ? [
-            {
-              index: EFeedbackDetailsBottomLeftTabsOptions.Survey,
-              label: "Survey",
-              children: <TabSurveyComponent />,
-            },
-          ]
-        : []),
       ...(hasFeedbackBottomLeftServiceCauseTabViewPermission
         ? [
             {
@@ -48,12 +39,25 @@ const FeedbackDetailsBottomLeft = () => {
             },
           ]
         : []),
+      // ...(hasFeedbackBottomLeftSurveyTabViewPermission
+      //   ? [
+      //       {
+      //         index: EFeedbackDetailsBottomLeftTabsOptions.Survey,
+      //         label: "Survey",
+      //         children: <TabSurveyComponent />,
+      //       },
+      //     ]
+      //   : []),
     ];
   }, [
     hasFeedbackBottomLeftServiceCauseTabViewPermission,
     hasFeedbackBottomLeftTabResponseViewPermission,
-    hasFeedbackBottomLeftSurveyTabViewPermission,
+    // hasFeedbackBottomLeftSurveyTabViewPermission,
   ]);
+  console.log(
+    feedbackDetailsBottomLeftTabsOptions,
+    "feedbackDetailsBottomLeftTabsOptions"
+  );
 
   return (
     <Box sx={{ minHeight: 500 }}>

@@ -1,5 +1,12 @@
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
-import { Button, MenuItem, Select, SvgIcon, Typography } from "@mui/material";
+import {
+  Button,
+  MenuItem,
+  Select,
+  SvgIcon,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -52,6 +59,7 @@ import AssignFeedbackDrawer from "./components/AssignFeedbackDrawer";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
+import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
 
 export interface IActiveRow {
   type?: number;
@@ -590,14 +598,19 @@ const Feedbacks = () => {
         <Typography variant="h4" fontWeight={500} color="text.secondary">
           Responses
         </Typography>
-        <Button variant="outlined" onClick={() => setFiltersOpen(true)}>
-          Advanced filters
-        </Button>
+        <SvgIcon
+          onClick={() => setFiltersOpen(true)}
+          sx={{ cursor: "pointer" }}
+        >
+          <Tooltip title="Advanced filters">
+            <AdvancedFilterIcon />
+          </Tooltip>
+        </SvgIcon>
       </Box>
       <BasicTable<IFeedback>
         // hasCustomActions
         // CustomActions={tableCustomActions}
-        selectable
+        // selectable
         filterOptions={{ watch: methods.watch, reset: methods.reset }}
         Filter={FiltersWrapper}
         columns={feedbackColumns}
