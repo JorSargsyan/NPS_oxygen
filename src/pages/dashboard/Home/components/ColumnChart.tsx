@@ -2,6 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useMemo } from "react";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
+import { CSAT_COLORS, NPS_COLORS, CES_COLORS } from "../constants";
 
 export type ChartTypes =
   | "bar"
@@ -20,30 +21,6 @@ export type ChartTypes =
   | "radar"
   | "polarArea"
   | "rangeBar";
-
-const CSAT_COLORS = ["#E3474F", "#FC8244", "#FDCF5B", "#CBD85A", "#90A529"]; //500 LINE OF COLORS
-const CES_COLORS = [
-  "#D51E32",
-  "#E3474F",
-  "#FA6024",
-  "#FC8244",
-  "#F7B937",
-  "#B7CA39",
-  "#90A529",
-];
-const NPS_COLORS = [
-  "#640012",
-  "#8A031B",
-  "#B00E25",
-  "#D51E32",
-  "#E3474F",
-  "#FA6024",
-  "#FC8244",
-  "#FCA16A",
-  "#FDCF5B",
-  "#B7CA39",
-  "#90A529",
-];
 
 const colors = [];
 
@@ -135,8 +112,6 @@ const ColumnsChart = ({ series, label, type }) => {
     }
     return categories;
   }, [type]);
-
-  console.log(chartColors);
 
   return (
     <ReactApexChart

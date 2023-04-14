@@ -93,3 +93,33 @@ export const trendChartOptionsData = {
     enabled: false,
   },
 };
+
+export const CSAT_COLORS = [
+  "#E3474F",
+  "#FC8244",
+  "#FDCF5B",
+  "#CBD85A",
+  "#90A529",
+]; //500 LINE OF COLORS
+export const CES_COLORS = [
+  "#D51E32",
+  "#E3474F",
+  "#FA6024",
+  "#FC8244",
+  "#F7B937",
+  "#B7CA39",
+  "#90A529",
+];
+export const NPS_COLORS = [
+  "#640012",
+  "#8A031B",
+  "#B00E25",
+  "#D51E32",
+  "#E3474F",
+  "#FA6024",
+  "#FC8244",
+  "#FCA16A",
+  "#FDCF5B",
+  "#B7CA39",
+  "#90A529",
+];

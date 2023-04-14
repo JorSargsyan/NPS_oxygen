@@ -43,6 +43,7 @@ import {
   EFeedbackUserTypeId,
   EQuickFilterTypes,
   EQuickFilterUserVisibilityValues,
+  ESurveyType,
   feedbackFilterTypesKeys,
   feedbackStatusList,
   scoreColors,
@@ -60,6 +61,7 @@ import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
+import { CES_COLORS, CSAT_COLORS, NPS_COLORS } from "../Home/constants";
 
 export interface IActiveRow {
   type?: number;
@@ -223,31 +225,19 @@ const Feedbacks = () => {
             {
               label: "Score",
               layout: (row: IFeedback) => {
-                const textColor = (score: IScore) => {
-                  const val = Number(score?.value);
-                  if (val >= scoreRanges.bad[0] && val <= scoreRanges.bad[1]) {
-                    return scoreColors.bad.color;
-                  } else if (
-                    val >= scoreRanges.neutral[0] &&
-                    val <= scoreRanges.neutral[1]
-                  ) {
-                    return scoreColors.neutral.color;
-                  } else {
-                    return scoreColors.good.color;
-                  }
-                };
-
                 const bgColor = (score: IScore) => {
                   const val = Number(score?.value);
-                  if (val >= scoreRanges.bad[0] && val <= scoreRanges.bad[1]) {
-                    return scoreColors.bad.bgColor;
-                  } else if (
-                    val >= scoreRanges.neutral[0] &&
-                    val <= scoreRanges.neutral[1]
+                  if (
+                    score?.type === ESurveyType.NPS ||
+                    score?.type === ESurveyType.Friendliness
                   ) {
-                    return scoreColors.neutral.bgColor;
-                  } else {
-                    return scoreColors.good.bgColor;
+                    return NPS_COLORS[val];
+                  } else if (score?.type === ESurveyType.CustomerEffortScore) {
+                    return CES_COLORS[val];
+                  } else if (
+                    score?.type === ESurveyType.CustomerSatisfactionScore
+                  ) {
+                    return CSAT_COLORS[val];
                   }
                 };
 
@@ -257,7 +247,7 @@ const Feedbacks = () => {
                       return (
                         <Box
                           bgcolor={bgColor(score)}
-                          color={textColor(score)}
+                          color="white"
                           key={index}
                           textAlign="center"
                           padding="7px"

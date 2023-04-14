@@ -7,7 +7,6 @@ import NoData from "../../NoData";
 const TabServiceComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
   const { service } = feedbackItemDetails;
-  console.log(1);
 
   return (
     <Box

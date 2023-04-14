@@ -6,29 +6,27 @@ import { selectFeedbackDetails } from "store/slicers/feedback";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import NoData from "../../NoData";
+import {
+  CES_COLORS,
+  CSAT_COLORS,
+  NPS_COLORS,
+} from "pages/dashboard/Home/constants";
+import { IFeedbacksItemDetails, IScore } from "store/interfaces/feedback";
 
 const TabFeedbackComponent = () => {
   const feedbackDetails = useSelector(selectFeedbackDetails);
 
-  const textColor = (score: number) => {
-    const val = Number(score);
-    if (val >= 0 && val <= 6) {
-      return scoreColors.bad.color;
-    } else if (val >= 7 && val <= 8) {
-      return scoreColors.neutral.color;
-    } else {
-      return scoreColors.good.color;
-    }
-  };
-
-  const bgColor = (score: number) => {
-    const val = Number(score);
-    if (val >= 0 && val <= 6) {
-      return scoreColors.bad.bgColor;
-    } else if (val >= 7 && val <= 8) {
-      return scoreColors.neutral.bgColor;
-    } else {
-      return scoreColors.good.bgColor;
+  const bgColor = (feedback: IFeedbacksItemDetails) => {
+    const val = Number(feedback?.answers?.[0]?.value);
+    if (
+      feedback?.type === ESurveyType.NPS ||
+      feedback?.type === ESurveyType.Friendliness
+    ) {
+      return NPS_COLORS[val];
+    } else if (feedback?.type === ESurveyType.CustomerEffortScore) {
+      return CES_COLORS[val - 1];
+    } else if (feedback?.type === ESurveyType.CustomerSatisfactionScore) {
+      return CSAT_COLORS[val - 1];
     }
   };
 
@@ -118,8 +116,8 @@ const TabFeedbackComponent = () => {
                         <Box>
                           <Typography
                             fontSize={14}
-                            bgcolor={bgColor(Number(answer.value))}
-                            color={textColor(Number(answer.value))}
+                            bgcolor={bgColor(feedback)}
+                            color={"white"}
                             padding="12px 18px"
                             borderRadius="8px"
                             display="inline"
