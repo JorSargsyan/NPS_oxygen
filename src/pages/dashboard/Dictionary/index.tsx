@@ -124,7 +124,9 @@ const Translations = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h3">Translations</Typography>
+        <Typography variant="h4" color="text.secondary">
+          Translations
+        </Typography>
         {hasCreatePermission && (
           <Button
             startIcon={

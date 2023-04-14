@@ -129,7 +129,9 @@ const RolesPage = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h3">Roles</Typography>
+        <Typography variant="h4" color="text.secondary">
+          Roles
+        </Typography>
         {hasCreatePermission && (
           <Button
             startIcon={

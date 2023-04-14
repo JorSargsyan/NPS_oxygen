@@ -135,7 +135,9 @@ const Users = () => {
   return (
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
-        <Typography variant="h3">Users</Typography>
+        <Typography variant="h4" color="text.secondary">
+          Users
+        </Typography>
         <Button variant="outlined" onClick={() => setFiltersOpen(true)}>
           Advanced filters
         </Button>
