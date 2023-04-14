@@ -66,10 +66,11 @@ const ScoreCharts = ({
             >
               <Box
                 borderRadius={"4px"}
+                pr={1}
+                width={100}
                 display="flex"
-                width="100px"
                 alignItems={"center"}
-                justifyContent="space-around"
+                justifyContent="space-between"
                 sx={{ backgroundColor: scoreColor }}
               >
                 {getOptionIcon(type)}

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { trendChartOptionsData } from "../constants";
+import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import useTranslation from "shared/helpers/hooks/useTranslation";
 
@@ -24,15 +25,15 @@ const TrendChart = ({ chartsData }) => {
       <Card>
         <CardContent>
           <Box
-            sx={{
-              backgroundColor: "neutral.100",
-              color: "white",
-              padding: "8px",
-              borderRadius: "8px",
-              mb: 2,
-            }}
+            borderRadius={"4px"}
+            display="flex"
+            width="190px"
+            alignItems={"center"}
+            justifyContent="space-around"
+            sx={{ backgroundColor: "primary.darkest", padding: "8px" }}
           >
-            <Typography fontWeight={"bold"} color="text.secondary">
+            <ChartIcon height={20} width={20} color="white" />
+            <Typography fontWeight={"bold"} color="white">
               Compare metrics
             </Typography>
           </Box>

@@ -104,7 +104,7 @@ const Dashboard = () => {
                       <Typography
                         fontSize={24}
                         fontWeight="bold"
-                        color="primary.main"
+                        color="#083A8B"
                       >
                         {deliveredData?.responded}
                       </Typography>
@@ -113,7 +113,7 @@ const Dashboard = () => {
                       <Typography fontSize={14}>Response rate</Typography>
                       <Typography
                         fontSize={24}
-                        color="primary.dark"
+                        color="#083A8B"
                         fontWeight="bold"
                       >
                         {deliveredData?.opened &&
