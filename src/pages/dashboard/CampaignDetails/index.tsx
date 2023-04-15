@@ -11,6 +11,7 @@ import {
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import {
   GetCampaignById,
+  GetCampaignSurveyById,
   GetSurveys,
   GetSurveysInitial,
   GetTemplates,
@@ -21,7 +22,7 @@ import {
   selectSelectedSurvey,
   selectSurveyInfo,
 } from "store/slicers/campaignDetail";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import SharedDialog from "shared/ui/Dialog";
 import { GlobalContext } from "App";
 import { EAppReducerTypes } from "shared/helpers/AppContext";
@@ -32,7 +33,6 @@ import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
 import { setSidebarVisible } from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
-import SurveyTemplate from "shared/components/SurveyTemplate";
 import CampaignTabs from "components/campaigns/CampaignTabs";
 import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
 import QuestionPreview from "./components/QuestionPreview";
@@ -87,6 +87,7 @@ interface IFormData {
 }
 
 const CampaignDetail = () => {
+  const [isAlreadySubmited, setAlreadySubmited] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const surveyList = useSelector(selectCampaignSurveys);
   const selectedSurvey = useSelector(selectSelectedSurvey);
@@ -108,6 +109,8 @@ const CampaignDetail = () => {
       title: "",
     },
   });
+
+  const methodValues = methods.watch();
 
   const handleSuccess = () => {
     dispatchContext({
@@ -190,7 +193,12 @@ const CampaignDetail = () => {
       return;
     }
 
-    dispatch(GetSurveys(campaignInfo.id));
+    await Promise.all([
+      dispatch(GetSurveys(campaignInfo.id)),
+      dispatch(GetCampaignSurveyById(selectedSurvey)),
+    ]);
+
+    setAlreadySubmited(true);
 
     toast.success("Campaign Saved successfully");
   };
@@ -347,6 +355,10 @@ const CampaignDetail = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    setAlreadySubmited(false);
+  }, [methodValues]);
+
   return (
     <Box>
       <FormProvider {...methods}>
@@ -373,7 +385,7 @@ const CampaignDetail = () => {
                       <Typography>Preview</Typography>
                     </Button>
                     <Button
-                      disabled={!methods.formState.isDirty}
+                      disabled={!methods.formState.isDirty || isAlreadySubmited}
                       onClick={methods.handleSubmit(onSubmit)}
                       variant="contained"
                     >
