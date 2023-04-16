@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 import Logo from "assets/icons/logo_dark_transparent.png";
-import { Scrollbar } from "components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./NavigationItem";
 import { useLocation, useNavigate } from "react-router-dom";

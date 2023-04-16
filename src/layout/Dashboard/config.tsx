@@ -3,6 +3,7 @@ import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import FeedbackIcon from "@heroicons/react/24/solid/ChatBubbleLeftEllipsisIcon";
+import ShoppingIcon from "@heroicons/react/24/solid/BuildingStorefrontIcon";
 import TranslationIcon from "@heroicons/react/24/solid/DocumentTextIcon";
 import Cog from "@heroicons/react/24/solid/CogIcon";
 import { SvgIcon } from "@mui/material";
@@ -15,6 +16,7 @@ import Dashboard from "pages/dashboard/Home";
 import Roles from "pages/dashboard/Roles";
 import Users from "pages/dashboard/Users";
 import DirectoratesGrid from "pages/dashboard/Directorates";
+import MysteryShopping from "pages/dashboard/MysteryShopping";
 
 export const items = ({
   hasRolesPerm,
@@ -50,6 +52,16 @@ export const items = ({
           },
         ]
       : []),
+    {
+      title: "Mystery shopping",
+      path: "mystery-shoping",
+      element: <MysteryShopping />,
+      icon: (
+        <SvgIcon fontSize="small">
+          <ShoppingIcon />
+        </SvgIcon>
+      ),
+    },
     ...(hasCampaignPerm
       ? [
           {
