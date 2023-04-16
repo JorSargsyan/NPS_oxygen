@@ -27,10 +27,6 @@ export const useCaseColumns: IColumn[] = [
       />
     ),
   },
-  {
-    label: "Details",
-    field: "details",
-  },
 ];
 
 export interface IUseCase {
@@ -44,7 +40,11 @@ export interface IUseCase {
     url: string;
   };
   hasChecklist: boolean;
-  details: string;
+}
+
+export interface ICheckList {
+  id: number;
+  text: string;
 }
 
 export const useCaseData: IUseCase[] = [
@@ -56,10 +56,9 @@ export const useCaseData: IUseCase[] = [
     source: "Kentron branch",
     video: {
       title: "Kentron_Branch_12453",
-      url: "https://www.youtube.com/watch?v=5tPUY5GS0AY",
+      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
     },
     hasChecklist: true,
-    details: "some info about video",
   },
   {
     id: 2,
@@ -69,10 +68,9 @@ export const useCaseData: IUseCase[] = [
     source: "Nor Nork branch",
     video: {
       title: "Nor_Nork_Branch_12315",
-      url: "https://www.youtube.com/watch?v=5tPUY5GS0AY",
+      url: "https://www.youtube.com/watch?v=yXAGqG2B5W4",
     },
     hasChecklist: false,
-    details: "some info about video",
   },
   {
     id: 3,
@@ -82,10 +80,9 @@ export const useCaseData: IUseCase[] = [
     source: "Davitashen branch",
     video: {
       title: "Davitashen_branch_13131",
-      url: "https://www.youtube.com/watch?v=5tPUY5GS0AY",
+      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
     },
     hasChecklist: false,
-    details: "some info about video",
   },
   {
     id: 4,
@@ -95,10 +92,9 @@ export const useCaseData: IUseCase[] = [
     source: "Nork branch",
     video: {
       title: "Nork_Branch_452",
-      url: "https://www.youtube.com/watch?v=5tPUY5GS0AY",
+      url: "https://www.youtube.com/watch?v=yXAGqG2B5W4",
     },
     hasChecklist: false,
-    details: "some info about video",
   },
   {
     id: 5,
@@ -108,9 +104,31 @@ export const useCaseData: IUseCase[] = [
     source: "Avan branch",
     video: {
       title: "Avan_Branch_531",
-      url: "https://www.youtube.com/watch?v=5tPUY5GS0AY",
+      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
     },
     hasChecklist: false,
-    details: "some info about video",
+  },
+];
+
+export const checkListData: ICheckList[] = [
+  {
+    id: 1,
+    text: "Մասնագետները միմիանց հետ շշուկով էին հաղորդակցվում",
+  },
+  {
+    id: 2,
+    text: "Մասնագետները միմիանց հետ խոսում էին միայն գործնական թեմաներով",
+  },
+  {
+    id: 3,
+    text: "Մասնագետները հեռախոսով խոսել են միայն գործնական թեմաներով",
+  },
+  {
+    id: 4,
+    text: "Մասնագետները հեռախոսով խոսում էին ցածրաձայն",
+  },
+  {
+    id: 5,
+    text: "Մասնագետները բարեհամբույր էին խոսում հաճախորդների հետ",
   },
 ];

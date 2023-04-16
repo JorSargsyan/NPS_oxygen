@@ -54,7 +54,7 @@ export const items = ({
       : []),
     {
       title: "Mystery shopping",
-      path: "mystery-shoping",
+      path: "mystery-shopping",
       element: <MysteryShopping />,
       icon: (
         <SvgIcon fontSize="small">
