@@ -1,4 +1,5 @@
 import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
+import ArrowLeftIcon from "@heroicons/react/24/solid/ArrowLeftIcon";
 import {
   Avatar,
   Box,
@@ -13,7 +14,7 @@ import LanguageMenu from "shared/components/LanguageMenu";
 import { usePopover } from "shared/helpers/hooks/usePopover";
 import { selectUserInfo } from "store/slicers/users";
 import AccountPopover from "./account";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 
@@ -21,16 +22,23 @@ const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = () => {
+  const params = useParams();
+  const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
   const location = useLocation();
   const lgUp = useMediaQuery<any>((theme) => theme.breakpoints.up("lg"));
   const isSidebarVisible = useSelector(selectSidebarVisible);
   const isCampaignDetails = location.pathname.includes("/survey/");
+  const isResponses = location.pathname.includes("/responses");
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
 
   const handleClick = () => {
     dispatch(setSidebarVisible(!isSidebarVisible));
+  };
+
+  const navigateBack = () => {
+    navigate(-1);
   };
 
   return (
@@ -62,6 +70,11 @@ export const TopNav = () => {
           }}
         >
           <Stack alignItems="center" direction="row" spacing={2}>
+            {Object.values(params).length && !isResponses ? (
+              <IconButton onClick={navigateBack}>
+                <ArrowLeftIcon height={20} />
+              </IconButton>
+            ) : null}
             {(!lgUp || isCampaignDetails) && (
               <IconButton onClick={handleClick}>
                 <SvgIcon fontSize="small">
@@ -69,13 +82,6 @@ export const TopNav = () => {
                 </SvgIcon>
               </IconButton>
             )}
-            {/* <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip> */}
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
             {/* <Tooltip title="Contacts">

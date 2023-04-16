@@ -11,8 +11,10 @@ import { Fragment, useState } from "react";
 import BasicTextArea from "shared/ui/TextArea";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CheckList = ({ actualUseCaseID }: { actualUseCaseID: string }) => {
+  const navigate = useNavigate();
   const methods = useForm({
     defaultValues: {
       comment: "",
@@ -40,6 +42,7 @@ const CheckList = ({ actualUseCaseID }: { actualUseCaseID: string }) => {
 
     localStorage.setItem(actualUseCaseID, JSON.stringify(formData));
     toast.success("Your review has been saved successfully");
+    navigate("/admin/mystery-shopping");
   };
 
   return (
