@@ -482,7 +482,7 @@ const TabRedirectionComponent = () => {
       <RightDrawer
         open={isLogsDrawerOpen}
         setOpen={setLogsDrawerOpen}
-        title="View Feedback Task Logs"
+        title="View Response Task Logs"
       >
         <FeedbackTaskHistory />
       </RightDrawer>

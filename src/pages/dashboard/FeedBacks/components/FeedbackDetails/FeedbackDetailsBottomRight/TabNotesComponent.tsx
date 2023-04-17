@@ -148,7 +148,7 @@ const TabNotesComponent = () => {
     setActiveRow(undefined);
     await refetchFeedbackNotes();
     dispatch(setLoading(false));
-    toast.success("Campaign is deleted");
+    toast.success("Note is deleted");
   };
 
   const editNote = (note: IFeedbackNotes) => {
@@ -393,7 +393,7 @@ const TabNotesComponent = () => {
         <RightDrawer
           open={isDrawerOpen}
           setOpen={setDrawerOpen}
-          title="View Feedback Note History"
+          title="View Response Note History"
         >
           <NoteHistory<IFeedbackNoteHistory> list={historyList} />
         </RightDrawer>
