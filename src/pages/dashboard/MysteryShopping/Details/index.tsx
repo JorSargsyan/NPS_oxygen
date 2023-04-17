@@ -18,7 +18,7 @@ const MysteryShopperDetails = () => {
         </Typography>
       </Box>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <Box component={Paper} p={2}>
             <ReactPlayer
               width="100%"
@@ -33,7 +33,7 @@ const MysteryShopperDetails = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <Box component={Paper} p={2}>
             <CheckList actualUseCaseID={actualUseCase.caseId} />
           </Box>
