@@ -1,5 +1,8 @@
 import { Chip } from "@mui/material";
 import { IColumn } from "shared/ui/Table/constants";
+import video1 from "assets/videos/video1.mp4";
+import video2 from "assets/videos/video2.mp4";
+import video3 from "assets/videos/video3.mp4";
 
 export const useCaseColumns: IColumn[] = [
   {
@@ -56,7 +59,7 @@ export const useCaseData: IUseCase[] = [
     source: "Kentron branch",
     video: {
       title: "Kentron_Branch_12453",
-      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
+      url: video1,
     },
     hasChecklist: true,
   },
@@ -68,7 +71,7 @@ export const useCaseData: IUseCase[] = [
     source: "Nor Nork branch",
     video: {
       title: "Nor_Nork_Branch_12315",
-      url: "https://www.youtube.com/watch?v=yXAGqG2B5W4",
+      url: video2,
     },
     hasChecklist: false,
   },
@@ -80,31 +83,7 @@ export const useCaseData: IUseCase[] = [
     source: "Davitashen branch",
     video: {
       title: "Davitashen_branch_13131",
-      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
-    },
-    hasChecklist: false,
-  },
-  {
-    id: 4,
-    caseId: "HJSADJ15",
-    creationDate: "03/20/2023",
-    createdBy: "Satisfai@admin.am",
-    source: "Nork branch",
-    video: {
-      title: "Nork_Branch_452",
-      url: "https://www.youtube.com/watch?v=yXAGqG2B5W4",
-    },
-    hasChecklist: false,
-  },
-  {
-    id: 5,
-    caseId: "HJSADJ16",
-    creationDate: "03/22/2023",
-    createdBy: "Satisfai@admin.am",
-    source: "Avan branch",
-    video: {
-      title: "Avan_Branch_531",
-      url: "https://www.youtube.com/watch?v=xqPriJ86MSQ",
+      url: video3,
     },
     hasChecklist: false,
   },

@@ -24,6 +24,7 @@ const MysteryShopperDetails = () => {
               width="100%"
               height="530px"
               url={actualUseCase.video.url}
+              controls
               config={{
                 youtube: {
                   playerVars: { showinfo: 1 },
