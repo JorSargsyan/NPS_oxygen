@@ -1,5 +1,4 @@
-import { TextField } from "@mui/material";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { MobileTimePicker, TimePicker } from "@mui/x-date-pickers";
 import { Controller, useFormContext } from "react-hook-form";
 // import { DATE_FORMAT, HOUR_FORMAT } from "store/config/constants";
 
@@ -7,6 +6,7 @@ export interface IDateTimePickerProps {
   name: string;
   label: string;
   defaultValue: Date;
+  sx: any;
   rules?: any;
   disablePast: boolean;
 }
@@ -16,6 +16,7 @@ const BasicDateTimePicker = ({
   label,
   defaultValue,
   rules,
+  sx,
   disablePast = true,
 }: IDateTimePickerProps) => {
   const {
@@ -30,24 +31,13 @@ const BasicDateTimePicker = ({
       defaultValue={defaultValue}
       render={({ field }) => {
         return (
-          <DateTimePicker
+          <MobileTimePicker
             {...field}
+            sx={sx}
             label={label}
             ampm={false}
             disablePast={disablePast}
             // inputFormat={`${DATE_FORMAT} ${HOUR_FORMAT}`}
-            slots={{
-              textField: (params) => {
-                return (
-                  <TextField
-                    fullWidth
-                    {...params}
-                    error={!!errors?.[name]?.type || params.error}
-                    helperText={(errors?.[name]?.message as string) || ""}
-                  />
-                );
-              },
-            }}
           />
         );
       }}
