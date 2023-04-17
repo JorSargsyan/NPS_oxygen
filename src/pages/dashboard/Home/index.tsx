@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -21,6 +28,7 @@ interface IFormData {
 }
 
 const Dashboard = () => {
+  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const dashboardData = useSelector(selectDashboardData);
   const deliveredData = useSelector(selectDeliveredData);
   const dispatch = useAsyncDispatch();
@@ -81,9 +89,19 @@ const Dashboard = () => {
     <Box>
       <Box>
         <FormProvider {...methods}>
-          <Box display="flex" px={2} alignItems={"center"}>
+          <Box
+            display="flex"
+            px={2}
+            alignItems={lgUp ? "center" : " left"}
+            flexDirection={lgUp ? "row" : "column"}
+          >
             <Box flex={3}>
-              <Typography variant="h4" fontWeight={500} color="text.secondary">
+              <Typography
+                mb={1}
+                variant="h4"
+                fontWeight={500}
+                color="text.secondary"
+              >
                 Statistics
               </Typography>
             </Box>
@@ -94,7 +112,7 @@ const Dashboard = () => {
               />
             </Box>
           </Box>
-          <Box mx={2} gap={4} display="flex" py={2}>
+          <Box mx={2} gap={4} display="flex" py={2} flexWrap={"wrap"}>
             <Box flex={1}>
               <Card>
                 <CardContent>

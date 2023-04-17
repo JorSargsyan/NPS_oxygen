@@ -1,5 +1,5 @@
-import { Card, CardContent, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Card, CardContent, Typography, useMediaQuery } from "@mui/material";
+import { Box, Theme } from "@mui/system";
 import { IScoreValues } from "store/interfaces/dashboard";
 import ColumnsChart from "./ColumnChart";
 import PieChart from "./PieChart";
@@ -22,6 +22,8 @@ const ScoreCharts = ({
   label,
   type,
 }: Props) => {
+  const smUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("sm"));
+
   const getOptionIcon = (type: string) => {
     const Comp = CampaignSurveyIcons[type];
     return (
@@ -77,7 +79,13 @@ const ScoreCharts = ({
                 <Typography>{label}</Typography>
               </Box>
             </Box>
-            <Box display="flex" gap={1} alignItems="center">
+            <Box
+              display="flex"
+              gap={1}
+              flexDirection={smUp ? "row" : "column"}
+              alignItems="center"
+              flexWrap="wrap"
+            >
               <Box flex={3}>
                 <PieChart chartData={scoreData} label={label} />
               </Box>

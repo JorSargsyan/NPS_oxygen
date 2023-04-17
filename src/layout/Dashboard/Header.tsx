@@ -26,9 +26,7 @@ export const TopNav = () => {
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
   const location = useLocation();
-  const lgUp = useMediaQuery<any>((theme) => theme.breakpoints.up("lg"));
   const isSidebarVisible = useSelector(selectSidebarVisible);
-  const isCampaignDetails = location.pathname.includes("/survey/");
   const isResponses = location.pathname.includes("/responses");
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
@@ -50,11 +48,11 @@ export const TopNav = () => {
           backgroundColor: "white",
           position: "sticky",
           left: {
-            lg: `${!isCampaignDetails ? SIDE_NAV_WIDTH : 0}px`,
+            lg: `${isSidebarVisible ? SIDE_NAV_WIDTH : 0}px`,
           },
           top: 0,
           width: {
-            lg: `calc(100% - ${!isCampaignDetails ? SIDE_NAV_WIDTH : 0}px)`,
+            lg: `calc(100% - ${isSidebarVisible ? SIDE_NAV_WIDTH : 0}px)`,
           },
           zIndex: (theme) => theme.zIndex.appBar,
         }}
@@ -75,31 +73,13 @@ export const TopNav = () => {
                 <ArrowLeftIcon height={20} />
               </IconButton>
             ) : null}
-            {(!lgUp || isCampaignDetails) && (
-              <IconButton onClick={handleClick}>
-                <SvgIcon fontSize="small">
-                  <Bars3Icon />
-                </SvgIcon>
-              </IconButton>
-            )}
+            <IconButton onClick={handleClick}>
+              <SvgIcon fontSize="small">
+                <Bars3Icon />
+              </SvgIcon>
+            </IconButton>
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
-            {/* <Tooltip title="Contacts">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <UsersIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
-              <IconButton>
-                <Badge badgeContent={4} color="success" variant="dot">
-                  <SvgIcon fontSize="small">
-                    <BellIcon />
-                  </SvgIcon>
-                </Badge>
-              </IconButton>
-            </Tooltip> */}
             <LanguageMenu />
             {userInfo ? (
               <Avatar
