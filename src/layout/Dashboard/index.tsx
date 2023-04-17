@@ -50,7 +50,7 @@ const DashboardLayout = () => {
       dispatch(GetPermissions()),
       dispatch(GetCurrentUser()),
       dispatch(GetConfig()),
-      dispatch(GetTranslationsByLangId(activeLang)),
+      dispatch(GetTranslationsByLangId(activeLang || 2)),
     ]);
   }, [dispatch]);
 
@@ -65,7 +65,7 @@ const DashboardLayout = () => {
   }, [isCampaignDetailsPage, lgUp, sidebarVisibility]);
 
   useEffect(() => {
-    if (isAuthorized && Number(localStorage.getItem(LStorage.LANG))) {
+    if (isAuthorized) {
       fetchDashboardData();
     }
   }, [fetchDashboardData, isAuthorized]);

@@ -59,7 +59,7 @@ const LanguageMenu = () => {
       localStorage.setItem(LStorage.LANG, value.toString());
       const selectedLang = languagesList.find((item) => item.value === value);
       setSelectedLanguage(selectedLang);
-      const { meta } = await dispatch(GetTranslationsByLangId(value));
+      const { meta } = await dispatch(GetTranslationsByLangId(value || 2));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
         return;
       }
