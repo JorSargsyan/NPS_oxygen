@@ -29,7 +29,7 @@ import toast from "react-hot-toast";
 
 interface IFormData {
   name: string;
-  groupIds: number[];
+  groupIds: IUserGroup[];
   dataVisibility: string;
   displayName: string;
   permissions: {
@@ -53,11 +53,11 @@ const AddEditRoles = ({
   const isLoading = useSelector(selectLoadingState);
 
   const onSubmit = async (data: IFormData) => {
-    const { displayName, name, groupIds, permissions, dataVisibility } = data;
+    const { displayName, name, permissions, dataVisibility } = data;
     const permissionIds = Object.values(permissions).reduce((acc, curr) => {
       return acc.concat(curr.map((i) => i.id));
     }, [] as number[]);
-
+    const groupIds = data?.groupIds.map((i) => i.id);
     const formData = {
       displayName,
       dataVisibility,
@@ -182,7 +182,7 @@ const AddEditRoles = ({
                   inputLabel="Feedbacks Permissions"
                   name="permissions.feedbacks"
                   hasSelectAllOption
-                  options={permGroups?.[1].permissions}
+                  options={permGroups?.[1]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -194,7 +194,7 @@ const AddEditRoles = ({
                   inputLabel="Dashboard Permissions"
                   name="permissions.dashboard"
                   hasSelectAllOption
-                  options={permGroups?.[2].permissions}
+                  options={permGroups?.[2]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -206,7 +206,7 @@ const AddEditRoles = ({
                   inputLabel="Campaign Permissions"
                   name="permissions.campaign"
                   hasSelectAllOption
-                  options={permGroups?.[3].permissions}
+                  options={permGroups?.[3]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -218,7 +218,7 @@ const AddEditRoles = ({
                   inputLabel="Roles Permissions"
                   name="permissions.roles"
                   hasSelectAllOption
-                  options={permGroups?.[4].permissions}
+                  options={permGroups?.[4]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -230,7 +230,7 @@ const AddEditRoles = ({
                   inputLabel="Users Permissions"
                   name="permissions.users"
                   hasSelectAllOption
-                  options={permGroups?.[5].permissions}
+                  options={permGroups?.[5]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
@@ -242,7 +242,7 @@ const AddEditRoles = ({
                   inputLabel="Translation Permissions"
                   name="permissions.translations"
                   hasSelectAllOption
-                  options={permGroups?.[6].permissions}
+                  options={permGroups?.[6]?.permissions}
                   defaultValue={[]}
                   optionLabel="name"
                   prefix="permissions"
