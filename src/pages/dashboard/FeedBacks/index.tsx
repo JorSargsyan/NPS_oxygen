@@ -25,7 +25,7 @@ import {
   IFeedbackCauseAndMood,
   IScore,
 } from "store/interfaces/feedback";
-import { GetUserManagers, setTableLoading } from "store/slicers/common";
+import { setTableLoading } from "store/slicers/common";
 import {
   ExportFeedbacks,
   GetFeedbackCauseAndMoodCategoriesList,
@@ -46,8 +46,6 @@ import {
   ESurveyType,
   feedbackFilterTypesKeys,
   feedbackStatusList,
-  scoreColors,
-  scoreRanges,
   viewCommentsDialogConfig,
 } from "./constants";
 import { changeFeedbackStatus } from "./helpers";
@@ -56,13 +54,13 @@ import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
 import ViewIcon from "@heroicons/react/24/solid/EyeIcon";
 import { EBaseUrl } from "store/config/constants";
 import { ERequestStatus } from "store/enums/index.enum";
-import AssignFeedbackDrawer from "./components/AssignFeedbackDrawer";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
 import { CES_COLORS, CSAT_COLORS, NPS_COLORS } from "../Home/constants";
 import { Link } from "react-router-dom";
+import video1 from "assets/videos/video1.mp4";
 
 export interface IActiveRow {
   type?: number;
@@ -355,10 +353,7 @@ const Feedbacks = () => {
         label: "Video/Voice",
         layout: () => {
           return (
-            <Link
-              target="_blank"
-              to="https://www.youtube.com/watch?v=xqPriJ86MSQ"
-            >
+            <Link target="_blank" to={video1}>
               View
             </Link>
           );
