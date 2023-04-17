@@ -72,7 +72,7 @@ const SurveyTemplate = ({
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
         <img src={IDLogo} alt="logo" />
       </Box>
       <Box
