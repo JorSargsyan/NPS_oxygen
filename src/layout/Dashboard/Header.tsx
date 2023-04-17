@@ -27,7 +27,7 @@ export const TopNav = () => {
   const dispatch = useAsyncDispatch();
   const location = useLocation();
   const isSidebarVisible = useSelector(selectSidebarVisible);
-  const isResponses = location.pathname.includes("/responses");
+  const isResponses = location.pathname.includes("/response");
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
 
