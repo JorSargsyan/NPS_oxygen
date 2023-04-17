@@ -38,7 +38,7 @@ api.interceptors.response.use(
         !err.response?.config?.url.includes(adminUrl) ||
         err.response?.config?.url.includes(feedbackDetailHistoryExceptionUrl)
       ) {
-        reject(err);
+        return reject(err);
       }
       if (err?.response?.data?.error?.message) {
         toast.error(
