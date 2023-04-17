@@ -23,7 +23,7 @@ const CustomRatingQuestion = ({
       <Box
         pt={4}
         display={"flex"}
-        gap={1}
+        sx={{ gap: { xs: "2px", sm: 1 } }}
         flexWrap={"wrap"}
         justifyContent={"center"}
       >
@@ -65,16 +65,16 @@ const CustomRatingQuestion = ({
                 sx={{
                   color: "primary.black",
                   cursor: "pointer",
-                  border: "1px solid rgba(0, 122, 255, 0.32)",
+                  backgroundColor: "primary.ratingBackground",
                   "&.active": {
-                    backgroundColor: "primary.selected",
+                    backgroundColor: "primary.main",
                     color: "white",
                     border: "none",
                   },
                   width: hasMode
-                    ? "40px"
-                    : { xs: "40px", sm: "7.5%", lg: "8%" },
-                  padding: hasMode ? "9px" : { xs: "9px", sm: "14px" },
+                    ? "26px"
+                    : { xs: "26px", sm: "7.5%", lg: "8%" },
+                  padding: hasMode ? "8px" : { xs: "8px", sm: "14px" },
                 }}
                 className={
                   answer.id === methods.watch("answerIDs[0]") && "active"
@@ -84,9 +84,7 @@ const CustomRatingQuestion = ({
                 alignItems={"center"}
                 borderRadius={"8px"}
               >
-                <Typography fontSize="16px" >
-                  {answer.value}
-                </Typography>
+                <Typography fontSize="16px">{answer.value}</Typography>
               </Box>
             );
           })

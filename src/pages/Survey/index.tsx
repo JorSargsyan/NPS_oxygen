@@ -34,9 +34,12 @@ import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
 import { createSurveyTheme } from "theme/survey";
 import { ThemeProvider } from "@mui/material/styles";
+import Not_available from "assets/icons/not_available.svg";
+import Completed from "assets/icons/completed.svg";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
+  const [surveyResponseStatus, setSurveyResponseStatus] = useState();
   const [isLoading, setLoading] = useState(true);
   const location = useLocation();
 
@@ -55,6 +58,7 @@ const SurveyPreview = () => {
       },
     },
   });
+
   const questionData = useSelector(selectQuestion);
   const { details, config } = questionData;
   const navigate = useNavigate();
@@ -71,7 +75,7 @@ const SurveyPreview = () => {
     );
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      setStatus("Survey is unavailable");
+      setStatus("Sorry, your the is not available");
       return;
     }
 
@@ -93,13 +97,13 @@ const SurveyPreview = () => {
 
   const surveyStatus = useMemo(() => {
     if (config?.isExpired) {
-      setStatus("Survey is expired");
+      setStatus("Your survey is expired");
       return false;
     } else if (config?.isFinished) {
-      setStatus("Survey is finished");
+      setStatus("You have already completed");
       return false;
     } else if (!details && !isLoading) {
-      setStatus("Survey is unavailable");
+      setStatus("Sorry, your the is not available");
       return false;
     }
 
@@ -312,7 +316,7 @@ const SurveyPreview = () => {
         fontFamily="Roboto"
         justifyContent={"center"}
         sx={{
-          backgroundImage: `url(${require("assets/images/bg.jpg")})`,
+          backgroundImage: `url(${require("assets/images/bg.png")})`,
           height: "100vh",
           backgroundSize: "cover",
         }}
@@ -330,15 +334,14 @@ const SurveyPreview = () => {
                 height: { xs: "95vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
                 overflow: "scroll",
-                borderRadius: "24px",
               }}
             >
-              <CardContent>
+              <CardContent sx={{ padding: { xs: "10px", lg: "16px" } }}>
                 <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
                   <Box
                     sx={{
                       width: {
-                        xs: "85vw",
+                        xs: "90vw",
                         sm: "80vw",
                         md: "60vw",
                         lg: "50vw",
@@ -364,10 +367,9 @@ const SurveyPreview = () => {
               sx={{
                 height: { xs: "95vh", sm: "80vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
-                borderRadius: "24px",
               }}
             >
-              <CardContent sx={{ height: "100%" }}>
+              <CardContent sx={{ height: "100%", padding: { xs: 1 } }}>
                 <Box
                   sx={{
                     width: {
@@ -382,9 +384,15 @@ const SurveyPreview = () => {
                   alignItems={"center"}
                 >
                   {status ? (
-                    <Typography fontSize={20} >
-                      {status}
-                    </Typography>
+                    <Box textAlign="center">
+                      <img
+                        src={config?.isFinished ? Completed : Not_available}
+                        alt="status"
+                      />
+                      <Typography fontSize={20} pt={5}>
+                        {status}
+                      </Typography>
+                    </Box>
                   ) : (
                     <CircularProgress />
                   )}

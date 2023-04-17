@@ -16,13 +16,14 @@ const withAlphas = (color) => {
 export const indigo = withAlphas({
   lightest: "#83b3e6",
   light: "#4e9cef",
-  main: "#007AFF",
+  main: "#F2802B",
   dark: "#0a6ad2",
   darkest: "#222D43",
   selected: "#3EB84F",
   contrastText: "#FFFFFF",
   lightText: "#999999",
   black: "#212121",
+  ratingBackground: "#F5F5F5",
 });
 
 interface ICreatePalette extends PaletteOptions {
