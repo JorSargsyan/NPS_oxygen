@@ -20,7 +20,7 @@ import {
 } from "store/slicers/common";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { useSelector } from "react-redux";
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import usePermission from "shared/helpers/hooks/usePermission";
 import {
   ECampaignPermissions,
@@ -94,6 +94,12 @@ export const SideNav = () => {
   const handleNavigateToDashboard = () => {
     navigate("/admin/overview");
   };
+
+  useEffect(() => {
+    if (!lgUp) {
+      onClose();
+    }
+  }, [lgUp, onClose]);
 
   const content = (
     <Box
@@ -229,7 +235,7 @@ export const SideNav = () => {
     </Box>
   );
 
-  return (
+  return lgUp ? (
     <Drawer
       anchor="left"
       onClose={onClose}
@@ -245,7 +251,27 @@ export const SideNav = () => {
         disablePortal: true,
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant={!lgUp || !isCampaignDetailsPage ? "permanent" : "temporary"}
+      variant={isCampaignDetailsPage ? "temporary" : "persistent"}
+    >
+      {content}
+    </Drawer>
+  ) : (
+    <Drawer
+      anchor="left"
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: "neutral.800",
+          color: "common.white",
+          width: 280,
+        },
+      }}
+      ModalProps={{
+        disablePortal: true,
+      }}
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant={"temporary"}
     >
       {content}
     </Drawer>

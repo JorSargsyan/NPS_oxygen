@@ -1,7 +1,11 @@
-import { Box, ButtonBase } from "@mui/material";
+import { Box, ButtonBase, Theme, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { setSidebarVisible } from "store/slicers/common";
 
 export const SideNavItem = (props) => {
+  const dispatch = useAsyncDispatch();
+  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const navigate = useNavigate();
   const {
     active = false,
@@ -16,6 +20,9 @@ export const SideNavItem = (props) => {
 
   const handleNavigate = () => {
     navigate(path);
+    if (!lgUp) {
+      dispatch(setSidebarVisible(false));
+    }
   };
   return (
     <li>

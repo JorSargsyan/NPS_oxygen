@@ -62,6 +62,7 @@ import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
 import { CES_COLORS, CSAT_COLORS, NPS_COLORS } from "../Home/constants";
+import { Link } from "react-router-dom";
 
 export interface IActiveRow {
   type?: number;
@@ -350,6 +351,19 @@ const Feedbacks = () => {
             },
           ]
         : []),
+      {
+        label: "Video/Voice",
+        layout: () => {
+          return (
+            <Link
+              target="_blank"
+              to="https://www.youtube.com/watch?v=xqPriJ86MSQ"
+            >
+              View
+            </Link>
+          );
+        },
+      },
     ];
   }, [
     hasGridCampaignColumnPermission,

@@ -9,7 +9,9 @@ import {
   Card,
   CardContent,
   Stack,
+  Theme,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { emailRegex, requiredRules } from "shared/helpers/validators";
@@ -26,6 +28,7 @@ interface IFormValues {
 }
 
 const Login = () => {
+  const smDown = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
   const form = useForm<IFormValues>({
@@ -65,8 +68,8 @@ const Login = () => {
           alignItems: "center",
           display: "flex",
           justifyContent: "center",
-          p: 2,
-          width: { md: "40%", lg: "35%", xl: "25%" },
+          p: smDown ? 0 : 2,
+          width: { xs: "95%", md: "40%", lg: "35%", xl: "25%" },
         }}
       >
         <CardContent

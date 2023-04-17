@@ -2,15 +2,20 @@ import { styled, Theme, useTheme } from "@mui/material/styles";
 import { SideNav } from "./Navigation";
 import { TopNav } from "./Header";
 import { Outlet, useLocation } from "react-router-dom";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { LStorage } from "store/config/constants";
 import { selectAuth } from "store/slicers/auth";
-import { GetPermissions, GetConfig } from "store/slicers/common";
+import {
+  GetPermissions,
+  GetConfig,
+  selectSidebarVisible,
+} from "store/slicers/common";
 import { GetTranslationsByLangId } from "store/slicers/translations";
 import { GetCurrentUser } from "store/slicers/users";
 import { Box } from "@mui/system";
+import { useMediaQuery } from "@mui/material";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -19,9 +24,6 @@ const LayoutRoot = styled("div")<{ hasPadding: boolean; theme: Theme }>(
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    [theme.breakpoints.up("lg")]: {
-      paddingLeft: hasPadding ? SIDE_NAV_WIDTH : 0,
-    },
   })
 );
 
@@ -33,7 +35,9 @@ const LayoutContainer = styled("div")({
 });
 
 const DashboardLayout = () => {
+  const sidebarVisibility = useSelector(selectSidebarVisible);
   const theme = useTheme();
+  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const location = useLocation();
   const isCampaignDetailsPage = location.pathname.includes("/survey/");
 
@@ -50,6 +54,16 @@ const DashboardLayout = () => {
     ]);
   }, [dispatch]);
 
+  const paddingLeft = useMemo(() => {
+    if (!lgUp) {
+      return 0;
+    } else {
+      return sidebarVisibility && !isCampaignDetailsPage
+        ? `${SIDE_NAV_WIDTH}px`
+        : 0;
+    }
+  }, [isCampaignDetailsPage, lgUp, sidebarVisibility]);
+
   useEffect(() => {
     if (isAuthorized && Number(localStorage.getItem(LStorage.LANG))) {
       fetchDashboardData();
@@ -60,7 +74,13 @@ const DashboardLayout = () => {
     <Box sx={{ backgroundColor: "#F3F4F6" }}>
       <TopNav />
       <SideNav />
-      <LayoutRoot theme={theme} hasPadding={!isCampaignDetailsPage}>
+      <LayoutRoot
+        sx={{
+          paddingLeft,
+        }}
+        theme={theme}
+        hasPadding={!isCampaignDetailsPage}
+      >
         <LayoutContainer>
           <Outlet />
         </LayoutContainer>

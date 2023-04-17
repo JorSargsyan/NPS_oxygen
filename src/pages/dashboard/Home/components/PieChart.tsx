@@ -1,3 +1,4 @@
+import { Theme, useMediaQuery } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 import { IScoreValues } from "store/interfaces/dashboard";
 
@@ -8,6 +9,8 @@ const PieChart = ({
   chartData: IScoreValues;
   label: string;
 }) => {
+  const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
+  const width = lgUp ? "400" : "240";
   const { badCount, goodCount, ordinaryCount } = chartData;
   return (
     <div>
@@ -18,7 +21,7 @@ const PieChart = ({
           },
           chart: {
             type: "pie",
-            width: 400,
+            width,
           },
           plotOptions: {
             pie: {
@@ -52,7 +55,8 @@ const PieChart = ({
         }}
         series={[badCount, ordinaryCount, goodCount]}
         type="donut"
-        width={400}
+        width={width}
+        height={lgUp ? "auto" : "300"}
       />
     </div>
   );
