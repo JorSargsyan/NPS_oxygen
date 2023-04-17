@@ -8,15 +8,23 @@ export interface IDatePickerProps {
   label: string;
   rules?: { [k: string]: { value: boolean; message: string } };
   sx?: SxProps<any>;
+  defaultValue: Date;
 }
 
-const BasicDatePicker = ({ name, label, rules, sx }: IDatePickerProps) => {
+const BasicDatePicker = ({
+  name,
+  label,
+  rules,
+  sx,
+  defaultValue,
+}: IDatePickerProps) => {
   const { control } = useFormContext();
 
   return (
     <Controller
       control={control}
       name={name}
+      defaultValue={defaultValue}
       rules={rules}
       render={({ field }) => (
         <DatePicker label={label} format={DATE_FORMAT} {...field} sx={sx} />

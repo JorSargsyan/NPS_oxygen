@@ -1,21 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BasicTable from "shared/ui/Table";
 import { useCaseData, useCaseColumns, IUseCase } from "./constants";
 import { Box } from "@mui/system";
-import { IconButton, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import VideoIcon from "@heroicons/react/24/outline/VideoCameraIcon";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { setTableLoading } from "store/slicers/common";
 import { IColumn } from "shared/ui/Table/constants";
 import { useNavigate } from "react-router-dom";
+import RightDrawer from "shared/ui/Drawer";
+import AddUseCase from "./components/AddUseCase";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 const MysteryShopping = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
 
   const handleNavigate = (id: number) => {
     navigate(`/admin/mystery-shopping/${id}`);
   };
+
+  const useCaseList = JSON.parse(localStorage.getItem("useCaseData"));
 
   const columnsData: IColumn[] = [
     ...useCaseColumns,
@@ -46,8 +52,11 @@ const MysteryShopping = () => {
   ];
 
   useEffect(() => {
+    if (!useCaseList?.length) {
+      localStorage.setItem("useCaseData", JSON.stringify(useCaseData));
+    }
     dispatch(setTableLoading(false));
-  }, [dispatch]);
+  }, [dispatch, useCaseList?.length]);
 
   return (
     <Box p={4}>
@@ -55,13 +64,27 @@ const MysteryShopping = () => {
         <Typography variant="h4" fontWeight={500} color="text.secondary">
           Use Cases
         </Typography>
+        <Button
+          onClick={() => setDrawerOpen(true)}
+          variant="outlined"
+          startIcon={<PlusIcon height={20} />}
+        >
+          <Typography>Add </Typography>
+        </Button>
       </Box>
       <BasicTable<IUseCase>
         columns={columnsData}
-        data={useCaseData}
+        data={useCaseList || useCaseData}
         sortable={false}
         enablePagination={false}
       />
+      <RightDrawer
+        open={drawerOpen}
+        setOpen={setDrawerOpen}
+        title={"Add Use case"}
+      >
+        <AddUseCase onSuccess={() => setDrawerOpen(false)} />
+      </RightDrawer>
     </Box>
   );
 };

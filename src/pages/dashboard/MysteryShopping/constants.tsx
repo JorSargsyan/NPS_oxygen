@@ -40,7 +40,7 @@ export interface IUseCase {
   source: string;
   video: {
     title: string;
-    url: string;
+    url?: string;
   };
   hasChecklist: boolean;
 }
@@ -109,5 +109,35 @@ export const checkListData: ICheckList[] = [
   {
     id: 5,
     text: "Մասնագետները բարեհամբույր էին խոսում հաճախորդների հետ",
+  },
+];
+
+export const branchListMock = [
+  {
+    value: 1,
+    label: "Nor nork branch",
+  },
+  {
+    value: 2,
+    label: "Davtashen branch",
+  },
+  {
+    value: 3,
+    label: "Kentron branch",
+  },
+];
+
+export const operatorListMock = [
+  {
+    value: 1,
+    label: "Operator 1",
+  },
+  {
+    value: 2,
+    label: "Operator 2",
+  },
+  {
+    value: 3,
+    label: "Operator 3",
   },
 ];
