@@ -28,7 +28,7 @@ const BasicTextArea = <T extends unknown>(props: ITextareaProps<T>) => {
           resize: "none",
           borderRadius: 1,
           padding: 1,
-          borderColor: "primary.main",
+          // borderColor: "primary.main",
           borderWidth: 2,
         },
       }}

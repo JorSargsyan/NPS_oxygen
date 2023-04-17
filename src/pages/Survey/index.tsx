@@ -55,6 +55,7 @@ const SurveyPreview = () => {
       },
     },
   });
+
   const questionData = useSelector(selectQuestion);
   const { details, config } = questionData;
   const navigate = useNavigate();
@@ -330,15 +331,14 @@ const SurveyPreview = () => {
                 height: { xs: "95vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
                 overflow: "scroll",
-                borderRadius: "24px",
               }}
             >
-              <CardContent>
+              <CardContent sx={{ padding: { xs: "10px", lg: "16px" } }}>
                 <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
                   <Box
                     sx={{
                       width: {
-                        xs: "85vw",
+                        xs: "90vw",
                         sm: "80vw",
                         md: "60vw",
                         lg: "50vw",
@@ -364,10 +364,9 @@ const SurveyPreview = () => {
               sx={{
                 height: { xs: "95vh", sm: "80vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
-                borderRadius: "24px",
               }}
             >
-              <CardContent sx={{ height: "100%" }}>
+              <CardContent sx={{ height: "100%", padding: { xs: 1 } }}>
                 <Box
                   sx={{
                     width: {
@@ -382,9 +381,7 @@ const SurveyPreview = () => {
                   alignItems={"center"}
                 >
                   {status ? (
-                    <Typography fontSize={20} >
-                      {status}
-                    </Typography>
+                    <Typography fontSize={20}>{status}</Typography>
                   ) : (
                     <CircularProgress />
                   )}

@@ -12,6 +12,8 @@ import {
   IQuestionDetails,
 } from "store/interfaces/surveyPreview";
 import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
+import Logo from "assets/icons/satisfai_logo.svg";
+import IDLogo from "assets/icons/ID_bank.svg";
 
 export enum ESurveyTypes {
   Preview = "preview",
@@ -70,6 +72,9 @@ const SurveyTemplate = ({
 
   return (
     <Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <img src={IDLogo} alt="logo" />
+      </Box>
       <Box
         display="flex"
         justifyContent={"center"}
@@ -94,7 +99,7 @@ const SurveyTemplate = ({
           <Box display="flex" justifyContent={"center"}>
             <Typography
               variant="h5"
-              sx={{ fontSize: { xs: 16 }, fontWeight: "500" }}
+              sx={{ fontSize: { xs: 16 }, fontWeight: "400" }}
             >
               {questionData?.details?.title}
             </Typography>
@@ -109,34 +114,61 @@ const SurveyTemplate = ({
               <PreviewComp />
             )}
           </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            pt={2}
+          >
+            <Typography mr={1}>Powered by</Typography>
+            <img src={Logo} alt="logo" />
+          </Box>
           {questionData?.details?.type !==
             Number(ECampaignSurveyType.Final) && (
             <Box display="flex" justifyContent={"flex-end"} gap={2} pt={2}>
               {!questionData?.details?.isRequired &&
                 questionData?.details?.type !==
                   Number(ECampaignSurveyType.Welcome) && (
-                  <Button
-                    onClick={
-                      type === ESurveyTypes.Customer ? handleSkip : undefined
-                    }
-                    variant="contained"
-                    sx={{ borderRadius: "8px" }}
-                  >
-                    <Typography>{"Skip"}</Typography>
-                  </Button>
+                  <Box width="49%">
+                    <Button
+                      onClick={
+                        type === ESurveyTypes.Customer ? handleSkip : undefined
+                      }
+                      variant="outlined"
+                      sx={{
+                        borderRadius: "40px",
+                        width: "100%",
+                        padding: "7px 20px",
+                      }}
+                    >
+                      <Typography>{"Skip"}</Typography>
+                    </Button>
+                  </Box>
                 )}
-              <Button
-                disabled={type === ESurveyTypes.Customer ? checkDisabled : true}
-                onClick={
-                  type === ESurveyTypes.Customer
-                    ? methods.handleSubmit(handleNext)
-                    : undefined
+              <Box
+                width={
+                  !questionData?.details?.isRequired &&
+                  questionData?.details?.type !==
+                    Number(ECampaignSurveyType.Welcome)
+                    ? "49%"
+                    : "100%"
                 }
-                variant="contained"
-                sx={{ borderRadius: "8px" }}
               >
-                <Typography>{questionData?.details?.buttonText}</Typography>
-              </Button>
+                <Button
+                  disabled={
+                    type === ESurveyTypes.Customer ? checkDisabled : true
+                  }
+                  onClick={
+                    type === ESurveyTypes.Customer
+                      ? methods.handleSubmit(handleNext)
+                      : undefined
+                  }
+                  variant="contained"
+                  sx={{ borderRadius: "40px", width: "100%" }}
+                >
+                  <Typography>{questionData?.details?.buttonText}</Typography>
+                </Button>
+              </Box>
             </Box>
           )}
         </FormProvider>

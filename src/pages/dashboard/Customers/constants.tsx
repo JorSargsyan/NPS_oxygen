@@ -1,4 +1,6 @@
+import { Typography } from "@mui/material";
 import { IColumn } from "shared/ui/Table/constants";
+import { ICustomer } from "store/interfaces/customers";
 export const customerColumns: IColumn[] = [
   {
     label: "Id",
@@ -14,7 +16,10 @@ export const customerColumns: IColumn[] = [
   },
   {
     label: "Phone",
-    field: "customerPhone",
+    field: "",
+    layout: (row: ICustomer) => {
+      return <Typography></Typography>;
+    },
   },
   {
     label: "Creation Date",
