@@ -627,7 +627,7 @@ const Feedbacks = () => {
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
         onClose={handleClose}
-        title="Edit Feedback Status"
+        title="Edit Response Status"
       >
         {activeRow?.type && (
           <FeedbackStatusDrawer

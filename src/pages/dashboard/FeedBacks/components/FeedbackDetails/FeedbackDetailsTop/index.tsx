@@ -82,7 +82,7 @@ const FeedbackDetailsTop = () => {
               <BasicSelect<IFeedbackStatusList>
                 name="feedbackStatus"
                 defaultValue={""}
-                label="Feedback status"
+                label="Response status"
                 valueProp="value"
                 labelProp="name"
                 disabled={!hasEditFeedbackStatusPermission}
@@ -185,7 +185,7 @@ const FeedbackDetailsTop = () => {
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
         onClose={handleClose}
-        title="Edit Feedback Status"
+        title="Edit Response Status"
       >
         {activeRow?.type ? (
           <FeedbackStatusDrawer

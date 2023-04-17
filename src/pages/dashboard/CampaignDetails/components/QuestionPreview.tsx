@@ -56,7 +56,7 @@ const QuestionPreview = ({ methods, previewModalData }: Props) => {
           display="flex"
           justifyContent={"center"}
           sx={{
-            backgroundImage: `url(${require("assets/images/bg.jpg")})`,
+            backgroundImage: `url(${require("assets/images/bg.png")})`,
             height: "94.4vh",
             backgroundSize: "cover",
           }}

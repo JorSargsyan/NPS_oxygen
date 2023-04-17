@@ -274,9 +274,7 @@ const TabRedirectionComponent = () => {
                           <Typography fontSize={13} mr={1}>
                             Deadline:
                           </Typography>
-                          <Typography fontSize={13}>
-                            {task.deadline}
-                          </Typography>
+                          <Typography fontSize={13}>{task.deadline}</Typography>
                         </Box>
 
                         <CardActions>
@@ -358,7 +356,7 @@ const TabRedirectionComponent = () => {
                           name={`tasks[${index}].status.id`}
                           defaultValue={""}
                           size="small"
-                          label="Feedback status"
+                          label="Response status"
                           valueProp="value"
                           labelProp="name"
                           options={redirectTabStatuses}
