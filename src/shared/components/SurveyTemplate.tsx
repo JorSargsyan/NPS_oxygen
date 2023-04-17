@@ -94,9 +94,9 @@ const SurveyTemplate = ({
       >
         <img src={getImage} alt={questionData?.details?.title} />
       </Box>
-      <Box mt={2}>
+      <Box mt={4}>
         <FormProvider {...methods}>
-          <Box display="flex" justifyContent={"center"}>
+          <Box display="flex" justifyContent={"center"} mb={1}>
             <Typography
               variant="h5"
               sx={{ fontSize: { xs: 16 }, fontWeight: "400" }}

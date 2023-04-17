@@ -28,8 +28,9 @@ const BasicTextArea = <T extends unknown>(props: ITextareaProps<T>) => {
           resize: "none",
           borderRadius: 1,
           padding: 1,
-          // borderColor: "primary.main",
+          borderColor: "rgba(0, 0, 0, 0.12)",
           borderWidth: 2,
+          fontFamily: "'Plus Jakarta Sans',sans-serif",
         },
       }}
     >

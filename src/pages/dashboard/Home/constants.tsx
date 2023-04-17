@@ -69,7 +69,7 @@ export const trendChartOptionsData = {
     id: "1",
     width: "100%",
     toolbar: {
-      show: true,
+      show: false,
     },
     zoom: {
       enabled: false,

@@ -29,6 +29,9 @@ const state = {
     chart: {
       height: 350,
       type: "bar" as ChartTypes,
+      toolbar: {
+        show: false,
+      },
     },
 
     tooltip: {

@@ -71,9 +71,7 @@ const CustomRatingQuestion = ({
                     color: "white",
                     border: "none",
                   },
-                  width: hasMode
-                    ? "26px"
-                    : { xs: "26px", sm: "7.5%", lg: "8%" },
+                  width: hasMode ? "8%" : { xs: "8%", sm: "7.5%", lg: "8%" },
                   padding: hasMode ? "8px" : { xs: "8px", sm: "14px" },
                 }}
                 className={
