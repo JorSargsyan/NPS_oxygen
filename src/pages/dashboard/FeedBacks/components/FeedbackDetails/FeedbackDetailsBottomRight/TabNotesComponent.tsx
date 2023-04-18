@@ -237,7 +237,7 @@ const TabNotesComponent = () => {
           </>
         )}
 
-        <Fragment>
+        <Box sx={{ maxHeight: 500, overflowY: "scroll" }}>
           {watchNotesList?.length ? (
             watchNotesList?.map((note, index) => {
               return (
@@ -396,7 +396,7 @@ const TabNotesComponent = () => {
           ) : (
             <NoData description="There are no notes yet" />
           )}
-        </Fragment>
+        </Box>
         <SharedDialog
           open={warningOpen}
           setOpen={setWarningOpen}

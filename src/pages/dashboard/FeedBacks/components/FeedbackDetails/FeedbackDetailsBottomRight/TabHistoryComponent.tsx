@@ -101,7 +101,7 @@ const TabHistoryComponent = () => {
   }, [init]);
 
   return (
-    <Box sx={{ overflowY: "scroll", p: 3 }}>
+    <Box sx={{ overflowY: "scroll", p: 3, maxHeight: 700 }}>
       {feedbackLogs?.length ? (
         <FeedBackSharedHistoryComponent<IFeedbackLog>
           list={feedbackLogs}
