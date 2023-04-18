@@ -2,7 +2,12 @@ import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { FormProvider, useForm } from "react-hook-form";
 import BasicSelect from "shared/ui/Select";
-import { IUseCase, branchListMock, operatorListMock } from "../constants";
+import {
+  IUseCase,
+  branchListMock,
+  operatorListMock,
+  useCaseTypeMock,
+} from "../constants";
 import video4 from "assets/videos/video4.mp4";
 import BasicDatePicker from "shared/ui/Datepicker";
 import BasicDateTimePicker from "shared/ui/DateTimepicker";
@@ -15,6 +20,7 @@ const AddUseCase = ({ onSuccess }: { onSuccess: () => void }) => {
     defaultValues: {
       operator: "",
       branch: "",
+      type: "",
     },
   });
 
@@ -64,6 +70,16 @@ const AddUseCase = ({ onSuccess }: { onSuccess: () => void }) => {
             labelProp="label"
             options={operatorListMock}
             name={"operator"}
+          />
+        </Box>
+        <Box my={2}>
+          <BasicSelect
+            label="Transaction type"
+            valueProp="value"
+            rules={requiredRules}
+            labelProp="label"
+            options={useCaseTypeMock}
+            name={"type"}
           />
         </Box>
         <Box my={2}>

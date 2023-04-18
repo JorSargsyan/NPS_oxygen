@@ -41,6 +41,7 @@ interface ITabsData {
 interface ITabsProps {
   tabsData: ITabsData[];
   centered?: boolean;
+  scrollable?: boolean;
   onChange?: (val: number) => void;
   Content?: () => JSX.Element;
 }
@@ -49,6 +50,7 @@ const BasicTabs = ({
   tabsData,
   centered = true,
   Content,
+  scrollable = false,
   onChange,
 }: ITabsProps) => {
   const [value, setValue] = useState(0);
@@ -70,6 +72,10 @@ const BasicTabs = ({
       >
         <Tabs
           value={value}
+          {...(scrollable && {
+            variant: "scrollable",
+            scrollButtons: "auto",
+          })}
           onChange={handleChange}
           aria-label="basic tabs example"
           centered={centered}

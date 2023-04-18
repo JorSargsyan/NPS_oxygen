@@ -18,11 +18,16 @@ const MysteryShopperDetails = () => {
         </Typography>
       </Box>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={7}>
+          <Box component={Paper} p={2}>
+            <CheckList actualUseCaseID={actualUseCase.caseId} />
+          </Box>
+        </Grid>
+        <Grid item xs={5}>
           <Box component={Paper} p={2}>
             <ReactPlayer
               width="100%"
-              height="530px"
+              height="450px"
               url={actualUseCase?.video.url}
               controls
               config={{
@@ -31,11 +36,6 @@ const MysteryShopperDetails = () => {
                 },
               }}
             />
-          </Box>
-        </Grid>
-        <Grid item xs={6}>
-          <Box component={Paper} p={2}>
-            <CheckList actualUseCaseID={actualUseCase.caseId} />
           </Box>
         </Grid>
       </Grid>
