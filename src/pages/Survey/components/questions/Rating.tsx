@@ -71,7 +71,13 @@ const CustomRatingQuestion = ({
                     color: "white",
                     border: "none",
                   },
-                  width: hasMode ? "8%" : { xs: "8%", sm: "7.5%", lg: "8%" },
+                  width: hasMode
+                    ? `calc(100% - ${details?.answers?.length})`
+                    : {
+                        xs: `calc(100% / ${details?.answers?.length + 1})`,
+                        sm: "7.5%",
+                        lg: "8%",
+                      },
                   padding: hasMode ? "8px" : { xs: "8px", sm: "14px" },
                 }}
                 className={

@@ -99,17 +99,22 @@ const SurveyTemplate = ({
           <Box display="flex" justifyContent={"center"} mb={1}>
             <Typography
               variant="h5"
-              sx={{ fontSize: { xs: 16 }, fontWeight: "400" }}
+              sx={{
+                fontSize: { xs: 16 },
+                fontWeight: "400",
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              {questionData?.details?.title}
+              {questionData?.details?.title}{" "}
+              {questionData?.details?.isRequired ? (
+                <Typography ml="4px" fontSize={20} color="error">
+                  *
+                </Typography>
+              ) : null}
             </Typography>
-            {questionData?.details?.isRequired ? (
-              <Typography ml={2} fontSize={20} color="error">
-                *
-              </Typography>
-            ) : null}
           </Box>
-          <Box minHeight="20vh">
+          <Box minHeight="10vh">
             {ESurveyPreviewComps?.[questionData?.details?.type] && (
               <PreviewComp />
             )}
