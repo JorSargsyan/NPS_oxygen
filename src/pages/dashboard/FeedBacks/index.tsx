@@ -232,11 +232,12 @@ const Feedbacks = () => {
                   ) {
                     return NPS_COLORS[val];
                   } else if (score?.type === ESurveyType.CustomerEffortScore) {
-                    return CES_COLORS[val];
+                    console.log(CES_COLORS[val]);
+                    return CES_COLORS[val - 1];
                   } else if (
                     score?.type === ESurveyType.CustomerSatisfactionScore
                   ) {
-                    return CSAT_COLORS[val];
+                    return CSAT_COLORS[val - 1];
                   }
                 };
 
