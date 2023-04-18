@@ -17,7 +17,7 @@ export const indigo = withAlphas({
   lightest: "#83b3e6",
   light: "#4e9cef",
   main: "#F2802B",
-  dark: "#0a6ad2",
+  dark: "#d86815",
   darkest: "#222D43",
   selected: "#3EB84F",
   contrastText: "#FFFFFF",

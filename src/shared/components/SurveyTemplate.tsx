@@ -106,12 +106,8 @@ const SurveyTemplate = ({
                 alignItems: "center",
               }}
             >
-              {questionData?.details?.title}{" "}
-              {questionData?.details?.isRequired ? (
-                <Typography ml="4px" fontSize={20} color="error">
-                  *
-                </Typography>
-              ) : null}
+              {questionData?.details?.title}
+              {questionData?.details?.isRequired ? "*" : ""}
             </Typography>
           </Box>
           <Box minHeight="10vh">

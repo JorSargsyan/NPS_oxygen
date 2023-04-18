@@ -92,6 +92,7 @@ const Dashboard = () => {
           <Box
             display="flex"
             px={2}
+            pt={2}
             alignItems={lgUp ? "center" : " left"}
             flexDirection={lgUp ? "row" : "column"}
           >
