@@ -9,6 +9,7 @@ import {
 export interface ISurveyPreviewState {
   questionConfig: IQuestionConfig | null;
   questionDetails: IQuestionDetails | null;
+  activeTemplateID:number
 }
 
 export interface IQuestionConfig {

@@ -26,8 +26,10 @@ import {
 import { selectCampaignInfo } from "store/slicers/campaignDetail";
 import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import { useNavigate } from "react-router-dom";
+import { selectActiveTemplate } from "store/slicers/surveyPreview";
 
 const Distribution = () => {
+  const activeTemplate = useSelector(selectActiveTemplate)
   const navigate = useNavigate();
   const campaignInfo = useSelector(selectCampaignInfo);
 
@@ -48,7 +50,7 @@ const Distribution = () => {
               <TextField
                 fullWidth
                 label="URL"
-                value={campaignInfo?.shareLink}
+                value={campaignInfo?.shareLink + `?t=${activeTemplate}`}
               />
               <Box display="flex" mt={2} gap={1} flexWrap={"wrap"}>
                 <FacebookShareButton url={campaignInfo?.shareLink}>

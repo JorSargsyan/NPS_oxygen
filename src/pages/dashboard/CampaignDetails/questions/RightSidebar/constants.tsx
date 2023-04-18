@@ -2,6 +2,10 @@ import { ECampaignSurveyType } from "../LeftSidebar/constants";
 import DesignTab from "./DesignTab";
 import LogicTab from "./LogicTab";
 import QuestionTab from "./QuestionTab";
+import IDLogo from "assets/icons/ID_bank.svg";
+import ArdshinLogo from 'assets/images/ardshin.png';
+import FastLogo from "assets/icons/fast.svg";
+
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -58,3 +62,25 @@ export const NO_LOGIC_TYPES: string[] = [
   ECampaignSurveyType.Final,
   ECampaignSurveyType.Welcome,
 ];
+
+
+export enum ETemplate {
+  IDBANK = 0,
+  FAST = 1,
+  ARDSHIN = 2,
+}
+
+export const TemplateList = [
+  {
+  id: ETemplate.IDBANK,
+  logo:IDLogo,
+  color:"#F2802B"
+},{
+  id: ETemplate.FAST,
+  logo:FastLogo,
+  color:"#d70f82"
+},{
+  id: ETemplate.ARDSHIN,
+  logo:ArdshinLogo,
+  color:"#183794"
+}]

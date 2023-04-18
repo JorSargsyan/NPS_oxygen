@@ -32,15 +32,19 @@ import {
 } from "store/slicers/surveyPreview";
 import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
-import { createSurveyTheme } from "theme/survey";
+import { createIDBankTheme } from "theme/idBankTemplate";
+import { createArdshinTheme } from "theme/ardshinBankTemplate";
+import { createFastTheme } from "theme/fastBankTemplate";
 import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
 import Completed from "assets/icons/completed.svg";
+import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
 
 const SurveyPreview = () => {
+  const {search} = useLocation();
   const [status, setStatus] = useState("");
-  const [surveyResponseStatus, setSurveyResponseStatus] = useState();
   const [isLoading, setLoading] = useState(true);
+  const templateId = Object.fromEntries(new URLSearchParams(search)).t || 0;
   const location = useLocation();
 
   const methods = useForm({
@@ -65,7 +69,24 @@ const SurveyPreview = () => {
   const dispatch = useAsyncDispatch();
   const { hash, type } = useParams();
 
-  const theme = createSurveyTheme();
+  const theme = useCallback(() => {
+    let res;
+     switch(Number(templateId)){
+      case ETemplate.IDBANK: 
+      res = createIDBankTheme;
+      break;
+      case ETemplate.FAST: 
+      res = createFastTheme;
+      break;
+      case ETemplate.ARDSHIN: 
+      res = createArdshinTheme;
+      break;
+      default: 
+      res = createIDBankTheme;
+    }
+
+    return res();
+  },[templateId]);
 
   const generateCustomer = useCallback(async () => {
     const { meta, payload } = await dispatch(
@@ -79,7 +100,7 @@ const SurveyPreview = () => {
       return;
     }
 
-    navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}`, {
+    navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}${location.search}`, {
       replace: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

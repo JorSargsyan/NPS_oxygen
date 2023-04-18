@@ -7,6 +7,7 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Paper,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
@@ -30,10 +31,13 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ITemplate } from "store/interfaces/campaignDetails";
+import { TemplateList } from "./constants";
+import { selectActiveTemplate, setActiveTemplate } from "store/slicers/surveyPreview";
 
 const DesignTab = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
   const dispatch = useAsyncDispatch();
+  const activeTemplate = useSelector(selectActiveTemplate);
   const campaignInfo = useSelector(selectCampaignInfo);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
@@ -192,10 +196,29 @@ const DesignTab = () => {
     surveyInfo?.template?.logoImage,
   ]);
 
+  const setTemplate = (templateID:number) => {
+    dispatch(setActiveTemplate(templateID));
+  }
+
   return (
     <Box p={2}>
       <Card>
         <CardContent>
+          <Box>
+            <Typography>Template</Typography>
+            <Box display={"flex"} my={2}>
+              {TemplateList.map((template) => {
+                return <IconButton key={template.id} sx={{backgroundColor: activeTemplate === template.id ? "neutral.200" : "transparent"}}>
+                  <Box component={Paper}  onClick={() => setTemplate(template.id)} height={25} width={25}  sx={{
+                  backgroundColor:template.color,
+                  borderRadius:"4px",
+                  cursor:"pointer",
+                }}/>
+                </IconButton>
+              })}
+            </Box>
+          </Box>
+         
           <Box
             minHeight={140}
             borderRadius={"10px"}

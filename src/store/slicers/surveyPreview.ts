@@ -16,6 +16,7 @@ const name = "SURVEY_PREVIEW";
 const initialState: ISurveyPreviewState = {
   questionConfig: null,
   questionDetails: null,
+  activeTemplateID: 0
 };
 
 export const CreateCustomer = createAsyncThunk<
@@ -78,7 +79,11 @@ export const SetQuestionFinished = createAsyncThunk<unknown, { hash: string }>(
 const surveyPreviewSlice = createSlice({
   initialState,
   name,
-  reducers: {},
+  reducers: {
+    setActiveTemplate(state,{payload}){
+      state.activeTemplateID = payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(
       GetQuestionConfiguration.fulfilled,
@@ -98,5 +103,8 @@ export const selectQuestion = (state: IState) => {
     details: state.surveyPreview.questionDetails,
   };
 };
+export const selectActiveTemplate = (state:IState) => state.surveyPreview.activeTemplateID;
+
+export const {setActiveTemplate} = surveyPreviewSlice.actions;
 
 export default surveyPreviewSlice.reducer;
