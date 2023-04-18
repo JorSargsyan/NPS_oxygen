@@ -9,6 +9,7 @@ import {
   Divider,
   Skeleton,
   SvgIcon,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -282,53 +283,65 @@ const TabRedirectionComponent = () => {
                             isSameTaskCreator(task.createdBy.id) &&
                             task.status.id !== ERedirectTabStatuses.Completed &&
                             hasEditTaskPermission && (
-                              <Button
-                                onClick={(e) => editFeedbackTask(task)}
-                                startIcon={<Edit height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip title="Edit">
+                                <Button
+                                  onClick={(e) => editFeedbackTask(task)}
+                                  startIcon={<Edit height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
                           {!task.isDeleted &&
                             isSameTaskCreator(task.createdBy.id) &&
                             hasDeleteTaskPermission && (
-                              <Button
-                                onClick={(e) => deleteFeedbackTask(task)}
-                                startIcon={<Trash height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip title="Delete">
+                                <Button
+                                  onClick={(e) => deleteFeedbackTask(task)}
+                                  startIcon={<Trash height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
 
                           {(task.isDeleted || task.isUpdated) &&
                             hasViewEditedTaskPermission && (
-                              <Button
-                                onClick={() => viewFeedbackTaskHistory(task)}
-                                startIcon={<History height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip
+                                title={
+                                  task?.isDeleted
+                                    ? "Delete history"
+                                    : "Edit history"
+                                }
+                              >
+                                <Button
+                                  onClick={() => viewFeedbackTaskHistory(task)}
+                                  startIcon={<History height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
                         </CardActions>
                       </Box>

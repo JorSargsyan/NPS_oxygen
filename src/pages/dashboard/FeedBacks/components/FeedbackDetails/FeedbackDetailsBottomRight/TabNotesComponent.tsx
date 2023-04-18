@@ -9,6 +9,7 @@ import {
   CardActions,
   CardContent,
   Divider,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -296,54 +297,66 @@ const TabNotesComponent = () => {
                           {!note.isDeleted &&
                             isSameNoteCreator(note.user.id) &&
                             hasEditNotePermission && (
-                              <Button
-                                onClick={(e) => editNote(note)}
-                                startIcon={<Edit height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip title="Edit">
+                                <Button
+                                  onClick={(e) => editNote(note)}
+                                  startIcon={<Edit height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
                           {!note.isDeleted &&
                             isSameNoteCreator(note.user.id) &&
                             hasDeleteNotePermission && (
-                              <Button
-                                onClick={(e) => deleteNote(note)}
-                                startIcon={<Trash height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip title="Delete">
+                                <Button
+                                  onClick={(e) => deleteNote(note)}
+                                  startIcon={<Trash height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
 
                           {(note.isDeleted || note.isUpdated) &&
                             hasViewDeletedNotePermission &&
                             hasViewEditedNotePermission && (
-                              <Button
-                                onClick={() => viewFeedbackHistory(note)}
-                                startIcon={<History height={15} width={15} />}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  minWidth: 25,
-                                  padding: "10px",
-                                  "& .MuiButton-startIcon": {
-                                    marginRight: 0,
-                                  },
-                                }}
-                              />
+                              <Tooltip
+                                title={
+                                  note?.isDeleted
+                                    ? "Delete history"
+                                    : "Edit history"
+                                }
+                              >
+                                <Button
+                                  onClick={() => viewFeedbackHistory(note)}
+                                  startIcon={<History height={15} width={15} />}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    minWidth: 25,
+                                    padding: "10px",
+                                    "& .MuiButton-startIcon": {
+                                      marginRight: 0,
+                                    },
+                                  }}
+                                />
+                              </Tooltip>
                             )}
                         </CardActions>
                       </Box>

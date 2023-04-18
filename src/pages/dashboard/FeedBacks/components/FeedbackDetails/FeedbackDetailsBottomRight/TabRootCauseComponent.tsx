@@ -49,7 +49,6 @@ const TabRootCauseComponent = () => {
         dispatch(setLoading(false));
         return;
       }
-      toast.success("Response root cause changed successfully");
     }
     if (formData?.mood) {
       const { meta } = await dispatch(
@@ -62,8 +61,8 @@ const TabRootCauseComponent = () => {
         dispatch(setLoading(false));
         return;
       }
-      toast.success("Response mood changed successfully");
     }
+    toast.success("Saved");
     dispatch(setLoading(false));
   };
 
