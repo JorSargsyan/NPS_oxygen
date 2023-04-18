@@ -46,7 +46,7 @@ const TabFeedbackComponent = () => {
   };
 
   return (
-    <Box sx={{ overflow: "scroll", p: "18px 12px" }}>
+    <Box sx={{ overflowY: "scroll", p: "18px 12px", maxHeight: 700 }}>
       {!feedbackDetails?.feedbacks?.length ? (
         <NoData description="There is no feedback" />
       ) : (

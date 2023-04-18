@@ -12,7 +12,7 @@ const Questions = () => {
         component={Paper}
         elevation={4}
         maxHeight="90vh"
-        overflow={"scroll"}
+        sx={{ overflowY: "scroll" }}
       >
         <LeftSidebar />
       </Box>
@@ -24,7 +24,7 @@ const Questions = () => {
         component={Paper}
         elevation={4}
         maxHeight="90vh"
-        overflow={"scroll"}
+        sx={{ overflowY: "scroll" }}
       >
         <RightSidebar />
       </Box>

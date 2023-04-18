@@ -41,7 +41,7 @@ const MainContent = () => {
           elevation={3}
           p={2}
           height="90vh"
-          overflow={"scroll"}
+          sx={{ overflowY: "scroll" }}
         >
           <Box mb={2} display={"flex"} alignItems={"center"}>
             <Box

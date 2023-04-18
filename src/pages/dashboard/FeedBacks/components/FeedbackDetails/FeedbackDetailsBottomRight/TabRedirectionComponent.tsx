@@ -238,7 +238,7 @@ const TabRedirectionComponent = () => {
   }, [initialFetch]);
 
   return (
-    <Box sx={{ overflow: "scroll", p: 3 }}>
+    <Box sx={{ overflowY: "scroll", p: 3 }}>
       {hasAddTaskPermission && (
         <Box textAlign="right" pb={3}>
           <Button

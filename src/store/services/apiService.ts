@@ -8,6 +8,7 @@ export const api = axios.create({
 
 const feedbackExceptionUrl = "/Feedback/Status/";
 const adminUrl = "/admin/";
+const loginUrl = "/login";
 const feedbackDetailHistoryExceptionUrl = "/Feedback/Logs/";
 
 api.interceptors.request.use(
@@ -35,7 +36,10 @@ api.interceptors.response.use(
     return new Promise(async (_, reject) => {
       if (
         err.response?.config?.url.includes(feedbackExceptionUrl) ||
-        !err.response?.config?.url.includes(adminUrl) ||
+        !(
+          err.response?.config?.url.includes(adminUrl) &&
+          err.response?.config?.url.includes(loginUrl)
+        ) ||
         err.response?.config?.url.includes(feedbackDetailHistoryExceptionUrl)
       ) {
         return reject(err);

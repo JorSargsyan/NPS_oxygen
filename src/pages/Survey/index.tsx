@@ -75,7 +75,7 @@ const SurveyPreview = () => {
     );
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      setStatus("Sorry, your the is not available");
+      setStatus("Sorry, the survey is not available");
       return;
     }
 
@@ -103,7 +103,7 @@ const SurveyPreview = () => {
       setStatus("You have already completed");
       return false;
     } else if (!details && !isLoading) {
-      setStatus("Sorry, your the is not available");
+      setStatus("Sorry, the survey is not available");
       return false;
     }
 
@@ -333,7 +333,7 @@ const SurveyPreview = () => {
               sx={{
                 height: { xs: "95vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
-                overflow: "scroll",
+                overflowY: "scroll",
               }}
             >
               <CardContent sx={{ padding: { xs: "10px", lg: "16px" } }}>

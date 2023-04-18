@@ -92,7 +92,7 @@ const QuestionPreview = ({ methods, previewModalData }: Props) => {
               sx={{
                 height: { xs: "80vh" },
                 backgroundColor: "rgb(255 255 255 / 97%)",
-                overflow: "scroll",
+                overflowY: "scroll",
               }}
             >
               <CardContent>
