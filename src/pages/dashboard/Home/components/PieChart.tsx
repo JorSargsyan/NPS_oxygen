@@ -5,13 +5,19 @@ import { IScoreValues } from "store/interfaces/dashboard";
 const PieChart = ({
   chartData,
   label,
+  colors,
+  labels,
+  series,
 }: {
   chartData: IScoreValues;
   label: string;
+  colors: string[];
+  labels: string[];
+  series: number[];
 }) => {
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const width = lgUp ? "400" : "240";
-  const { badCount, goodCount, ordinaryCount } = chartData;
+
   return (
     <div>
       <ReactApexChart
@@ -46,14 +52,10 @@ const PieChart = ({
               },
             },
           },
-          labels: ["Detractors", "Passives", "Promoters"],
-          colors: [
-            "#E3474F" /* Red 500*/,
-            "#D2D6DB",
-            "#B7CA39" /* Olive 500 */,
-          ],
+          labels: labels,
+          colors: colors,
         }}
-        series={[badCount, ordinaryCount, goodCount]}
+        series={series}
         type="donut"
         width={width}
         height={lgUp ? "auto" : "300"}

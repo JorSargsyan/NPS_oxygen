@@ -1,6 +1,7 @@
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
 import {
   Button,
+  IconButton,
   MenuItem,
   Select,
   SvgIcon,
@@ -58,9 +59,15 @@ import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
-import { CES_COLORS, CSAT_COLORS, NPS_COLORS } from "../Home/constants";
+import {
+  CES_COLORS,
+  CSAT_COLORS,
+  NPS_COLORS,
+  eNPS_COLORS,
+} from "../Home/constants";
 import { Link } from "react-router-dom";
 import video1 from "assets/videos/video1.mp4";
+import VideoIcon from "@heroicons/react/24/solid/VideoCameraIcon";
 
 export interface IActiveRow {
   type?: number;
@@ -226,13 +233,11 @@ const Feedbacks = () => {
               layout: (row: IFeedback) => {
                 const bgColor = (score: IScore) => {
                   const val = Number(score?.value);
-                  if (
-                    score?.type === ESurveyType.NPS ||
-                    score?.type === ESurveyType.Friendliness
-                  ) {
+                  if (score?.type === ESurveyType.NPS) {
                     return NPS_COLORS[val];
+                  } else if (score?.type === ESurveyType.Friendliness) {
+                    return eNPS_COLORS[val];
                   } else if (score?.type === ESurveyType.CustomerEffortScore) {
-                    console.log(CES_COLORS[val]);
                     return CES_COLORS[val - 1];
                   } else if (
                     score?.type === ESurveyType.CustomerSatisfactionScore
@@ -318,10 +323,7 @@ const Feedbacks = () => {
                   return;
                 }
                 return (
-                  <Box
-                    onClick={() => handleOpenCommentViewDialog(row)}
-                    textAlign="center"
-                  >
+                  <Box onClick={() => handleOpenCommentViewDialog(row)}>
                     <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
                       <CommentIcon />
                     </SvgIcon>
@@ -337,10 +339,7 @@ const Feedbacks = () => {
               label: "Details",
               layout: (row: IFeedback) => {
                 return (
-                  <Box
-                    onClick={() => handleViewFeedback(row.id)}
-                    textAlign="center"
-                  >
+                  <Box onClick={() => handleViewFeedback(row.id)}>
                     <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
                       <ViewIcon />
                     </SvgIcon>
@@ -355,7 +354,9 @@ const Feedbacks = () => {
         layout: () => {
           return (
             <Link target="_blank" to={video1}>
-              View
+              <SvgIcon sx={{ cursor: "pointer", color: "primary.main" }}>
+                <VideoIcon height={20} />
+              </SvgIcon>
             </Link>
           );
         },

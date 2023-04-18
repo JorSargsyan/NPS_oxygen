@@ -4,6 +4,7 @@ import { trendChartOptionsData } from "../constants";
 import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import useTranslation from "shared/helpers/hooks/useTranslation";
+import TrendChartIcon from "assets/icons/dashboard_group.svg";
 
 const TrendChart = ({ chartsData }) => {
   const t = useTranslation();
@@ -27,13 +28,15 @@ const TrendChart = ({ chartsData }) => {
           <Box
             borderRadius={"4px"}
             display="flex"
-            width="190px"
+            width="250px"
             alignItems={"center"}
             justifyContent="space-around"
-            sx={{ backgroundColor: "primary.darkest", padding: "8px" }}
+            pb={2}
           >
-            <ChartIcon height={20} width={20} color="white" />
-            <Typography color="white">Compare metrics</Typography>
+            <img src={TrendChartIcon} alt="icon" />
+            <Typography sx={{ color: "primary.defaultText", fontSize: 24 }}>
+              Compare metrics
+            </Typography>
           </Box>
           {chartsData && (
             <ReactApexChart

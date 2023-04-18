@@ -1,5 +1,11 @@
+import { ECampaignSurveyType } from "../CampaignDetails/questions/LeftSidebar/constants";
+import NPS from "assets/icons/dashboard_nps.svg";
+import eNPS from "assets/icons/dashboard_enps.svg";
+import CES from "assets/icons/dashboard_ces.svg";
+import CSAT from "assets/icons/dashboard_csat.svg";
+
 export const trendChartOptionsData = {
-  colors: ["#369BFD", "#B663D2", "#8767D2", "#50C2B5"], //Blue, Purple, Violet, Teal
+  colors: ["#007AFF", "#643DC7", "#DD3A97", "#32B94A"], //Blue, Purple, Violet, Teal
   plotOptions: {
     area: {
       fillTo: "end",
@@ -95,31 +101,51 @@ export const trendChartOptionsData = {
 };
 
 export const CSAT_COLORS = [
-  "#E3474F",
-  "#FC8244",
-  "#FDCF5B",
-  "#CBD85A",
-  "#90A529",
+  "#7FCAFE",
+  "#369BFD",
+  "#AA8FDF",
+  "#6443C5",
+  "#9F40C4",
 ]; //500 LINE OF COLORS
 export const CES_COLORS = [
-  "#D51E32",
-  "#E3474F",
-  "#FA6024",
-  "#FC8244",
+  "#F0F1AD",
+  "#CBD85A",
+  "#5DC66A",
+  "#2C933E",
   "#F7B937",
-  "#B7CA39",
-  "#90A529",
+  "#AA8FDF",
+  "#6443C5",
 ];
 export const NPS_COLORS = [
-  "#640012",
-  "#8A031B",
-  "#B00E25",
-  "#D51E32",
-  "#E3474F",
-  "#FA6024",
-  "#FC8244",
-  "#FCA16A",
-  "#FDCF5B",
-  "#B7CA39",
-  "#90A529",
+  "#AA8FDF",
+  "#8767D2",
+  "#6443C5",
+  "#CD8BDF",
+  "#B663D2",
+  "#9F40C4",
+  "#F490C3",
+  "#DA3B97",
+  "#71CFC1",
+  "#50C2B5",
+  "#35B7AD",
 ];
+export const eNPS_COLORS = [
+  "#5AB4FD",
+  "#369BFD",
+  "#1B7FFC",
+  "#1467D7",
+  "#71CFC1",
+  "#50C2B5",
+  "#35B7AD",
+  "#2C933E",
+  "#DEE581",
+  "#CBD85A",
+  "#B7CA39",
+];
+
+export const DashboardIcons = {
+  [ECampaignSurveyType.Nps]: NPS,
+  [ECampaignSurveyType.ServiceQualityScore]: eNPS,
+  [ECampaignSurveyType.CustomerEffortScore]: CES,
+  [ECampaignSurveyType.CustomerSatisfactionScore]: CSAT,
+};

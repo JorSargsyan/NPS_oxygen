@@ -22,6 +22,8 @@ import { feedbackFilterTypesKeys } from "../FeedBacks/constants";
 import ScoreCharts from "./components/ScoreCharts";
 import TrendChart from "./components/TrendChart";
 import { ECampaignSurveyType } from "../CampaignDetails/questions/LeftSidebar/constants";
+import CompletedCount from "assets/icons/completed_surveys_rate.svg";
+import CompletedRate from "assets/icons/completed_surveys_count.svg";
 
 interface IFormData {
   range: Array<Dayjs | null>;
@@ -118,23 +120,30 @@ const Dashboard = () => {
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-around">
-                    <Box textAlign="center">
-                      <Typography fontSize={14}>Surveys completed</Typography>
-                      <Typography fontSize={24} color="#083A8B">
-                        {deliveredData?.responded}
-                      </Typography>
+                    <Box display="flex">
+                      <img src={CompletedRate} />
+                      <Box ml={1}>
+                        <Typography fontSize={14}>Surveys completed</Typography>
+                        <Typography fontSize={32}>
+                          {deliveredData?.responded}
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Box textAlign="center">
-                      <Typography fontSize={14}>Response rate</Typography>
-                      <Typography fontSize={24} color="#083A8B">
-                        {deliveredData?.opened &&
-                          deliveredData?.responded &&
-                          Math.floor(
-                            (deliveredData?.responded / deliveredData?.opened) *
-                              100
-                          )}
-                        %
-                      </Typography>
+                    <Box display="flex">
+                      <img src={CompletedCount} />
+                      <Box ml={1}>
+                        <Typography fontSize={14}>Response rate</Typography>
+                        <Typography fontSize={32}>
+                          {deliveredData?.opened &&
+                            deliveredData?.responded &&
+                            Math.floor(
+                              (deliveredData?.responded /
+                                deliveredData?.opened) *
+                                100
+                            )}
+                          %
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </CardContent>
@@ -144,27 +153,39 @@ const Dashboard = () => {
               <Card sx={{ padding: "5px" }}>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between">
-                    <Box textAlign="center">
+                    <Box>
                       <Typography fontSize={14}>Sent</Typography>
-                      <Typography fontSize={18}>
+                      <Typography
+                        fontSize={32}
+                        sx={{ lineHeight: "38px", color: "#007AFF" }}
+                      >
                         {deliveredData?.sent}
                       </Typography>
                     </Box>
-                    <Box textAlign="center">
+                    <Box>
                       <Typography fontSize={14}>Delivered</Typography>
-                      <Typography fontSize={18}>
+                      <Typography
+                        fontSize={32}
+                        sx={{ lineHeight: "38px", color: "#643DC7" }}
+                      >
                         {deliveredData?.delivered}
                       </Typography>
                     </Box>
-                    <Box textAlign="center">
+                    <Box>
                       <Typography fontSize={14}>Opened</Typography>
-                      <Typography fontSize={18}>
+                      <Typography
+                        fontSize={32}
+                        sx={{ lineHeight: "38px", color: "#A13AC6" }}
+                      >
                         {deliveredData?.opened}
                       </Typography>
                     </Box>
-                    <Box textAlign="center">
+                    <Box>
                       <Typography fontSize={14}>Bounced</Typography>
-                      <Typography fontSize={18}>
+                      <Typography
+                        fontSize={32}
+                        sx={{ lineHeight: "38px", color: "#DD3A97" }}
+                      >
                         {deliveredData?.bounced}
                       </Typography>
                     </Box>

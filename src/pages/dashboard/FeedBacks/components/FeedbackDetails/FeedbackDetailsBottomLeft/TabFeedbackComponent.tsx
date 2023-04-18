@@ -10,6 +10,7 @@ import {
   CES_COLORS,
   CSAT_COLORS,
   NPS_COLORS,
+  eNPS_COLORS,
 } from "pages/dashboard/Home/constants";
 import { IFeedbacksItemDetails, IScore } from "store/interfaces/feedback";
 
@@ -18,11 +19,10 @@ const TabFeedbackComponent = () => {
 
   const bgColor = (feedback: IFeedbacksItemDetails) => {
     const val = Number(feedback?.answers?.[0]?.value);
-    if (
-      feedback?.type === ESurveyType.NPS ||
-      feedback?.type === ESurveyType.Friendliness
-    ) {
+    if (feedback?.type === ESurveyType.NPS) {
       return NPS_COLORS[val];
+    } else if (feedback?.type === ESurveyType.Friendliness) {
+      return eNPS_COLORS[val];
     } else if (feedback?.type === ESurveyType.CustomerEffortScore) {
       return CES_COLORS[val - 1];
     } else if (feedback?.type === ESurveyType.CustomerSatisfactionScore) {

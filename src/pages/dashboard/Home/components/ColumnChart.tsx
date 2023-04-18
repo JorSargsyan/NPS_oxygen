@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useMemo } from "react";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
-import { CSAT_COLORS, NPS_COLORS, CES_COLORS } from "../constants";
+import { CSAT_COLORS, NPS_COLORS, CES_COLORS, eNPS_COLORS } from "../constants";
 
 export type ChartTypes =
   | "bar"
@@ -91,8 +91,10 @@ const ColumnsChart = ({ series, label, type }) => {
         colors = CSAT_COLORS;
         break;
       case ECampaignSurveyType.Nps:
-      case ECampaignSurveyType.ServiceQualityScore:
         colors = NPS_COLORS;
+        break;
+      case ECampaignSurveyType.ServiceQualityScore:
+        colors = eNPS_COLORS;
         break;
       case ECampaignSurveyType.CustomerEffortScore:
         colors = CES_COLORS;

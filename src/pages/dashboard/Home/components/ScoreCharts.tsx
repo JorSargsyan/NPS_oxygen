@@ -3,17 +3,33 @@ import { Box, Theme } from "@mui/system";
 import { IScoreValues } from "store/interfaces/dashboard";
 import ColumnsChart from "./ColumnChart";
 import PieChart from "./PieChart";
-import {
-  CampaignSurveyIcons,
-  ECampaignSurveyType,
-} from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
+import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
 import { useMemo } from "react";
+import { DashboardIcons } from "../constants";
 
 type Props = {
   dashboardDataChopChart: { key: number; value: number }[];
   scoreData: IScoreValues;
   label: string;
   type: ECampaignSurveyType;
+};
+
+const colors = {
+  [ECampaignSurveyType.Nps]: ["#A13AC6", "#DD3A97", "#643DC7"],
+  [ECampaignSurveyType.ServiceQualityScore]: ["#B7CA39", "#50C2B5", "#1B7FFC"],
+  [ECampaignSurveyType.CustomerEffortScore]: ["#B663D2", "#5DC66A"],
+  [ECampaignSurveyType.CustomerSatisfactionScore]: ["#5AB4FD", "#6443C5"],
+};
+
+const labels = {
+  [ECampaignSurveyType.Nps]: ["Detractors", "Passives", "Promoters"],
+  [ECampaignSurveyType.ServiceQualityScore]: [
+    "Detractors",
+    "Passives",
+    "Promoters",
+  ],
+  [ECampaignSurveyType.CustomerEffortScore]: ["Detractors", "Promoters"],
+  [ECampaignSurveyType.CustomerSatisfactionScore]: ["Detractors", "Promoters"],
 };
 
 const ScoreCharts = ({
@@ -25,32 +41,28 @@ const ScoreCharts = ({
   const smUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("sm"));
 
   const getOptionIcon = (type: string) => {
-    const Comp = CampaignSurveyIcons[type];
+    const Comp = DashboardIcons[type];
     return (
       <Box display="flex" p={1} alignItems="center">
-        <Comp height={20} width={20} color="white" />
+        <img src={Comp} alt="dashboard-icon" />
       </Box>
     );
   };
 
-  const scoreColor = useMemo(() => {
-    let color = "";
-    switch (type) {
-      case ECampaignSurveyType.Nps:
-        color = "#369BFD";
-        break;
-      case ECampaignSurveyType.ServiceQualityScore:
-        color = "#B663D2";
-        break;
-      case ECampaignSurveyType.CustomerEffortScore:
-        color = "#8767D2";
-        break;
-      case ECampaignSurveyType.CustomerSatisfactionScore:
-        color = "#50C2B5";
-        break;
+  const series = useMemo(() => {
+    if (
+      type === ECampaignSurveyType.Nps ||
+      type === ECampaignSurveyType.ServiceQualityScore
+    ) {
+      return [
+        scoreData?.badCount || 0,
+        scoreData?.ordinaryCount || 0,
+        scoreData?.goodCount || 0,
+      ];
+    } else {
+      return [scoreData?.badCount || 0, scoreData?.goodCount || 0];
     }
-    return color;
-  }, [type]);
+  }, [scoreData]);
 
   return (
     <Card sx={{ m: 2, minHeight: 485 }}>
@@ -59,11 +71,8 @@ const ScoreCharts = ({
           <>
             <Box
               sx={{
-                backgroundColor: "neutral.100",
                 color: "white",
-                padding: "8px",
                 borderRadius: "8px",
-                mb: 2,
               }}
             >
               <Box
@@ -73,10 +82,11 @@ const ScoreCharts = ({
                 display="flex"
                 alignItems={"center"}
                 justifyContent="space-between"
-                sx={{ backgroundColor: scoreColor }}
               >
                 {getOptionIcon(type)}
-                <Typography>{label}</Typography>
+                <Typography sx={{ color: "primary.defaultText", fontSize: 24 }}>
+                  {label}
+                </Typography>
               </Box>
             </Box>
             <Box
@@ -87,7 +97,13 @@ const ScoreCharts = ({
               flexWrap="wrap"
             >
               <Box flex={3}>
-                <PieChart chartData={scoreData} label={label} />
+                <PieChart
+                  chartData={scoreData}
+                  label={label}
+                  series={series}
+                  colors={colors[type]}
+                  labels={labels[type]}
+                />
               </Box>
               <Box flex={4}>
                 <ColumnsChart

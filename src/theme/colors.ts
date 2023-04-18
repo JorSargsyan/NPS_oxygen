@@ -31,6 +31,7 @@ export const indigo = withAlphas({
   dark: "#0a6ad2",
   darkest: "#222D43",
   contrastText: "#FFFFFF",
+  defaultText: "#000000",
 });
 
 export const success = withAlphas({
