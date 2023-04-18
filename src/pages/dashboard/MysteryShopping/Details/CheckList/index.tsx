@@ -49,7 +49,7 @@ const CheckList = ({ actualUseCaseID }: { actualUseCaseID: string }) => {
     <Box>
       <FormProvider {...methods}>
         <Typography>Check list</Typography>
-        <Box maxHeight={400} overflow={"scroll"}>
+        <Box maxHeight={400} sx={{ overflowY: "scroll" }}>
           {checkListData.map((check, index) => {
             return (
               <Fragment key={check.id}>
