@@ -62,7 +62,7 @@ const MysteryShopping = () => {
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
         <Typography variant="h4" fontWeight={500} color="text.secondary">
-          Use Cases
+          Mystery shopping
         </Typography>
         <Button
           onClick={() => setDrawerOpen(true)}
