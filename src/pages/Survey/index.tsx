@@ -41,7 +41,7 @@ import Completed from "assets/icons/completed.svg";
 import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
 
 const SurveyPreview = () => {
-  const {search} = useLocation();
+  const { search } = useLocation();
   const [status, setStatus] = useState("");
   const [isLoading, setLoading] = useState(true);
   const templateId = Object.fromEntries(new URLSearchParams(search)).t || 0;
@@ -71,22 +71,22 @@ const SurveyPreview = () => {
 
   const theme = useCallback(() => {
     let res;
-     switch(Number(templateId)){
-      case ETemplate.IDBANK: 
-      res = createIDBankTheme;
-      break;
-      case ETemplate.FAST: 
-      res = createFastTheme;
-      break;
-      case ETemplate.ARDSHIN: 
-      res = createArdshinTheme;
-      break;
-      default: 
-      res = createIDBankTheme;
+    switch (Number(templateId)) {
+      case ETemplate.IDBANK:
+        res = createIDBankTheme;
+        break;
+      case ETemplate.FAST:
+        res = createFastTheme;
+        break;
+      case ETemplate.ARDSHIN:
+        res = createArdshinTheme;
+        break;
+      default:
+        res = createIDBankTheme;
     }
 
     return res();
-  },[templateId]);
+  }, [templateId]);
 
   const generateCustomer = useCallback(async () => {
     const { meta, payload } = await dispatch(
@@ -100,9 +100,12 @@ const SurveyPreview = () => {
       return;
     }
 
-    navigate(`/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}${location.search}`, {
-      replace: true,
-    });
+    navigate(
+      `/${ESurveyPreviewTypes.PERSONAL}/${payload.hash}${location.search}`,
+      {
+        replace: true,
+      }
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, hash]);
 
@@ -175,7 +178,7 @@ const SurveyPreview = () => {
     answerIDs,
     singleChoiceVal,
   ]);
-
+  console.log(metricConfigable, details, checkDisabled);
   const getQuestionConfig = useCallback(
     async (hash: string) => {
       const { meta, payload } = await dispatch(GetQuestionConfiguration(hash));

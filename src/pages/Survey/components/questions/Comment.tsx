@@ -1,4 +1,5 @@
 import { Box } from "@mui/system";
+import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
 import { useMemo } from "react";
 import { requiredRules } from "shared/helpers/validators";
 import BasicTextArea from "shared/ui/TextArea";
@@ -26,10 +27,25 @@ const CommentQuestion = ({ questionData }: any) => {
     details?.commentConfig?.commentType,
   ]);
 
+  const commentRequiredRules = useMemo(() => {
+    if (details?.type === Number(ECampaignSurveyType.Comment)) {
+      return {
+        required: {
+          value: details?.isRequired,
+          message: "Required",
+        },
+      };
+    }
+  }, [
+    details?.commentConfig?.commentMax,
+    details?.commentConfig?.commentMin,
+    details?.commentConfig?.commentType,
+  ]);
+
   return (
     <Box pt={4}>
       <BasicTextArea
-        rules={{ ...requiredRules, ...commentRules }}
+        rules={{ ...commentRequiredRules, ...commentRules }}
         name="comment"
         placeholder={"Type here ..."}
       />

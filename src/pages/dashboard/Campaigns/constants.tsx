@@ -44,5 +44,5 @@ export const historyColumns: IColumn[] = [
 
 export const deleteCampaignWarningConfig = {
   title: "Warning",
-  description: "Are you sure you want to delete this role?",
+  description: "Are you sure you want to delete this campaign?",
 };
