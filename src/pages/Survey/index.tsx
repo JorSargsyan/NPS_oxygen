@@ -178,7 +178,7 @@ const SurveyPreview = () => {
     answerIDs,
     singleChoiceVal,
   ]);
-  console.log(metricConfigable, details, checkDisabled);
+
   const getQuestionConfig = useCallback(
     async (hash: string) => {
       const { meta, payload } = await dispatch(GetQuestionConfiguration(hash));
