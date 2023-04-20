@@ -1,7 +1,6 @@
 import { Box } from "@mui/system";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
 import { useMemo } from "react";
-import { requiredRules } from "shared/helpers/validators";
 import BasicTextArea from "shared/ui/TextArea";
 import { ECommentConfigType } from "store/enums/campaignDetails";
 
@@ -36,11 +35,7 @@ const CommentQuestion = ({ questionData }: any) => {
         },
       };
     }
-  }, [
-    details?.commentConfig?.commentMax,
-    details?.commentConfig?.commentMin,
-    details?.commentConfig?.commentType,
-  ]);
+  }, [details?.type, details?.isRequired]);
 
   return (
     <Box pt={4}>

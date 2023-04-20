@@ -1,4 +1,4 @@
-import { MobileTimePicker, TimePicker } from "@mui/x-date-pickers";
+import { MobileTimePicker } from "@mui/x-date-pickers";
 import { Controller, useFormContext } from "react-hook-form";
 // import { DATE_FORMAT, HOUR_FORMAT } from "store/config/constants";
 
@@ -19,10 +19,7 @@ const BasicDateTimePicker = ({
   sx,
   disablePast = true,
 }: IDateTimePickerProps) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
   return (
     <Controller
       control={control}

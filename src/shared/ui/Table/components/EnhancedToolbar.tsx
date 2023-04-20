@@ -2,7 +2,6 @@ import { Toolbar, Typography, Tooltip, Button, SvgIcon } from "@mui/material";
 import { alpha, Box } from "@mui/system";
 import SearchInput from "shared/components/SearchInput";
 import { IEnhancedToolbar } from "../constants";
-import FilterListIcon from "@heroicons/react/24/solid/AdjustmentsHorizontalIcon";
 import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
 import QuickFilterIcon from "@heroicons/react/24/outline/FunnelIcon";
 

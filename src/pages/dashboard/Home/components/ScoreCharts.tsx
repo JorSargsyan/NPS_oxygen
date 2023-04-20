@@ -62,7 +62,7 @@ const ScoreCharts = ({
     } else {
       return [scoreData?.badCount || 0, scoreData?.goodCount || 0];
     }
-  }, [scoreData]);
+  }, [scoreData, type]);
 
   return (
     <Card sx={{ m: 2, minHeight: 485 }}>
