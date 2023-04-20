@@ -39,6 +39,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
 import Completed from "assets/icons/completed.svg";
 import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
+import { createSantanderTheme } from "theme/santanderTemplate";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -80,6 +81,9 @@ const SurveyPreview = () => {
         break;
       case ETemplate.ARDSHIN:
         res = createArdshinTheme;
+        break;
+      case ETemplate.SANTANDER:
+        res = createSantanderTheme;
         break;
       default:
         res = createIDBankTheme;

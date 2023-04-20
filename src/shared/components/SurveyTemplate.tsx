@@ -13,9 +13,8 @@ import {
 } from "store/interfaces/surveyPreview";
 import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
 import Logo from "assets/icons/satisfai_logo.svg";
-import {  TemplateList } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
-import { useLocation, useParams } from "react-router-dom";
-import { el } from "date-fns/locale";
+import { TemplateList } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
+import { useLocation } from "react-router-dom";
 import { selectActiveTemplate } from "store/slicers/surveyPreview";
 import { useSelector } from "react-redux";
 
@@ -48,8 +47,8 @@ const SurveyTemplate = ({
   questionData,
   viewType,
 }: IProps) => {
-  const {search} = useLocation();
-  const activeTemplateID = useSelector(selectActiveTemplate)
+  const { search } = useLocation();
+  const activeTemplateID = useSelector(selectActiveTemplate);
   const PreviewComp = useCallback(() => {
     const Comp = ESurveyPreviewComps[questionData?.details.type];
     return (
@@ -78,19 +77,23 @@ const SurveyTemplate = ({
 
   const templateId = useMemo(() => {
     let param = Object.fromEntries(new URLSearchParams(search)).t;
-    if(Number(param) > 2 || !param){
-      if(activeTemplateID){
+    if (Number(param) > 3 || !param) {
+      if (activeTemplateID) {
         return activeTemplateID;
       }
       return 0;
     }
     return param;
-  },[activeTemplateID, search]);
+  }, [activeTemplateID, search]);
 
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-        <img style={{width:"200px"}} src={TemplateList[templateId].logo} alt="logo" />
+        <img
+          style={{ width: "200px" }}
+          src={TemplateList[templateId].logo}
+          alt="logo"
+        />
       </Box>
       <Box
         display="flex"
