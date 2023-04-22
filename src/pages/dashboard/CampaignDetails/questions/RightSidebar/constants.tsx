@@ -6,6 +6,7 @@ import IDLogo from "assets/icons/ID_bank.svg";
 import ArdshinLogo from "assets/images/ardshin.png";
 import FastLogo from "assets/icons/fast.svg";
 import SantanderLogo from "assets/images/santander.png";
+import AlfaPharmLogo from 'assets/images/alfa.jpeg';
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -68,6 +69,7 @@ export enum ETemplate {
   FAST = 1,
   ARDSHIN = 2,
   SANTANDER = 3,
+  ALFA_PHARM = 4
 }
 
 export const TemplateList = [
@@ -90,5 +92,10 @@ export const TemplateList = [
     id: ETemplate.SANTANDER,
     logo: SantanderLogo,
     color: "#EC0000",
+  },
+  {
+    id: ETemplate.ALFA_PHARM,
+    logo: AlfaPharmLogo,
+    color: "#49b748",
   },
 ];

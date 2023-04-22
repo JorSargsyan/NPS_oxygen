@@ -77,7 +77,7 @@ const SurveyTemplate = ({
 
   const templateId = useMemo(() => {
     let param = Object.fromEntries(new URLSearchParams(search)).t;
-    if (Number(param) > 3 || !param) {
+    if (Number(param) > 4 || !param) {
       if (activeTemplateID) {
         return activeTemplateID;
       }

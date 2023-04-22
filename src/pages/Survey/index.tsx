@@ -34,6 +34,7 @@ import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
 import { createIDBankTheme } from "theme/idBankTemplate";
 import { createArdshinTheme } from "theme/ardshinBankTemplate";
+import {createAlfaPharmTheme  } from 'theme/alfaPharmTemplate';
 import { createFastTheme } from "theme/fastBankTemplate";
 import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
@@ -84,6 +85,9 @@ const SurveyPreview = () => {
         break;
       case ETemplate.SANTANDER:
         res = createSantanderTheme;
+        break;
+      case ETemplate.ALFA_PHARM:
+        res = createAlfaPharmTheme;
         break;
       default:
         res = createIDBankTheme;
