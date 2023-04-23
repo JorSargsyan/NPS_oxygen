@@ -16,7 +16,7 @@ const name = "SURVEY_PREVIEW";
 const initialState: ISurveyPreviewState = {
   questionConfig: null,
   questionDetails: null,
-  activeTemplateID: 4
+  activeTemplateID: 0
 };
 
 export const CreateCustomer = createAsyncThunk<
