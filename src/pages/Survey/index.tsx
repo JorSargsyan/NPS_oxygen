@@ -34,12 +34,15 @@ import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
 import { createIDBankTheme } from "theme/idBankTemplate";
 import { createArdshinTheme } from "theme/ardshinBankTemplate";
+import { createAcbaTheme } from "theme/acbaBankTemplate";
 import { createFastTheme } from "theme/fastBankTemplate";
 import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
 import Completed from "assets/icons/completed.svg";
 import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
 import { createSantanderTheme } from "theme/santanderTemplate";
+import { createWineDaysTheme } from "theme/wineDaysTemplate";
+import { createWigmoreTheme } from "theme/wigmoreTemplate";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -84,6 +87,15 @@ const SurveyPreview = () => {
         break;
       case ETemplate.SANTANDER:
         res = createSantanderTheme;
+        break;
+      case ETemplate.ACBA:
+        res = createAcbaTheme;
+        break;
+      case ETemplate.WINE_DAYS:
+        res = createWineDaysTheme;
+        break;
+      case ETemplate.WIGMORE:
+        res = createWigmoreTheme;
         break;
       default:
         res = createIDBankTheme;

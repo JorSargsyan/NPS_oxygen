@@ -32,7 +32,10 @@ import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ITemplate } from "store/interfaces/campaignDetails";
 import { TemplateList } from "./constants";
-import { selectActiveTemplate, setActiveTemplate } from "store/slicers/surveyPreview";
+import {
+  selectActiveTemplate,
+  setActiveTemplate,
+} from "store/slicers/surveyPreview";
 
 const DesignTab = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
@@ -196,9 +199,9 @@ const DesignTab = () => {
     surveyInfo?.template?.logoImage,
   ]);
 
-  const setTemplate = (templateID:number) => {
+  const setTemplate = (templateID: number) => {
     dispatch(setActiveTemplate(templateID));
-  }
+  };
 
   return (
     <Box p={2}>
@@ -208,17 +211,34 @@ const DesignTab = () => {
             <Typography>Template</Typography>
             <Box display={"flex"} my={2}>
               {TemplateList.map((template) => {
-                return <IconButton key={template.id} sx={{backgroundColor: activeTemplate === template.id ? "neutral.200" : "transparent"}}>
-                  <Box component={Paper}  onClick={() => setTemplate(template.id)} height={25} width={25}  sx={{
-                  backgroundColor:template.color,
-                  borderRadius:"4px",
-                  cursor:"pointer",
-                }}/>
-                </IconButton>
+                return (
+                  <Tooltip title={template.name} key={template.id}>
+                    <IconButton
+                      sx={{
+                        backgroundColor:
+                          activeTemplate === template.id
+                            ? "neutral.200"
+                            : "transparent",
+                      }}
+                    >
+                      <Box
+                        component={Paper}
+                        onClick={() => setTemplate(template.id)}
+                        height={25}
+                        width={25}
+                        sx={{
+                          backgroundColor: template.color,
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                );
               })}
             </Box>
           </Box>
-         
+
           <Box
             minHeight={140}
             borderRadius={"10px"}
