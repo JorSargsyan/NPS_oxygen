@@ -72,10 +72,10 @@ export enum ETemplate {
   FAST = 1,
   ARDSHIN = 2,
   SANTANDER = 3,
-  ACBA = 4,
-  WINE_DAYS = 5,
-  WIGMORE = 6,
   ALFA_PHARM = 4,
+  ACBA = 5,
+  WINE_DAYS = 6,
+  WIGMORE = 7,
 }
 
 export const TemplateList = [
@@ -104,6 +104,11 @@ export const TemplateList = [
     name: "Santander Bank",
   },
   {
+    id: ETemplate.ALFA_PHARM,
+    logo: AlfaPharmLogo,
+    color: "#49b748",
+  },
+  {
     id: ETemplate.ACBA,
     logo: AcbaLogo,
     color: "#00A789",
@@ -120,10 +125,5 @@ export const TemplateList = [
     logo: WigmoreLogo,
     color: "#325F48",
     name: "Wigmore",
-  },
-  {
-    id: ETemplate.ALFA_PHARM,
-    logo: AlfaPharmLogo,
-    color: "#49b748",
   },
 ];

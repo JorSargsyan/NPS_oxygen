@@ -209,7 +209,7 @@ const DesignTab = () => {
         <CardContent>
           <Box>
             <Typography>Template</Typography>
-            <Box display={"flex"} my={2}>
+            <Box display={"flex"} my={2} flexWrap={"wrap"}>
               {TemplateList.map((template) => {
                 return (
                   <Tooltip title={template.name} key={template.id}>
