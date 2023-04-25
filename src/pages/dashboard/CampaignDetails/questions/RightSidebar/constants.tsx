@@ -9,6 +9,7 @@ import SantanderLogo from "assets/images/santander.png";
 import WineDaysLogo from "assets/images/wine_days.jpeg";
 import AcbaLogo from "assets/images/acba.jpeg";
 import WigmoreLogo from "assets/images/wigmore.jpeg";
+import AlfaPharmLogo from "assets/images/alfa.jpeg";
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -74,6 +75,7 @@ export enum ETemplate {
   ACBA = 4,
   WINE_DAYS = 5,
   WIGMORE = 6,
+  ALFA_PHARM = 4,
 }
 
 export const TemplateList = [
@@ -118,5 +120,10 @@ export const TemplateList = [
     logo: WigmoreLogo,
     color: "#325F48",
     name: "Wigmore",
+  },
+  {
+    id: ETemplate.ALFA_PHARM,
+    logo: AlfaPharmLogo,
+    color: "#49b748",
   },
 ];
