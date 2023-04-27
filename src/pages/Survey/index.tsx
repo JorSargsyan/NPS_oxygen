@@ -44,6 +44,7 @@ import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSideba
 import { createSantanderTheme } from "theme/santanderTemplate";
 import { createWineDaysTheme } from "theme/wineDaysTemplate";
 import { createWigmoreTheme } from "theme/wigmoreTemplate";
+import { createMunicipalityTheme } from "theme/municipalityTemplate";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -100,6 +101,9 @@ const SurveyPreview = () => {
         break;
       case ETemplate.ALFA_PHARM:
         res = createAlfaPharmTheme;
+        break;
+      case ETemplate.MUNICIPALITY:
+        res = createMunicipalityTheme;
         break;
       default:
         res = createIDBankTheme;

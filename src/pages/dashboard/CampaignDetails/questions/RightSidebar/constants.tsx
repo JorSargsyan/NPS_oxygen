@@ -10,6 +10,7 @@ import WineDaysLogo from "assets/images/wine_days.jpeg";
 import AcbaLogo from "assets/images/acba.jpeg";
 import WigmoreLogo from "assets/images/wigmore.jpeg";
 import AlfaPharmLogo from "assets/images/alfa.jpeg";
+import MunicipalityLogo from "assets/images/yerevan.jpeg";
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -76,6 +77,7 @@ export enum ETemplate {
   WINE_DAYS = 5,
   WIGMORE = 6,
   ALFA_PHARM = 7,
+  MUNICIPALITY = 8,
 }
 
 export const TemplateList = [
@@ -126,5 +128,11 @@ export const TemplateList = [
     logo: AlfaPharmLogo,
     color: "#49b748",
     name: "Alfa pharm",
+  },
+  {
+    id: ETemplate.MUNICIPALITY,
+    logo: MunicipalityLogo,
+    color: "#051a41",
+    name: "Yerevan Municipality",
   },
 ];
