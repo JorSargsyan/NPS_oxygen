@@ -1,14 +1,21 @@
-import { IconButton, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import ColorPicker from "shared/components/ColorPicker";
+import { requiredRules } from "shared/helpers/validators";
+import TextInput from "shared/ui/TextInput";
 
 const AddTheme = ({ onSuccess }: { onSuccess }) => {
+  const methods = useForm({
+    defaultValues: {},
+  });
+
   const [colors, setColors] = useState({
-    button: "#000000",
-    buttonText: "#000000",
-    question: "#000000",
-    answer: "#000000",
+    button: "#DDDCDC",
+    buttonText: "#DDDCDC",
+    question: "#DDDCDC",
+    answer: "#DDDCDC",
   });
 
   const handleChange = (name: string, { hex }) => {
@@ -20,9 +27,17 @@ const AddTheme = ({ onSuccess }: { onSuccess }) => {
     });
   };
 
-  console.log(colors);
+  const onSubmit = (formData) => {
+    console.log(formData, colors);
+  };
+
   return (
     <Box>
+      <FormProvider {...methods}>
+        <Box mb={2}>
+          <TextInput name="name" label={"Name"} rules={requiredRules} />
+        </Box>
+      </FormProvider>
       <Box
         display="flex"
         alignItems={"center"}
@@ -70,6 +85,11 @@ const AddTheme = ({ onSuccess }: { onSuccess }) => {
           color={colors.buttonText}
           onChange={handleChange}
         />
+      </Box>
+      <Box display="flex" justifyContent={"flex-end"} mt={2}>
+        <Button variant="contained" onClick={methods.handleSubmit(onSubmit)}>
+          <Typography>Save</Typography>
+        </Button>
       </Box>
     </Box>
   );
