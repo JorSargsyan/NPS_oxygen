@@ -1,34 +1,35 @@
-import { Box } from "@mui/system";
-import { useSelector } from "react-redux";
 import {
-  selectSurveyInfo,
-  selectTemplates,
-} from "store/slicers/campaignDetail";
-import BasicSelect from "shared/ui/Select";
-import { FormProvider, useForm } from "react-hook-form";
-import {
+  Button,
   Card,
   CardActions,
   CardContent,
   Divider,
-  IconButton,
-  Paper,
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useCallback, useMemo, useState } from "react";
-import MoreIcon from "@heroicons/react/24/outline/EllipsisHorizontalIcon";
+import { Box } from "@mui/system";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import DotsMenu from "shared/ui/DotsMenu";
+import RightDrawer from "shared/ui/Drawer";
 import { IAction } from "shared/ui/Table/constants";
 import { ITemplate } from "store/interfaces/campaignDetails";
+import {
+  selectSurveyInfo,
+  selectTemplates,
+} from "store/slicers/campaignDetail";
+import AddTheme from "./AddTheme";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 const Templates = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const methods = useForm({
     defaultValues: {
       theme: 1,
     },
   });
-  const [editTemplateID, setEditTemplateID] = useState("1");
+
   const themeId = methods.watch("theme");
   const templateList = useSelector(selectTemplates);
   const surveyDetails = useSelector(selectSurveyInfo);
@@ -53,149 +54,84 @@ const Templates = () => {
     ];
   }, []);
 
-  const template = useMemo(() => {
-    return templateList.find((i) => i.id === themeId);
-  }, [templateList, themeId]);
+  const handleSuccess = () => {};
 
   return (
     <Box>
-      {editTemplateID ? (
-        <Box>
-          {templateList?.length
-            ? templateList?.map((item) => {
-                return (
-                  <Card
-                    sx={{
-                      mb: 2,
-                      border:
-                        surveyDetails?.template?.id === item.id
-                          ? "3px solid"
-                          : "none",
-                      borderColor: "primary.main",
-                    }}
-                    key={item.id}
-                  >
-                    <CardContent>
-                      <Typography color={item.quesstionColor}>
-                        Question
-                      </Typography>
-                      <Typography color={item.answerColor}>Answer</Typography>
-                      <Typography color={item.buttonTextColor}>
-                        Button Text
-                      </Typography>
-                      <Box
-                        sx={{
-                          mt: 1,
-                          height: 12,
-                          width: 48,
-                          backgroundColor: item.buttonColor,
-                        }}
-                      ></Box>
-                    </CardContent>
-                    <Divider />
-                    <CardActions
+      <Box my={1}>
+        <Button
+          variant="outlined"
+          startIcon={
+            <SvgIcon>
+              <PlusIcon />
+            </SvgIcon>
+          }
+          onClick={() => setDrawerOpen(true)}
+        >
+          <Typography>Add Theme</Typography>
+        </Button>
+      </Box>
+      <Box>
+        {templateList?.length
+          ? templateList?.map((item) => {
+              return (
+                <Card
+                  sx={{
+                    mb: 2,
+                    border:
+                      surveyDetails?.template?.id === item.id
+                        ? "3px solid"
+                        : "none",
+                    borderColor: "primary.main",
+                  }}
+                  key={item.id}
+                >
+                  <CardContent>
+                    <Typography color={item.quesstionColor}>
+                      Question
+                    </Typography>
+                    <Typography color={item.answerColor}>Answer</Typography>
+                    <Typography color={item.buttonTextColor}>
+                      Button Text
+                    </Typography>
+                    <Box
                       sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        px: 3,
+                        mt: 1,
+                        height: 12,
+                        width: 48,
+                        backgroundColor: item.buttonColor,
                       }}
-                    >
-                      <Typography>{item.name}</Typography>
-                      <DotsMenu<ITemplate>
-                        actions={getActions(item)}
-                        onActionClick={handleClickAction}
-                        row={item}
-                      />
-                    </CardActions>
-                  </Card>
-                );
-              })
-            : null}
-        </Box>
-      ) : (
-        <Box display={"flex"} flexWrap={"wrap"}>
-          <Box
-            display="flex"
-            alignItems={"center"}
-            width="100%"
-            justifyContent={"space-between"}
-          >
-            <Typography>Button Color</Typography>
-            <IconButton>
-              <Box
-                component={Paper}
-                height={25}
-                width={25}
-                sx={{
-                  backgroundColor: template?.buttonColor,
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              />
-            </IconButton>
-          </Box>
-          <Box
-            display="flex"
-            alignItems={"center"}
-            width="100%"
-            justifyContent={"space-between"}
-          >
-            <Typography>Button Text Color</Typography>
-            <IconButton>
-              <Box
-                component={Paper}
-                height={25}
-                width={25}
-                sx={{
-                  backgroundColor: template?.buttonTextColor,
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              />
-            </IconButton>
-          </Box>
-          <Box
-            display="flex"
-            alignItems={"center"}
-            width="100%"
-            justifyContent={"space-between"}
-          >
-            <Typography>Question Color</Typography>
-            <IconButton>
-              <Box
-                component={Paper}
-                height={25}
-                width={25}
-                sx={{
-                  backgroundColor: template?.quesstionColor,
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              />
-            </IconButton>
-          </Box>
-          <Box
-            display="flex"
-            width="100%"
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Typography>Answer Color</Typography>
-            <IconButton>
-              <Box
-                component={Paper}
-                height={25}
-                width={25}
-                sx={{
-                  backgroundColor: template?.answerColor,
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              />
-            </IconButton>
-          </Box>
-        </Box>
-      )}
+                    ></Box>
+                  </CardContent>
+                  <Divider />
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      px: 3,
+                    }}
+                  >
+                    <Typography>{item.name}</Typography>
+                    <DotsMenu<ITemplate>
+                      actions={getActions(item)}
+                      onActionClick={handleClickAction}
+                      row={item}
+                    />
+                  </CardActions>
+                </Card>
+              );
+            })
+          : null}
+      </Box>
+
+      <RightDrawer
+        width={400}
+        open={drawerOpen}
+        setOpen={setDrawerOpen}
+        title={"Add theme"}
+      >
+        <AddTheme onSuccess={handleSuccess} />
+      </RightDrawer>
     </Box>
   );
 };
