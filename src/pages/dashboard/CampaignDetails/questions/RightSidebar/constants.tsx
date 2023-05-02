@@ -11,6 +11,8 @@ import AcbaLogo from "assets/images/acba.jpeg";
 import WigmoreLogo from "assets/images/wigmore.jpeg";
 import AlfaPharmLogo from "assets/images/alfa.jpeg";
 import MunicipalityLogo from "assets/images/yerevan.jpeg";
+import UcomLogo from "assets/images/ucom.jpeg";
+import EvocaLogo from "assets/images/evoca.jpeg";
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -78,6 +80,8 @@ export enum ETemplate {
   WIGMORE = 6,
   ALFA_PHARM = 7,
   MUNICIPALITY = 8,
+  UCOM = 9,
+  EVOCA = 10,
 }
 
 export const TemplateList = [
@@ -134,5 +138,17 @@ export const TemplateList = [
     logo: MunicipalityLogo,
     color: "#051a41",
     name: "Yerevan Municipality",
+  },
+  {
+    id: ETemplate.UCOM,
+    logo: UcomLogo,
+    color: "#7FBC07",
+    name: "Ucom",
+  },
+  {
+    id: ETemplate.EVOCA,
+    logo: EvocaLogo,
+    color: "#6400dc",
+    name: "Evoca",
   },
 ];

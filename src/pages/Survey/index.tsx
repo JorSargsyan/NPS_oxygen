@@ -45,6 +45,8 @@ import { createSantanderTheme } from "theme/santanderTemplate";
 import { createWineDaysTheme } from "theme/wineDaysTemplate";
 import { createWigmoreTheme } from "theme/wigmoreTemplate";
 import { createMunicipalityTheme } from "theme/municipalityTemplate";
+import { createUcomTheme } from "theme/ucomTemplate";
+import { createEvocaTheme } from "theme/evocaTemplate";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -104,6 +106,12 @@ const SurveyPreview = () => {
         break;
       case ETemplate.MUNICIPALITY:
         res = createMunicipalityTheme;
+        break;
+      case ETemplate.UCOM:
+        res = createUcomTheme;
+        break;
+      case ETemplate.EVOCA:
+        res = createEvocaTheme;
         break;
       default:
         res = createIDBankTheme;
