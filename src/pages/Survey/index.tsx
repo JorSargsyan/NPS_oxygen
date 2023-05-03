@@ -47,6 +47,8 @@ import { createWigmoreTheme } from "theme/wigmoreTemplate";
 import { createMunicipalityTheme } from "theme/municipalityTemplate";
 import { createUcomTheme } from "theme/ucomTemplate";
 import { createEvocaTheme } from "theme/evocaTemplate";
+import { createConverseTheme } from "theme/converseTemplate";
+import { createFlyArnaTheme } from "theme/flyArnaTemplate";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -112,6 +114,12 @@ const SurveyPreview = () => {
         break;
       case ETemplate.EVOCA:
         res = createEvocaTheme;
+        break;
+      case ETemplate.CONVERSE:
+        res = createConverseTheme;
+        break;
+      case ETemplate.FLY_ARNA:
+        res = createFlyArnaTheme;
         break;
       default:
         res = createIDBankTheme;

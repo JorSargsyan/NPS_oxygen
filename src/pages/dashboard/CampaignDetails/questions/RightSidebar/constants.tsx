@@ -13,6 +13,8 @@ import AlfaPharmLogo from "assets/images/alfa.jpeg";
 import MunicipalityLogo from "assets/images/yerevan.jpeg";
 import UcomLogo from "assets/images/ucom.jpeg";
 import EvocaLogo from "assets/images/evoca.jpeg";
+import FlyArnaLogo from "assets/images/flyarna.jpeg";
+import ConverseLogo from "assets/images/converse.jpeg";
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -82,6 +84,8 @@ export enum ETemplate {
   MUNICIPALITY = 8,
   UCOM = 9,
   EVOCA = 10,
+  FLY_ARNA = 11,
+  CONVERSE = 12,
 }
 
 export const TemplateList = [
@@ -150,5 +154,17 @@ export const TemplateList = [
     logo: EvocaLogo,
     color: "#6400dc",
     name: "Evoca",
+  },
+  {
+    id: ETemplate.FLY_ARNA,
+    logo: FlyArnaLogo,
+    color: "#0133a0",
+    name: "Fly Arna",
+  },
+  {
+    id: ETemplate.CONVERSE,
+    logo: ConverseLogo,
+    color: "#027dc2",
+    name: "Converse",
   },
 ];
