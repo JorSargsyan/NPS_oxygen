@@ -49,6 +49,7 @@ import { createUcomTheme } from "theme/ucomTemplate";
 import { createEvocaTheme } from "theme/evocaTemplate";
 import { createConverseTheme } from "theme/converseTemplate";
 import { createFlyArnaTheme } from "theme/flyArnaTemplate";
+import { createMtsTheme } from "theme/mtsTheme";
 
 const SurveyPreview = () => {
   const { search } = useLocation();
@@ -121,6 +122,9 @@ const SurveyPreview = () => {
       case ETemplate.FLY_ARNA:
         res = createFlyArnaTheme;
         break;
+        case ETemplate.MTS:
+        res = createMtsTheme;
+          break;
       default:
         res = createIDBankTheme;
     }

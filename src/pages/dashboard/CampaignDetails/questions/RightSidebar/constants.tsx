@@ -15,6 +15,7 @@ import UcomLogo from "assets/images/ucom.jpeg";
 import EvocaLogo from "assets/images/evoca.jpeg";
 import FlyArnaLogo from "assets/images/flyarna.jpeg";
 import ConverseLogo from "assets/images/converse.jpeg";
+import MtsLogo from 'assets/images/vivacell_logo.svg'
 
 export enum ERightSibebarTabs {
   Questions = 0,
@@ -86,6 +87,7 @@ export enum ETemplate {
   EVOCA = 10,
   FLY_ARNA = 11,
   CONVERSE = 12,
+  MTS =13
 }
 
 export const TemplateList = [
@@ -167,4 +169,10 @@ export const TemplateList = [
     color: "#027dc2",
     name: "Converse",
   },
+  {
+    id: ETemplate.MTS,
+    logo: MtsLogo,
+    color: "#e30613",
+    name: "Viva MTS"
+  }
 ];
