@@ -1,22 +1,17 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import Logo from "assets/icons/satisfai_logo.svg";
+import defaultImg from "assets/images/survey_bg.png";
+import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
 import { ESurveyPreviewComps } from "pages/Survey/constants";
 import { memo, useCallback, useMemo } from "react";
 import { FormProvider } from "react-hook-form";
-import { EBaseUrl } from "store/config/constants";
-import defaultImg from "assets/images/survey_bg.png";
 import { ITemplate } from "store/interfaces/campaignDetails";
 import {
   IQuestionConfig,
   IQuestionDetails,
 } from "store/interfaces/surveyPreview";
-import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
-import Logo from "assets/icons/satisfai_logo.svg";
-import { TemplateList } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
-import { useLocation } from "react-router-dom";
-import { selectActiveTemplate } from "store/slicers/surveyPreview";
-import { useSelector } from "react-redux";
 
 export enum ESurveyTypes {
   Preview = "preview",
@@ -47,8 +42,6 @@ const SurveyTemplate = ({
   questionData,
   viewType,
 }: IProps) => {
-  const { search } = useLocation();
-  const activeTemplateID = useSelector(selectActiveTemplate);
   const PreviewComp = useCallback(() => {
     const Comp = ESurveyPreviewComps[questionData?.details.type];
     return (
@@ -59,39 +52,56 @@ const SurveyTemplate = ({
     );
   }, [questionData, type]);
 
-  const getImage = useMemo(() => {
+  const getQuestionInfo = useMemo(() => {
     if (type !== ESurveyTypes.Preview) {
-      return questionData?.details?.template?.logoImage
-        ? `${EBaseUrl.MediaTemplateURL}/${questionData?.details?.template?.logoImage}`
-        : defaultImg;
+      return {
+        image: questionData?.details?.template?.imageBase64
+          ? questionData?.details?.template?.imageBase64
+          : defaultImg,
+        logoImage: questionData?.details?.template?.logoImageBase64
+          ? questionData?.details?.template?.logoImageBase64
+          : defaultImg,
+        buttonColor: questionData?.details?.template?.buttonColor,
+        answerColor: questionData?.details?.template?.answerColor,
+        buttonTextColor: questionData?.details?.template?.buttonTextColor,
+        questionColor: questionData?.details?.template?.questionColor,
+      };
     } else {
-      return questionData?.template?.logoImage
-        ? `${EBaseUrl.MediaTemplateURL}/${questionData?.template?.logoImage}`
-        : defaultImg;
+      return {
+        image: questionData?.template?.imageBase64
+          ? questionData?.template?.imageBase64
+          : defaultImg,
+        logoImage: questionData?.template?.logoImageBase64
+          ? questionData?.template?.logoImageBase64
+          : defaultImg,
+        buttonColor: questionData?.template?.buttonColor,
+        answerColor: questionData?.template?.answerColor,
+        buttonTextColor: questionData?.template?.buttonTextColor,
+        questionColor: questionData?.template?.questionColor,
+      };
     }
   }, [
-    questionData?.details?.template?.logoImage,
-    questionData?.template?.logoImage,
+    questionData?.details?.template?.answerColor,
+    questionData?.details?.template?.buttonColor,
+    questionData?.details?.template?.buttonTextColor,
+    questionData?.details?.template?.logoImageBase64,
+    questionData?.details?.template?.questionColor,
+    questionData?.template?.answerColor,
+    questionData?.template?.buttonColor,
+    questionData?.template?.buttonTextColor,
+    questionData?.template?.logoImageBase64,
+    questionData?.template?.questionColor,
+    questionData?.details?.template?.imageBase64,
+    questionData?.template?.imageBase64,
     type,
   ]);
-
-  const templateId = useMemo(() => {
-    let param = Object.fromEntries(new URLSearchParams(search)).t;
-    if (Number(param) > TemplateList.length - 1 || !param) {
-      if (activeTemplateID) {
-        return activeTemplateID;
-      }
-      return 0;
-    }
-    return param;
-  }, [activeTemplateID, search]);
 
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
         <img
           style={{ width: "200px" }}
-          src={TemplateList[templateId].logo}
+          src={getQuestionInfo?.logoImage}
           alt="logo"
         />
       </Box>
@@ -112,7 +122,7 @@ const SurveyTemplate = ({
           },
         }}
       >
-        <img src={getImage} alt={questionData?.details?.title} />
+        <img src={getQuestionInfo?.image} alt={questionData?.details?.title} />
       </Box>
       <Box mt={4}>
         <FormProvider {...methods}>
@@ -124,6 +134,7 @@ const SurveyTemplate = ({
                 fontWeight: "400",
                 display: "flex",
                 alignItems: "center",
+                color: getQuestionInfo?.questionColor,
               }}
             >
               {questionData?.details?.title}
@@ -185,9 +196,15 @@ const SurveyTemplate = ({
                       : undefined
                   }
                   variant="contained"
-                  sx={{ borderRadius: "40px", width: "100%" }}
+                  sx={{
+                    borderRadius: "40px",
+                    width: "100%",
+                    backgroundColor: getQuestionInfo?.buttonColor,
+                  }}
                 >
-                  <Typography>{questionData?.details?.buttonText}</Typography>
+                  <Typography color={getQuestionInfo?.buttonTextColor}>
+                    {questionData?.details?.buttonText}
+                  </Typography>
                 </Button>
               </Box>
             </Box>

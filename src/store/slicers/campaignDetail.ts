@@ -9,7 +9,6 @@ import {
   ICampaignSurvey,
   IDistributionSchedule,
   ICampaignSurveyDetails,
-  IUpdateSurveyTemplateRequest,
   ICreateCampaignSurveyResponse,
   IAddEditSurveyTemplateRequest,
   IUpdateSurveyRequest,
@@ -60,7 +59,7 @@ export const ChangeCampaignSurveyPositions = createAsyncThunk<
 
 export const CreateSurvey = createAsyncThunk<
   ICreateCampaignSurveyResponse,
-  ICreateCampaignSurveyRequest
+  IUpdateSurveyRequest
 >(
   `${name}/CreateSurvey`,
   async (formData) => {
@@ -178,6 +177,15 @@ export const DeleteSurveyTemplate = createAsyncThunk<unknown, number>(
   thunkOptions
 );
 
+export const DeleteCustomTemplate = createAsyncThunk<unknown, number>(
+  `${name}/DeleteTemplate`,
+  async (id) => {
+    return (await api.delete(`${EBaseUrl.API}/SurveyTemplate/Public/${id}`))
+      .data;
+  },
+  thunkOptions
+);
+
 export const ApplySurvey = createAsyncThunk<
   unknown,
   { surveyID: string; templateID: number }
@@ -255,6 +263,9 @@ const campaignDetailSlice = createSlice({
     setSettingsForm(state, { payload }) {
       state.form.settings = payload;
     },
+    setSelectedTemplate(state, { payload }) {
+      state.surveyTemplate = payload;
+    },
     resetCampaignDetails() {
       return initialState;
     },
@@ -315,5 +326,6 @@ export const {
   setSettingsForm,
   setSurveyForm,
   resetCampaignDetails,
+  setSelectedTemplate,
 } = campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;

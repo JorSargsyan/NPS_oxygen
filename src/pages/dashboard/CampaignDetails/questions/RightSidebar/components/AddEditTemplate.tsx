@@ -69,7 +69,6 @@ const AddEditTemplate = ({
   }, [editData, methods]);
 
   const handleChangeImage = (val, name) => {
-    console.log(val, name);
     methods.setValue(name, val);
   };
 

@@ -1,34 +1,28 @@
 import {
+  Button,
   Card,
   CardContent,
-  IconButton,
-  Tooltip,
-  Button,
-  Typography,
   Menu,
   MenuItem,
-  Paper,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-import { EBaseUrl } from "store/config/constants";
 import {
   ApplyForAllSurveys,
   ApplySurvey,
-  DeleteSurveyTemplate,
-  GetSurveys,
   DeleteCampaignTemplate,
-  UpdateSurveyTemplate,
+  DeleteSurveyTemplate,
+  GetCampaignSurveyTemplateById,
+  GetSurveys,
   selectCampaignInfo,
   selectSurveyInfo,
-  GetCampaignSurveyTemplateById,
 } from "store/slicers/campaignDetail";
-import defaultImg from "assets/images/survey_bg.png";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
-import toast from "react-hot-toast";
 import { ITemplate } from "store/interfaces/campaignDetails";
 import Templates from "./components/Templates";
 
@@ -38,28 +32,6 @@ const DesignTab = () => {
   const campaignInfo = useSelector(selectCampaignInfo);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
-
-  const removeSurveyTemplate = async () => {
-    const { meta } = await dispatch(
-      DeleteSurveyTemplate(surveyInfo.template.id)
-    );
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-
-    dispatch(GetSurveys(campaignInfo.id));
-    toast.success("Survey Template removed succesfully");
-  };
-
-  const removeCampaignTemplate = async () => {
-    const { meta } = await dispatch(DeleteCampaignTemplate(campaignInfo.id));
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-
-    dispatch(GetSurveys(campaignInfo.id));
-    toast.success("Campaign Template removed succesfully");
-  };
 
   const handleApply = async () => {
     onMenuOpen(false);
@@ -74,12 +46,9 @@ const DesignTab = () => {
       return;
     }
 
-    const { payload } = await dispatch(
-      GetCampaignSurveyTemplateById(surveyInfo.details.id)
-    );
+    await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    const payloadTyped = payload as ITemplate;
-    toast.success("Template applied succesfully");
+    toast.success("Template applied successfully");
   };
 
   const handleApplyAll = async () => {
@@ -94,12 +63,9 @@ const DesignTab = () => {
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
     }
-    const { payload } = await dispatch(
-      GetCampaignSurveyTemplateById(surveyInfo.details.id)
-    );
+    await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    const payloadTyped = payload as ITemplate;
-    toast.success("Template applied succesfully");
+    toast.success("Template applied successfully");
   };
 
   const handleOpenMenu = (event) => {

@@ -1,5 +1,5 @@
 import { common } from "@mui/material/colors";
-import { PaletteOptions, alpha } from "@mui/material/styles";
+import { alpha, PaletteOptions } from "@mui/material/styles";
 import { error, info, neutral, success, warning } from "../colors";
 
 const withAlphas = (color) => {

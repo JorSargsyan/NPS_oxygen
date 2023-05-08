@@ -8,21 +8,28 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DotsMenu from "shared/ui/DotsMenu";
 import RightDrawer from "shared/ui/Drawer";
 import { IAction } from "shared/ui/Table/constants";
 import { ITemplate } from "store/interfaces/campaignDetails";
 import {
+  DeleteCustomTemplate,
+  GetTemplates,
   selectSurveyInfo,
   selectTemplates,
+  setSelectedTemplate,
 } from "store/slicers/campaignDetail";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTemplate from "./AddEditTemplate";
+import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import { ERequestStatus } from "store/enums/index.enum";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const Templates = () => {
+  const { id } = useParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editTemplateData, setEditTemplateData] = useState<ITemplate | null>(
     null
@@ -30,6 +37,34 @@ const Templates = () => {
 
   const templateList = useSelector(selectTemplates);
   const surveyDetails = useSelector(selectSurveyInfo);
+  const dispatch = useAsyncDispatch();
+
+  const editTemplate = (templateData: ITemplate) => {
+    setEditTemplateData(templateData);
+    setDrawerOpen(true);
+  };
+
+  const handleSuccess = () => {
+    setDrawerOpen(false);
+    setEditTemplateData(null);
+  };
+
+  const selectTemplate = async (template: ITemplate) => {
+    if (!template?.id) {
+      return;
+    }
+    await dispatch(setSelectedTemplate(template));
+  };
+
+  const deleteTemplate = async (rowData: ITemplate) => {
+    const { meta } = await dispatch(DeleteCustomTemplate(rowData.id));
+    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      return;
+    }
+
+    await dispatch(GetTemplates(Number(id)));
+    toast.success("Template removed successfully");
+  };
 
   const handleClickAction = useCallback(
     (action: IAction<ITemplate>, row: ITemplate) => {
@@ -38,24 +73,15 @@ const Templates = () => {
     []
   );
 
-  const editTemplate = (templateData: ITemplate) => {
-    setEditTemplateData(templateData);
-    setDrawerOpen(true);
-  };
-
   const getActions = useCallback((rowData: ITemplate) => {
     return [
       {
         label: "Edit",
         onClick: () => editTemplate(rowData),
       },
+      { label: "Delete", onClick: () => deleteTemplate(rowData) },
     ];
   }, []);
-
-  const handleSuccess = () => {
-    setDrawerOpen(false);
-    setEditTemplateData(null);
-  };
 
   return (
     <Box>
@@ -77,6 +103,7 @@ const Templates = () => {
           ? templateList?.map((item) => {
               return (
                 <Card
+                  onClick={() => selectTemplate(item)}
                   sx={{
                     mb: 2,
                     border:

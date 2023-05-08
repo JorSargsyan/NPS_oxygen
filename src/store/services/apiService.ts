@@ -7,9 +7,9 @@ export const api = axios.create({
 });
 
 const feedbackExceptionUrl = "/Feedback/Status/";
-const adminUrl = "/admin/";
-const loginUrl = "/login";
+const questionExceptionUrl = "/Question";
 const feedbackDetailHistoryExceptionUrl = "/Feedback/Logs/";
+const customerExceptionUrl = "/Customer";
 
 api.interceptors.request.use(
   async (config: any) => {
@@ -35,12 +35,12 @@ api.interceptors.response.use(
 
     return new Promise(async (_, reject) => {
       if (
-        err.response?.config?.url.includes(feedbackExceptionUrl) ||
-        !(
-          err.response?.config?.url.includes(adminUrl) &&
-          err.response?.config?.url.includes(loginUrl)
+        err?.response?.config?.url.includes(feedbackExceptionUrl) ||
+        err?.response?.config?.url.includes(questionExceptionUrl) ||
+        err?.response?.config?.url.includes(
+          feedbackDetailHistoryExceptionUrl
         ) ||
-        err.response?.config?.url.includes(feedbackDetailHistoryExceptionUrl)
+        err?.response?.config?.url.includes(customerExceptionUrl)
       ) {
         return reject(err);
       }
