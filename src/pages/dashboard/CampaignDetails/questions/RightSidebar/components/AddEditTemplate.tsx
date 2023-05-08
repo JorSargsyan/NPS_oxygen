@@ -29,8 +29,8 @@ interface IFormData {
 const defaultValues: IFormData = {
   name: "",
   buttonColor: "#DDDCDC",
-  buttonTextColor: "#DDDCDC",
-  questionColor: "#DDDCDC",
+  buttonTextColor: "#F0F0F0",
+  questionColor: "#4A4A4A",
   answerColor: "#DDDCDC",
   logoImageBase64: "",
   imageBase64: "",

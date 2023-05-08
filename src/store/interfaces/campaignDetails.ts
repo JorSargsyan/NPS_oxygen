@@ -171,7 +171,7 @@ export interface IAddEditCampaignSurveyRequest {
   type: number;
 }
 
-export interface IUpdateSurveyTemplateRequestTemp {
+export interface IUpdateSurveyTemplateRequest {
   logoImage: {
     base64Image: string;
     extension?: string;

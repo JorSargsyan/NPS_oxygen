@@ -1,5 +1,5 @@
 import { common } from "@mui/material/colors";
-import { alpha, PaletteOptions } from "@mui/material/styles";
+import { alpha, darken, PaletteOptions } from "@mui/material/styles";
 import { error, info, neutral, success, warning } from "../colors";
 
 const withAlphas = (color) => {
@@ -13,23 +13,16 @@ const withAlphas = (color) => {
   };
 };
 
-export const indigo = withAlphas({
-  lightest: "#83b3e6",
-  light: "#4e9cef",
-  main: "#F2802B",
-  dark: "#d86815",
-  darkest: "#222D43",
-  selected: "#3EB84F",
-  contrastText: "#FFFFFF",
-  lightText: "#999999",
-  black: "#212121",
-  ratingBackground: "#F5F5F5",
-});
-
 interface ICreatePalette extends PaletteOptions {
   neutral: { [key: number]: string };
 }
-export function createPalette(): ICreatePalette {
+export function createPalette({
+  mainColor,
+  buttonColor,
+}: {
+  mainColor: string;
+  buttonColor: string;
+}): ICreatePalette {
   return {
     action: {
       active: neutral[500],
@@ -48,7 +41,16 @@ export function createPalette(): ICreatePalette {
     info,
     mode: "light",
     neutral,
-    primary: indigo,
+    primary: withAlphas({
+      main: mainColor,
+      dark: darken(buttonColor, 0.1),
+      ratingBackground: "#F5F5F5",
+      // darkest: "#222D43",
+      // selected: "#3EB84F",
+      // contrastText: "#FFFFFF",
+      // lightText: "#999999",
+      // black: "#212121",
+    }),
     success,
     text: {
       primary: neutral[900],

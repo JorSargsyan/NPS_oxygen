@@ -14,6 +14,7 @@ import {
   IUpdateSurveyRequest,
   ICreateSurveyLogic,
   ISurveyLogicResponse,
+  IUpdateSurveyTemplateRequest,
 } from "store/interfaces/campaignDetails";
 import { IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -155,6 +156,18 @@ export const UpdateSurveyTemplate = createAsyncThunk<
   `${name}/UpdateSurveyTemplate`,
   async ({ id, data }: { id: number; data: IAddEditSurveyTemplateRequest }) => {
     return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Custom/${id}`, data))
+      .data;
+  },
+  thunkOptions
+);
+
+export const UpdateSurveyTemplateDefault = createAsyncThunk<
+  unknown,
+  { data: IUpdateSurveyTemplateRequest; id: number }
+>(
+  `${name}/UpdateSurveyTemplateDefault`,
+  async ({ id, data }: { id: number; data: IUpdateSurveyTemplateRequest }) => {
+    return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Default/${id}`, data))
       .data;
   },
   thunkOptions
