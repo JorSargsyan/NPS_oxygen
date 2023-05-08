@@ -19,19 +19,15 @@ import {
   selectSurveyInfo,
   selectTemplates,
 } from "store/slicers/campaignDetail";
-import AddEditTheme from "./AddEditTheme";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import AddEditTemplate from "./AddEditTemplate";
 
 const Templates = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editTemplateData, setEditTemplateData] = useState<ITemplate>(null);
-  const methods = useForm({
-    defaultValues: {
-      theme: 1,
-    },
-  });
+  const [editTemplateData, setEditTemplateData] = useState<ITemplate | null>(
+    null
+  );
 
-  const themeId = methods.watch("theme");
   const templateList = useSelector(selectTemplates);
   const surveyDetails = useSelector(selectSurveyInfo);
 
@@ -56,7 +52,10 @@ const Templates = () => {
     ];
   }, []);
 
-  const handleSuccess = () => {};
+  const handleSuccess = () => {
+    setDrawerOpen(false);
+    setEditTemplateData(null);
+  };
 
   return (
     <Box>
@@ -89,9 +88,7 @@ const Templates = () => {
                   key={item.id}
                 >
                   <CardContent>
-                    <Typography color={item.quesstionColor}>
-                      Question
-                    </Typography>
+                    <Typography color={item.questionColor}>Question</Typography>
                     <Typography color={item.answerColor}>Answer</Typography>
                     <Typography color={item.buttonTextColor}>
                       Button Text
@@ -132,7 +129,10 @@ const Templates = () => {
         setOpen={setDrawerOpen}
         title={"Add theme"}
       >
-        <AddEditTheme onSuccess={handleSuccess} editData={editTemplateData} />
+        <AddEditTemplate
+          onSuccess={handleSuccess}
+          editData={editTemplateData}
+        />
       </RightDrawer>
     </Box>
   );

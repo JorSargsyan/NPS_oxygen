@@ -10,8 +10,8 @@ import {
   IDistributionSchedule,
   ICampaignSurveyDetails,
   IUpdateSurveyTemplateRequest,
-  ICreateCampaignSurveyRequest,
   ICreateCampaignSurveyResponse,
+  IAddEditSurveyTemplateRequest,
   IUpdateSurveyRequest,
   ICreateSurveyLogic,
   ISurveyLogicResponse,
@@ -138,13 +138,24 @@ export const UpdateSurvey = createAsyncThunk<
   thunkOptions
 );
 
+export const CreateSurveyTemplate = createAsyncThunk<
+  unknown,
+  IAddEditSurveyTemplateRequest
+>(
+  `${name}/CreateSurveyTemplate`,
+  async (data: IAddEditSurveyTemplateRequest) => {
+    return (await api.post(`${EBaseUrl.API}/SurveyTemplate/Public`, data)).data;
+  },
+  thunkOptions
+);
+
 export const UpdateSurveyTemplate = createAsyncThunk<
   unknown,
-  { data: IUpdateSurveyTemplateRequest; id: number }
+  { data: IAddEditSurveyTemplateRequest; id: number }
 >(
   `${name}/UpdateSurveyTemplate`,
-  async ({ id, data }: { id: number; data: IUpdateSurveyTemplateRequest }) => {
-    return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Default/${id}`, data))
+  async ({ id, data }: { id: number; data: IAddEditSurveyTemplateRequest }) => {
+    return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Custom/${id}`, data))
       .data;
   },
   thunkOptions

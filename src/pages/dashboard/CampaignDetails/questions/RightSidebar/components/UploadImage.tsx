@@ -6,12 +6,12 @@ import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 
 type Props = {
   name: string;
-  img: string | ArrayBuffer;
-  setImg: any;
+  val: string;
+  onChange: (val: string, name: string) => void;
   title: string;
 };
 
-const UploadImage = ({ name, img, setImg, title }: Props) => {
+const UploadImage = ({ name, val, onChange, title }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>();
 
   const handleChangeImage = (event) => {
@@ -19,12 +19,7 @@ const UploadImage = ({ name, img, setImg, title }: Props) => {
 
     const reader = new FileReader();
     reader.onload = function () {
-      setImg((state) => {
-        return {
-          ...state,
-          [name]: reader.result,
-        };
-      });
+      onChange(reader.result as string, name);
     };
 
     if (file) {
@@ -49,12 +44,12 @@ const UploadImage = ({ name, img, setImg, title }: Props) => {
         justifyContent={"center"}
         sx={{ backgroundColor: "divider" }}
       >
-        {img ? (
+        {val ? (
           <img
             height="100%"
             width="100%"
             style={{ borderRadius: 10 }}
-            src={img?.[name]?.toString()}
+            src={val}
             alt="templateImage"
           />
         ) : (
