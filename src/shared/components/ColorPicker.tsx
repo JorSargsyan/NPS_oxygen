@@ -1,10 +1,8 @@
-import { Box, Button, IconButton, Popover } from "@mui/material";
-import { Typography } from "antd";
-import { Fragment, useState } from "react";
-import { SketchPicker, ChromePicker } from "react-color";
+import { Box, IconButton, Popover } from "@mui/material";
+import { useState } from "react";
+import { SketchPicker } from "react-color";
 
 const ColorPicker = ({ color, onChange, name }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleChange = (color) => {

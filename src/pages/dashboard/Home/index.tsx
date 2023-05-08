@@ -121,7 +121,7 @@ const Dashboard = () => {
                 <CardContent>
                   <Box display="flex" justifyContent="space-around">
                     <Box display="flex">
-                      <img src={CompletedRate} />
+                      <img src={CompletedRate} alt="rate" />
                       <Box ml={1}>
                         <Typography fontSize={14}>Surveys completed</Typography>
                         <Typography fontSize={32}>
@@ -130,7 +130,7 @@ const Dashboard = () => {
                       </Box>
                     </Box>
                     <Box display="flex">
-                      <img src={CompletedCount} />
+                      <img src={CompletedCount} alt="count" />
                       <Box ml={1}>
                         <Typography fontSize={14}>Response rate</Typography>
                         <Typography fontSize={32}>

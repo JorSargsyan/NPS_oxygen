@@ -19,11 +19,12 @@ import {
   selectSurveyInfo,
   selectTemplates,
 } from "store/slicers/campaignDetail";
-import AddTheme from "./AddTheme";
+import AddEditTheme from "./AddEditTheme";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 const Templates = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editTemplateData, setEditTemplateData] = useState<ITemplate>(null);
   const methods = useForm({
     defaultValues: {
       theme: 1,
@@ -41,15 +42,16 @@ const Templates = () => {
     []
   );
 
-  const editTemplate = (id: number) => {
-    console.log(id);
+  const editTemplate = (templateData: ITemplate) => {
+    setEditTemplateData(templateData);
+    setDrawerOpen(true);
   };
 
   const getActions = useCallback((rowData: ITemplate) => {
     return [
       {
         label: "Edit",
-        onClick: () => editTemplate(rowData.id),
+        onClick: () => editTemplate(rowData),
       },
     ];
   }, []);
@@ -130,7 +132,7 @@ const Templates = () => {
         setOpen={setDrawerOpen}
         title={"Add theme"}
       >
-        <AddTheme onSuccess={handleSuccess} />
+        <AddEditTheme onSuccess={handleSuccess} editData={editTemplateData} />
       </RightDrawer>
     </Box>
   );
