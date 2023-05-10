@@ -157,7 +157,18 @@ const SurveyTemplate = ({
           </Box>
           {questionData?.details?.type !==
             Number(ECampaignSurveyType.Final) && (
-            <Box display="flex" justifyContent={"flex-end"} gap={2} pt={2}>
+            <Box
+              display="flex"
+              justifyContent={"flex-end"}
+              sx={{
+                position: "sticky",
+                bottom: -1,
+                background: "white",
+                pb: "12px",
+              }}
+              gap={2}
+              pt={2}
+            >
               {!questionData?.details?.isRequired &&
                 questionData?.details?.type !==
                   Number(ECampaignSurveyType.Welcome) && (
