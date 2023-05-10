@@ -21,7 +21,7 @@ import {
   setSelectedTemplateID,
 } from "store/slicers/campaignDetail";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
@@ -126,6 +126,16 @@ const DesignTab = () => {
   const handleChangeImage = (val, name) => {
     methods.setValue(name, val);
   };
+
+  const init = useCallback(() => {
+    if (selectedTemplateID) {
+      methods.setValue("template", String(selectedTemplateID));
+    }
+  }, [methods, selectedTemplateID]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <FormProvider {...methods}>

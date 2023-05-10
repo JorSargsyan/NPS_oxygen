@@ -203,7 +203,7 @@ export const DeleteCustomTemplate = createAsyncThunk<unknown, number>(
 
 export const ApplySurvey = createAsyncThunk<
   unknown,
-  { surveyID: string; templateID: number }
+  { surveyID: string; templateID: string }
 >(
   `${name}/ApplySurvey`,
   async (formData) => {
@@ -215,7 +215,7 @@ export const ApplySurvey = createAsyncThunk<
 
 export const ApplyForAllSurveys = createAsyncThunk<
   unknown,
-  { campaignID: string; templateID: number }
+  { campaignID: string; templateID: string }
 >(
   `${name}/ApplyForAllSurveys`,
   async (formData) => {
