@@ -17,9 +17,7 @@ import { ITemplate } from "store/interfaces/campaignDetails";
 import {
   DeleteCustomTemplate,
   GetTemplates,
-  selectSelectedTemplateID,
   selectTemplates,
-  setSelectedTemplateID,
 } from "store/slicers/campaignDetail";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTemplate from "./AddEditTemplate";
@@ -34,7 +32,6 @@ const Templates = () => {
   const [editTemplateData, setEditTemplateData] = useState<ITemplate | null>(
     null
   );
-  const selectedTemplateID = useSelector(selectSelectedTemplateID);
 
   const templateList = useSelector(selectTemplates);
   const dispatch = useAsyncDispatch();
@@ -48,15 +45,6 @@ const Templates = () => {
     setDrawerOpen(false);
     setEditTemplateData(null);
   };
-
-  const selectTemplate = async ({ id, ...rest }: ITemplate) => {
-    if (!id) {
-      return;
-    }
-
-    dispatch(setSelectedTemplateID(id));
-  };
-
   const deleteTemplate = useCallback(
     async (rowData: ITemplate) => {
       const { meta } = await dispatch(DeleteCustomTemplate(rowData.id));
@@ -91,8 +79,8 @@ const Templates = () => {
   );
 
   return (
-    <Box>
-      <Box my={1}>
+    <Box p={2} mx={2}>
+      <Box my={2}>
         <Button
           variant="outlined"
           startIcon={
@@ -105,19 +93,16 @@ const Templates = () => {
           <Typography>Add Template</Typography>
         </Button>
       </Box>
-      <Box>
+      <Box flexWrap={"wrap"} display="flex" gap={2}>
         {templateList?.length
           ? templateList
               .filter((i) => i.id)
               ?.map((item) => {
                 return (
                   <Card
-                    onClick={() => selectTemplate(item)}
                     sx={{
                       mb: 2,
-                      border:
-                        selectedTemplateID === item.id ? "3px solid" : "none",
-                      borderColor: "primary.main",
+                      width: "19%",
                     }}
                     key={item.id}
                   >

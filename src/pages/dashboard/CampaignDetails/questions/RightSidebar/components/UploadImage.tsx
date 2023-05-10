@@ -1,8 +1,7 @@
 import { IconButton, Typography, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import UploadIcon from "@heroicons/react/24/outline/ArrowUpOnSquareIcon";
-import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 
 type Props = {
   name: string;
