@@ -27,9 +27,11 @@ const initialState: ICampaignDetailsState = {
   surveys: [],
   details: null,
   selectedSurvey: 0,
+  selectedTemplateID: 0,
+  surveyTemplateID: 0,
+  surveyAppearance: null,
   surveyLogic: null,
   surveyDetails: null,
-  surveyTemplate: null,
   form: {
     survey: null,
     settings: null,
@@ -276,8 +278,8 @@ const campaignDetailSlice = createSlice({
     setSettingsForm(state, { payload }) {
       state.form.settings = payload;
     },
-    setSelectedTemplate(state, { payload }) {
-      state.surveyTemplate = payload;
+    setSelectedTemplateID(state, { payload }) {
+      state.selectedTemplateID = payload;
     },
     resetCampaignDetails() {
       return initialState;
@@ -309,7 +311,8 @@ const campaignDetailSlice = createSlice({
     builder.addCase(
       GetCampaignSurveyTemplateById.fulfilled,
       (state, { payload }) => {
-        state.surveyTemplate = payload;
+        state.surveyTemplateID = payload.id;
+        state.surveyAppearance = payload;
       }
     );
   },
@@ -318,6 +321,12 @@ const campaignDetailSlice = createSlice({
 export const selectSelectedSurvey = (state: IState) =>
   state.campaignDetails.selectedSurvey;
 export const selectTriggers = (state: IState) => state.campaignDetails.triggers;
+export const selectSelectedTemplateID = (state: IState) =>
+  state.campaignDetails.selectedTemplateID;
+export const selectSurveyTemplateID = (state: IState) =>
+  state.campaignDetails.surveyTemplateID;
+export const selectSurveyAppearance = (state: IState) =>
+  state.campaignDetails.surveyAppearance;
 export const selectCampaignInfo = (state: IState) =>
   state.campaignDetails.details;
 export const selectCampaignSurveys = (state: IState) =>
@@ -330,7 +339,11 @@ export const selectSurveyLogic = (state: IState) =>
 export const selectSurveyInfo = (state: IState) => {
   return {
     details: state.campaignDetails.surveyDetails,
-    template: state.campaignDetails.surveyTemplate,
+    template: state.campaignDetails.selectedTemplateID
+      ? state.campaignDetails.templates.find(
+          (i) => i.id === state.campaignDetails.selectedTemplateID
+        )
+      : state.campaignDetails.surveyAppearance,
   };
 };
 
@@ -339,6 +352,6 @@ export const {
   setSettingsForm,
   setSurveyForm,
   resetCampaignDetails,
-  setSelectedTemplate,
+  setSelectedTemplateID,
 } = campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;

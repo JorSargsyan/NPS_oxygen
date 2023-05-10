@@ -14,7 +14,10 @@ import {
   GetCampaignSurveyTemplateById,
   UpdateSurveyTemplateDefault,
   selectCampaignInfo,
+  selectSelectedTemplateID,
   selectSurveyInfo,
+  selectSurveyTemplateID,
+  setSelectedTemplateID,
 } from "store/slicers/campaignDetail";
 
 import { useState } from "react";
@@ -25,10 +28,9 @@ import Templates from "./components/Templates";
 
 const DesignTab = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
-  const [selectedTemplateID, setSelectedTemplateID] = useState<number | null>(
-    null
-  );
   const dispatch = useAsyncDispatch();
+  const surveyTemplateID = useSelector(selectSurveyTemplateID);
+  const selectedTemplateID = useSelector(selectSelectedTemplateID);
   const campaignInfo = useSelector(selectCampaignInfo);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
@@ -53,7 +55,7 @@ const DesignTab = () => {
           buttonColor: surveyInfo.template.buttonColor,
           buttonTextColor: surveyInfo.template.buttonTextColor,
         },
-        id: surveyInfo.template.id,
+        id: surveyTemplateID,
       })
     );
 
@@ -61,7 +63,7 @@ const DesignTab = () => {
     const { meta } = await dispatch(
       ApplySurvey({
         surveyID: String(surveyInfo.details.id),
-        templateID: surveyInfo.template.id,
+        templateID: surveyTemplateID,
       })
     );
 
@@ -71,7 +73,7 @@ const DesignTab = () => {
 
     await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    setSelectedTemplateID(null);
+    dispatch(setSelectedTemplateID(null));
     toast.success("Template applied successfully");
   };
 
@@ -95,7 +97,7 @@ const DesignTab = () => {
           buttonColor: surveyInfo.template.buttonColor,
           buttonTextColor: surveyInfo.template.buttonTextColor,
         },
-        id: surveyInfo.template.id,
+        id: surveyTemplateID,
       })
     );
 
@@ -103,7 +105,7 @@ const DesignTab = () => {
     const { meta } = await dispatch(
       ApplyForAllSurveys({
         campaignID: String(campaignInfo.id),
-        templateID: surveyInfo.template.id,
+        templateID: surveyTemplateID,
       })
     );
 
@@ -112,7 +114,7 @@ const DesignTab = () => {
     }
     await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    setSelectedTemplateID(null);
+    dispatch(setSelectedTemplateID(null));
     toast.success("Template applied successfully");
   };
 
@@ -125,10 +127,7 @@ const DesignTab = () => {
     <Box p={2}>
       <Card>
         <CardContent>
-          <Templates
-            selectedTemplateID={selectedTemplateID}
-            setSelectedTemplateID={setSelectedTemplateID}
-          />
+          <Templates />
           {selectedTemplateID && (
             <Box mt={2} display="flex" justifyContent={"flex-end"}>
               <Button onClick={handleOpenMenu} variant="outlined">

@@ -17,9 +17,9 @@ import { ITemplate } from "store/interfaces/campaignDetails";
 import {
   DeleteCustomTemplate,
   GetTemplates,
-  selectSurveyInfo,
+  selectSelectedTemplateID,
   selectTemplates,
-  setSelectedTemplate,
+  setSelectedTemplateID,
 } from "store/slicers/campaignDetail";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import AddEditTemplate from "./AddEditTemplate";
@@ -28,15 +28,15 @@ import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-const Templates = ({ setSelectedTemplateID, selectedTemplateID }) => {
+const Templates = () => {
   const { id } = useParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editTemplateData, setEditTemplateData] = useState<ITemplate | null>(
     null
   );
+  const selectedTemplateID = useSelector(selectSelectedTemplateID);
 
   const templateList = useSelector(selectTemplates);
-  const surveyDetails = useSelector(selectSurveyInfo);
   const dispatch = useAsyncDispatch();
 
   const editTemplate = (templateData: ITemplate) => {
@@ -53,10 +53,8 @@ const Templates = ({ setSelectedTemplateID, selectedTemplateID }) => {
     if (!id) {
       return;
     }
-    await dispatch(
-      setSelectedTemplate({ ...rest, id: surveyDetails?.template?.id })
-    );
-    setSelectedTemplateID(id);
+
+    dispatch(setSelectedTemplateID(id));
   };
 
   const deleteTemplate = useCallback(

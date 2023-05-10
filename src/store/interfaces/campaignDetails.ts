@@ -9,9 +9,11 @@ export interface ICampaignDetailsState {
   surveys: ICampaignSurvey[];
   details: ICampaignDetailed | null;
   selectedSurvey: number;
+  selectedTemplateID: number;
+  surveyTemplateID: number;
+  surveyAppearance: ITemplate | null;
   surveyDetails: ICampaignSurveyDetails | null;
   surveyLogic: ISurveyLogicResponse | null;
-  surveyTemplate: ITemplate | null;
   form: {
     survey: any;
     settings: any;
