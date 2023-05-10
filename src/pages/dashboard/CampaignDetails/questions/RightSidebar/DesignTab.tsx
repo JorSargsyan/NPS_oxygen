@@ -34,7 +34,7 @@ const DesignTab = () => {
   const [menuOpen, onMenuOpen] = useState(false);
 
   const handleApply = async () => {
-    dispatch(
+    await dispatch(
       UpdateSurveyTemplateDefault({
         data: {
           logoImage: {
@@ -76,7 +76,7 @@ const DesignTab = () => {
   };
 
   const handleApplyAll = async () => {
-    dispatch(
+    await dispatch(
       UpdateSurveyTemplateDefault({
         data: {
           logoImage: {
