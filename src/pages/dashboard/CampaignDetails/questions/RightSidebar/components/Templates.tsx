@@ -93,7 +93,7 @@ const Templates = () => {
           <Typography>Add Template</Typography>
         </Button>
       </Box>
-      <Box flexWrap={"wrap"} display="flex" gap={2}>
+      <Box flexWrap={"wrap"} display="flex" gap="14px">
         {templateList?.length
           ? templateList
               .filter((i) => i.id)

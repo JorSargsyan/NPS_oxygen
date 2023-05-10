@@ -130,8 +130,12 @@ const DesignTab = () => {
   const init = useCallback(() => {
     if (selectedTemplateID) {
       methods.setValue("template", String(selectedTemplateID));
+      methods.setValue(
+        "image",
+        templateList.find((i) => i.id === selectedTemplateID).imageBase64
+      );
     }
-  }, [methods, selectedTemplateID]);
+  }, [methods, selectedTemplateID, templateList]);
 
   useEffect(() => {
     init();
