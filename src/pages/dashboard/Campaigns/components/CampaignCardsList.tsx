@@ -53,7 +53,7 @@ const LoadingSkeleton = () => (
       paddingTop: 4,
     }}
   >
-    {[...Array(6)].map((_, index) => (
+    {[...Array(8)].map((_, index) => (
       <Skeleton
         key={index}
         variant="rectangular"
@@ -61,7 +61,7 @@ const LoadingSkeleton = () => (
           my: 2,
           mx: 1,
           height: "280px",
-          width: "30%",
+          width: "22%",
           borderRadius: "20px",
         }}
       />
