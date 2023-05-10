@@ -1,12 +1,6 @@
-import { Box } from "@mui/system";
 import { Dayjs } from "dayjs";
-import {
-  EFeedbackStatus,
-  EMood,
-  EScoreTypes,
-} from "store/enums/feedbacks.enum";
+import { EFeedbackStatus, EMood } from "store/enums/feedbacks.enum";
 import { IAttachedEmployee } from "store/interfaces/directorates";
-import { IFeedback, IScore } from "store/interfaces/feedback";
 
 export const scoreColors = {
   good: {

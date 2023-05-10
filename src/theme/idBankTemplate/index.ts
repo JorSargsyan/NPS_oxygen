@@ -4,8 +4,8 @@ import { createComponents } from "../create-components";
 import { createShadows } from "../create-shadows";
 import { createTypography } from "../create-typography";
 
-export function createIDBankTheme(): Theme {
-  const palette = createPalette();
+export function createSurveyTheme(colorSet): Theme {
+  const palette = createPalette(colorSet);
   const components = createComponents({
     palette,
   });

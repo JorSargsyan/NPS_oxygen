@@ -9,12 +9,12 @@ import {
   ICampaignSurvey,
   IDistributionSchedule,
   ICampaignSurveyDetails,
-  IUpdateSurveyTemplateRequest,
-  ICreateCampaignSurveyRequest,
   ICreateCampaignSurveyResponse,
+  IAddEditSurveyTemplateRequest,
   IUpdateSurveyRequest,
   ICreateSurveyLogic,
   ISurveyLogicResponse,
+  IUpdateSurveyTemplateRequest,
 } from "store/interfaces/campaignDetails";
 import { IState } from "store/interfaces/main";
 import { api } from "store/services/apiService";
@@ -60,7 +60,7 @@ export const ChangeCampaignSurveyPositions = createAsyncThunk<
 
 export const CreateSurvey = createAsyncThunk<
   ICreateCampaignSurveyResponse,
-  ICreateCampaignSurveyRequest
+  IUpdateSurveyRequest
 >(
   `${name}/CreateSurvey`,
   async (formData) => {
@@ -138,11 +138,34 @@ export const UpdateSurvey = createAsyncThunk<
   thunkOptions
 );
 
+export const CreateSurveyTemplate = createAsyncThunk<
+  unknown,
+  IAddEditSurveyTemplateRequest
+>(
+  `${name}/CreateSurveyTemplate`,
+  async (data: IAddEditSurveyTemplateRequest) => {
+    return (await api.post(`${EBaseUrl.API}/SurveyTemplate/Public`, data)).data;
+  },
+  thunkOptions
+);
+
 export const UpdateSurveyTemplate = createAsyncThunk<
+  unknown,
+  { data: IAddEditSurveyTemplateRequest; id: number }
+>(
+  `${name}/UpdateSurveyTemplate`,
+  async ({ id, data }: { id: number; data: IAddEditSurveyTemplateRequest }) => {
+    return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Custom/${id}`, data))
+      .data;
+  },
+  thunkOptions
+);
+
+export const UpdateSurveyTemplateDefault = createAsyncThunk<
   unknown,
   { data: IUpdateSurveyTemplateRequest; id: number }
 >(
-  `${name}/UpdateSurveyTemplate`,
+  `${name}/UpdateSurveyTemplateDefault`,
   async ({ id, data }: { id: number; data: IUpdateSurveyTemplateRequest }) => {
     return (await api.put(`${EBaseUrl.API}/SurveyTemplate/Default/${id}`, data))
       .data;
@@ -163,6 +186,15 @@ export const DeleteSurveyTemplate = createAsyncThunk<unknown, number>(
   `${name}/RemoveSurveyTemplate`,
   async (id) => {
     return (await api.delete(`${EBaseUrl.API}/SurveyTemplate/${id}`)).data;
+  },
+  thunkOptions
+);
+
+export const DeleteCustomTemplate = createAsyncThunk<unknown, number>(
+  `${name}/DeleteTemplate`,
+  async (id) => {
+    return (await api.delete(`${EBaseUrl.API}/SurveyTemplate/Public/${id}`))
+      .data;
   },
   thunkOptions
 );
@@ -244,6 +276,9 @@ const campaignDetailSlice = createSlice({
     setSettingsForm(state, { payload }) {
       state.form.settings = payload;
     },
+    setSelectedTemplate(state, { payload }) {
+      state.surveyTemplate = payload;
+    },
     resetCampaignDetails() {
       return initialState;
     },
@@ -304,5 +339,6 @@ export const {
   setSettingsForm,
   setSurveyForm,
   resetCampaignDetails,
+  setSelectedTemplate,
 } = campaignDetailSlice.actions;
 export default campaignDetailSlice.reducer;

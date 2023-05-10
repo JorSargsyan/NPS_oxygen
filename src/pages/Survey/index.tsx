@@ -32,30 +32,14 @@ import {
 } from "store/slicers/surveyPreview";
 import { ESurveyPreviewTypes } from "./constants";
 import { metricConfigable } from "pages/dashboard/CampaignDetails";
-import { createIDBankTheme } from "theme/idBankTemplate";
-import { createArdshinTheme } from "theme/ardshinBankTemplate";
-import { createAcbaTheme } from "theme/acbaBankTemplate";
-import { createAlfaPharmTheme } from "theme/alfaPharmTemplate";
-import { createFastTheme } from "theme/fastBankTemplate";
+import { createSurveyTheme } from "theme/idBankTemplate";
 import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
 import Completed from "assets/icons/completed.svg";
-import { ETemplate } from "pages/dashboard/CampaignDetails/questions/RightSidebar/constants";
-import { createSantanderTheme } from "theme/santanderTemplate";
-import { createWineDaysTheme } from "theme/wineDaysTemplate";
-import { createWigmoreTheme } from "theme/wigmoreTemplate";
-import { createMunicipalityTheme } from "theme/municipalityTemplate";
-import { createUcomTheme } from "theme/ucomTemplate";
-import { createEvocaTheme } from "theme/evocaTemplate";
-import { createConverseTheme } from "theme/converseTemplate";
-import { createFlyArnaTheme } from "theme/flyArnaTemplate";
-import { createMtsTheme } from "theme/mtsTheme";
 
 const SurveyPreview = () => {
-  const { search } = useLocation();
   const [status, setStatus] = useState("");
   const [isLoading, setLoading] = useState(true);
-  const templateId = Object.fromEntries(new URLSearchParams(search)).t || 0;
   const location = useLocation();
 
   const methods = useForm({
@@ -80,57 +64,15 @@ const SurveyPreview = () => {
   const dispatch = useAsyncDispatch();
   const { hash, type } = useParams();
 
-  const theme = useCallback(() => {
-    let res;
-    switch (Number(templateId)) {
-      case ETemplate.IDBANK:
-        res = createIDBankTheme;
-        break;
-      case ETemplate.FAST:
-        res = createFastTheme;
-        break;
-      case ETemplate.ARDSHIN:
-        res = createArdshinTheme;
-        break;
-      case ETemplate.SANTANDER:
-        res = createSantanderTheme;
-        break;
-      case ETemplate.ACBA:
-        res = createAcbaTheme;
-        break;
-      case ETemplate.WINE_DAYS:
-        res = createWineDaysTheme;
-        break;
-      case ETemplate.WIGMORE:
-        res = createWigmoreTheme;
-        break;
-      case ETemplate.ALFA_PHARM:
-        res = createAlfaPharmTheme;
-        break;
-      case ETemplate.MUNICIPALITY:
-        res = createMunicipalityTheme;
-        break;
-      case ETemplate.UCOM:
-        res = createUcomTheme;
-        break;
-      case ETemplate.EVOCA:
-        res = createEvocaTheme;
-        break;
-      case ETemplate.CONVERSE:
-        res = createConverseTheme;
-        break;
-      case ETemplate.FLY_ARNA:
-        res = createFlyArnaTheme;
-        break;
-        case ETemplate.MTS:
-        res = createMtsTheme;
-          break;
-      default:
-        res = createIDBankTheme;
-    }
-
-    return res();
-  }, [templateId]);
+  const templateColorSet = useMemo(() => {
+    return {
+      mainColor: questionData?.details?.template?.answerColor,
+      buttonColor: questionData?.details?.template?.buttonColor,
+    };
+  }, [
+    questionData?.details?.template?.answerColor,
+    questionData?.details?.template?.buttonColor,
+  ]);
 
   const generateCustomer = useCallback(async () => {
     const { meta, payload } = await dispatch(
@@ -179,6 +121,12 @@ const SurveyPreview = () => {
       return true;
     }
   }, [config?.isExpired, config?.isFinished, details, isLoading]);
+
+  const theme = useMemo(() => {
+    if (templateColorSet && surveyStatus) {
+      return createSurveyTheme(templateColorSet);
+    }
+  }, [surveyStatus, templateColorSet]);
 
   const answerIDs = useWatch({
     control: methods.control,
@@ -378,18 +326,18 @@ const SurveyPreview = () => {
   }, [location.pathname]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        display="flex"
-        fontFamily="Roboto"
-        justifyContent={"center"}
-        sx={{
-          backgroundImage: `url(${require("assets/images/bg.png")})`,
-          height: "100vh",
-          backgroundSize: "cover",
-        }}
-      >
-        {surveyStatus ? (
+    <Box
+      display="flex"
+      fontFamily="Roboto"
+      justifyContent={"center"}
+      sx={{
+        backgroundImage: `url(${require("assets/images/bg.png")})`,
+        height: "100vh",
+        backgroundSize: "cover",
+      }}
+    >
+      {surveyStatus ? (
+        <ThemeProvider theme={theme}>
           <Box
             sx={{
               display: { xs: "flex" },
@@ -429,48 +377,48 @@ const SurveyPreview = () => {
               </CardContent>
             </Card>
           </Box>
-        ) : (
-          <Box alignItems={"center"} display={"flex"}>
-            <Card
-              sx={{
-                height: { xs: "95vh", sm: "80vh" },
-                backgroundColor: "rgb(255 255 255 / 97%)",
-              }}
-            >
-              <CardContent sx={{ height: "100%", padding: { xs: 1 } }}>
-                <Box
-                  sx={{
-                    width: {
-                      xs: "85vw",
-                      sm: "80vw",
-                      md: "60vw",
-                    },
-                    height: "100%",
-                  }}
-                  display="flex"
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  {status ? (
-                    <Box textAlign="center">
-                      <img
-                        src={config?.isFinished ? Completed : Not_available}
-                        alt="status"
-                      />
-                      <Typography fontSize={20} pt={5}>
-                        {status}
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <CircularProgress />
-                  )}
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-        )}
-      </Box>
-    </ThemeProvider>
+        </ThemeProvider>
+      ) : (
+        <Box alignItems={"center"} display={"flex"}>
+          <Card
+            sx={{
+              height: { xs: "95vh", sm: "80vh" },
+              backgroundColor: "rgb(255 255 255 / 97%)",
+            }}
+          >
+            <CardContent sx={{ height: "100%", padding: { xs: 1 } }}>
+              <Box
+                sx={{
+                  width: {
+                    xs: "85vw",
+                    sm: "80vw",
+                    md: "60vw",
+                  },
+                  height: "100%",
+                }}
+                display="flex"
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                {status ? (
+                  <Box textAlign="center">
+                    <img
+                      src={config?.isFinished ? Completed : Not_available}
+                      alt="status"
+                    />
+                    <Typography fontSize={20} pt={5}>
+                      {status}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <CircularProgress />
+                )}
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+    </Box>
   );
 };
 

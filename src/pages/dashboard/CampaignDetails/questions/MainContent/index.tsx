@@ -77,14 +77,14 @@ const MainContent = () => {
                 },
               }}
             >
-              {(surveyInfo?.template?.logoImage || defaultImg) && (
+              {(surveyInfo?.template?.imageBase64 || defaultImg) && (
                 <img
                   style={{ objectFit: "cover" }}
                   height="300px"
                   width="100%"
                   src={
-                    surveyInfo?.template?.logoImage
-                      ? `${EBaseUrl.MediaTemplateURL}/${surveyInfo?.template?.logoImage}`
+                    surveyInfo?.template?.imageBase64
+                      ? surveyInfo?.template?.imageBase64
                       : defaultImg
                   }
                   alt="survey"

@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { trendChartOptionsData } from "../constants";
-import ChartIcon from "@heroicons/react/24/outline/ChartBarIcon";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import useTranslation from "shared/helpers/hooks/useTranslation";
 import TrendChartIcon from "assets/icons/dashboard_group.svg";

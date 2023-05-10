@@ -25,7 +25,6 @@ const AddUseCase = ({ onSuccess }: { onSuccess: () => void }) => {
   });
 
   const onSubmit = (formData) => {
-    console.log(formData);
     let id = Math.floor(Math.random() * 1000);
     const branchName = branchListMock.find(
       (i) => i.value === formData.branch

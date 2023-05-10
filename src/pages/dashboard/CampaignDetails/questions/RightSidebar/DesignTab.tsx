@@ -1,123 +1,63 @@
 import {
+  Button,
   Card,
   CardContent,
-  IconButton,
-  Tooltip,
-  Button,
-  Typography,
   Menu,
   MenuItem,
-  Paper,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-import { EBaseUrl } from "store/config/constants";
 import {
   ApplyForAllSurveys,
   ApplySurvey,
-  DeleteSurveyTemplate,
-  GetSurveys,
-  DeleteCampaignTemplate,
-  UpdateSurveyTemplate,
+  GetCampaignSurveyTemplateById,
+  UpdateSurveyTemplateDefault,
   selectCampaignInfo,
   selectSurveyInfo,
-  GetCampaignSurveyTemplateById,
 } from "store/slicers/campaignDetail";
-import defaultImg from "assets/images/survey_bg.png";
-import UploadIcon from "@heroicons/react/24/outline/ArrowUpOnSquareIcon";
-import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-import { useCallback, useEffect, useRef, useState } from "react";
+
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
-import toast from "react-hot-toast";
-import { ITemplate } from "store/interfaces/campaignDetails";
-import { TemplateList } from "./constants";
-import {
-  selectActiveTemplate,
-  setActiveTemplate,
-} from "store/slicers/surveyPreview";
+import Templates from "./components/Templates";
 
 const DesignTab = () => {
   const surveyInfo = useSelector(selectSurveyInfo);
+  const [selectedTemplateID, setSelectedTemplateID] = useState<number | null>(
+    null
+  );
   const dispatch = useAsyncDispatch();
-  const activeTemplate = useSelector(selectActiveTemplate);
   const campaignInfo = useSelector(selectCampaignInfo);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>();
-  const [uploadPic, setUploadPic] = useState<string | ArrayBuffer>("");
-  const [removeableImage, setRemovableImage] = useState(false);
-  const [uploadableImage, setUploadableImage] = useState(false);
 
-  const handleChangeImage = (event) => {
-    const file = event.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = function () {
-      setUploadPic(reader.result);
-      setUploadableImage(true);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleFileUploadOpen = () => {
-    fileInputRef.current?.click();
-  };
-
-  const uploadImage = async () => {
-    const [prefix, base64Image] = uploadPic.toString().split(",");
-
-    const extension = prefix.replace("data:image/", ".").split(";")[0];
-
+  const handleApply = async () => {
     await dispatch(
-      UpdateSurveyTemplate({
+      UpdateSurveyTemplateDefault({
         data: {
           logoImage: {
-            base64Image,
-            extension: extension,
+            base64Image: surveyInfo.template.logoImageBase64,
+            extension: "",
             removeImage: false,
           },
+          image: {
+            base64Image: surveyInfo.template.imageBase64,
+            removeImage: false,
+            extension: "",
+          },
+          name: surveyInfo.template.name,
+          questionColor: surveyInfo.template.questionColor,
+          answerColor: surveyInfo.template.answerColor,
+          buttonColor: surveyInfo.template.buttonColor,
+          buttonTextColor: surveyInfo.template.buttonTextColor,
         },
         id: surveyInfo.template.id,
       })
     );
-  };
 
-  const removeSurveyTemplate = async () => {
-    const { meta } = await dispatch(
-      DeleteSurveyTemplate(surveyInfo.template.id)
-    );
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-
-    setRemovableImage(false);
-    dispatch(GetSurveys(campaignInfo.id));
-    toast.success("Survey Template removed succesfully");
-  };
-
-  const removeCampaignTemplate = async () => {
-    const { meta } = await dispatch(DeleteCampaignTemplate(campaignInfo.id));
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-
-    setRemovableImage(false);
-    dispatch(GetSurveys(campaignInfo.id));
-    toast.success("Campaign Template removed succesfully");
-  };
-
-  const handleApply = async () => {
     onMenuOpen(false);
-
-    if (removeableImage) {
-      removeSurveyTemplate();
-      return;
-    }
-    await uploadImage();
     const { meta } = await dispatch(
       ApplySurvey({
         surveyID: String(surveyInfo.details.id),
@@ -129,22 +69,37 @@ const DesignTab = () => {
       return;
     }
 
-    const { payload } = await dispatch(
-      GetCampaignSurveyTemplateById(surveyInfo.details.id)
-    );
+    await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    const payloadTyped = payload as ITemplate;
-    setUploadPicture(payloadTyped.logoImage);
-    toast.success("Template applied succesfully");
+    setSelectedTemplateID(null);
+    toast.success("Template applied successfully");
   };
 
   const handleApplyAll = async () => {
+    await dispatch(
+      UpdateSurveyTemplateDefault({
+        data: {
+          logoImage: {
+            base64Image: surveyInfo.template.logoImageBase64,
+            extension: "",
+            removeImage: false,
+          },
+          image: {
+            base64Image: surveyInfo.template.imageBase64,
+            removeImage: false,
+            extension: "",
+          },
+          name: surveyInfo.template.name,
+          questionColor: surveyInfo.template.questionColor,
+          answerColor: surveyInfo.template.answerColor,
+          buttonColor: surveyInfo.template.buttonColor,
+          buttonTextColor: surveyInfo.template.buttonTextColor,
+        },
+        id: surveyInfo.template.id,
+      })
+    );
+
     onMenuOpen(false);
-    if (removeableImage) {
-      removeCampaignTemplate();
-      return;
-    }
-    await uploadImage();
     const { meta } = await dispatch(
       ApplyForAllSurveys({
         campaignID: String(campaignInfo.id),
@@ -155,18 +110,10 @@ const DesignTab = () => {
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
     }
-    const { payload } = await dispatch(
-      GetCampaignSurveyTemplateById(surveyInfo.details.id)
-    );
+    await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    const payloadTyped = payload as ITemplate;
-    setUploadPicture(payloadTyped.logoImage);
-    toast.success("Template applied succesfully");
-  };
-
-  const handleRemoveImage = () => {
-    setRemovableImage(true);
-    setUploadPic("");
+    setSelectedTemplateID(null);
+    toast.success("Template applied successfully");
   };
 
   const handleOpenMenu = (event) => {
@@ -174,111 +121,15 @@ const DesignTab = () => {
     onMenuOpen(true);
   };
 
-  const setUploadPicture = useCallback((logoImage: string) => {
-    if (!logoImage) {
-      setUploadPic("");
-      return;
-    }
-    setUploadPic(`${EBaseUrl.MediaTemplateURL}/${logoImage}`);
-  }, []);
-
-  useEffect(() => {
-    if (!surveyInfo.details?.id) {
-      return;
-    }
-    if (surveyInfo.template.logoImage) {
-      setUploadPicture(surveyInfo.template.logoImage);
-    } else {
-      setUploadPic(defaultImg);
-    }
-
-    setUploadableImage(false);
-  }, [
-    setUploadPicture,
-    surveyInfo?.details?.id,
-    surveyInfo?.template?.logoImage,
-  ]);
-
-  const setTemplate = (templateID: number) => {
-    dispatch(setActiveTemplate(templateID));
-  };
-
   return (
     <Box p={2}>
       <Card>
         <CardContent>
-          <Box>
-            <Typography>Template</Typography>
-            <Box display={"flex"} my={2} flexWrap={"wrap"}>
-              {TemplateList.map((template) => {
-                return (
-                  <Tooltip title={template.name} key={template.id}>
-                    <IconButton
-                      sx={{
-                        backgroundColor:
-                          activeTemplate === template.id
-                            ? "neutral.200"
-                            : "transparent",
-                      }}
-                    >
-                      <Box
-                        component={Paper}
-                        onClick={() => setTemplate(template.id)}
-                        height={25}
-                        width={25}
-                        sx={{
-                          backgroundColor: template.color,
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                );
-              })}
-            </Box>
-          </Box>
-
-          <Box
-            minHeight={140}
-            borderRadius={"10px"}
-            display="flex"
-            alignItems="center"
-            justifyContent={"center"}
-            sx={{ backgroundColor: "divider" }}
-          >
-            {uploadPic ? (
-              <img
-                height="100%"
-                width="100%"
-                style={{ borderRadius: 10 }}
-                src={uploadPic.toString()}
-                alt="templateImage"
-              />
-            ) : (
-              <Typography fontSize={18}>No image</Typography>
-            )}
-          </Box>
-          <Box display="flex" justifyContent={"flex-end"}>
-            <Tooltip title={"Upload / Change Image"}>
-              <IconButton onClick={handleFileUploadOpen}>
-                <UploadIcon height={20} />
-              </IconButton>
-            </Tooltip>
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/png, image/jpeg"
-              onChange={handleChangeImage}
-              hidden
-            />
-            <Tooltip title={"Remove Image"}>
-              <IconButton onClick={handleRemoveImage}>
-                <TrashIcon height={20} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          {(uploadableImage || removeableImage) && (
+          <Templates
+            selectedTemplateID={selectedTemplateID}
+            setSelectedTemplateID={setSelectedTemplateID}
+          />
+          {selectedTemplateID && (
             <Box mt={2} display="flex" justifyContent={"flex-end"}>
               <Button onClick={handleOpenMenu} variant="outlined">
                 <Typography>Apply</Typography>

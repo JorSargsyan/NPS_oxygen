@@ -54,9 +54,10 @@ export interface ITemplate {
   isDefault: boolean;
   isPublic: boolean;
   isSelected: boolean;
-  logoImage: string;
+  logoImageBase64: string;
+  imageBase64: string;
   name: string;
-  quesstionColor: string;
+  questionColor: string;
 }
 
 export interface ICampaignSurvey {
@@ -115,6 +116,17 @@ export interface IMetricConfig {
   metricRightText: string | null;
 }
 
+export interface IAddEditSurveyTemplateRequest {
+  name: string;
+  questionColor: string;
+  answerColor: string;
+  buttonColor: string;
+  buttonTextColor: string;
+  logoImageBase64: string;
+  logoImageExtension?: string;
+  imageBase64: string;
+  imageExtension?: string;
+}
 export interface IMultipleConfig {
   multipleExact: string;
   multipleMax: string;
@@ -148,7 +160,7 @@ export interface ICreateCampaignSurveyResponse {
   surveyResponses: ICampaignSurvey[];
 }
 
-export interface ICreateCampaignSurveyRequest {
+export interface IAddEditCampaignSurveyRequest {
   buttonText: string;
   campaignID: string;
   isRequired: boolean;
@@ -162,9 +174,19 @@ export interface ICreateCampaignSurveyRequest {
 export interface IUpdateSurveyTemplateRequest {
   logoImage: {
     base64Image: string;
-    extension: string;
+    extension?: string;
     removeImage: boolean;
   };
+  image: {
+    base64Image: string;
+    removeImage: boolean;
+    extension?: string;
+  };
+  name: string;
+  questionColor: string;
+  answerColor: string;
+  buttonColor: string;
+  buttonTextColor: string;
 }
 
 export interface ILinkedSurvey {
