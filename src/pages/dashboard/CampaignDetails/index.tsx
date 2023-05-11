@@ -159,10 +159,6 @@ const CampaignDetail = () => {
         commentConfig: formData?.commentConfig,
       }),
       ...(surveyDetails.details.type ===
-        Number(ECampaignSurveyType.ContactInformation) && {
-        commentConfig: formData?.contactConfig,
-      }),
-      ...(surveyDetails.details.type ===
         Number(ECampaignSurveyType.MultipleChoice) && {
         multipleConfig: formData?.multipleConfig,
       }),
@@ -275,7 +271,7 @@ const CampaignDetail = () => {
   };
 
   const openPreviewModal = () => {
-    const watchValues = methods.watch();
+    const watchValues = { ...methods.watch() };
     let data = {
       details: {
         ...surveyDetails?.details,
@@ -375,6 +371,7 @@ const CampaignDetail = () => {
                       right: 10,
                       display: "flex",
                       gap: 1,
+                      pt: "10px",
                     }}
                   >
                     <Button

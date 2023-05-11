@@ -365,11 +365,11 @@ const SurveyPreview = () => {
                     }}
                   >
                     <SurveyTemplate
-                      checkDisabled={checkDisabled}
                       methods={methods}
+                      checkDisabled={checkDisabled}
                       type={ESurveyTypes.Customer}
                       handleSkip={handleSkip}
-                      handleNext={handleNext}
+                      handleNext={methods.handleSubmit(handleNext)}
                       questionData={questionData}
                     />
                   </Box>

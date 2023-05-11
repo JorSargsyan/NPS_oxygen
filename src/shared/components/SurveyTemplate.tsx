@@ -24,7 +24,7 @@ export interface ISurveyTemplateQuestionData {
   template?: ITemplate;
 }
 interface IProps {
-  methods: any;
+  methods?: any;
   type?: ESurveyTypes;
   handleSkip?: () => void;
   handleNext?: (data: any) => void;
@@ -165,6 +165,7 @@ const SurveyTemplate = ({
                 bottom: -1,
                 background: "white",
                 pb: "12px",
+                zIndex: 10,
               }}
               gap={2}
               pt={2}
