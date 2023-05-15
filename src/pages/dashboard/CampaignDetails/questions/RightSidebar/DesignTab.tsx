@@ -19,6 +19,7 @@ import {
   selectSurveyTemplateID,
   selectTemplates,
   setSelectedTemplateID,
+  selectSelectedSurvey,
 } from "store/slicers/campaignDetail";
 
 import { useCallback, useEffect, useState } from "react";
@@ -42,6 +43,7 @@ const DesignTab = () => {
   const surveyTemplateID = useSelector(selectSurveyTemplateID);
   const selectedTemplateID = useSelector(selectSelectedTemplateID);
   const campaignInfo = useSelector(selectCampaignInfo);
+  const selectedSurvey = useSelector(selectSelectedSurvey);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
 
@@ -86,7 +88,7 @@ const DesignTab = () => {
 
     await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    dispatch(setSelectedTemplateID(null));
+    // dispatch(setSelectedTemplateID(null));
     toast.success("Template applied successfully");
   };
 
@@ -106,7 +108,7 @@ const DesignTab = () => {
     }
     await dispatch(GetCampaignSurveyTemplateById(surveyInfo.details.id));
 
-    dispatch(setSelectedTemplateID(null));
+    // dispatch(setSelectedTemplateID(null));
     toast.success("Template applied successfully");
   };
 
@@ -137,9 +139,22 @@ const DesignTab = () => {
     }
   }, [methods, selectedTemplateID, templateList]);
 
+  const resetImage = useCallback(() => {
+    if (selectedSurvey) {
+      methods.setValue(
+        "image",
+        templateList.find((i) => i.id === selectedTemplateID).imageBase64
+      );
+    }
+  }, [selectedSurvey, templateList]);
+
   useEffect(() => {
     init();
   }, [init]);
+
+  useEffect(() => {
+    resetImage();
+  }, [resetImage]);
 
   return (
     <FormProvider {...methods}>

@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import Logo from "assets/icons/satisfai_logo.svg";
+import Logo from "assets/icons/powered_by.svg";
 import defaultImg from "assets/images/survey_bg.png";
 import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
@@ -152,7 +152,6 @@ const SurveyTemplate = ({
             justifyContent="center"
             pt={2}
           >
-            <Typography mr={1}>Powered by</Typography>
             <img src={Logo} alt="logo" />
           </Box>
           {questionData?.details?.type !==
