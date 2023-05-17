@@ -22,6 +22,7 @@ import {
   selectCampaignSurveys,
   selectSelectedSurvey,
   setSelectedSurvey,
+  setSelectedTemplateID,
 } from "store/slicers/campaignDetail";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -187,16 +188,16 @@ const LeftSidebar = () => {
         dispatch(GetCampaignSurveyTemplateById(surveyId)),
         dispatch(GetSurveyLogic(surveyId)),
       ]);
-
-      dispatch(setCampaignLoading(false));
+      await dispatch(setSelectedTemplateID(null));
+      await dispatch(setCampaignLoading(false));
     },
     [dispatch]
   );
 
   const handleClickSuccess = useCallback(
-    (id: number) => {
-      dispatch(setCampaignLoading(true));
-      dispatch(setSelectedSurvey(id));
+    async (id: number) => {
+      await dispatch(setCampaignLoading(true));
+      await dispatch(setSelectedSurvey(id));
     },
     [dispatch]
   );

@@ -60,6 +60,7 @@ export interface ITemplate {
   imageBase64: string;
   name: string;
   questionColor: string;
+  publicTemplateID: number | null;
 }
 
 export interface ICampaignSurvey {
@@ -189,6 +190,7 @@ export interface IUpdateSurveyTemplateRequest {
   answerColor: string;
   buttonColor: string;
   buttonTextColor: string;
+  publicTemplateID: number;
 }
 
 export interface ILinkedSurvey {

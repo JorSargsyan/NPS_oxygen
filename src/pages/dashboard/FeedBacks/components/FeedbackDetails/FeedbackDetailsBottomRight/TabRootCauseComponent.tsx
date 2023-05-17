@@ -9,12 +9,16 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import { ERequestStatus } from "store/enums/index.enum";
 import { ICauseAndMoodRes, ICauseCategory } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import {
   UpdateCustomerRootCause,
   UpdateCustomerMood,
   GetFeedbackCauseAndMood,
   selectCauseCategories,
+  selectCauseMoodValues,
 } from "store/slicers/feedback";
 import CustomerMoodRadioGroup from "../../FeedbackStatusDrawer/CustomerMoodRadioGroup";
 import RootCauseCategoriesAutocomplete from "../../FeedbackStatusDrawer/RootCauseCategoriesAutocomplete";
@@ -32,11 +36,12 @@ const TabRootCauseComponent = () => {
   const { id } = useParams();
   const [isDataLoaded, setDataLoaded] = useState(false);
 
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
   const causeCategoriesList = useSelector(selectCauseCategories);
+  const causeMoodValues = useSelector(selectCauseMoodValues);
 
   const onSubmit = async (formData: FormData) => {
-    dispatch(setLoading(true));
+    dispatch(setButtonLoading(true));
     if (formData?.causeCategories?.length) {
       const rootCauseIDs = formData?.causeCategories.map((c) => c.rootCauseID);
       const { meta } = await dispatch(
@@ -46,11 +51,14 @@ const TabRootCauseComponent = () => {
         })
       );
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     }
-    if (formData?.mood) {
+    if (
+      formData?.mood &&
+      formData?.mood !== String(causeMoodValues?.customerMood)
+    ) {
       const { meta } = await dispatch(
         UpdateCustomerMood({
           id: Number(id),
@@ -58,12 +66,12 @@ const TabRootCauseComponent = () => {
         })
       );
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     }
     toast.success("Saved");
-    dispatch(setLoading(false));
+    dispatch(setButtonLoading(false));
   };
 
   const isButtonDisabled = useMemo(() => {

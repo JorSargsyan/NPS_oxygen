@@ -34,7 +34,10 @@ import {
   IFeedbackTaskUpdateAssignUser,
   IFeedbackTaskUpdateStatus,
 } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import { GetFeedbackRedirectEmployeeList } from "store/slicers/directorates";
 import {
   DeleteFeedbackTask,
@@ -68,7 +71,7 @@ const TabRedirectionComponent = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
   const [isLogsDrawerOpen, setLogsDrawerOpen] = useState(false);
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
   const { id } = useParams();
   const userInfo = useSelector(selectUserInfo);
 
@@ -194,7 +197,7 @@ const TabRedirectionComponent = () => {
   );
 
   const initialFetch = useCallback(async () => {
-    dispatch(setLoading(true));
+    await dispatch(setButtonLoading(true));
     const res = await Promise.all([
       dispatch(GetFeedbackTasks(id)),
       dispatch(GetFeedbackRedirectEmployeeList(id)),
@@ -230,7 +233,7 @@ const TabRedirectionComponent = () => {
       tasks,
       employeeList: updatedEmployeeList,
     });
-    dispatch(setLoading(false));
+    await dispatch(setButtonLoading(false));
   }, [dispatch, id, methods]);
 
   useEffect(() => {

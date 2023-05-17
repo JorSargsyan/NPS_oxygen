@@ -23,7 +23,7 @@ import { useLocation } from "react-router-dom";
 import Filters from "./components/Filters";
 import { ERequestStatus } from "store/enums/index.enum";
 import { EBaseUrl } from "store/config/constants";
-import { setTableLoading } from "store/slicers/common";
+import { setButtonLoading, setTableLoading } from "store/slicers/common";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { EUserPermissions } from "resources/permissions/permissions.enum";
 
@@ -51,6 +51,7 @@ const Users = () => {
 
   const refetchUsers = async () => {
     await dispatch(setTableLoading(true));
+    await dispatch(setButtonLoading(true));
     const filtersCombined = methods
       .watch("config.filters")
       .map((filter, index) => {
@@ -77,6 +78,7 @@ const Users = () => {
       })
     );
     await dispatch(setTableLoading(false));
+    await dispatch(setButtonLoading(false));
     setFiltersOpen(false);
   };
 

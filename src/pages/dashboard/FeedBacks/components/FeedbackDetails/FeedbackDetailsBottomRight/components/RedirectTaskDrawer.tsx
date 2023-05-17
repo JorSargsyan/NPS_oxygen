@@ -20,7 +20,10 @@ import {
   IFeedbackTask,
   IUpdateTask,
 } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import { selectFeedbackEmployeeList } from "store/slicers/directorates";
 import { AddFeedbackTask, UpdateFeedbackTask } from "store/slicers/feedback";
 import WithAttachedEmployeeSelect from "./WithAttachedEmployeesSelect";
@@ -49,7 +52,7 @@ const formDefaultValues = {
 const RedirectTaskDrawer = (props: Props) => {
   const { editData, onSuccess } = props;
   const employeeList = useSelector(selectFeedbackEmployeeList);
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
   const dispatch = useAsyncDispatch();
   const { id } = useParams();
 
@@ -76,7 +79,7 @@ const RedirectTaskDrawer = (props: Props) => {
   };
 
   const onSubmit = async (data: IFormData) => {
-    dispatch(setLoading(true));
+    dispatch(setButtonLoading(true));
     const formData: IAddTask = {
       description: data.description,
       directorateID: Number(data.directorateID),
@@ -92,17 +95,17 @@ const RedirectTaskDrawer = (props: Props) => {
       };
       const { meta } = await dispatch(UpdateFeedbackTask(updatedFormData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     } else {
       const { meta } = await dispatch(AddFeedbackTask(formData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     }
-    dispatch(setLoading(false));
+    dispatch(setButtonLoading(false));
     onSuccess?.();
   };
 

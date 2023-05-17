@@ -14,7 +14,10 @@ import {
   IAddEditTranslation,
   ITranslation,
 } from "store/interfaces/translations";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import { AddTranslation } from "store/slicers/translations";
 import {
   ITranslationModuleOptions,
@@ -46,10 +49,10 @@ const AddEditTranslations = ({
       translationModule: "",
     },
   });
-  const isLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
 
   const onSubmit = async (data: IFormData) => {
-    dispatch(setLoading(true));
+    dispatch(setButtonLoading(true));
     const formData: IAddEditTranslation = {
       translationModule: Number(data.translationModule),
 
@@ -72,14 +75,14 @@ const AddEditTranslations = ({
     const { meta } = await dispatch(AddTranslation(formData));
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      dispatch(setButtonLoading(false));
       return;
     }
     const message = editData
-      ? "Country Updated Successfully"
-      : "Country Added Successfully";
+      ? "Translation Updated Successfully"
+      : "Translation Added Successfully";
     toast.success(message);
-    dispatch(setLoading(false));
+    dispatch(setButtonLoading(false));
     onSuccess();
   };
 
@@ -144,7 +147,7 @@ const AddEditTranslations = ({
               <ButtonLoader
                 fullWidth
                 onClick={methods.handleSubmit(onSubmit)}
-                isLoading={isLoading}
+                isLoading={isButtonLoading}
                 type="submit"
               >
                 <Typography>Save</Typography>

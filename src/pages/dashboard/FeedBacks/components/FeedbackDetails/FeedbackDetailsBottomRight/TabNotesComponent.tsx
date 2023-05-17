@@ -35,7 +35,11 @@ import {
   IFeedbackNotes,
   IUpdateNote,
 } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+  setLoading,
+} from "store/slicers/common";
 import {
   AddFeedbackNote,
   DeleteFeedbackNote,
@@ -89,7 +93,7 @@ const TabNotesComponent = () => {
     defaultValues: { notesList: [], id: "" },
   });
 
-  const isButtonLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
   const notesList = useSelector(selectFeedbackNotes);
   const historyList = useSelector(selectFeedbackNoteHistory);
   const userInfo = useSelector(selectUserInfo);
@@ -114,7 +118,7 @@ const TabNotesComponent = () => {
   const refetchFeedbackNotes = async () => {
     const { meta } = await dispatch(GetFeedbackNotes(Number(id)));
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      await dispatch(setButtonLoading(false));
       return;
     }
   };
@@ -129,9 +133,9 @@ const TabNotesComponent = () => {
       note: watchTextArea,
     };
     methods.setValue("textarea", "");
-    await dispatch(setLoading(true));
+    await dispatch(setButtonLoading(true));
     await dispatch(AddFeedbackNote(data));
-    await dispatch(setLoading(false));
+    await dispatch(setButtonLoading(false));
 
     await refetchFeedbackNotes();
   };
@@ -146,9 +150,10 @@ const TabNotesComponent = () => {
       dispatch(setLoading(false));
       return;
     }
-    setActiveRow(undefined);
+
     await refetchFeedbackNotes();
-    dispatch(setLoading(false));
+    await dispatch(setLoading(false));
+    setActiveRow(undefined);
     toast.success("Note is deleted");
   };
 

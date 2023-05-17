@@ -14,7 +14,7 @@ import {
 } from "store/slicers/translations";
 import { ITranslation } from "store/interfaces/translations";
 import SharedDialog from "shared/ui/Dialog";
-import { setTableLoading } from "store/slicers/common";
+import { setLoading, setTableLoading } from "store/slicers/common";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import RightDrawer from "shared/ui/Drawer";
@@ -64,15 +64,19 @@ const Translations = () => {
     if (!activeRow) {
       return;
     }
+    await dispatch(setLoading(true));
     const { key, translationModule } = activeRow;
     const { meta } = await dispatch(
       DeleteTranslation({ key, module: translationModule })
     );
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      await dispatch(setLoading(false));
       return;
     }
-    setActiveRow(undefined);
+
     await refetchTranslations();
+    await dispatch(setLoading(false));
+    setActiveRow(undefined);
     toast.success("Translation is deleted");
   };
 

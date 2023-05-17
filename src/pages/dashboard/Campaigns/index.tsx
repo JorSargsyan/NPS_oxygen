@@ -122,15 +122,16 @@ const CampaignsPage = () => {
     if (!activeRow) {
       return;
     }
-    dispatch(setLoading(true));
+    await dispatch(setLoading(true));
     const { meta } = await dispatch(DeleteCampaign(activeRow));
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      await dispatch(setLoading(false));
       return;
     }
-    setActiveRow(undefined);
+
     await refetchData();
-    dispatch(setLoading(false));
+    await dispatch(setLoading(false));
+    setActiveRow(undefined);
     toast.success("Campaign is deleted");
   };
 

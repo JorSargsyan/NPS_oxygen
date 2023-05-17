@@ -41,10 +41,21 @@ const ButtonLoader = ({
       fullWidth={fullWidth}
       type={type}
       onClick={onClick}
+      sx={{ position: "relative", overflow: "hidden" }}
     >
       {children}
 
-      {isLoading && <LinearProgress color={color} />}
+      {isLoading && (
+        <LinearProgress
+          color="primary"
+          sx={{
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+            left: 0,
+          }}
+        />
+      )}
     </Button>
   );
 };

@@ -7,7 +7,10 @@ import ButtonLoader from "shared/ui/ButtonLoader";
 import { EFeedbackStatusesModalTypes } from "store/enums/feedbacks.enum";
 import { ERequestStatus } from "store/enums/index.enum";
 import { ICauseCategory } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import {
   ChangeFeedbackStatus,
   UpdateCustomerMood,
@@ -24,12 +27,12 @@ type FormData = {
 };
 
 const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
   const methods = useForm<FormData>();
   const dispatch = useAsyncDispatch();
 
   const onSubmit = async (formData: FormData) => {
-    dispatch(setLoading(true));
+    await dispatch(setButtonLoading(true));
     if (formData?.causeCategories?.length) {
       const rootCauseIDs = formData?.causeCategories.map((c) => c.rootCauseID);
       const { meta } = await dispatch(
@@ -39,7 +42,7 @@ const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
         })
       );
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        await dispatch(setButtonLoading(false));
         return;
       }
     }
@@ -51,7 +54,7 @@ const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
         })
       );
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        await dispatch(setButtonLoading(false));
         return;
       }
     }
@@ -64,11 +67,11 @@ const FeedbackStatusDrawer = ({ editData, onSuccess }: Props) => {
       })
     );
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      await dispatch(setButtonLoading(false));
       return;
     }
     onSuccess?.();
-    dispatch(setLoading(false));
+    await dispatch(setButtonLoading(false));
   };
 
   const requiresOnlyCause = useMemo(() => {

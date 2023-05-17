@@ -9,6 +9,7 @@ export interface ICommonState {
   permissionGroups: IPermissionGroup[];
   managers: IManagers[];
   sidebarVisible: boolean;
+  buttonLoading: boolean;
 }
 
 export interface IGetPermissionsResponse {

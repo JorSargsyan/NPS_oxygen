@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
 import {
-  selectLoadingState,
+  selectButtonLoadingState,
   selectManagers,
-  setLoading,
+  setButtonLoading,
 } from "store/slicers/common";
 import { UpdateFeedbackManager } from "store/slicers/feedback";
 import { IManagerUser } from "store/interfaces/common";
@@ -30,10 +30,10 @@ const AssignFeedbackDrawer = (props: Props) => {
   const dispatch = useAsyncDispatch();
   const methods = useForm<FormData>();
   const managersList = useSelector(selectManagers);
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
 
   const onSubmit = async (data: FormData) => {
-    await dispatch(setLoading(true));
+    await dispatch(setButtonLoading(true));
     const { meta } = await dispatch(
       UpdateFeedbackManager({
         assignUserID: data.assignUserID,
@@ -41,10 +41,10 @@ const AssignFeedbackDrawer = (props: Props) => {
       })
     );
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      await dispatch(setLoading(false));
+      await dispatch(setButtonLoading(false));
       return;
     }
-    await dispatch(setLoading(false));
+    await dispatch(setButtonLoading(false));
     onSubmitCb?.();
   };
 

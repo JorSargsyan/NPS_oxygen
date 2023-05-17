@@ -14,7 +14,10 @@ import {
   IAttachedEmployee,
   IAttachedEmployeeAdditionalInfo,
 } from "store/interfaces/directorates";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import {
   AddDirectorate,
   GetAttachedEmployeeFilterList,
@@ -44,11 +47,11 @@ const AddEditDirectorate = ({
       attachedEmployeesIDs: [],
     },
   });
-  const isLoading = useSelector(selectLoadingState);
+  const isLoading = useSelector(selectButtonLoadingState);
   const employeeList = useSelector(selectAttachedEmployeeFilteredList);
 
   const onSubmit = async (data: IFormData) => {
-    dispatch(setLoading(true));
+    dispatch(setButtonLoading(true));
     const attachedEmployeesIDs = data.attachedEmployeesIDs.map(
       (attachedEmployee) => attachedEmployee.id
     );
@@ -60,14 +63,14 @@ const AddEditDirectorate = ({
       const editedFormData = { ...newFormData, id: editData.id };
       const { meta } = await dispatch(UpdateDirectorate(editedFormData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     } else {
       const { meta } = await dispatch(AddDirectorate(newFormData));
 
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-        dispatch(setLoading(false));
+        dispatch(setButtonLoading(false));
         return;
       }
     }
@@ -76,7 +79,7 @@ const AddEditDirectorate = ({
       ? "Directorate Updated Successfully"
       : "Directorate Added Successfully";
     toast.success(message);
-    dispatch(setLoading(false));
+    dispatch(setButtonLoading(false));
     onSuccess();
   };
 

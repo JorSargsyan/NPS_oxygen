@@ -16,6 +16,13 @@ export interface IFeedbacksState {
     campaign: IAttachedEmployee[];
     directorate: IAttachedEmployee[];
   } | null;
+  causeAndMoodValues: ICauseAndMoodValues;
+}
+
+export interface ICauseAndMoodValues {
+  customerMood: number;
+  id: number;
+  rootCauseIDs: number[];
 }
 
 export interface IFeedbackNoteHistory {

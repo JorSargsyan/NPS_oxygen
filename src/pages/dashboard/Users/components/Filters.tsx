@@ -18,9 +18,13 @@ import { getQueryParams } from "shared/helpers/getQueryParams";
 import { GetFilterValues } from "store/slicers/users";
 import { ERequestStatus } from "store/enums/index.enum";
 import { IFilterOption } from "store/interfaces/main";
+import { useSelector } from "react-redux";
+import { selectButtonLoadingState } from "store/slicers/common";
 
 const Filters = ({ methods, onChange, fieldsConfig }) => {
   const dispatch = useAsyncDispatch();
+  const isLoading = useSelector(selectButtonLoadingState);
+
   const onSubmit = () => {
     onChange();
   };
@@ -203,7 +207,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <ButtonLoader
             disabled={getApplyStatus}
             onClick={onSubmit}
-            isLoading={false}
+            isLoading={isLoading}
           >
             <Typography>Apply</Typography>
           </ButtonLoader>

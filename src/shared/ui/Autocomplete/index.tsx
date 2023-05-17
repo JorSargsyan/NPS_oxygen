@@ -42,6 +42,7 @@ interface IAutocompleteProps<OptionType> {
   isEqualByID?: boolean;
   isOptionEqualToValue?: (option: OptionType, value: any) => boolean;
   onFocus?: () => void;
+  sx?: any;
 }
 
 const BasicAutocomplete = <T extends { id?: number | string }>({
@@ -64,6 +65,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
   hasSelectAllOption = false,
   isOptionEqualToValue = undefined,
   onFocus = undefined,
+  sx,
 }: IAutocompleteProps<T>) => {
   const {
     control,
@@ -132,6 +134,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
             {...field}
             disabled={disabled}
             size={size}
+            sx={sx}
             multiple={multiple}
             onChange={handleChange}
             groupBy={groupBy}

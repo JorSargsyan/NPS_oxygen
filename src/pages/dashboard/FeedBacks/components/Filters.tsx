@@ -15,7 +15,7 @@ import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
 import RangeSlider from "shared/ui/Slider";
 import { IAttachedEmployee } from "store/interfaces/directorates";
-import { selectManagers } from "store/slicers/common";
+import { selectButtonLoadingState, selectManagers } from "store/slicers/common";
 import {
   GetFeedbackFilterValues,
   selectFeedbackFilterValues,
@@ -31,6 +31,7 @@ import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRigh
 
 const Filters = ({ methods, onChange, fieldsConfig }) => {
   const dispatch = useAsyncDispatch();
+  const isLoading = useSelector(selectButtonLoadingState);
 
   const managersList = useSelector(selectManagers);
   const filterValues = useSelector(selectFeedbackFilterValues);
@@ -417,7 +418,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <ButtonLoader
             disabled={getApplyStatus}
             onClick={onSubmit}
-            isLoading={false}
+            isLoading={isLoading}
           >
             <Typography>Apply</Typography>
           </ButtonLoader>

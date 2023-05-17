@@ -21,6 +21,7 @@ const initialState: ICommonState = {
   permissionGroups: [],
   managers: [],
   sidebarVisible: true,
+  buttonLoading: false,
 };
 
 export const GetPermissions = createAsyncThunk<{ [key: string]: any }>(
@@ -62,6 +63,9 @@ const commonSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
+    setButtonLoading(state, { payload }) {
+      state.buttonLoading = payload;
+    },
     setCampaignLoading(state, { payload }) {
       state.campaignLoading = payload;
     },
@@ -97,8 +101,11 @@ export const {
   setTableLoading,
   setSidebarVisible,
   setCampaignLoading,
+  setButtonLoading,
 } = commonSlice.actions;
 export const selectLoadingState = (state: IState) => state.common.loading;
+export const selectButtonLoadingState = (state: IState) =>
+  state.common.buttonLoading;
 export const selectCampaignLoading = (state: IState) =>
   state.common.campaignLoading;
 export const selectTableLoadingState = (state: IState) =>

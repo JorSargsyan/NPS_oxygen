@@ -35,7 +35,7 @@ const MainContent = () => {
 
   return (
     <Fragment>
-      {!loadingState && surveyInfo.details ? (
+      {!loadingState && surveyInfo?.details && surveyInfo?.template ? (
         <Box
           component={Paper}
           elevation={3}

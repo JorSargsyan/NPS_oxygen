@@ -26,7 +26,7 @@ import {
   IFeedbackCauseAndMood,
   IScore,
 } from "store/interfaces/feedback";
-import { setTableLoading } from "store/slicers/common";
+import { setButtonLoading, setTableLoading } from "store/slicers/common";
 import {
   ExportFeedbacks,
   GetFeedbackCauseAndMoodCategoriesList,
@@ -151,7 +151,7 @@ const Feedbacks = () => {
 
   const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
-
+    await dispatch(setButtonLoading(true));
     const filtersCombined = methods
       .watch("config.filters")
       .map((filter, index) => {
@@ -211,6 +211,7 @@ const Feedbacks = () => {
     delete formData["quickFilters"];
     await dispatch(GetFeedbacks(formData));
     setFiltersOpen(false);
+    await dispatch(setButtonLoading(false));
     await dispatch(setTableLoading(false));
   }, [dispatch, methods]);
 

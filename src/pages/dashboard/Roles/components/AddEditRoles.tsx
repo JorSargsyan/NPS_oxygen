@@ -14,8 +14,9 @@ import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import TextInput from "shared/ui/TextInput";
 import {
-  selectLoadingState,
+  selectButtonLoadingState,
   selectPermissionGroups,
+  setButtonLoading,
 } from "store/slicers/common";
 import { IRoleDetailed } from "store/interfaces/roles";
 import { selectUserGroups } from "store/slicers/users";
@@ -50,9 +51,10 @@ const AddEditRoles = ({
   const userGroups = useSelector(selectUserGroups);
   const dispatch = useAsyncDispatch();
   const methods = useForm<IFormData>();
-  const isLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
 
   const onSubmit = async (data: IFormData) => {
+    await dispatch(setButtonLoading(true));
     const { displayName, name, permissions, dataVisibility } = data;
     const permissionIds = Object.values(permissions).reduce((acc, curr) => {
       return acc.concat(curr.map((i) => i.id));
@@ -69,17 +71,19 @@ const AddEditRoles = ({
     if (editData) {
       const { meta } = await dispatch(UpdateRole({ formData, id: rowId }));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       toast.success("Role is Updated");
     } else {
       const { meta } = await dispatch(CreateRole(formData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       toast.success("Role is Created");
     }
-
+    await dispatch(setButtonLoading(false));
     onSuccess?.();
   };
 
@@ -261,7 +265,7 @@ const AddEditRoles = ({
               <ButtonLoader
                 fullWidth
                 onClick={methods.handleSubmit(onSubmit)}
-                isLoading={isLoading}
+                isLoading={isButtonLoading}
                 disabled={!Object.keys(methods.formState.touchedFields).length}
                 type="submit"
               >
