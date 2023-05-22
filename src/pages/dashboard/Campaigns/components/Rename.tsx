@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import TextInput from "shared/ui/TextInput";
@@ -15,6 +16,7 @@ interface IFormData {
 const Rename = ({ data, onSuccess }: { data: any; onSuccess: () => void }) => {
   const dispatch = useAsyncDispatch();
   const methods = useForm<IFormData>();
+  const t = useTranslation();
 
   const resetForm = useCallback(() => {
     methods.reset({
@@ -38,16 +40,16 @@ const Rename = ({ data, onSuccess }: { data: any; onSuccess: () => void }) => {
   return (
     <FormProvider {...methods}>
       <Typography mb={2} fontSize={16}>
-        Please enter new name for the campaign
+        {t("enter_new_survey_name")}
       </Typography>
-      <TextInput name="name" rules={requiredRules} label={"Name"} />
+      <TextInput name="name" rules={requiredRules} label={"name"} />
       <Box mt={2} display="flex" justifyContent={"flex-end"}>
         <ButtonLoader
           variant="outlined"
           onClick={methods.handleSubmit(onSubmit)}
           isLoading={false}
         >
-          <Typography>Submit</Typography>
+          <Typography>{t("submit")}</Typography>
         </ButtonLoader>
       </Box>
     </FormProvider>

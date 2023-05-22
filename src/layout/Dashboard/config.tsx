@@ -29,7 +29,7 @@ export const items = ({
 }) => {
   return [
     {
-      title: "Overview",
+      title: "overview_section_title",
       path: "overview",
       element: <Dashboard />,
       icon: (
@@ -41,7 +41,7 @@ export const items = ({
     ...(hasFeedbackPerm
       ? [
           {
-            title: "Responses",
+            title: "responses_section_title",
             path: "responses",
             element: <Feedbacks />,
             icon: (
@@ -53,7 +53,7 @@ export const items = ({
         ]
       : []),
     {
-      title: "Mystery shopping",
+      title: "mystery_shopping_title",
       path: "mystery-shopping",
       element: <MysteryShopping />,
       icon: (
@@ -65,7 +65,7 @@ export const items = ({
     ...(hasCampaignPerm
       ? [
           {
-            title: "Surveys",
+            title: "surveys_section_title",
             path: "survey",
             element: <Campaigns />,
             icon: (
@@ -80,7 +80,7 @@ export const items = ({
     ...(hasCustomerPerm
       ? [
           {
-            title: "Customers",
+            title: "customers_section_title",
             path: "customers",
             element: <Customers />,
             icon: (
@@ -95,7 +95,7 @@ export const items = ({
     ...(hasUsersPerm
       ? [
           {
-            title: "Users",
+            title: "users_section_title",
             path: "users",
             element: <Users />,
             icon: (
@@ -107,7 +107,7 @@ export const items = ({
         ]
       : []),
     {
-      title: "Settings",
+      title: "settings",
       path: "",
       icon: (
         <SvgIcon fontSize="small">
@@ -118,7 +118,7 @@ export const items = ({
         ...(hasTranslationPerm
           ? [
               {
-                title: "Translations",
+                title: "translations_section_title",
                 path: "dictionary",
                 element: <Dictionary />,
                 errorElement: <div>ERROR ELEMENT</div>,
@@ -133,7 +133,7 @@ export const items = ({
         ...(hasRolesPerm
           ? [
               {
-                title: "Roles",
+                title: "roles_section_title",
                 path: "roles",
                 element: <Roles />,
                 icon: (

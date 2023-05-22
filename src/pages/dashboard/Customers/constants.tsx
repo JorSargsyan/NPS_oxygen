@@ -1,23 +1,23 @@
 import { IColumn } from "shared/ui/Table/constants";
 export const customerColumns: IColumn[] = [
   {
-    label: "Id",
+    label: "id",
     field: "id",
   },
   {
-    label: "Name",
+    label: "name",
     field: "fullName",
   },
   {
-    label: "Email",
+    label: "email",
     field: "customerEmail",
   },
   {
-    label: "Phone",
+    label: "phone",
     field: "customerPhone",
   },
   {
-    label: "Creation Date",
+    label: "creation_date",
     field: "creationDate",
   },
 ];
@@ -25,14 +25,14 @@ export const customerColumns: IColumn[] = [
 export const CustomerStatusList = [
   {
     value: "1",
-    name: "Active",
+    name: "active",
   },
   {
     value: "2",
-    name: "Blocked",
+    name: "blocked",
   },
   {
     value: "3",
-    name: "Quarantined",
+    name: "quarantined",
   },
 ];

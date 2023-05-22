@@ -2,6 +2,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useState, SyntheticEvent, ReactNode, Fragment } from "react";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -54,6 +55,7 @@ const BasicTabs = ({
   onChange,
 }: ITabsProps) => {
   const [value, setValue] = useState(0);
+  const t = useTranslation();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -84,7 +86,7 @@ const BasicTabs = ({
             return (
               <Tab
                 key={item.index}
-                label={item.label}
+                label={t(item.label)}
                 {...a11yProps(item.index)}
               />
             );

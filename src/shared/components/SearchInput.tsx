@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { IFilterOptions } from "shared/ui/Table/constants";
 import SearchIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 type Props = {
   filterOptions: IFilterOptions;
@@ -14,6 +15,8 @@ type Props = {
 };
 
 const SearchInput = ({ filterOptions, fetchData }: Props) => {
+  const t = useTranslation();
+
   const handleSearch = (e) => {
     filterOptions?.reset({
       ...filterOptions?.watch(),
@@ -32,7 +35,7 @@ const SearchInput = ({ filterOptions, fetchData }: Props) => {
           label=""
           fullWidth
           size="medium"
-          placeholder="Search"
+          placeholder={t("search")}
           variant="outlined"
           InputProps={{
             startAdornment: (

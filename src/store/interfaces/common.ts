@@ -10,6 +10,7 @@ export interface ICommonState {
   managers: IManagers[];
   sidebarVisible: boolean;
   buttonLoading: boolean;
+  isTranslationsLoaded: boolean;
 }
 
 export interface IGetPermissionsResponse {

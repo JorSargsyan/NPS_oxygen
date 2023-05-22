@@ -3,6 +3,7 @@ import { Fragment, useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
@@ -39,6 +40,7 @@ const AddEditTranslations = ({
   onSuccess: () => void;
   editData?: ITranslation;
 }) => {
+  const t = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const methods = useForm<IFormData>({
     defaultValues: {
@@ -79,8 +81,8 @@ const AddEditTranslations = ({
       return;
     }
     const message = editData
-      ? "Translation Updated Successfully"
-      : "Translation Added Successfully";
+      ? t("update_translation_success")
+      : t("add_translation_success");
     toast.success(message);
     dispatch(setButtonLoading(false));
     onSuccess();
@@ -119,7 +121,7 @@ const AddEditTranslations = ({
             <Grid item xs={12}>
               <BasicSelect<ITranslationModuleOptions>
                 name="translationModule"
-                label="Translation Module"
+                label="translation_module"
                 valueProp="value"
                 labelProp="name"
                 defaultValue=""
@@ -128,20 +130,20 @@ const AddEditTranslations = ({
             </Grid>
             <Grid item xs={12}>
               <TextInput<IFormData>
-                label="Translation key"
+                label="translation_key"
                 name="key"
                 rules={requiredRules}
                 disabled={!!editData}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="Armenian" name="am" />
+              <TextInput<IFormData> label="armenian" name="am" />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="English" name="en" />
+              <TextInput<IFormData> label="english" name="en" />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="Russian" name="ru" />
+              <TextInput<IFormData> label="russian" name="ru" />
             </Grid>
             <Grid item xs={12}>
               <ButtonLoader
@@ -150,7 +152,7 @@ const AddEditTranslations = ({
                 isLoading={isButtonLoading}
                 type="submit"
               >
-                <Typography>Save</Typography>
+                <Typography>{t("save")}</Typography>
               </ButtonLoader>
             </Grid>
           </Grid>

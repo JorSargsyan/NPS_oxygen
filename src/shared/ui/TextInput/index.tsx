@@ -4,6 +4,7 @@ import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 import CrossIcon from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 interface IInputProps<T> {
   size?: "small" | "medium";
@@ -55,6 +56,7 @@ const InputField = <T extends unknown>({
     formState: { errors },
   } = useFormContext();
   const [invisible, setVisible] = useState(true);
+  const t = useTranslation();
 
   const handleClearInput = (field: any) => {
     field.onChange((e: any) => (field.value = ""));
@@ -123,7 +125,7 @@ const InputField = <T extends unknown>({
             }
             fullWidth
             type={invisible && isSecure ? "password" : type || "text"}
-            label={label}
+            label={t(label)}
             multiline={multiline}
             variant="filled"
             disabled={disabled}

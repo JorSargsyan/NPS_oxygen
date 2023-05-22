@@ -82,7 +82,7 @@ const FeedbackDetailsTop = () => {
               <BasicSelect<IFeedbackStatusList>
                 name="feedbackStatus"
                 defaultValue={""}
-                label="Response status"
+                label="status"
                 valueProp="value"
                 labelProp="name"
                 disabled={!hasEditFeedbackStatusPermission}

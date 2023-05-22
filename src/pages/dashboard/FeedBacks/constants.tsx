@@ -30,7 +30,7 @@ export const scoreRanges = {
 };
 
 export const viewCommentsDialogConfig = {
-  title: "Quick view comments",
+  title: "quick_view_comments",
 };
 
 export interface IFeedbackStatusList {
@@ -41,35 +41,35 @@ export interface IFeedbackStatusList {
 export const feedbackStatusList: IFeedbackStatusList[] = [
   {
     value: EFeedbackStatus.New,
-    name: "New",
+    name: "new",
   },
   {
     value: EFeedbackStatus.Follow_Up,
-    name: "Follow Up",
+    name: "follow_up",
   },
   {
     value: EFeedbackStatus.Postponed,
-    name: "Postponed",
+    name: "postponed",
   },
   {
     value: EFeedbackStatus.No_response,
-    name: "No Response",
+    name: "no_response",
   },
   {
     value: EFeedbackStatus.Resolved,
-    name: "Resolved",
+    name: "resolved",
   },
   {
     value: EFeedbackStatus.Not_Resolved,
-    name: "Not Resolved",
+    name: "not_resolved",
   },
   {
     value: EFeedbackStatus.Misrated,
-    name: "Misrated",
+    name: "misrated",
   },
   {
     value: EFeedbackStatus.Archived,
-    name: "Archived",
+    name: "archived",
   },
 ];
 
@@ -205,11 +205,11 @@ export const quickFilterFeedbackTypes = [
 
 export const quickFilterUserVisibilityTypes = [
   {
-    label: "General",
+    label: "bk_roles_data_visibility_general",
     value: 2,
   },
   {
-    label: "Personal",
+    label: "bk_roles_data_visibility_personal",
     value: 3,
   },
 ];

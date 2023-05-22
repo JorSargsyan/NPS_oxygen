@@ -6,7 +6,7 @@ const useTranslation = () => {
   const lang = useSelector(selectTranslationsByLangId);
 
   const translatedKey = useCallback(
-    (key: PropertyKey) => {
+    (key: string) => {
       if (lang?.translations && lang.translations.hasOwnProperty(key)) {
         return lang.translations[key as string];
       }

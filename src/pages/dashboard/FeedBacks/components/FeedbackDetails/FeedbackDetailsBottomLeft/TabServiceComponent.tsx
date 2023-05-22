@@ -1,12 +1,14 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { selectFeedbackDetails } from "store/slicers/feedback";
 import NoData from "../../NoData";
 
 const TabServiceComponent = () => {
   const feedbackItemDetails = useSelector(selectFeedbackDetails);
   const { service } = feedbackItemDetails;
+  const t = useTranslation();
 
   return (
     <Box
@@ -20,8 +22,8 @@ const TabServiceComponent = () => {
       {!service && <NoData description="There is no data" />}
       {service?.employeeName ? (
         <Box mr={1}>
-          <Typography fontSize={14} mb={1}>
-            Employee name
+          <Typography fontSize={14} mb={1} fontWeight="bold">
+            {t("employee_name")}
           </Typography>
           <Typography mb={2}>{service?.employeeName}</Typography>
         </Box>
@@ -29,7 +31,7 @@ const TabServiceComponent = () => {
       {service?.employeeEmail ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Employee email
+            {t("employee_email")}
           </Typography>
           <Typography mb={2}>{service?.employeeEmail}</Typography>
         </Box>
@@ -37,7 +39,7 @@ const TabServiceComponent = () => {
       {service?.employeePosition ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Employee position
+            {t("employee_position")}
           </Typography>
           <Typography mb={2}>{service?.employeePosition}</Typography>
         </Box>
@@ -45,7 +47,7 @@ const TabServiceComponent = () => {
       {service?.employeeCode ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Employee code
+            {t("employee_code")}
           </Typography>
           <Typography mb={2}>{service?.employeeCode}</Typography>
         </Box>
@@ -53,7 +55,7 @@ const TabServiceComponent = () => {
       {service?.serviceCategory ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Service category
+            {t("service_category")}
           </Typography>
           <Typography mb={2}>{service?.serviceCategory}</Typography>
         </Box>
@@ -61,7 +63,7 @@ const TabServiceComponent = () => {
       {service?.serviceDate ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Service date
+            {t("service_date")}
           </Typography>
           <Typography mb={2}>{service?.serviceDate}</Typography>
         </Box>
@@ -69,7 +71,7 @@ const TabServiceComponent = () => {
       {service?.transactionId ? (
         <Box mr={1}>
           <Typography fontSize={14} mb={1} fontWeight="bold">
-            Transaction ID
+            {t("transaction_id")}
           </Typography>
           <Typography mb={2}>{service?.transactionId}</Typography>
         </Box>

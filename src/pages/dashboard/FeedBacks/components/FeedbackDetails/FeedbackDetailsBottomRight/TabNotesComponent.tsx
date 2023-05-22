@@ -23,6 +23,7 @@ import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
@@ -88,6 +89,8 @@ const TabNotesComponent = () => {
   );
 
   const { id } = useParams();
+
+  const t = useTranslation();
 
   const methods = useForm<IFormData>({
     defaultValues: { notesList: [], id: "" },
@@ -228,7 +231,7 @@ const TabNotesComponent = () => {
             <BasicTextArea
               name="textarea"
               aria-label="Add Notes"
-              placeholder="Type your answer here..."
+              placeholder={t("type_your_answer")}
             />
             <Box textAlign="right" py={2}>
               <ButtonLoader
@@ -399,7 +402,7 @@ const TabNotesComponent = () => {
               );
             })
           ) : (
-            <NoData description="There are no notes yet" />
+            <NoData description="no_notes" />
           )}
         </Box>
         <SharedDialog

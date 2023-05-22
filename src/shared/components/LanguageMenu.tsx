@@ -13,6 +13,7 @@ import { LStorage } from "store/config/constants";
 import { GetTranslationsByLangId } from "store/slicers/translations";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
+import { setTranslationsLoaded } from "store/slicers/common";
 
 interface ILanguage {
   icon: any;
@@ -55,6 +56,8 @@ const LanguageMenu = () => {
   };
 
   const handleSelectLanguage = async (value: number) => {
+    await dispatch(setTranslationsLoaded(false));
+
     if (value) {
       localStorage.setItem(LStorage.LANG, value.toString());
       const selectedLang = languagesList.find((item) => item.value === value);
@@ -65,6 +68,7 @@ const LanguageMenu = () => {
       }
     }
     setAnchorEl(null);
+    await dispatch(setTranslationsLoaded(true));
   };
 
   useEffect(() => {
@@ -75,8 +79,8 @@ const LanguageMenu = () => {
       );
       setSelectedLanguage(selectedLang);
     } else {
-      localStorage.setItem(LStorage.LANG, languagesList[0].value.toString());
-      setSelectedLanguage(languagesList[0]);
+      localStorage.setItem(LStorage.LANG, languagesList[2].value.toString());
+      setSelectedLanguage(languagesList[2]);
     }
   }, []);
 

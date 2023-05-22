@@ -36,6 +36,7 @@ import { columns, deleteCampaignWarningConfig } from "./constants";
 import CampaignCardsList from "./components/CampaignCardsList";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { ECampaignPermissions } from "resources/permissions/permissions.enum";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 export enum ECampaignAction {
   ViewHistory = "ViewHistory",
@@ -56,6 +57,7 @@ const surveyFilterValues = {
 const CampaignsPage = () => {
   const dispatch = useAsyncDispatch();
   const navigate = useNavigate();
+  const t = useTranslation();
   const campaigns = useSelector(selectCampaigns);
   const [activeRow, setActiveRow] = useState(0);
   const [addEditOpen, setAddEditOpen] = useState(false);
@@ -132,7 +134,7 @@ const CampaignsPage = () => {
     await refetchData();
     await dispatch(setLoading(false));
     setActiveRow(undefined);
-    toast.success("Campaign is deleted");
+    toast.success(t("survey_is_deleted"));
   };
 
   const handleCampaignDetails = useCallback(
@@ -149,15 +151,15 @@ const CampaignsPage = () => {
         ...(hasManagePermission
           ? [
               {
-                label: "Customize",
+                label: "customize",
                 onClick: () => handleCampaignDetails(rowData.id),
               },
               {
-                label: "View History",
+                label: "view_history",
                 onClick: () => handleViewHistory(rowData?.id),
               },
               {
-                label: "Rename",
+                label: "rename",
                 onClick: () => handleRenameCampaign(rowData),
               },
             ]
@@ -166,7 +168,7 @@ const CampaignsPage = () => {
         ...(hasDeletePermission
           ? [
               {
-                label: "Delete",
+                label: "delete",
                 onClick: () => handleOpenWarning(rowData),
               },
             ]
@@ -184,7 +186,7 @@ const CampaignsPage = () => {
   const handleSuccess = async () => {
     setAddEditOpen(false);
     await refetchData();
-    toast.success("Campaign name changed successfully");
+    toast.success(t("survey_name_changed_successfully"));
   };
 
   const handleSuccessCreation = async (id: number) => {
@@ -195,11 +197,11 @@ const CampaignsPage = () => {
   const getDrawerTitle = () => {
     switch (mode) {
       case ECampaignAction.Add:
-        return "Add survey";
+        return t("add_survey");
       case ECampaignAction.Rename:
-        return "Rename survey";
+        return t("rename_survey");
       case ECampaignAction.ViewHistory:
-        return "View survey history";
+        return t("view_survey_history");
     }
   };
 
@@ -210,16 +212,18 @@ const CampaignsPage = () => {
         return;
       }
       await refetchData();
-      toast.success(`Survey is ${!state ? "inactive" : "active"}`);
+      toast.success(
+        `${t("survey")} ${t("is")} ${!state ? t("inactive") : t("active")}`
+      );
     },
-    [dispatch, refetchData]
+    [dispatch, refetchData, t]
   );
 
   const campaignColumns = useMemo(() => {
     return [
       ...columns,
       {
-        label: "State",
+        label: "state",
         layout: (rowData: ICampaign) => {
           return (
             <Switch

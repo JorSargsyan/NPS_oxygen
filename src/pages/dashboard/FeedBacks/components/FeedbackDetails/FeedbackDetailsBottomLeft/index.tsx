@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { EFeedbackDetailsBottomLeftTabsOptions } from "./constants";
 import TabFeedbackComponent from "./TabFeedbackComponent";
 import TabServiceComponent from "./TabServiceComponent";
-import TabSurveyComponent from "./TabSurveyComponent";
+// import TabSurveyComponent from "./TabSurveyComponent";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import usePermission from "shared/helpers/hooks/usePermission";
 
@@ -12,9 +12,9 @@ const FeedbackDetailsBottomLeft = () => {
   const hasFeedbackBottomLeftTabResponseViewPermission = usePermission(
     EFeedbackPermissions.View_response_tab
   );
-  const hasFeedbackBottomLeftSurveyTabViewPermission = usePermission(
-    EFeedbackPermissions.View_survey_tab
-  );
+  // const hasFeedbackBottomLeftSurveyTabViewPermission = usePermission(
+  //   EFeedbackPermissions.View_survey_tab
+  // );
   const hasFeedbackBottomLeftServiceCauseTabViewPermission = usePermission(
     EFeedbackPermissions.View_service_tab
   );
@@ -25,7 +25,7 @@ const FeedbackDetailsBottomLeft = () => {
         ? [
             {
               index: EFeedbackDetailsBottomLeftTabsOptions.Feedback,
-              label: "Response",
+              label: "response",
               children: <TabFeedbackComponent />,
             },
           ]
@@ -34,7 +34,7 @@ const FeedbackDetailsBottomLeft = () => {
         ? [
             {
               index: EFeedbackDetailsBottomLeftTabsOptions.Service,
-              label: "Service",
+              label: "service",
               children: <TabServiceComponent />,
             },
           ]

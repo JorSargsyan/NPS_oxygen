@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Controller, RegisterOptions, useFormContext } from "react-hook-form";
 import DeleteIcon from "@heroicons/react/24/solid/XMarkIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 export interface ISelectProps<T> {
   label: string;
@@ -53,6 +54,7 @@ const BasicSelect = <T extends unknown>({
     control,
     formState: { errors },
   } = useFormContext();
+  const t = useTranslation();
 
   const handleChange = (e, onChange) => {
     const value = e.target.value;
@@ -80,7 +82,7 @@ const BasicSelect = <T extends unknown>({
         render={({ field }) => {
           return (
             <FormControl fullWidth variant="filled">
-              <InputLabel>{label}</InputLabel>
+              <InputLabel>{t(label)}</InputLabel>
               <Select
                 error={!!errors?.[name]?.message}
                 endAdornment={
@@ -104,7 +106,7 @@ const BasicSelect = <T extends unknown>({
                 onChange={(e) => {
                   handleChange(e, field.onChange);
                 }}
-                label={label}
+                label={t(label)}
                 disabled={disabled}
               >
                 {options?.map((option: T, index: number) => {
@@ -122,8 +124,8 @@ const BasicSelect = <T extends unknown>({
                       }
                     >
                       {typeof labelProp === "string"
-                        ? option[labelProp as string]
-                        : getLabel?.(option)}
+                        ? t(option[labelProp as string])
+                        : t(getLabel?.(option))}
                     </MenuItem>
                   );
                 })}

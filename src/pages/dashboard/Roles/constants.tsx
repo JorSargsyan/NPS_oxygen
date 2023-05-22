@@ -2,27 +2,27 @@ import { IColumn } from "shared/ui/Table/constants";
 
 export const roleColumns: IColumn[] = [
   {
-    label: "Id",
+    label: "id",
     field: "id",
   },
   {
-    label: "Role Name",
+    label: "role_name",
     field: "name",
   },
   {
-    label: "Name",
+    label: "role_display_name",
     field: "displayName",
   },
   {
-    label: "Data visibility",
+    label: "data_visibility",
     field: "dataVisibility",
   },
   {
-    label: "Users",
+    label: "users_section_title",
     field: "userCount",
   },
   {
-    label: "Creation date",
+    label: "creation_date",
     field: "creationDate",
   },
 ];
@@ -33,6 +33,6 @@ export interface ITranslationModuleOptions {
 }
 
 export const deleteRoleWarningConfig = {
-  title: "Warning",
-  description: "Are you sure you want to delete this role?",
+  title: "warning",
+  description: "delete_role",
 };

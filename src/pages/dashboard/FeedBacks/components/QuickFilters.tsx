@@ -7,6 +7,7 @@ import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import BasicRangePicker from "shared/ui/RangePicker";
 import StyledToggleButton from "shared/ui/ToggleButton";
@@ -25,6 +26,8 @@ import {
 const QuickFilters = ({ methods, handleSubmit }) => {
   const dispatch = useAsyncDispatch();
   const filterValues = useSelector(selectFeedbackFilterValues);
+  const t = useTranslation();
+
   const hasQuickFilterByDatePermission = usePermission(
     EFeedbackPermissions.Quick_filter_by_date
   );
@@ -137,7 +140,7 @@ const QuickFilters = ({ methods, handleSubmit }) => {
                           ) === String(type.value)
                         }
                       >
-                        {type.label}
+                        {t(type.label)}
                       </StyledToggleButton>
                     );
                   })}
@@ -149,7 +152,7 @@ const QuickFilters = ({ methods, handleSubmit }) => {
       );
     }
     return "";
-  }, [hasQuickFilterByUserVisibilityPermission, methods]);
+  }, [hasQuickFilterByUserVisibilityPermission, methods, t]);
 
   return (
     <Box px={1} py={3}>

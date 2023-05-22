@@ -20,7 +20,7 @@ const Filters = ({ methods, onChange }) => {
           <Grid item xs={4}>
             <BasicSelect
               size="small"
-              label="Status"
+              label="status"
               clearable
               options={CustomerStatusList}
               getLabel={(option) => option.name.toString()}

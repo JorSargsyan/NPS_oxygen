@@ -91,7 +91,7 @@ export const TopNav = () => {
             </IconButton>
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
-            {/* <LanguageMenu /> */}
+            <LanguageMenu />
             {userInfo ? (
               <Avatar
                 onClick={accountPopover.handleOpen}
@@ -101,11 +101,6 @@ export const TopNav = () => {
                   height: 40,
                   width: 40,
                 }}
-                // src={
-                //   EBaseUrl.MediaUserURL
-                //     ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
-                //     : "/assets/avatars/avatar-anika-visser.png"
-                // }
                 src=""
               />
             ) : (
