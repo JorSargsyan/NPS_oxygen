@@ -53,7 +53,7 @@ export const items = ({
         ]
       : []),
     {
-      title: "mystery_shopping_title",
+      title: "mystery_shopping_section_title",
       path: "mystery-shopping",
       element: <MysteryShopping />,
       icon: (

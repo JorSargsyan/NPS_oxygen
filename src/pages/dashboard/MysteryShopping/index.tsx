@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import RightDrawer from "shared/ui/Drawer";
 import AddUseCase from "./components/AddUseCase";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const MysteryShopping = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAsyncDispatch();
+  const t = useTranslation();
 
   const handleNavigate = (id: number) => {
     navigate(`/admin/mystery-shopping/${id}`);
@@ -62,14 +64,14 @@ const MysteryShopping = () => {
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
         <Typography variant="h4" fontWeight={500} color="text.secondary">
-          Mystery shopping
+          {t("mystery_shopping_section_title")}
         </Typography>
         <Button
           onClick={() => setDrawerOpen(true)}
           variant="outlined"
           startIcon={<PlusIcon height={20} />}
         >
-          <Typography>Add </Typography>
+          <Typography>{t("add")}</Typography>
         </Button>
       </Box>
       <BasicTable<IUseCase>
