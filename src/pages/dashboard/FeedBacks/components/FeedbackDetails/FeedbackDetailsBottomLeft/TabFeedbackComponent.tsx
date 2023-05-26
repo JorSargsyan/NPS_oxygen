@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { ESurveyType, scoreColors } from "pages/dashboard/FeedBacks/constants";
+import { ESurveyType } from "pages/dashboard/FeedBacks/constants";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { selectFeedbackDetails } from "store/slicers/feedback";
@@ -12,7 +12,7 @@ import {
   NPS_COLORS,
   eNPS_COLORS,
 } from "pages/dashboard/Home/constants";
-import { IFeedbacksItemDetails, IScore } from "store/interfaces/feedback";
+import { IFeedbacksItemDetails } from "store/interfaces/feedback";
 
 const TabFeedbackComponent = () => {
   const feedbackDetails = useSelector(selectFeedbackDetails);

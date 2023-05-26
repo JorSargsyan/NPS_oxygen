@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import { emailRule, requiredRules } from "shared/helpers/validators";
+import { requiredRules } from "shared/helpers/validators";
 import TextInput from "shared/ui/TextInput";
 
 const ContactForm = () => {

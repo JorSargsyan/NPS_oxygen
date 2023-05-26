@@ -111,7 +111,15 @@ const QuestionPreview = ({ previewModalData }: Props) => {
                 overflowY: "scroll",
               }}
             >
-              <CardContent>
+              <CardContent
+                sx={{
+                  py: { xs: "10px", lg: "16px" },
+                  px: 0,
+                  ":last-child": {
+                    pb: 0,
+                  },
+                }}
+              >
                 <Box
                   sx={
                     type === EQuestionPreviewType.MOBILE

@@ -8,7 +8,6 @@ import {
   Skeleton,
   Stack,
   SvgIcon,
-  useMediaQuery,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import LanguageMenu from "shared/components/LanguageMenu";

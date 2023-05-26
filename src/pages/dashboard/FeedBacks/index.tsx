@@ -28,7 +28,6 @@ import {
 } from "store/interfaces/feedback";
 import { setButtonLoading, setTableLoading } from "store/slicers/common";
 import {
-  ExportFeedbacks,
   GetFeedbackCauseAndMoodCategoriesList,
   GetFeedbacks,
   selectFeedbacks,
@@ -53,9 +52,6 @@ import { changeFeedbackStatus } from "./helpers";
 // import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
 // import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
 import ViewIcon from "@heroicons/react/24/solid/EyeIcon";
-import { EBaseUrl } from "store/config/constants";
-import { ERequestStatus } from "store/enums/index.enum";
-import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
@@ -69,6 +65,7 @@ import { Link } from "react-router-dom";
 import video1 from "assets/videos/video1.mp4";
 import VideoIcon from "@heroicons/react/24/solid/VideoCameraIcon";
 import useTranslation from "shared/helpers/hooks/useTranslation";
+import usePermission from "shared/helpers/hooks/usePermission";
 
 export interface IActiveRow {
   type?: number;
@@ -97,7 +94,7 @@ const Feedbacks = () => {
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
 
-  const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
+  // const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
 
   const t = useTranslation();
   // const [isAssignDrawerOpen, setAssignDrawerOpen] = useState(false);
@@ -470,7 +467,7 @@ const Feedbacks = () => {
   }, [dispatch, methods]);
 
   const handleChangeSelected = (ids: number[]) => {
-    setSelectedFeedbackIDs(ids);
+    // setSelectedFeedbackIDs(ids);
   };
 
   const handleViewFeedback = (id: number) => {
