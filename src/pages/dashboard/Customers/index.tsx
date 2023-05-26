@@ -110,9 +110,7 @@ const Customers = () => {
     window.open(fileUrl, "_blank", "noopener,noreferrer");
   };
 
-  const handleChangeSelected = (ids: number[]) => {
-    // console.log(ids);
-  };
+  const handleChangeSelected = (ids: number[]) => {};
 
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));

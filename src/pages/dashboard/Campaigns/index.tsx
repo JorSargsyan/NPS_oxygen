@@ -84,9 +84,7 @@ const CampaignsPage = () => {
     await dispatch(setTableLoading(false));
   }, [dispatch, methods]);
 
-  const handleChangeSelected = (ids: number[]) => {
-    // console.log(ids);
-  };
+  const handleChangeSelected = (ids: number[]) => {};
 
   const handleViewHistory = useCallback(
     async (rowId: number) => {
