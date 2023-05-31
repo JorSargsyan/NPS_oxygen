@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Fragment, useCallback } from "react";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import DotsMenu from "shared/ui/DotsMenu";
 import TablePaginationActions from "shared/ui/Table/components/TablePAginationActions";
 import {
@@ -61,7 +62,7 @@ const LoadingSkeleton = () => (
           my: 2,
           mx: 1,
           height: "280px",
-          width: "22%",
+          width: "21%",
           borderRadius: "20px",
         }}
       />
@@ -77,6 +78,7 @@ const CampaignCardsList = ({
   onChange,
 }: Props) => {
   const filters = filterOptions?.watch("config");
+  const t = useTranslation();
 
   const handleClickAction = useCallback(
     (action: IAction<ICampaign>, row: ICampaign) => {
@@ -154,7 +156,7 @@ const CampaignCardsList = ({
                     <Box display="flex" justifyContent={"space-between"}>
                       <StyledBox>
                         <Typography variant="body2" color="text.secondary">
-                          {item.responded || "No"} responses
+                          {item.responded || t("no")} {t("responses")}
                         </Typography>
                         <Typography
                           variant="body2"

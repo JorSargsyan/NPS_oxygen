@@ -17,8 +17,12 @@ type Props = {
 const colors = {
   [ECampaignSurveyType.Nps]: ["#A13AC6", "#DD3A97", "#643DC7"],
   [ECampaignSurveyType.ServiceQualityScore]: ["#B7CA39", "#50C2B5", "#1B7FFC"],
-  [ECampaignSurveyType.CustomerEffortScore]: ["#B663D2", "#5DC66A"],
-  [ECampaignSurveyType.CustomerSatisfactionScore]: ["#5AB4FD", "#6443C5"],
+  [ECampaignSurveyType.CustomerEffortScore]: ["#F0F1AD", "#5DC66A", "#6443C5"],
+  [ECampaignSurveyType.CustomerSatisfactionScore]: [
+    "#A6DDFE",
+    "#CEBCEC",
+    "#CD8BDF",
+  ],
 };
 
 const labels = {
@@ -28,8 +32,12 @@ const labels = {
     "Passives",
     "Promoters",
   ],
-  [ECampaignSurveyType.CustomerEffortScore]: ["Detractors", "Promoters"],
-  [ECampaignSurveyType.CustomerSatisfactionScore]: ["Detractors", "Promoters"],
+  [ECampaignSurveyType.CustomerEffortScore]: ["Disagree", "Undecided", "Agree"],
+  [ECampaignSurveyType.CustomerSatisfactionScore]: [
+    "Unsatisfied",
+    "Neutral",
+    "Satisfied",
+  ],
 };
 
 const ScoreCharts = ({
@@ -50,19 +58,14 @@ const ScoreCharts = ({
   };
 
   const series = useMemo(() => {
-    if (
-      type === ECampaignSurveyType.Nps ||
-      type === ECampaignSurveyType.ServiceQualityScore
-    ) {
+    if (scoreData) {
       return [
         scoreData?.badCount || 0,
         scoreData?.ordinaryCount || 0,
         scoreData?.goodCount || 0,
       ];
-    } else {
-      return [scoreData?.badCount || 0, scoreData?.goodCount || 0];
     }
-  }, [scoreData, type]);
+  }, [scoreData]);
 
   return (
     <Card sx={{ m: 2, minHeight: 485 }}>

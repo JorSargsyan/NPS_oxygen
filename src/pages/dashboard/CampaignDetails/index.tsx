@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
-import { setSidebarVisible } from "store/slicers/common";
+import { setCampaignLoading, setSidebarVisible } from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 import CampaignTabs from "components/campaigns/CampaignTabs";
 import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
@@ -159,10 +159,6 @@ const CampaignDetail = () => {
         commentConfig: formData?.commentConfig,
       }),
       ...(surveyDetails.details.type ===
-        Number(ECampaignSurveyType.ContactInformation) && {
-        commentConfig: formData?.contactConfig,
-      }),
-      ...(surveyDetails.details.type ===
         Number(ECampaignSurveyType.MultipleChoice) && {
         multipleConfig: formData?.multipleConfig,
       }),
@@ -203,12 +199,14 @@ const CampaignDetail = () => {
     toast.success("Campaign Saved successfully");
   };
 
-  const init = useCallback(() => {
-    Promise.all([
+  const init = useCallback(async () => {
+    await dispatch(setCampaignLoading(true));
+    await Promise.all([
       dispatch(GetCampaignById(Number(id))),
       dispatch(GetTemplates(Number(id))),
       dispatch(GetSurveysInitial(Number(id))),
     ]);
+    await dispatch(setCampaignLoading(false));
   }, [dispatch, id]);
 
   const handleResetForm = useCallback(() => {
@@ -275,7 +273,7 @@ const CampaignDetail = () => {
   };
 
   const openPreviewModal = () => {
-    const watchValues = methods.watch();
+    const watchValues = { ...methods.watch() };
     let data = {
       details: {
         ...surveyDetails?.details,
@@ -375,6 +373,7 @@ const CampaignDetail = () => {
                       right: 10,
                       display: "flex",
                       gap: 1,
+                      pt: "10px",
                     }}
                   >
                     <Button

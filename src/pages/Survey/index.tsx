@@ -12,6 +12,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -41,6 +42,8 @@ const SurveyPreview = () => {
   const [status, setStatus] = useState("");
   const [isLoading, setLoading] = useState(true);
   const location = useLocation();
+
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
   const methods = useForm({
     defaultValues: {
@@ -338,7 +341,7 @@ const SurveyPreview = () => {
       justifyContent={"center"}
       sx={{
         backgroundImage: `url(${require("assets/images/bg.png")})`,
-        height: "100vh",
+        height: windowSize.current[1],
         backgroundSize: "cover",
       }}
     >
@@ -353,29 +356,38 @@ const SurveyPreview = () => {
           >
             <Card
               sx={{
-                height: { xs: "95vh" },
+                height: { xs: `${windowSize.current[1] * 0.95}px` },
                 backgroundColor: "rgb(255 255 255 / 97%)",
+                position: "relative",
                 overflowY: "scroll",
               }}
             >
-              <CardContent sx={{ padding: { xs: "10px", lg: "16px" } }}>
+              <CardContent
+                sx={{
+                  py: { xs: "10px", lg: "16px" },
+                  px: 0,
+                  ":last-child": {
+                    pb: 0,
+                  },
+                }}
+              >
                 <Slide in={!isLoading} direction={isLoading ? "down" : "up"}>
                   <Box
                     sx={{
                       width: {
-                        xs: "90vw",
-                        sm: "80vw",
-                        md: "60vw",
-                        lg: "50vw",
+                        xs: `${windowSize.current[0] * 0.9}px`,
+                        sm: `${windowSize.current[0] * 0.8}px`,
+                        md: `${windowSize.current[0] * 0.6}px`,
+                        lg: `${windowSize.current[0] * 0.5}px`,
                       },
                     }}
                   >
                     <SurveyTemplate
-                      checkDisabled={checkDisabled}
                       methods={methods}
+                      checkDisabled={checkDisabled}
                       type={ESurveyTypes.Customer}
                       handleSkip={handleSkip}
-                      handleNext={handleNext}
+                      handleNext={methods.handleSubmit(handleNext)}
                       questionData={questionData}
                     />
                   </Box>
@@ -388,7 +400,10 @@ const SurveyPreview = () => {
         <Box alignItems={"center"} display={"flex"}>
           <Card
             sx={{
-              height: { xs: "95vh", sm: "80vh" },
+              height: {
+                xs: `${windowSize.current[1] * 0.95}px`,
+                sm: `${windowSize.current[1] * 0.8}px`,
+              },
               backgroundColor: "rgb(255 255 255 / 97%)",
             }}
           >
@@ -396,9 +411,9 @@ const SurveyPreview = () => {
               <Box
                 sx={{
                   width: {
-                    xs: "85vw",
-                    sm: "80vw",
-                    md: "60vw",
+                    xs: `${windowSize.current[0] * 0.9}px`,
+                    sm: `${windowSize.current[0] * 0.6}px`,
+                    md: `${windowSize.current[0] * 0.6}px`,
                   },
                   height: "100%",
                 }}

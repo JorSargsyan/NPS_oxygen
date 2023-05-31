@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { IActiveRow } from "pages/dashboard/FeedBacks";
 import {
   feedbackStatusList,
@@ -82,7 +82,7 @@ const FeedbackDetailsTop = () => {
               <BasicSelect<IFeedbackStatusList>
                 name="feedbackStatus"
                 defaultValue={""}
-                label="Response status"
+                label="status"
                 valueProp="value"
                 labelProp="name"
                 disabled={!hasEditFeedbackStatusPermission}

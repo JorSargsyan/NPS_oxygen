@@ -3,6 +3,7 @@ import { Fragment, useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
@@ -14,7 +15,10 @@ import {
   IAddEditTranslation,
   ITranslation,
 } from "store/interfaces/translations";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
 import { AddTranslation } from "store/slicers/translations";
 import {
   ITranslationModuleOptions,
@@ -36,6 +40,7 @@ const AddEditTranslations = ({
   onSuccess: () => void;
   editData?: ITranslation;
 }) => {
+  const t = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const methods = useForm<IFormData>({
     defaultValues: {
@@ -46,10 +51,10 @@ const AddEditTranslations = ({
       translationModule: "",
     },
   });
-  const isLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
 
   const onSubmit = async (data: IFormData) => {
-    dispatch(setLoading(true));
+    dispatch(setButtonLoading(true));
     const formData: IAddEditTranslation = {
       translationModule: Number(data.translationModule),
 
@@ -72,14 +77,14 @@ const AddEditTranslations = ({
     const { meta } = await dispatch(AddTranslation(formData));
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      dispatch(setButtonLoading(false));
       return;
     }
     const message = editData
-      ? "Country Updated Successfully"
-      : "Country Added Successfully";
+      ? t("update_translation_success")
+      : t("add_translation_success");
     toast.success(message);
-    dispatch(setLoading(false));
+    dispatch(setButtonLoading(false));
     onSuccess();
   };
 
@@ -116,7 +121,7 @@ const AddEditTranslations = ({
             <Grid item xs={12}>
               <BasicSelect<ITranslationModuleOptions>
                 name="translationModule"
-                label="Translation Module"
+                label="translation_module"
                 valueProp="value"
                 labelProp="name"
                 defaultValue=""
@@ -125,29 +130,29 @@ const AddEditTranslations = ({
             </Grid>
             <Grid item xs={12}>
               <TextInput<IFormData>
-                label="Translation key"
+                label="translation_key"
                 name="key"
                 rules={requiredRules}
                 disabled={!!editData}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="Armenian" name="am" />
+              <TextInput<IFormData> label="armenian" name="am" />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="English" name="en" />
+              <TextInput<IFormData> label="english" name="en" />
             </Grid>
             <Grid item xs={12}>
-              <TextInput<IFormData> label="Russian" name="ru" />
+              <TextInput<IFormData> label="russian" name="ru" />
             </Grid>
             <Grid item xs={12}>
               <ButtonLoader
                 fullWidth
                 onClick={methods.handleSubmit(onSubmit)}
-                isLoading={isLoading}
+                isLoading={isButtonLoading}
                 type="submit"
               >
-                <Typography>Save</Typography>
+                <Typography>{t("save")}</Typography>
               </ButtonLoader>
             </Grid>
           </Grid>

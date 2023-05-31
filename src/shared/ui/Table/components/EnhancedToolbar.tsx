@@ -4,6 +4,7 @@ import SearchInput from "shared/components/SearchInput";
 import { IEnhancedToolbar } from "../constants";
 import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
 import QuickFilterIcon from "@heroicons/react/24/outline/FunnelIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const EnhancedToolbar = ({
   rowsSelected,
@@ -15,6 +16,7 @@ const EnhancedToolbar = ({
   hasSearchInput,
   hasCustomActions = false,
 }: IEnhancedToolbar) => {
+  const t = useTranslation();
   return (
     <Toolbar
       sx={{
@@ -38,7 +40,7 @@ const EnhancedToolbar = ({
           variant="subtitle1"
           component="div"
         >
-          {rowsSelected} selected
+          {rowsSelected} {t("selected")}
         </Typography>
       ) : (
         <Box sx={{ flex: "1 1 100%" }}>
@@ -53,12 +55,12 @@ const EnhancedToolbar = ({
           onClick={() => onExport?.()}
           startIcon={<ExportIcon height={24} width={24} />}
         >
-          <Typography>Export</Typography>
+          <Typography>{t("export")}</Typography>
         </Button>
       ) : (
         <Box>
           {hasFilters && (
-            <Tooltip title="Filter list">
+            <Tooltip title={t("filter_list")}>
               <SvgIcon onClick={handleToggleFilter} sx={{ cursor: "pointer" }}>
                 <QuickFilterIcon height={24} width={24} />
               </SvgIcon>

@@ -10,6 +10,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { Controller, useFormContext } from "react-hook-form";
 import { Fragment, useCallback } from "react";
 import { debounce } from "shared/helpers";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -42,6 +43,8 @@ interface IAutocompleteProps<OptionType> {
   isEqualByID?: boolean;
   isOptionEqualToValue?: (option: OptionType, value: any) => boolean;
   onFocus?: () => void;
+  sx?: any;
+  hasTranslatedOptions?: boolean;
 }
 
 const BasicAutocomplete = <T extends { id?: number | string }>({
@@ -64,6 +67,8 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
   hasSelectAllOption = false,
   isOptionEqualToValue = undefined,
   onFocus = undefined,
+  sx,
+  hasTranslatedOptions = false,
 }: IAutocompleteProps<T>) => {
   const {
     control,
@@ -74,6 +79,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
 
   const allSelected = options?.length === watch(name)?.length;
   const filter = createFilterOptions();
+  const t = useTranslation();
 
   const handleSelectAll = (isSelected) => {
     if (!isSelected) {
@@ -85,11 +91,13 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
 
   const getOptionLabel = (option: T) => {
     if (typeof option === "string") {
-      return option;
+      return hasTranslatedOptions ? t(option) : option;
     } else if (!optionLabel) {
       return "";
     }
-    return option[optionLabel as string];
+    return hasTranslatedOptions
+      ? t(option[optionLabel as string])
+      : option[optionLabel as string];
   };
 
   const errorInfo = useCallback(() => {
@@ -132,6 +140,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
             {...field}
             disabled={disabled}
             size={size}
+            sx={sx}
             multiple={multiple}
             onChange={handleChange}
             groupBy={groupBy}
@@ -179,7 +188,7 @@ const BasicAutocomplete = <T extends { id?: number | string }>({
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={inputLabel}
+                label={t(inputLabel)}
                 error={!!errorInfo?.() && !disabled}
                 helperText={
                   !disabled && !!errorInfo()

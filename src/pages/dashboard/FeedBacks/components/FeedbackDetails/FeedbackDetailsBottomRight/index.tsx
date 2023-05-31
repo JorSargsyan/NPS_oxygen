@@ -31,7 +31,7 @@ const FeedbackDetailsBottomRight = (props: Props) => {
         ? [
             {
               index: EFeedbackDetailsBottomRightTabsOptions.Notes,
-              label: "Notes",
+              label: "notes",
               children: <TabNotesComponent />,
             },
           ]
@@ -40,7 +40,7 @@ const FeedbackDetailsBottomRight = (props: Props) => {
         ? [
             {
               index: EFeedbackDetailsBottomRightTabsOptions.Redirection,
-              label: "Redirection",
+              label: "redirection",
               children: <TabRedirectionComponent />,
             },
           ]
@@ -49,7 +49,7 @@ const FeedbackDetailsBottomRight = (props: Props) => {
         ? [
             {
               index: EFeedbackDetailsBottomRightTabsOptions.Root_cause,
-              label: "Root cause",
+              label: "root_cause",
               children: <TabRootCauseComponent />,
             },
           ]
@@ -58,7 +58,7 @@ const FeedbackDetailsBottomRight = (props: Props) => {
         ? [
             {
               index: EFeedbackDetailsBottomRightTabsOptions.History,
-              label: "History",
+              label: "history",
               children: <TabHistoryComponent />,
             },
           ]

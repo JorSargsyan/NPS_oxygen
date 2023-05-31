@@ -14,8 +14,9 @@ import { requiredRules } from "shared/helpers/validators";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import TextInput from "shared/ui/TextInput";
 import {
-  selectLoadingState,
+  selectButtonLoadingState,
   selectPermissionGroups,
+  setButtonLoading,
 } from "store/slicers/common";
 import { IRoleDetailed } from "store/interfaces/roles";
 import { selectUserGroups } from "store/slicers/users";
@@ -26,6 +27,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { CreateRole, UpdateRole } from "store/slicers/roles";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 interface IFormData {
   name: string;
@@ -50,9 +52,11 @@ const AddEditRoles = ({
   const userGroups = useSelector(selectUserGroups);
   const dispatch = useAsyncDispatch();
   const methods = useForm<IFormData>();
-  const isLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
+  const t = useTranslation();
 
   const onSubmit = async (data: IFormData) => {
+    await dispatch(setButtonLoading(true));
     const { displayName, name, permissions, dataVisibility } = data;
     const permissionIds = Object.values(permissions).reduce((acc, curr) => {
       return acc.concat(curr.map((i) => i.id));
@@ -69,17 +73,19 @@ const AddEditRoles = ({
     if (editData) {
       const { meta } = await dispatch(UpdateRole({ formData, id: rowId }));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       toast.success("Role is Updated");
     } else {
       const { meta } = await dispatch(CreateRole(formData));
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       toast.success("Role is Created");
     }
-
+    await dispatch(setButtonLoading(false));
     onSuccess?.();
   };
 
@@ -90,7 +96,7 @@ const AddEditRoles = ({
       permGroups.forEach((perm) => {
         permGroupData[perm.group.replace("bk_pm_gr_", "")] =
           perm.permissions.filter((i) =>
-            editData?.permissionIds.includes(i.id)
+            editData?.permissionIds?.includes(i.id)
           );
       });
       methods.reset({
@@ -112,21 +118,21 @@ const AddEditRoles = ({
             <Grid container item xs={12} spacing={3}>
               <Grid item xs={4}>
                 <TextInput<IFormData>
-                  label="Role Name"
+                  label="role_name"
                   name="name"
                   rules={requiredRules}
                 />
               </Grid>
               <Grid item xs={4}>
                 <TextInput<IFormData>
-                  label="Display name"
+                  label="role_display_name"
                   name="displayName"
                   rules={requiredRules}
                 />
               </Grid>
               <Grid item xs={4}>
                 <BasicAutocomplete<IUserGroup>
-                  inputLabel="User Groups"
+                  inputLabel="user_groups"
                   name="groupIds"
                   options={userGroups}
                   multiple
@@ -146,17 +152,19 @@ const AddEditRoles = ({
                         <FormControlLabel
                           value="1"
                           control={<Radio />}
-                          label="General"
+                          label={t("bk_roles_data_visibility_general")}
                         />
                         <FormControlLabel
                           value="2"
                           control={<Radio />}
-                          label="Subordinate employees"
+                          label={t(
+                            "bk_roles_data_visibility_subordinate_employees"
+                          )}
                         />
                         <FormControlLabel
                           value="3"
                           control={<Radio />}
-                          label="Personal"
+                          label={t("bk_roles_data_visibility_personal")}
                         />
                       </RadioGroup>
                     );
@@ -170,16 +178,17 @@ const AddEditRoles = ({
                   name="permissions.customer"
                   hasSelectAllOption
                   options={permGroups?.[0]?.permissions}
-                  inputLabel={"Customer Permissions"}
+                  inputLabel={"customer_permissions"}
                   multiple
                   defaultValue={[]}
                   prefix="permissions"
                   optionLabel="name"
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Feedbacks Permissions"
+                  inputLabel="responses_permissions"
                   name="permissions.feedbacks"
                   hasSelectAllOption
                   options={permGroups?.[1]?.permissions}
@@ -187,11 +196,12 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Dashboard Permissions"
+                  inputLabel="dashboard_permissions"
                   name="permissions.dashboard"
                   hasSelectAllOption
                   options={permGroups?.[2]?.permissions}
@@ -199,11 +209,12 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Campaign Permissions"
+                  inputLabel="surveys_permissions"
                   name="permissions.campaign"
                   hasSelectAllOption
                   options={permGroups?.[3]?.permissions}
@@ -211,11 +222,12 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Roles Permissions"
+                  inputLabel="roles_permissions"
                   name="permissions.roles"
                   hasSelectAllOption
                   options={permGroups?.[4]?.permissions}
@@ -223,11 +235,12 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Users Permissions"
+                  inputLabel="users_permissions"
                   name="permissions.users"
                   hasSelectAllOption
                   options={permGroups?.[5]?.permissions}
@@ -235,11 +248,12 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
               <Grid item xs={6}>
                 <BasicAutocomplete<IPermGroupPermission>
-                  inputLabel="Translation Permissions"
+                  inputLabel="translation_permissions"
                   name="permissions.translations"
                   hasSelectAllOption
                   options={permGroups?.[6]?.permissions}
@@ -247,6 +261,7 @@ const AddEditRoles = ({
                   optionLabel="name"
                   prefix="permissions"
                   multiple
+                  hasTranslatedOptions
                 />
               </Grid>
             </Grid>
@@ -261,11 +276,11 @@ const AddEditRoles = ({
               <ButtonLoader
                 fullWidth
                 onClick={methods.handleSubmit(onSubmit)}
-                isLoading={isLoading}
+                isLoading={isButtonLoading}
                 disabled={!Object.keys(methods.formState.touchedFields).length}
                 type="submit"
               >
-                <Typography>{editData ? "Update" : "Save"}</Typography>
+                <Typography>{editData ? t("update") : t("save")}</Typography>
               </ButtonLoader>
             </Box>
           </Box>

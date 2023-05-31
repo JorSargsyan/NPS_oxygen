@@ -35,7 +35,7 @@ const HistoryView = ({ data }: { data: ICampaignLog[] }) => {
         </Typography>
       );
     },
-    label: "Name",
+    label: "name",
   };
 
   return (

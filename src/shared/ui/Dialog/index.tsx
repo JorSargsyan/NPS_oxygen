@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CrossIcon from "@mui/icons-material/Close";
 import React, { ReactNode } from "react";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 export interface ISharedDialogProps {
   open: boolean;
@@ -41,14 +42,15 @@ const SharedDialog = ({
   fullScreen = false,
   sx,
 }: ISharedDialogProps) => {
+  const t = useTranslation();
   const handleSubmit = () => {
-    setOpen(false);
     onSuccess?.();
+    setOpen(false);
   };
 
   const handleClose = () => {
-    setOpen(false);
     handleCloseCb?.();
+    setOpen(false);
   };
 
   return (
@@ -65,7 +67,7 @@ const SharedDialog = ({
         alignItems="center"
         justifyContent={"space-between"}
       >
-        <DialogTitle style={{ cursor: "move" }}>{title}</DialogTitle>
+        <DialogTitle style={{ cursor: "move" }}>{t(title)}</DialogTitle>
         <Box mr={2}>
           <Button onClick={handleClose}>
             <CrossIcon />
@@ -75,7 +77,7 @@ const SharedDialog = ({
       <Divider />
       <DialogContent>
         {description ? (
-          <DialogContentText>{description}</DialogContentText>
+          <DialogContentText>{t(description)}</DialogContentText>
         ) : (
           children
         )}
@@ -83,9 +85,9 @@ const SharedDialog = ({
       {hasActions ? (
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
-            Cancel
+            {t("cancel")}
           </Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit}>{t("submit")}</Button>
         </DialogActions>
       ) : null}
     </Dialog>

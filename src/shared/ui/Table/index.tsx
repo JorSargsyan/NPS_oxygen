@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { selectTableLoadingState } from "store/slicers/common";
 import DotsMenu from "../DotsMenu";
 import EnhancedToolbar from "./components/EnhancedToolbar";
@@ -45,6 +46,7 @@ const BasicTable = <T extends { id: number }>({
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
   const tableLoading = useSelector(selectTableLoadingState);
+  const t = useTranslation();
 
   const handleCheckAll = useCallback(
     (_, checked) => {
@@ -87,7 +89,7 @@ const BasicTable = <T extends { id: number }>({
 
   const getActionColumn = useCallback((): IColumn => {
     return {
-      label: "Actions",
+      label: t("actions"),
       layout: (row: T) => {
         const actions = getActions?.(row) || [];
         return (
@@ -99,7 +101,7 @@ const BasicTable = <T extends { id: number }>({
         );
       },
     };
-  }, [getActions, handleClickAction]);
+  }, [getActions, handleClickAction, t]);
 
   const columnsData = useMemo(() => {
     const hasActions = !!getActions;
@@ -117,6 +119,7 @@ const BasicTable = <T extends { id: number }>({
     });
     onChange?.();
   };
+
   const handleSort = useCallback(
     (prop: string, direction: string) => (_: any) => {
       filterOptions?.reset({
@@ -169,12 +172,10 @@ const BasicTable = <T extends { id: number }>({
                   filters?.sortDirection === "asc" ? "desc" : "asc"
                 )}
               >
-                {column.label}
+                {t(column.label)}
               </TableSortLabel>
             ) : (
-              <Typography fontSize={12} >
-                {column.label}
-              </Typography>
+              <Typography fontSize={12}>{t(column.label)}</Typography>
             )}
           </TableCell>
         ))}
@@ -192,6 +193,7 @@ const BasicTable = <T extends { id: number }>({
     selectable,
     selectedList?.length,
     sortable,
+    t,
   ]);
 
   const generateSingleRow = (row: any) => {
@@ -239,6 +241,7 @@ const BasicTable = <T extends { id: number }>({
   const getPagination = (component: any = "td") => {
     return paginatedData?.displayData?.length && enablePagination ? (
       <TablePagination
+        labelRowsPerPage={t("rows_per_page")}
         component={component}
         count={paginatedData?.totalRecords}
         rowsPerPage={filters?.length}

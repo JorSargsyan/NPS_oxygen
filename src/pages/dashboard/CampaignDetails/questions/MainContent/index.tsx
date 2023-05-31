@@ -2,7 +2,6 @@ import { Card, CardContent, Paper, Skeleton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Fragment, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { EBaseUrl } from "store/config/constants";
 import defaultImg from "assets/images/survey_bg.png";
 import { selectSurveyInfo } from "store/slicers/campaignDetail";
 import { CampaignSurveyForms } from "./constants";
@@ -35,7 +34,7 @@ const MainContent = () => {
 
   return (
     <Fragment>
-      {!loadingState && surveyInfo.details ? (
+      {!loadingState && surveyInfo?.details && surveyInfo?.template ? (
         <Box
           component={Paper}
           elevation={3}

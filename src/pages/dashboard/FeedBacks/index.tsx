@@ -1,7 +1,7 @@
 import CommentIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterTextIcon";
 import {
-  Button,
-  IconButton,
+  // Button,
+  // IconButton,
   MenuItem,
   Select,
   SvgIcon,
@@ -26,9 +26,8 @@ import {
   IFeedbackCauseAndMood,
   IScore,
 } from "store/interfaces/feedback";
-import { setTableLoading } from "store/slicers/common";
+import { setButtonLoading, setTableLoading } from "store/slicers/common";
 import {
-  ExportFeedbacks,
   GetFeedbackCauseAndMoodCategoriesList,
   GetFeedbacks,
   selectFeedbacks,
@@ -50,12 +49,9 @@ import {
   viewCommentsDialogConfig,
 } from "./constants";
 import { changeFeedbackStatus } from "./helpers";
-import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
-import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
+// import ExportIcon from "@heroicons/react/24/solid/CircleStackIcon";
+// import AssignIcon from "@heroicons/react/24/solid/UsersIcon";
 import ViewIcon from "@heroicons/react/24/solid/EyeIcon";
-import { EBaseUrl } from "store/config/constants";
-import { ERequestStatus } from "store/enums/index.enum";
-import usePermission from "shared/helpers/hooks/usePermission";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { EScoreTypes } from "store/enums/feedbacks.enum";
 import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
@@ -68,6 +64,8 @@ import {
 import { Link } from "react-router-dom";
 import video1 from "assets/videos/video1.mp4";
 import VideoIcon from "@heroicons/react/24/solid/VideoCameraIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
+import usePermission from "shared/helpers/hooks/usePermission";
 
 export interface IActiveRow {
   type?: number;
@@ -96,8 +94,10 @@ const Feedbacks = () => {
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
 
-  const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
-  const [isAssignDrawerOpen, setAssignDrawerOpen] = useState(false);
+  // const [selectedFeedbackIDs, setSelectedFeedbackIDs] = useState([]);
+
+  const t = useTranslation();
+  // const [isAssignDrawerOpen, setAssignDrawerOpen] = useState(false);
   const dispatch = useAsyncDispatch();
   const feedbacks = useSelector(selectFeedbacks);
 
@@ -125,8 +125,8 @@ const Feedbacks = () => {
   const hasQuickFilterByUserVisibilityPermission = usePermission(
     EFeedbackPermissions.Quick_filter_by_user_visibility
   );
-  const hasExportPermission = usePermission(EFeedbackPermissions.Export);
-  const hasAssignPermission = usePermission(EFeedbackPermissions.Assign);
+  // const hasExportPermission = usePermission(EFeedbackPermissions.Export);
+  // const hasAssignPermission = usePermission(EFeedbackPermissions.Assign);
   const hasSearchPermission = usePermission(EFeedbackPermissions.Search);
 
   const methods = useForm({
@@ -151,7 +151,7 @@ const Feedbacks = () => {
 
   const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
-
+    await dispatch(setButtonLoading(true));
     const filtersCombined = methods
       .watch("config.filters")
       .map((filter, index) => {
@@ -211,25 +211,26 @@ const Feedbacks = () => {
     delete formData["quickFilters"];
     await dispatch(GetFeedbacks(formData));
     setFiltersOpen(false);
+    await dispatch(setButtonLoading(false));
     await dispatch(setTableLoading(false));
   }, [dispatch, methods]);
 
   const feedbackColumns = useMemo(() => {
     return [
-      { label: "ID", field: "id" },
+      { label: "id", field: "id" },
       ...(hasGridCampaignColumnPermission
-        ? [{ label: "Campaign", field: "campaignName" }]
+        ? [{ label: "survey", field: "campaignName" }]
         : []),
       ...(hasGridColumnCustomerAssignPermission
         ? [
-            { label: "Customer", field: "customerName" },
-            { label: "CX agent", field: "assignedTo" },
+            { label: "customer", field: "customerName" },
+            { label: "cx_agent", field: "assignedTo" },
           ]
         : []),
       ...(hasGridColumnScorePermission
         ? [
             {
-              label: "Score",
+              label: "score",
               layout: (row: IFeedback) => {
                 const bgColor = (score: IScore) => {
                   const val = Number(score?.value);
@@ -272,12 +273,12 @@ const Feedbacks = () => {
           ]
         : []),
       ...(hasGridColumnDatePermission
-        ? [{ label: "Submission Date", field: "creationDate" }]
+        ? [{ label: "submission_date", field: "creationDate" }]
         : []),
       ...(hasGridColumnStatusPermission
         ? [
             {
-              label: "Status",
+              label: "status",
               layout: (row: IFeedback) => {
                 return (
                   <Box>
@@ -317,7 +318,7 @@ const Feedbacks = () => {
       ...(hasGridViewFeedbackCardPermission
         ? [
             {
-              label: "Comment",
+              label: "comment",
               layout: (row: IFeedback) => {
                 if (!row?.comments?.length) {
                   return;
@@ -336,7 +337,7 @@ const Feedbacks = () => {
       ...(hasGridViewFeedbackCardPermission
         ? [
             {
-              label: "Details",
+              label: "details",
               layout: (row: IFeedback) => {
                 return (
                   <Box onClick={() => handleViewFeedback(row.id)}>
@@ -350,7 +351,7 @@ const Feedbacks = () => {
           ]
         : []),
       {
-        label: "Video/Voice",
+        label: "video_voice",
         layout: () => {
           return (
             <Link target="_blank" to={video1}>
@@ -466,7 +467,7 @@ const Feedbacks = () => {
   }, [dispatch, methods]);
 
   const handleChangeSelected = (ids: number[]) => {
-    setSelectedFeedbackIDs(ids);
+    // setSelectedFeedbackIDs(ids);
   };
 
   const handleViewFeedback = (id: number) => {
@@ -489,83 +490,83 @@ const Feedbacks = () => {
     await refetchFeedbacks();
   };
 
-  const openAssignFeedbackDrawer = () => {
-    const selectedFeedbackList = feedbacks.displayData.filter((feedback) =>
-      selectedFeedbackIDs.includes(feedback.id)
-    );
-    const hasAssignedUser = selectedFeedbackList.find(
-      (feedback) => !!feedback.assignedTo.trim()
-    );
-    setActiveRow({ hasAssignedUser: !!hasAssignedUser });
-    setAssignDrawerOpen(true);
-  };
+  // const openAssignFeedbackDrawer = () => {
+  //   const selectedFeedbackList = feedbacks.displayData.filter((feedback) =>
+  //     selectedFeedbackIDs.includes(feedback.id)
+  //   );
+  //   const hasAssignedUser = selectedFeedbackList.find(
+  //     (feedback) => !!feedback.assignedTo.trim()
+  //   );
+  //   setActiveRow({ hasAssignedUser: !!hasAssignedUser });
+  //   setAssignDrawerOpen(true);
+  // };
 
-  const assignFeedbackSubmitCb = async () => {
-    await refetchFeedbacks();
-    setActiveRow(undefined);
-    setAssignDrawerOpen(false);
-  };
+  // const assignFeedbackSubmitCb = async () => {
+  //   await refetchFeedbacks();
+  //   setActiveRow(undefined);
+  //   setAssignDrawerOpen(false);
+  // };
 
-  const onExportFeedbacks = useCallback(async () => {
-    const dateQuickFiltersWatch = methods.watch("config.quickFilters.range");
-    const dateFilters = [
-      {
-        dateId: 1,
-        key: feedbackFilterTypesKeys.DATE,
-        queryCondition: 4,
-        value: dateQuickFiltersWatch?.[0].format("MM/DD/YYYY"),
-      },
-      {
-        dateId: 1,
-        key: feedbackFilterTypesKeys.DATE,
-        queryCondition: 5,
-        value: dateQuickFiltersWatch?.[1].format("MM/DD/YYYY"),
-      },
-    ];
+  // const onExportFeedbacks = useCallback(async () => {
+  //   const dateQuickFiltersWatch = methods.watch("config.quickFilters.range");
+  //   const dateFilters = [
+  //     {
+  //       dateId: 1,
+  //       key: feedbackFilterTypesKeys.DATE,
+  //       queryCondition: 4,
+  //       value: dateQuickFiltersWatch?.[0].format("MM/DD/YYYY"),
+  //     },
+  //     {
+  //       dateId: 1,
+  //       key: feedbackFilterTypesKeys.DATE,
+  //       queryCondition: 5,
+  //       value: dateQuickFiltersWatch?.[1].format("MM/DD/YYYY"),
+  //     },
+  //   ];
 
-    const formData = {
-      conditionMatch: 1,
-      filters: dateFilters,
-      scoreFilter: [],
-    };
-    const { meta, payload } = await dispatch(ExportFeedbacks(formData));
-    if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      return;
-    }
-    const fileUrl = EBaseUrl.BaseURL + payload;
-    window.open(fileUrl, "_blank", "noopener,noreferrer");
-  }, [dispatch, methods]);
+  //   const formData = {
+  //     conditionMatch: 1,
+  //     filters: dateFilters,
+  //     scoreFilter: [],
+  //   };
+  //   const { meta, payload } = await dispatch(ExportFeedbacks(formData));
+  //   if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+  //     return;
+  //   }
+  //   const fileUrl = EBaseUrl.BaseURL + payload;
+  //   window.open(fileUrl, "_blank", "noopener,noreferrer");
+  // }, [dispatch, methods]);
 
-  const tableCustomActions = useCallback(() => {
-    return (
-      <Box display="flex" gap={3} justifyContent="flex-end">
-        {hasAssignPermission && (
-          <Button
-            variant="contained"
-            onClick={openAssignFeedbackDrawer}
-            startIcon={<AssignIcon height={24} width={24} />}
-            disabled={!selectedFeedbackIDs?.length}
-          >
-            <Typography>Assign</Typography>
-          </Button>
-        )}
+  // const tableCustomActions = useCallback(() => {
+  //   return (
+  //     <Box display="flex" gap={3} justifyContent="flex-end">
+  //       {hasAssignPermission && (
+  //         <Button
+  //           variant="contained"
+  //           onClick={openAssignFeedbackDrawer}
+  //           startIcon={<AssignIcon height={24} width={24} />}
+  //           disabled={!selectedFeedbackIDs?.length}
+  //         >
+  //           <Typography>Assign</Typography>
+  //         </Button>
+  //       )}
 
-        {hasExportPermission && (
-          <Button
-            variant="contained"
-            onClick={onExportFeedbacks}
-            startIcon={<ExportIcon height={24} width={24} />}
-            disabled={
-              !methods.watch("config.quickFilters.range")?.every((i) => !!i)
-            }
-          >
-            <Typography>Export</Typography>
-          </Button>
-        )}
-      </Box>
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFeedbackIDs, methods, onExportFeedbacks]);
+  //       {hasExportPermission && (
+  //         <Button
+  //           variant="contained"
+  //           onClick={onExportFeedbacks}
+  //           startIcon={<ExportIcon height={24} width={24} />}
+  //           disabled={
+  //             !methods.watch("config.quickFilters.range")?.every((i) => !!i)
+  //           }
+  //         >
+  //           <Typography>Export</Typography>
+  //         </Button>
+  //       )}
+  //     </Box>
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedFeedbackIDs, methods, onExportFeedbacks]);
 
   const init = useCallback(async () => {
     await dispatch(setTableLoading(true));
@@ -597,13 +598,13 @@ const Feedbacks = () => {
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
         <Typography variant="h4" fontWeight={500} color="text.secondary">
-          Responses
+          {t("responses_section_title")}
         </Typography>
         <SvgIcon
           onClick={() => setFiltersOpen(true)}
           sx={{ cursor: "pointer" }}
         >
-          <Tooltip title="Advanced filters">
+          <Tooltip title={t("advanced_filters")}>
             <AdvancedFilterIcon />
           </Tooltip>
         </SvgIcon>
@@ -624,7 +625,7 @@ const Feedbacks = () => {
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
         onClose={handleClose}
-        title="Edit Response Status"
+        title={t("edit_response_status")}
       >
         {activeRow?.type && (
           <FeedbackStatusDrawer
@@ -638,7 +639,7 @@ const Feedbacks = () => {
         open={isFiltersOpen}
         setOpen={setFiltersOpen}
         onClose={() => setFiltersOpen(false)}
-        title={`Advanced filters`}
+        title={t("advanced_filters")}
       >
         {isFiltersOpen ? (
           <Filters

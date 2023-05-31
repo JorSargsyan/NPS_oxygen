@@ -3,6 +3,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { Fragment, useCallback, useState } from "react";
 import { IAction } from "../Table/constants";
 import MoreIcon from "@heroicons/react/24/outline/EllipsisHorizontalIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 export interface IDotMenuProps<T> {
   actions: IAction<T>[];
@@ -17,6 +18,7 @@ const DotsMenu = <T extends unknown>({
 }: IDotMenuProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, onMenuOpen] = useState(false);
+  const t = useTranslation();
 
   const handleClick = useCallback((event: any) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +53,7 @@ const DotsMenu = <T extends unknown>({
               key={index}
               onClick={() => handleClickMenuItem(action, row)}
             >
-              {action.label}
+              {t(action.label)}
             </MenuItem>
           );
         })}

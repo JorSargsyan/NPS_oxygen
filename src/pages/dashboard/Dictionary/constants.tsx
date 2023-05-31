@@ -7,11 +7,11 @@ import { ITranslatedKey, ITranslation } from "store/interfaces/translations";
 
 export const columns: IColumn[] = [
   {
-    label: "Translation key",
+    label: "translation_key",
     field: "key",
   },
   {
-    label: "Armenian",
+    label: "armenian",
     layout: (row: ITranslation) => {
       const translation = row?.captions.find(
         (i: ITranslatedKey) => i.languageId === ELanguageIds.Armenian
@@ -20,7 +20,7 @@ export const columns: IColumn[] = [
     },
   },
   {
-    label: "English",
+    label: "english",
     layout: (row: ITranslation) => {
       const translation = row?.captions.find(
         (i: ITranslatedKey) => i.languageId === ELanguageIds.English
@@ -29,7 +29,7 @@ export const columns: IColumn[] = [
     },
   },
   {
-    label: "Russian",
+    label: "russian",
     layout: (row: ITranslation) => {
       const translation = row?.captions.find(
         (i: ITranslatedKey) => i.languageId === ELanguageIds.Russian
@@ -47,35 +47,35 @@ export interface ITranslationModuleOptions {
 export const translationModuleOptions: ITranslationModuleOptions[] = [
   {
     value: ETranslationModules.Dashboard,
-    name: "Dashboard",
+    name: "overview_section_title",
   },
   {
     value: ETranslationModules.Feedback,
-    name: "Feedback",
+    name: "responses_section_title",
   },
   {
     value: ETranslationModules.Campaigns,
-    name: "Campaigns",
+    name: "surveys_section_title",
   },
   {
     value: ETranslationModules.Customers,
-    name: "Customers",
+    name: "customers_section_title",
   },
   {
     value: ETranslationModules.Roles,
-    name: "Roles",
+    name: "roles_section_title",
   },
   {
     value: ETranslationModules.Users,
-    name: "Users",
+    name: "users_section_title",
   },
   {
     value: ETranslationModules.Translation,
-    name: "Translations",
+    name: "translations_section_title",
   },
 ];
 
 export const deleteTranslationWarningConfig = {
-  title: "Warning",
-  description: "Are you sure you want to delete this translation?",
+  title: "warning",
+  description: "delete_translation",
 };

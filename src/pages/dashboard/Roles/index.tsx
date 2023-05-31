@@ -31,6 +31,7 @@ import { GetUserGroups } from "store/slicers/users";
 import { ERequestStatus } from "store/enums/index.enum";
 import { ERolesPermissions } from "resources/permissions/permissions.enum";
 import usePermission from "shared/helpers/hooks/usePermission";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const RolesPage = () => {
   const [activeRow, setActiveRow] = useState<IRoleDetailed>();
@@ -38,6 +39,7 @@ const RolesPage = () => {
   const [isWarningOpen, setWarningOpen] = useState(false);
   const dispatch = useAsyncDispatch();
   const roles = useSelector(selectRoles);
+  const t = useTranslation();
 
   const hasEditPermission = usePermission(ERolesPermissions.Edit);
   const hasCreatePermission = usePermission(ERolesPermissions.Create);
@@ -130,7 +132,7 @@ const RolesPage = () => {
     <Box p={4}>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h4" fontWeight={500} color="text.secondary">
-          Roles
+          {t("roles_section_title")}
         </Typography>
         {hasCreatePermission && (
           <Button
@@ -142,7 +144,7 @@ const RolesPage = () => {
             variant="outlined"
             onClick={() => setDrawerOpen(true)}
           >
-            Add
+            {t("add")}
           </Button>
         )}
       </Box>
@@ -159,7 +161,7 @@ const RolesPage = () => {
         setOpen={setDrawerOpen}
         onClose={handleClose}
         width={RIGHT_SIDEBAR_WIDTH_EXTENDED}
-        title={`${activeRow ? "Edit" : "Add"} Role`}
+        title={`${activeRow ? t("edit") : t("add")} ${t("role")}`}
       >
         <AddEditRoles
           editData={activeRow}

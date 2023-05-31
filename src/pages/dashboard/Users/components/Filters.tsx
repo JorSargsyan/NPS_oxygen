@@ -18,9 +18,15 @@ import { getQueryParams } from "shared/helpers/getQueryParams";
 import { GetFilterValues } from "store/slicers/users";
 import { ERequestStatus } from "store/enums/index.enum";
 import { IFilterOption } from "store/interfaces/main";
+import { useSelector } from "react-redux";
+import { selectButtonLoadingState } from "store/slicers/common";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const Filters = ({ methods, onChange, fieldsConfig }) => {
   const dispatch = useAsyncDispatch();
+  const isLoading = useSelector(selectButtonLoadingState);
+  const t = useTranslation();
+
   const onSubmit = () => {
     onChange();
   };
@@ -50,6 +56,21 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
   const handleReset = () => {
     methods.setValue("config.filters", [defaultFilterRowValue]);
     onChange?.();
+  };
+
+  const handleResetRow = (val, index) => {
+    const actual = userFilterTypes.find((i) => {
+      return Number(i.value) === Number(val);
+    });
+    const newValue = {
+      ...defaultFilterRowValue,
+      type: actual,
+    };
+    if (filtersWatch?.[index]?.queryCondition) {
+      const arr = [...filtersWatch];
+      arr.splice(index, 1, newValue);
+      methods.setValue("config.filters", arr);
+    }
   };
 
   const handleFetchValues = async (index: number) => {
@@ -91,7 +112,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <Box flex={1}>
             <BasicSelect
               size="small"
-              label="Condition"
+              label="condition"
               valueProp="value"
               labelProp="name"
               options={FilterConditionMatchList}
@@ -99,7 +120,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             />
           </Box>
           <Box flex={3}>
-            <Typography ml={2}>of the users match following filters</Typography>
+            <Typography ml={2}>{t("users_match_condition")}</Typography>
           </Box>
           <Box flex={1} justifyContent={"flex-end"} display="flex">
             <Button
@@ -107,7 +128,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
               startIcon={<ResetIcon height={24} width={24} />}
               variant="outlined"
             >
-              <Typography>Reset</Typography>
+              <Typography>{t("reset")}</Typography>
             </Button>
           </Box>
         </Box>
@@ -118,7 +139,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                 <Grid item xs={3}>
                   <BasicSelect
                     size="small"
-                    label="Type"
+                    label="type"
                     getValue={(val) => val?.value || ""}
                     defaultValue={""}
                     labelProp="label"
@@ -129,6 +150,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                       );
                       return actual;
                     }}
+                    onChangeCB={(val: number) => handleResetRow(val, index)}
                     options={userFilterTypes}
                     name={`config.filters[${index}].type`}
                   />
@@ -136,7 +158,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                 <Grid item xs={3}>
                   <BasicSelect
                     size="small"
-                    label="Condition"
+                    label="condition"
                     valueProp="value"
                     labelProp="name"
                     clearable
@@ -148,13 +170,18 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                 <Grid item xs={3}>
                   <BasicAutocomplete
                     size="small"
-                    inputLabel="Value"
+                    inputLabel="value"
                     options={filterValues[index] || []}
                     name={`config.filters[${index}].value`}
                     defaultValue={""}
                     optionLabel="label"
                     onChangeCB={() => handleFetchValues(index)}
                     multiple={false}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: 51,
+                      },
+                    }}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -203,9 +230,9 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <ButtonLoader
             disabled={getApplyStatus}
             onClick={onSubmit}
-            isLoading={false}
+            isLoading={isLoading}
           >
-            <Typography>Apply</Typography>
+            <Typography>{t("apply")}</Typography>
           </ButtonLoader>
         </Box>
       </FormProvider>

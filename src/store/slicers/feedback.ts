@@ -41,6 +41,7 @@ const initialState: IFeedbacksState = {
   feedbackTasks: [],
   feedbackTaskLogs: [],
   feedbackFilterValues: null,
+  causeAndMoodValues: null,
 };
 
 export const GetFeedbacks = createAsyncThunk<
@@ -329,6 +330,9 @@ const FeedbacksSlice = createSlice({
     builder.addCase(GetFeedbackTaskLogs.fulfilled, (state, { payload }) => {
       state.feedbackTaskLogs = payload;
     });
+    builder.addCase(GetFeedbackCauseAndMood.fulfilled, (state, { payload }) => {
+      state.causeAndMoodValues = payload;
+    });
     builder.addCase(
       GetFeedbackFilterValues.fulfilled,
       (state, { meta, payload }) => {
@@ -391,5 +395,7 @@ export const selectFeedbackTaskLogs = (state: IState) =>
   state.feedbacks.feedbackTaskLogs;
 export const selectFeedbackFilterValues = (state: IState) =>
   state.feedbacks.feedbackFilterValues;
+export const selectCauseMoodValues = (state: IState) =>
+  state.feedbacks.causeAndMoodValues;
 
 export default FeedbacksSlice.reducer;

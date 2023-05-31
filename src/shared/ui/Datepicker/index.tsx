@@ -8,7 +8,7 @@ export interface IDatePickerProps {
   label: string;
   rules?: { [k: string]: { value: boolean; message: string } };
   sx?: SxProps<any>;
-  defaultValue: Date;
+  defaultValue?: Date;
 }
 
 const BasicDatePicker = ({

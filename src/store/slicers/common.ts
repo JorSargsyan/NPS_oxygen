@@ -21,6 +21,8 @@ const initialState: ICommonState = {
   permissionGroups: [],
   managers: [],
   sidebarVisible: true,
+  buttonLoading: false,
+  isTranslationsLoaded: false,
 };
 
 export const GetPermissions = createAsyncThunk<{ [key: string]: any }>(
@@ -62,6 +64,9 @@ const commonSlice = createSlice({
     setLoading(state, { payload }) {
       state.loading = payload;
     },
+    setButtonLoading(state, { payload }) {
+      state.buttonLoading = payload;
+    },
     setCampaignLoading(state, { payload }) {
       state.campaignLoading = payload;
     },
@@ -73,6 +78,9 @@ const commonSlice = createSlice({
     },
     setSidebarVisible(state, { payload }) {
       state.sidebarVisible = payload;
+    },
+    setTranslationsLoaded(state, { payload }) {
+      state.isTranslationsLoaded = payload;
     },
   },
   extraReducers: (builder) => {
@@ -97,8 +105,12 @@ export const {
   setTableLoading,
   setSidebarVisible,
   setCampaignLoading,
+  setButtonLoading,
+  setTranslationsLoaded,
 } = commonSlice.actions;
 export const selectLoadingState = (state: IState) => state.common.loading;
+export const selectButtonLoadingState = (state: IState) =>
+  state.common.buttonLoading;
 export const selectCampaignLoading = (state: IState) =>
   state.common.campaignLoading;
 export const selectTableLoadingState = (state: IState) =>
@@ -110,4 +122,7 @@ export const selectPermissionGroups = (state: IState) =>
 export const selectManagers = (state: IState) => state.common.managers;
 export const selectSidebarVisible = (state: IState) =>
   state.common.sidebarVisible;
+export const selectIsTranslationLoaded = (state: IState) =>
+  state.common.isTranslationsLoaded;
+
 export default commonSlice.reducer;

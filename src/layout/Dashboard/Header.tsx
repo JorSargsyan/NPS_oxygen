@@ -4,10 +4,10 @@ import {
   Avatar,
   Box,
   IconButton,
+  LinearProgress,
   Skeleton,
   Stack,
   SvgIcon,
-  useMediaQuery,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import LanguageMenu from "shared/components/LanguageMenu";
@@ -15,7 +15,11 @@ import { usePopover } from "shared/helpers/hooks/usePopover";
 import { selectUserInfo } from "store/slicers/users";
 import AccountPopover from "./account";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { selectSidebarVisible, setSidebarVisible } from "store/slicers/common";
+import {
+  selectLoadingState,
+  selectSidebarVisible,
+  setSidebarVisible,
+} from "store/slicers/common";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 
 const SIDE_NAV_WIDTH = 280;
@@ -30,6 +34,7 @@ export const TopNav = () => {
   const isResponses = location.pathname.includes("/response");
   const accountPopover = usePopover();
   const userInfo = useSelector(selectUserInfo);
+  const isLoading = useSelector(selectLoadingState);
 
   const handleClick = () => {
     dispatch(setSidebarVisible(!isSidebarVisible));
@@ -41,6 +46,11 @@ export const TopNav = () => {
 
   return (
     <>
+      {isLoading && (
+        <Box sx={{ width: "100%", position: "absolute", top: 0, zIndex: 1500 }}>
+          <LinearProgress color="primary" />
+        </Box>
+      )}
       <Box
         component="header"
         sx={{
@@ -90,11 +100,6 @@ export const TopNav = () => {
                   height: 40,
                   width: 40,
                 }}
-                // src={
-                //   EBaseUrl.MediaUserURL
-                //     ? `${EBaseUrl.MediaUserURL}/${userInfo?.imagePath}`
-                //     : "/assets/avatars/avatar-anika-visser.png"
-                // }
                 src=""
               />
             ) : (

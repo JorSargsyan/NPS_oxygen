@@ -1,12 +1,14 @@
 import { Box, ButtonBase, Theme, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import { setSidebarVisible } from "store/slicers/common";
 
 export const SideNavItem = (props) => {
   const dispatch = useAsyncDispatch();
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"));
   const navigate = useNavigate();
+  const t = useTranslation();
   const {
     active = false,
     disabled,
@@ -82,7 +84,7 @@ export const SideNavItem = (props) => {
               }),
             }}
           >
-            {title}
+            {t(title)}
           </Box>
         ) : (
           <Box display="flex" justifyContent="space-between" width="100%">
@@ -104,7 +106,7 @@ export const SideNavItem = (props) => {
                 }),
               }}
             >
-              {title}
+              {t(title)}
             </Box>
             <Box display="flex" alignItems="center">
               {expandableIcon}

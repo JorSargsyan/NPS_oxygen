@@ -2,31 +2,31 @@ import { IColumn } from "shared/ui/Table/constants";
 
 export const columns: IColumn[] = [
   {
-    label: "Campaign",
+    label: "survey",
     field: "name",
   },
   {
-    label: "Created",
+    label: "created",
     field: "creationDate",
   },
   {
-    label: "Sent",
+    label: "overview_sent",
     field: "sent",
   },
   {
-    label: "Delivered",
+    label: "overview_delivered",
     field: "delivered",
   },
   {
-    label: "Opened",
+    label: "overview_opened",
     field: "opened",
   },
   {
-    label: "Responded",
+    label: "overview_responded",
     field: "responded",
   },
   {
-    label: "Bounced",
+    label: "overview_bounced",
     field: "bounced",
   },
 ];
@@ -34,15 +34,15 @@ export const columns: IColumn[] = [
 export const historyColumns: IColumn[] = [
   {
     field: "creationDate",
-    label: "Created",
+    label: "created",
   },
   {
     field: "state",
-    label: "State",
+    label: "state",
   },
 ];
 
 export const deleteCampaignWarningConfig = {
-  title: "Warning",
-  description: "Are you sure you want to delete this campaign?",
+  title: "warning",
+  description: "delete_survey",
 };

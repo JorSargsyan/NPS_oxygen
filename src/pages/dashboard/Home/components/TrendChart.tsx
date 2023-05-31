@@ -34,7 +34,7 @@ const TrendChart = ({ chartsData }) => {
           >
             <img src={TrendChartIcon} alt="icon" />
             <Typography sx={{ color: "primary.defaultText", fontSize: 24 }}>
-              Compare metrics
+              {t("overview_compare_metrics")}
             </Typography>
           </Box>
           {chartsData && (

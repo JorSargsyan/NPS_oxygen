@@ -4,31 +4,31 @@ import { IDefaultFilterOptionForm, IUserCompact } from "store/interfaces/users";
 
 export const userColumns: IColumn[] = [
   {
-    label: "Id",
+    label: "id",
     field: "id",
   },
   {
-    label: "Name",
+    label: "name",
     field: "fullName",
   },
   {
-    label: "Number",
+    label: "number",
     field: "personalNumber",
   },
   {
-    label: "Email",
+    label: "email",
     field: "email",
   },
   {
-    label: "Position",
+    label: "position",
     field: "title",
   },
   {
-    label: "Role",
+    label: "role",
     field: "role",
   },
   {
-    label: "Status",
+    label: "status",
     layout: (row: IUserCompact) => {
       return row.status ? (
         <Chip label="Active" color="success" />
@@ -41,22 +41,22 @@ export const userColumns: IColumn[] = [
 
 export const userFilterTypes = [
   {
-    label: "Role",
+    label: "role",
     value: "1",
     type: 1,
   },
   {
-    label: "Position",
+    label: "position",
     value: "2",
     type: 1,
   },
   {
-    label: "Department",
+    label: "department",
     value: "3",
     type: 1,
   },
   {
-    label: "Status",
+    label: "status",
     value: "4",
     type: 3,
   },

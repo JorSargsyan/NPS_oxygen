@@ -11,7 +11,7 @@ import {
 } from "store/slicers/users";
 import { defaultFilterRowValue, userColumns } from "./constants";
 import { Box } from "@mui/system";
-import { Button, Typography } from "@mui/material";
+import { SvgIcon, Tooltip, Typography } from "@mui/material";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   RIGHT_SIDEBAR_WIDTH_EXTENDED,
@@ -23,9 +23,11 @@ import { useLocation } from "react-router-dom";
 import Filters from "./components/Filters";
 import { ERequestStatus } from "store/enums/index.enum";
 import { EBaseUrl } from "store/config/constants";
-import { setTableLoading } from "store/slicers/common";
+import { setButtonLoading, setTableLoading } from "store/slicers/common";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { EUserPermissions } from "resources/permissions/permissions.enum";
+import useTranslation from "shared/helpers/hooks/useTranslation";
+import AdvancedFilterIcon from "@heroicons/react/24/outline/AdjustmentsHorizontalIcon";
 
 const Users = () => {
   const location = useLocation();
@@ -34,9 +36,10 @@ const Users = () => {
   const [activeRow, setActiveRow] = useState(0);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const t = useTranslation();
 
   const hasViewPermission = usePermission(EUserPermissions.View);
-  const hasExportPermission = usePermission(EUserPermissions.Export);
+  // const hasExportPermission = usePermission(EUserPermissions.Export);
 
   const methods = useForm({
     defaultValues: {
@@ -51,6 +54,7 @@ const Users = () => {
 
   const refetchUsers = async () => {
     await dispatch(setTableLoading(true));
+    await dispatch(setButtonLoading(true));
     const filtersCombined = methods
       .watch("config.filters")
       .map((filter, index) => {
@@ -77,6 +81,7 @@ const Users = () => {
       })
     );
     await dispatch(setTableLoading(false));
+    await dispatch(setButtonLoading(false));
     setFiltersOpen(false);
   };
 
@@ -91,7 +96,7 @@ const Users = () => {
     }
     return [
       {
-        label: "View",
+        label: "view",
         onClick: () => handleView(rowData.id),
       },
     ];
@@ -136,11 +141,16 @@ const Users = () => {
     <Box p={4}>
       <Box display="flex" justifyContent={"space-between"}>
         <Typography variant="h4" fontWeight={500} color="text.secondary">
-          Users
+          {t("users_section_title")}
         </Typography>
-        <Button variant="outlined" onClick={() => setFiltersOpen(true)}>
-          Advanced filters
-        </Button>
+        <SvgIcon
+          onClick={() => setFiltersOpen(true)}
+          sx={{ cursor: "pointer" }}
+        >
+          <Tooltip title={t("advanced_filters")}>
+            <AdvancedFilterIcon />
+          </Tooltip>
+        </SvgIcon>
       </Box>
       <BasicTable<IUserCompact>
         // selectable={hasExportPermission}
@@ -156,7 +166,7 @@ const Users = () => {
         open={isDrawerOpen}
         setOpen={setDrawerOpen}
         onClose={() => setDrawerOpen(false)}
-        title={`View User`}
+        title={t("view_user")}
       >
         <UserDetails userId={activeRow} />
       </RightDrawer>
@@ -165,7 +175,7 @@ const Users = () => {
         open={isFiltersOpen}
         setOpen={setFiltersOpen}
         onClose={() => setFiltersOpen(false)}
-        title={`Advanced filters`}
+        title={t("advanced_filters")}
       >
         <Filters
           fieldsConfig={{ fields, append, remove }}

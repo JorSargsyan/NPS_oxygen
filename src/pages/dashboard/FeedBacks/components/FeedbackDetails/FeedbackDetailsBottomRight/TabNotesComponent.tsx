@@ -23,6 +23,7 @@ import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import SharedDialog from "shared/ui/Dialog";
 import RightDrawer from "shared/ui/Drawer";
@@ -35,7 +36,11 @@ import {
   IFeedbackNotes,
   IUpdateNote,
 } from "store/interfaces/feedback";
-import { selectLoadingState, setLoading } from "store/slicers/common";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+  setLoading,
+} from "store/slicers/common";
 import {
   AddFeedbackNote,
   DeleteFeedbackNote,
@@ -85,11 +90,13 @@ const TabNotesComponent = () => {
 
   const { id } = useParams();
 
+  const t = useTranslation();
+
   const methods = useForm<IFormData>({
     defaultValues: { notesList: [], id: "" },
   });
 
-  const isButtonLoading = useSelector(selectLoadingState);
+  const isButtonLoading = useSelector(selectButtonLoadingState);
   const notesList = useSelector(selectFeedbackNotes);
   const historyList = useSelector(selectFeedbackNoteHistory);
   const userInfo = useSelector(selectUserInfo);
@@ -114,7 +121,7 @@ const TabNotesComponent = () => {
   const refetchFeedbackNotes = async () => {
     const { meta } = await dispatch(GetFeedbackNotes(Number(id)));
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-      dispatch(setLoading(false));
+      await dispatch(setButtonLoading(false));
       return;
     }
   };
@@ -129,9 +136,9 @@ const TabNotesComponent = () => {
       note: watchTextArea,
     };
     methods.setValue("textarea", "");
-    await dispatch(setLoading(true));
+    await dispatch(setButtonLoading(true));
     await dispatch(AddFeedbackNote(data));
-    await dispatch(setLoading(false));
+    await dispatch(setButtonLoading(false));
 
     await refetchFeedbackNotes();
   };
@@ -146,9 +153,10 @@ const TabNotesComponent = () => {
       dispatch(setLoading(false));
       return;
     }
-    setActiveRow(undefined);
+
     await refetchFeedbackNotes();
-    dispatch(setLoading(false));
+    await dispatch(setLoading(false));
+    setActiveRow(undefined);
     toast.success("Note is deleted");
   };
 
@@ -223,7 +231,7 @@ const TabNotesComponent = () => {
             <BasicTextArea
               name="textarea"
               aria-label="Add Notes"
-              placeholder="Type your answer here..."
+              placeholder={t("type_your_answer")}
             />
             <Box textAlign="right" py={2}>
               <ButtonLoader
@@ -394,7 +402,7 @@ const TabNotesComponent = () => {
               );
             })
           ) : (
-            <NoData description="There are no notes yet" />
+            <NoData description="no_notes" />
           )}
         </Box>
         <SharedDialog

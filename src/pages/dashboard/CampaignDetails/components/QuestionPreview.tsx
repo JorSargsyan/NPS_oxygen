@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import SurveyTemplate, {
   ISurveyTemplateQuestionData,
 } from "shared/components/SurveyTemplate";
@@ -25,8 +25,24 @@ export enum EQuestionPreviewType {
   DESKTOP,
 }
 
-const QuestionPreview = ({ methods, previewModalData }: Props) => {
+const QuestionPreview = ({ previewModalData }: Props) => {
   const [type, setType] = useState(EQuestionPreviewType.DESKTOP);
+
+  const methods = useForm({
+    defaultValues: {
+      answerIDs: [],
+      comment: "",
+      singleChoice: "",
+      contact: "",
+      rate: 0,
+      contactConfig: {
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+      },
+    },
+  });
 
   const chooseType = (
     event: MouseEvent<HTMLElement>,
@@ -95,7 +111,15 @@ const QuestionPreview = ({ methods, previewModalData }: Props) => {
                 overflowY: "scroll",
               }}
             >
-              <CardContent>
+              <CardContent
+                sx={{
+                  py: { xs: "10px", lg: "16px" },
+                  px: 0,
+                  ":last-child": {
+                    pb: 0,
+                  },
+                }}
+              >
                 <Box
                   sx={
                     type === EQuestionPreviewType.MOBILE

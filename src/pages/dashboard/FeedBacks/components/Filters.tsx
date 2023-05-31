@@ -10,12 +10,13 @@ import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { getQueryParams } from "shared/helpers/getQueryParams";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import usePermission from "shared/helpers/hooks/usePermission";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 import BasicAutocomplete from "shared/ui/Autocomplete";
 import ButtonLoader from "shared/ui/ButtonLoader";
 import BasicSelect from "shared/ui/Select";
 import RangeSlider from "shared/ui/Slider";
 import { IAttachedEmployee } from "store/interfaces/directorates";
-import { selectManagers } from "store/slicers/common";
+import { selectButtonLoadingState, selectManagers } from "store/slicers/common";
 import {
   GetFeedbackFilterValues,
   selectFeedbackFilterValues,
@@ -31,6 +32,8 @@ import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRigh
 
 const Filters = ({ methods, onChange, fieldsConfig }) => {
   const dispatch = useAsyncDispatch();
+  const isLoading = useSelector(selectButtonLoadingState);
+  const t = useTranslation();
 
   const managersList = useSelector(selectManagers);
   const filterValues = useSelector(selectFeedbackFilterValues);
@@ -46,9 +49,9 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
   const hasAdditionalFilterByTaskStatus = usePermission(
     EFeedbackPermissions.Additional_filter_by_task_status
   );
-  const hasAdditionalFilterByDirectorate = usePermission(
-    EFeedbackPermissions.Additional_filter_by_directorate
-  );
+  // const hasAdditionalFilterByDirectorate = usePermission(
+  //   EFeedbackPermissions.Additional_filter_by_directorate
+  // );
 
   const onSubmit = () => {
     onChange();
@@ -228,7 +231,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <Box flex={1}>
             <BasicSelect
               size="small"
-              label="Condition"
+              label="condition"
               valueProp="value"
               labelProp="name"
               options={FilterConditionMatchList}
@@ -236,9 +239,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
             />
           </Box>
           <Box flex={3}>
-            <Typography ml={2}>
-              of the responses match following filters
-            </Typography>
+            <Typography ml={2}>{t("responses_match_condition")}</Typography>
           </Box>
           <Box flex={1} justifyContent={"flex-end"} display="flex">
             <Button
@@ -246,7 +247,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
               startIcon={<ResetIcon height={24} width={24} />}
               variant="outlined"
             >
-              <Typography>Reset</Typography>
+              <Typography>{t("reset")}</Typography>
             </Button>
           </Box>
         </Box>
@@ -257,7 +258,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
                 <Grid item xs={3}>
                   <BasicSelect
                     size="small"
-                    label="Type"
+                    label="type"
                     getValue={(val) => val?.value || ""}
                     onFormatValue={(val) => {
                       const actual = feedbackFilterTypes.find(
@@ -417,7 +418,7 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
           <ButtonLoader
             disabled={getApplyStatus}
             onClick={onSubmit}
-            isLoading={false}
+            isLoading={isLoading}
           >
             <Typography>Apply</Typography>
           </ButtonLoader>

@@ -13,7 +13,6 @@ import { Box, Container, Stack } from "@mui/system";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
-import { EBaseUrl } from "store/config/constants";
 import {
   GetCurrentUser,
   selectUserInfo,
