@@ -9,7 +9,7 @@ import {
 export interface ISurveyPreviewState {
   questionConfig: IQuestionConfig | null;
   questionDetails: IQuestionDetails | null;
-  activeTemplateID:number
+  activeTemplateID: number;
 }
 
 export interface IQuestionConfig {
@@ -29,6 +29,7 @@ export interface IQuestionDetails {
   metricConfig: IMetricConfig;
   template: ITemplate;
   answers: IAnswer[];
+  publicURL: string;
 }
 
 export interface IQuestionRequest {

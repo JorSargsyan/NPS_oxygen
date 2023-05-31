@@ -1,6 +1,7 @@
-import { Button, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Logo from "assets/icons/satisfai_logo.svg";
+import ArrowPath from "@heroicons/react/24/solid/ArrowPathIcon";
 import defaultImg from "assets/images/survey_bg.png";
 import { EQuestionPreviewType } from "pages/dashboard/CampaignDetails/components/QuestionPreview";
 import { ECampaignSurveyType } from "pages/dashboard/CampaignDetails/questions/LeftSidebar/constants";
@@ -52,6 +53,15 @@ const SurveyTemplate = ({
     );
   }, [questionData, type]);
 
+  const handleRestart = () => {
+    const url = `${window.location.origin}/p/${localStorage.getItem(
+      "publicURL"
+    )}`;
+
+    console.log(url);
+    window.location.href = url;
+  };
+
   const getQuestionInfo = useMemo(() => {
     if (type !== ESurveyTypes.Preview) {
       return {
@@ -98,12 +108,26 @@ const SurveyTemplate = ({
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          position: "relative",
+          py: 4,
+        }}
+      >
         <img
           style={{ width: "200px" }}
           src={getQuestionInfo?.logoImage}
           alt="logo"
         />
+        {type === ESurveyTypes.Customer && (
+          <Box position={"absolute"} right={0} top={10}>
+            <IconButton onClick={handleRestart}>
+              <ArrowPath height={24} width={24} color="gray" />
+            </IconButton>
+          </Box>
+        )}
       </Box>
       <Box
         display="flex"

@@ -325,6 +325,12 @@ const SurveyPreview = () => {
     };
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (questionData.details?.publicURL) {
+      localStorage.setItem("publicURL", questionData.details.publicURL);
+    }
+  }, [questionData.details?.publicURL]);
+
   return (
     <Box
       display="flex"
