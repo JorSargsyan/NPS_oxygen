@@ -4,6 +4,7 @@ import {
   CardActions,
   CardContent,
   Divider,
+  Skeleton,
   SvgIcon,
   Typography,
 } from "@mui/material";
@@ -25,6 +26,7 @@ import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 const Templates = () => {
   const { id } = useParams();
@@ -32,6 +34,9 @@ const Templates = () => {
   const [editTemplateData, setEditTemplateData] = useState<ITemplate | null>(
     null
   );
+
+  const skeletonArr = new Array(5).fill("");
+  const t = useTranslation();
 
   const templateList = useSelector(selectTemplates);
   const dispatch = useAsyncDispatch();
@@ -45,6 +50,7 @@ const Templates = () => {
     setDrawerOpen(false);
     setEditTemplateData(null);
   };
+
   const deleteTemplate = useCallback(
     async (rowData: ITemplate) => {
       const { meta } = await dispatch(DeleteCustomTemplate(rowData.id));
@@ -69,10 +75,10 @@ const Templates = () => {
     (rowData: ITemplate) => {
       return [
         {
-          label: "Edit",
+          label: "edit",
           onClick: () => editTemplate(rowData),
         },
-        { label: "Delete", onClick: () => deleteTemplate(rowData) },
+        { label: "delete", onClick: () => deleteTemplate(rowData) },
       ];
     },
     [deleteTemplate]
@@ -90,7 +96,7 @@ const Templates = () => {
           }
           onClick={() => setDrawerOpen(true)}
         >
-          <Typography>Add Template</Typography>
+          <Typography>{t("add")}</Typography>
         </Button>
       </Box>
       <Box flexWrap={"wrap"} display="flex" gap="14px">
@@ -108,11 +114,13 @@ const Templates = () => {
                   >
                     <CardContent>
                       <Typography color={item.questionColor}>
-                        Question
+                        {t("question")}
                       </Typography>
-                      <Typography color={item.answerColor}>Answer</Typography>
+                      <Typography color={item.answerColor}>
+                        {t("answer")}
+                      </Typography>
                       <Typography color={item.buttonTextColor}>
-                        Button Text
+                        {t("button_text")}
                       </Typography>
                       <Box
                         sx={{
@@ -141,7 +149,14 @@ const Templates = () => {
                   </Card>
                 );
               })
-          : null}
+          : skeletonArr.map((_, index) => (
+              <Skeleton
+                key={index}
+                variant="rounded"
+                width={"19%"}
+                height="215px"
+              />
+            ))}
       </Box>
 
       <RightDrawer

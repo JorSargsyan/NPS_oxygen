@@ -165,7 +165,7 @@ const SurveyTemplate = ({
                 display: "flex",
                 alignItems: "center",
                 color: getQuestionInfo?.questionColor,
-                px: { xs: "10px", lg: "16px" },
+                px: { xs: "16px", lg: "24px" },
               }}
             >
               {questionData?.details?.title}

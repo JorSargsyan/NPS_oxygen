@@ -31,7 +31,11 @@ import { useSelector } from "react-redux";
 import { ERequestStatus } from "store/enums/index.enum";
 import toast from "react-hot-toast";
 import { ECampaignSurveyType } from "./questions/LeftSidebar/constants";
-import { setCampaignLoading, setSidebarVisible } from "store/slicers/common";
+import {
+  setCampaignLoading,
+  setLoading,
+  setSidebarVisible,
+} from "store/slicers/common";
 import { IUpdateSurveyRequest } from "store/interfaces/campaignDetails";
 import CampaignTabs from "components/campaigns/CampaignTabs";
 import EyeIcon from "@heroicons/react/24/outline/EyeIcon";
@@ -141,6 +145,7 @@ const CampaignDetail = () => {
   };
 
   const onSubmit = async (formData: IFormData) => {
+    await dispatch(setLoading(true));
     const position = surveyList.find((i) => i.id === selectedSurvey).position;
     let answers = [];
 
@@ -186,6 +191,7 @@ const CampaignDetail = () => {
     );
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+      await dispatch(setLoading(false));
       return;
     }
 
@@ -195,7 +201,7 @@ const CampaignDetail = () => {
     ]);
 
     setAlreadySubmited(true);
-
+    await dispatch(setLoading(false));
     toast.success("Campaign Saved successfully");
   };
 

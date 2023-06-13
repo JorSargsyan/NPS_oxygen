@@ -2,6 +2,7 @@ import { IconButton, Typography, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRef } from "react";
 import UploadIcon from "@heroicons/react/24/outline/ArrowUpOnSquareIcon";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 type Props = {
   name: string;
@@ -12,6 +13,7 @@ type Props = {
 
 const UploadImage = ({ name, val, onChange, title }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>();
+  const t = useTranslation();
 
   const handleChangeImage = (event) => {
     const file = event.target.files[0];
@@ -33,7 +35,7 @@ const UploadImage = ({ name, val, onChange, title }: Props) => {
   return (
     <Box>
       <Typography fontSize={16} pb={1}>
-        {title}
+        {t(title)}
       </Typography>
       <Box
         minHeight={140}
@@ -52,7 +54,7 @@ const UploadImage = ({ name, val, onChange, title }: Props) => {
             alt="templateImage"
           />
         ) : (
-          <Typography fontSize={18}>No image</Typography>
+          <Typography fontSize={18}>{t("no_image")}</Typography>
         )}
       </Box>
       <Box display="flex" justifyContent={"flex-end"}>

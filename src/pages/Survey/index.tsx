@@ -360,6 +360,7 @@ const SurveyPreview = () => {
                 backgroundColor: "rgb(255 255 255 / 97%)",
                 position: "relative",
                 overflowY: "scroll",
+                overscrollBehavior: "none",
               }}
             >
               <CardContent
@@ -375,7 +376,7 @@ const SurveyPreview = () => {
                   <Box
                     sx={{
                       width: {
-                        xs: `${windowSize.current[0] * 0.9}px`,
+                        xs: `${windowSize.current[0] * 0.95}px`,
                         sm: `${windowSize.current[0] * 0.8}px`,
                         md: `${windowSize.current[0] * 0.6}px`,
                         lg: `${windowSize.current[0] * 0.5}px`,
@@ -411,7 +412,7 @@ const SurveyPreview = () => {
               <Box
                 sx={{
                   width: {
-                    xs: `${windowSize.current[0] * 0.9}px`,
+                    xs: `${windowSize.current[0] * 0.95}px`,
                     sm: `${windowSize.current[0] * 0.6}px`,
                     md: `${windowSize.current[0] * 0.6}px`,
                   },

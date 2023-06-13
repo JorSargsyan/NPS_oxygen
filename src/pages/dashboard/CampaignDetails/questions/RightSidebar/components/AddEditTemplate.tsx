@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,6 +15,13 @@ import {
 } from "store/slicers/campaignDetail";
 import { ERequestStatus } from "store/enums/index.enum";
 import { useParams } from "react-router-dom";
+import {
+  selectButtonLoadingState,
+  setButtonLoading,
+} from "store/slicers/common";
+import ButtonLoader from "shared/ui/ButtonLoader";
+import { useSelector } from "react-redux";
+import useTranslation from "shared/helpers/hooks/useTranslation";
 
 interface IFormData {
   name: string;
@@ -45,6 +52,8 @@ const AddEditTemplate = ({
 }) => {
   const { id } = useParams();
   const dispatch = useAsyncDispatch();
+  const t = useTranslation();
+  const btnLoading = useSelector(selectButtonLoadingState);
   const methods = useForm({
     defaultValues,
   });
@@ -77,23 +86,28 @@ const AddEditTemplate = ({
   }, [init]);
 
   const onSubmit = async (formData: IFormData) => {
+    await dispatch(setButtonLoading(true));
     if (editData) {
       const { meta } = await dispatch(
         UpdateSurveyTemplate({ data: formData, id: editData.id })
       );
 
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       dispatch(GetTemplates(Number(id)));
+      await dispatch(setButtonLoading(false));
       onSuccess?.();
     } else {
       const { meta } = await dispatch(CreateSurveyTemplate(formData));
 
       if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+        await dispatch(setButtonLoading(false));
         return;
       }
       dispatch(GetTemplates(Number(id)));
+      await dispatch(setButtonLoading(false));
       onSuccess?.();
     }
   };
@@ -110,7 +124,7 @@ const AddEditTemplate = ({
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Typography fontSize={16}>Question Color</Typography>
+        <Typography fontSize={16}>{t("question_color")}</Typography>
         <ColorPicker
           name="questionColor"
           color={methods.watch("questionColor")}
@@ -122,7 +136,7 @@ const AddEditTemplate = ({
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Typography fontSize={16}>Answer Color</Typography>
+        <Typography fontSize={16}>{t("answer_color")}</Typography>
         <ColorPicker
           name="answerColor"
           color={methods.watch("answerColor")}
@@ -134,7 +148,7 @@ const AddEditTemplate = ({
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Typography fontSize={16}>Button Color</Typography>
+        <Typography fontSize={16}>{t("button_color")}</Typography>
         <ColorPicker
           name="buttonColor"
           color={methods.watch("buttonColor")}
@@ -146,7 +160,7 @@ const AddEditTemplate = ({
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Typography fontSize={16}>Button text Color</Typography>
+        <Typography fontSize={16}>{t("button_text_color")}</Typography>
         <ColorPicker
           name="buttonTextColor"
           color={methods.watch("buttonTextColor")}
@@ -156,7 +170,7 @@ const AddEditTemplate = ({
       <Box>
         <UploadImage
           name="logoImageBase64"
-          title="Logo image"
+          title="logo_image"
           val={methods.watch("logoImageBase64")}
           onChange={handleChangeImage}
         />
@@ -164,15 +178,19 @@ const AddEditTemplate = ({
       <Box>
         <UploadImage
           name="imageBase64"
-          title="Main image"
+          title="main_image"
           val={methods.watch("imageBase64")}
           onChange={handleChangeImage}
         />
       </Box>
       <Box display="flex" justifyContent={"flex-end"} mt={2}>
-        <Button variant="contained" onClick={methods.handleSubmit(onSubmit)}>
-          <Typography>Save</Typography>
-        </Button>
+        <ButtonLoader
+          variant="contained"
+          onClick={methods.handleSubmit(onSubmit)}
+          isLoading={btnLoading}
+        >
+          <Typography>{t("save")}</Typography>
+        </ButtonLoader>
       </Box>
     </Box>
   );
