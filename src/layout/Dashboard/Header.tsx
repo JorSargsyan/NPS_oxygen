@@ -10,7 +10,7 @@ import {
   SvgIcon,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-// import LanguageMenu from "shared/components/LanguageMenu";
+import LanguageMenu from "shared/components/LanguageMenu";
 import { usePopover } from "shared/helpers/hooks/usePopover";
 import { selectUserInfo } from "store/slicers/users";
 import AccountPopover from "./account";
