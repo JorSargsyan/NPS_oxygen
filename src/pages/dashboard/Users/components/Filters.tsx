@@ -22,14 +22,10 @@ import { useSelector } from "react-redux";
 import { selectButtonLoadingState } from "store/slicers/common";
 import useTranslation from "shared/helpers/hooks/useTranslation";
 
-const Filters = ({ methods, onChange, fieldsConfig }) => {
+const Filters = ({ methods, onChange, fieldsConfig, onSubmit }) => {
   const dispatch = useAsyncDispatch();
   const isLoading = useSelector(selectButtonLoadingState);
   const t = useTranslation();
-
-  const onSubmit = () => {
-    onChange();
-  };
 
   const [filterValues, setFilterValues] = useState<IFilterOption[][]>([]);
   const { fields, append, remove } = fieldsConfig;
@@ -75,8 +71,8 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
 
   const handleFetchValues = async (index: number) => {
     let row = methods.watch(`config.filters[${index}]`);
-
-    if (row.type.label !== "Status") {
+    console.log(row);
+    if (row.type.label !== "status") {
       const formData = {
         filter: row.type.label,
         term: "",

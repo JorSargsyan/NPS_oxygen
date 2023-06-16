@@ -27,14 +27,6 @@ const shortcutsItems: {
     label: "Current Month",
     value: [dayjs().startOf("month"), dayjs().endOf("month")],
   },
-  {
-    label: "Next Month",
-    value: [
-      dayjs().endOf("month").add(1, "day"),
-      dayjs().endOf("month").add(1, "day").endOf("month"),
-    ],
-  },
-  { label: "Reset", value: [null, null] },
 ];
 interface IProps {
   name: string;

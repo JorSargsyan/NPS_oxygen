@@ -30,7 +30,7 @@ import {
 } from "../constants";
 import { redirectTabStatuses } from "./FeedbackDetails/FeedbackDetailsBottomRight/constants";
 
-const Filters = ({ methods, onChange, fieldsConfig }) => {
+const Filters = ({ methods, onChange, fieldsConfig, onSubmit }) => {
   const dispatch = useAsyncDispatch();
   const isLoading = useSelector(selectButtonLoadingState);
   const t = useTranslation();
@@ -52,10 +52,6 @@ const Filters = ({ methods, onChange, fieldsConfig }) => {
   // const hasAdditionalFilterByDirectorate = usePermission(
   //   EFeedbackPermissions.Additional_filter_by_directorate
   // );
-
-  const onSubmit = () => {
-    onChange();
-  };
 
   const { fields, append, remove } = fieldsConfig;
 

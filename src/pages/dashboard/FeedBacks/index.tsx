@@ -149,6 +149,86 @@ const Feedbacks = () => {
     setCommentDialogOpen(true);
   };
 
+  const getQuickFiltersData = useCallback(() => {
+    const quickFiltersWatch = methods.watch("config.quickFilters");
+
+    const filterStatusList = quickFiltersWatch?.status?.map((status, index) => {
+      return {
+        conditionalStatusId: index + 1,
+        key: feedbackFilterTypesKeys.GRID_TASK_STATUS,
+        queryCondition: 2,
+        value: status.value,
+      };
+    });
+
+    const quickFiltersData = [
+      ...(quickFiltersWatch?.range?.every((i) => !!i)
+        ? [
+            {
+              dateId: 1,
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 4,
+              value: quickFiltersWatch.range[0].format("MM/DD/YYYY"),
+            },
+            {
+              dateId: 1,
+              key: feedbackFilterTypesKeys.DATE,
+              queryCondition: 5,
+              value: quickFiltersWatch.range[1].format("MM/DD/YYYY"),
+            },
+          ]
+        : []),
+      ...(quickFiltersWatch?.campaign?.id
+        ? [
+            {
+              campaignId: quickFiltersWatch?.campaign?.id,
+              key: feedbackFilterTypesKeys.CAMPAIGN_NAME,
+              queryCondition: 2,
+              value: quickFiltersWatch?.campaign?.value,
+            },
+          ]
+        : []),
+      ...(filterStatusList ? filterStatusList : []),
+      ...(quickFiltersWatch.userVisibility ===
+      EQuickFilterUserVisibilityValues.GENERAL
+        ? [defaultUserVisibility]
+        : [
+            {
+              ...defaultUserVisibility,
+              feedbackUserTypeId: EFeedbackUserTypeId.PERSONAL,
+              value: EQuickFilterUserVisibilityValues.PERSONAL,
+            },
+          ]),
+      ...(quickFiltersWatch.feedbackType &&
+      quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.NPS_AGENT
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.NPS_AGENT,
+              value: feedbackFilterTypesKeys.NPS_AGENT,
+            },
+          ]
+        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.REDIRECTED
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.REDIRECTED,
+              value: feedbackFilterTypesKeys.REDIRECTED,
+            },
+          ]
+        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.COMMENTED
+        ? [
+            {
+              ...defaultFeedbackFilter,
+              key: feedbackFilterTypesKeys.COMMENTED,
+              value: feedbackFilterTypesKeys.COMMENTED,
+            },
+          ]
+        : []),
+    ];
+    return quickFiltersData;
+  }, [methods]);
+
   const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
     await dispatch(setButtonLoading(true));
@@ -202,18 +282,27 @@ const Feedbacks = () => {
     const otherFilters = filtersCombined.filter(
       (i) => i.type !== EFeedbackFilterTypes.NPS
     );
+    const quickFiltersData = getQuickFiltersData();
+    const filteredQuickFiltersData = quickFiltersData.filter(
+      (i: any) => i.type !== null
+    );
     const hasOtherFilters = otherFilters.filter((i) => !!i.type);
     const formData = {
       ...methods.watch("config"),
-      filters: hasOtherFilters,
+      filters: [...hasOtherFilters, ...filteredQuickFiltersData],
       scoreFilter: scoreFilters,
     };
     delete formData["quickFilters"];
     await dispatch(GetFeedbacks(formData));
-    setFiltersOpen(false);
+
     await dispatch(setButtonLoading(false));
     await dispatch(setTableLoading(false));
-  }, [dispatch, methods]);
+  }, [dispatch, methods, getQuickFiltersData]);
+
+  const refetchFeedbacksAndCloseFiltersDrawer = useCallback(async () => {
+    await refetchFeedbacks();
+    setFiltersOpen(false);
+  }, [refetchFeedbacks]);
 
   const feedbackColumns = useMemo(() => {
     return [
@@ -376,82 +465,7 @@ const Feedbacks = () => {
   ]);
 
   const handleSubmit = useCallback(async () => {
-    const quickFiltersWatch = methods.watch("config.quickFilters");
-
-    const filterStatusList = quickFiltersWatch?.status?.map((status, index) => {
-      return {
-        conditionalStatusId: index + 1,
-        key: feedbackFilterTypesKeys.GRID_TASK_STATUS,
-        queryCondition: 2,
-        value: status.value,
-      };
-    });
-
-    const quickFiltersData = [
-      ...(quickFiltersWatch?.range?.every((i) => !!i)
-        ? [
-            {
-              dateId: 1,
-              key: feedbackFilterTypesKeys.DATE,
-              queryCondition: 4,
-              value: quickFiltersWatch.range[0].format("MM/DD/YYYY"),
-            },
-            {
-              dateId: 1,
-              key: feedbackFilterTypesKeys.DATE,
-              queryCondition: 5,
-              value: quickFiltersWatch.range[1].format("MM/DD/YYYY"),
-            },
-          ]
-        : []),
-      ...(quickFiltersWatch?.campaign?.id
-        ? [
-            {
-              campaignId: quickFiltersWatch?.campaign?.id,
-              key: feedbackFilterTypesKeys.CAMPAIGN_NAME,
-              queryCondition: 2,
-              value: quickFiltersWatch?.campaign?.value,
-            },
-          ]
-        : []),
-      ...(filterStatusList ? filterStatusList : []),
-      ...(quickFiltersWatch.userVisibility ===
-      EQuickFilterUserVisibilityValues.GENERAL
-        ? [defaultUserVisibility]
-        : [
-            {
-              ...defaultUserVisibility,
-              feedbackUserTypeId: EFeedbackUserTypeId.PERSONAL,
-              value: EQuickFilterUserVisibilityValues.PERSONAL,
-            },
-          ]),
-      ...(quickFiltersWatch.feedbackType &&
-      quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.NPS_AGENT
-        ? [
-            {
-              ...defaultFeedbackFilter,
-              key: feedbackFilterTypesKeys.NPS_AGENT,
-              value: feedbackFilterTypesKeys.NPS_AGENT,
-            },
-          ]
-        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.REDIRECTED
-        ? [
-            {
-              ...defaultFeedbackFilter,
-              key: feedbackFilterTypesKeys.REDIRECTED,
-              value: feedbackFilterTypesKeys.REDIRECTED,
-            },
-          ]
-        : quickFiltersWatch.feedbackType === feedbackFilterTypesKeys.COMMENTED
-        ? [
-            {
-              ...defaultFeedbackFilter,
-              key: feedbackFilterTypesKeys.COMMENTED,
-              value: feedbackFilterTypesKeys.COMMENTED,
-            },
-          ]
-        : []),
-    ];
+    const quickFiltersData = getQuickFiltersData();
     const filters = [...methods.watch("config.filters"), ...quickFiltersData];
 
     const filteredAdditionalFilters = filters.filter(
@@ -462,9 +476,8 @@ const Feedbacks = () => {
       filters: filteredAdditionalFilters,
     };
     delete data.quickFilters;
-
     await dispatch(GetFeedbacks(data));
-  }, [dispatch, methods]);
+  }, [dispatch, methods, getQuickFiltersData]);
 
   const handleChangeSelected = (ids: number[]) => {
     // setSelectedFeedbackIDs(ids);
@@ -617,7 +630,7 @@ const Feedbacks = () => {
         Filter={FiltersWrapper}
         columns={feedbackColumns}
         paginatedData={feedbacks}
-        onChange={refetchFeedbacks}
+        onChange={refetchFeedbacksAndCloseFiltersDrawer}
         onChangeSelected={handleChangeSelected}
         hasSearchInput={hasSearchPermission}
       />
@@ -646,6 +659,7 @@ const Feedbacks = () => {
             fieldsConfig={{ fields, append, remove }}
             onChange={refetchFeedbacks}
             methods={methods}
+            onSubmit={refetchFeedbacksAndCloseFiltersDrawer}
           />
         ) : null}
       </RightDrawer>

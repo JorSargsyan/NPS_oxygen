@@ -82,6 +82,10 @@ const Users = () => {
     );
     await dispatch(setTableLoading(false));
     await dispatch(setButtonLoading(false));
+  };
+
+  const refetchUsersAndCloseFilters = async () => {
+    await refetchUsers();
     setFiltersOpen(false);
   };
 
@@ -160,7 +164,7 @@ const Users = () => {
         columns={userColumns}
         getActions={getActions}
         paginatedData={users}
-        onChange={refetchUsers}
+        onChange={refetchUsersAndCloseFilters}
       />
       <RightDrawer
         open={isDrawerOpen}
@@ -181,6 +185,7 @@ const Users = () => {
           fieldsConfig={{ fields, append, remove }}
           onChange={refetchUsers}
           methods={methods}
+          onSubmit={refetchUsersAndCloseFilters}
         />
       </RightDrawer>
     </Box>

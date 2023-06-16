@@ -37,6 +37,7 @@ const SearchInput = ({ filterOptions, fetchData }: Props) => {
           size="medium"
           placeholder={t("search")}
           variant="outlined"
+          inputProps={{ maxLength: 30 }}
           InputProps={{
             startAdornment: (
               <InputAdornment
