@@ -81,6 +81,12 @@ enum ECampaignPermissions {
   Read = "bk_pm_read_campaigns",
 }
 
+enum EOverviewPermissions {
+  Read = "bk_pm_read_dashboard",
+  Read_delivery = "bk_pm_read_delivery_statistics",
+  Read_statistics = "bk_pm_read_statistics",
+}
+
 export {
   ECustomersPermissions,
   ERolesPermissions,
@@ -89,4 +95,5 @@ export {
   EDirectoratePermissions,
   EFeedbackPermissions,
   ECampaignPermissions,
+  EOverviewPermissions,
 };

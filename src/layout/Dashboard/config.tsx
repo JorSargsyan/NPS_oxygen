@@ -26,18 +26,23 @@ export const items = ({
   hasDirectoratePerm,
   hasFeedbackPerm,
   hasCampaignPerm,
+  hasOverviewPerm,
 }) => {
   return [
-    {
-      title: "overview_section_title",
-      path: "overview",
-      element: <Dashboard />,
-      icon: (
-        <SvgIcon fontSize="small">
-          <ChartBarIcon />
-        </SvgIcon>
-      ),
-    },
+    ...(hasOverviewPerm
+      ? [
+          {
+            title: "overview_section_title",
+            path: "overview",
+            element: <Dashboard />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ChartBarIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
     ...(hasFeedbackPerm
       ? [
           {
@@ -106,46 +111,51 @@ export const items = ({
           },
         ]
       : []),
-    {
-      title: "settings",
-      path: "",
-      icon: (
-        <SvgIcon fontSize="small">
-          <Cog />
-        </SvgIcon>
-      ),
-      children: [
-        ...(hasTranslationPerm
-          ? [
-              {
-                title: "translations_section_title",
-                path: "dictionary",
-                element: <Dictionary />,
-                errorElement: <div>ERROR ELEMENT</div>,
-                icon: (
-                  <SvgIcon fontSize="small">
-                    <TranslationIcon />
-                  </SvgIcon>
-                ),
-              },
-            ]
-          : []),
-        ...(hasRolesPerm
-          ? [
-              {
-                title: "roles_section_title",
-                path: "roles",
-                element: <Roles />,
-                icon: (
-                  <SvgIcon fontSize="small">
-                    <UserPlusIcon />
-                  </SvgIcon>
-                ),
-              },
-            ]
-          : []),
-      ],
-    },
+    ...(hasTranslationPerm || hasRolesPerm
+      ? [
+          {
+            title: "settings",
+            path: "",
+            icon: (
+              <SvgIcon fontSize="small">
+                <Cog />
+              </SvgIcon>
+            ),
+            children: [
+              ...(hasTranslationPerm
+                ? [
+                    {
+                      title: "translations_section_title",
+                      path: "dictionary",
+                      element: <Dictionary />,
+                      errorElement: <div>ERROR ELEMENT</div>,
+                      icon: (
+                        <SvgIcon fontSize="small">
+                          <TranslationIcon />
+                        </SvgIcon>
+                      ),
+                    },
+                  ]
+                : []),
+              ...(hasRolesPerm
+                ? [
+                    {
+                      title: "roles_section_title",
+                      path: "roles",
+                      element: <Roles />,
+                      icon: (
+                        <SvgIcon fontSize="small">
+                          <UserPlusIcon />
+                        </SvgIcon>
+                      ),
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+
     ...(hasDirectoratePerm
       ? [
           {

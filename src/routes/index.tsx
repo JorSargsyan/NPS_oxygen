@@ -6,57 +6,23 @@ import AccountPage from "pages/dashboard/Account";
 import CampaignDetails from "pages/dashboard/CampaignDetails";
 import FeedbackDetails from "pages/dashboard/FeedBacks/components/FeedbackDetails";
 import SurveyPreview from "pages/Survey";
-import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import {
-  ECampaignPermissions,
-  ECustomersPermissions,
-  EDirectoratePermissions,
-  EFeedbackPermissions,
-  ERolesPermissions,
-  ETranslationPermissions,
-  EUserPermissions,
-} from "resources/permissions/permissions.enum";
+
 import usePermission from "shared/helpers/hooks/usePermission";
 import { selectAuth } from "store/slicers/auth";
 import Login from "../pages/auth/login";
 import SmsDistributionForm from "pages/dashboard/CampaignDetails/distribution/SmsDistributionForm";
 import MysteryShopperDetails from "pages/dashboard/MysteryShopping/Details";
+import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
+import { useRoutesReadPermissions } from "shared/helpers/hooks/useRoutesReadPermissions";
 
 export const CreateRoutes = () => {
   const isAuthorized = useSelector(selectAuth);
-  const hasCustomerPerm = usePermission(ECustomersPermissions.Read);
-  const hasRolesPerm = usePermission(ERolesPermissions.Read);
-  const hasUsersPerm = usePermission(EUserPermissions.Read);
-  const hasTranslationPerm = usePermission(ETranslationPermissions.Read);
-  const hasDirectoratePerm = usePermission(EDirectoratePermissions.Read);
-  const hasFeedbackPerm = usePermission(EFeedbackPermissions.Read);
-  const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
-
+  const hasPerm = useRoutesReadPermissions();
   const hasGridViewFeedbackCardPermission = usePermission(
     EFeedbackPermissions.View_feedback_card
   );
-
-  const hasPerm = useMemo(() => {
-    return {
-      hasCustomerPerm,
-      hasRolesPerm,
-      hasUsersPerm,
-      hasTranslationPerm,
-      hasDirectoratePerm,
-      hasFeedbackPerm,
-      hasCampaignPerm,
-    };
-  }, [
-    hasCustomerPerm,
-    hasRolesPerm,
-    hasUsersPerm,
-    hasTranslationPerm,
-    hasDirectoratePerm,
-    hasFeedbackPerm,
-    hasCampaignPerm,
-  ]);
 
   const getDashboardRoutes = () => {
     const getChildRoutes = (item) => {
