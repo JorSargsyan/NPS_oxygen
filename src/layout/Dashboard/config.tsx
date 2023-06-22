@@ -29,20 +29,20 @@ export const items = ({
   hasOverviewPerm,
 }) => {
   return [
-    // ...(hasOverviewPerm
-    //   ? [
-    {
-      title: "overview_section_title",
-      path: "overview",
-      element: <Dashboard />,
-      icon: (
-        <SvgIcon fontSize="small">
-          <ChartBarIcon />
-        </SvgIcon>
-      ),
-    },
-    //   ]
-    // : []),
+    ...(hasOverviewPerm
+      ? [
+          {
+            title: "overview_section_title",
+            path: "overview",
+            element: <Dashboard />,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ChartBarIcon />
+              </SvgIcon>
+            ),
+          },
+        ]
+      : []),
     ...(hasFeedbackPerm
       ? [
           {

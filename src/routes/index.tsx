@@ -16,6 +16,7 @@ import SmsDistributionForm from "pages/dashboard/CampaignDetails/distribution/Sm
 import MysteryShopperDetails from "pages/dashboard/MysteryShopping/Details";
 import { EFeedbackPermissions } from "resources/permissions/permissions.enum";
 import { useRoutesReadPermissions } from "shared/helpers/hooks/useRoutesReadPermissions";
+import Welcome from "pages/dashboard/Welcome";
 
 export const CreateRoutes = () => {
   const isAuthorized = useSelector(selectAuth);
@@ -55,17 +56,17 @@ export const CreateRoutes = () => {
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: !isAuthorized ? (
-        <Login />
-      ) : (
-        <Navigate to="admin/overview" replace />
-      ),
+      element: !isAuthorized ? <Login /> : <Navigate to="admin" replace />,
     },
     {
       path: "/admin",
       errorElement: <ErrorBoundary />,
       element: !isAuthorized ? <Navigate to="/login" /> : <DashboardLayout />,
       children: [
+        {
+          path: "",
+          element: <Welcome />,
+        },
         ...getDashboardRoutes(),
         {
           path: "profile",
@@ -103,7 +104,7 @@ export const CreateRoutes = () => {
       element: !isAuthorized ? (
         <Navigate to="/login" />
       ) : (
-        <Navigate to="admin/overview" />
+        <Navigate to="admin" />
       ),
     },
   ]);

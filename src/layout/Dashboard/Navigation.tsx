@@ -21,18 +21,9 @@ import {
 import { useAsyncDispatch } from "shared/helpers/hooks/useAsyncDispatch";
 import { useSelector } from "react-redux";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import usePermission from "shared/helpers/hooks/usePermission";
-import {
-  ECampaignPermissions,
-  ECustomersPermissions,
-  EDirectoratePermissions,
-  EFeedbackPermissions,
-  ERolesPermissions,
-  ETranslationPermissions,
-  EUserPermissions,
-} from "resources/permissions/permissions.enum";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { useRoutesReadPermissions } from "shared/helpers/hooks/useRoutesReadPermissions";
 
 enum EExpandedRowsTypes {
   Settings = "settings",
@@ -45,34 +36,9 @@ export const SideNav = () => {
   const location = useLocation();
   const dispatch = useAsyncDispatch();
   const open = useSelector(selectSidebarVisible);
-  const hasCustomerPerm = usePermission(ECustomersPermissions.Read);
-  const hasRolesPerm = usePermission(ERolesPermissions.Read);
-  const hasUsersPerm = usePermission(EUserPermissions.Read);
-  const hasTranslationPerm = usePermission(ETranslationPermissions.Read);
-  const hasDirectoratePerm = usePermission(EDirectoratePermissions.Read);
-  const hasFeedbackPerm = usePermission(EFeedbackPermissions.Read);
-  const hasCampaignPerm = usePermission(ECampaignPermissions.Read);
   const permList = useSelector(selectPermissions);
 
-  const hasPerm = useMemo(() => {
-    return {
-      hasCustomerPerm,
-      hasRolesPerm,
-      hasUsersPerm,
-      hasTranslationPerm,
-      hasDirectoratePerm,
-      hasFeedbackPerm,
-      hasCampaignPerm,
-    };
-  }, [
-    hasCustomerPerm,
-    hasRolesPerm,
-    hasUsersPerm,
-    hasTranslationPerm,
-    hasDirectoratePerm,
-    hasFeedbackPerm,
-    hasCampaignPerm,
-  ]);
+  const hasPerm = useRoutesReadPermissions();
 
   const routesList = items(hasPerm);
 
@@ -92,7 +58,7 @@ export const SideNav = () => {
   };
 
   const handleNavigateToDashboard = () => {
-    navigate("/admin/overview");
+    navigate("/admin");
   };
 
   useEffect(() => {
