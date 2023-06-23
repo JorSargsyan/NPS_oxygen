@@ -149,6 +149,30 @@ const Feedbacks = () => {
     setCommentDialogOpen(true);
   };
 
+  const handleChangeSelected = (ids: number[]) => {
+    // setSelectedFeedbackIDs(ids);
+  };
+
+  const handleViewFeedback = (id: number) => {
+    const url = `${window.location.origin}/admin/response/${id}`;
+    window.open(url, "_blank");
+  };
+
+  const handleClose = () => {
+    setActiveRow(undefined);
+  };
+
+  const handleCloseCommentDialog = () => {
+    setSelectedFeedbackId(null);
+    setCommentDialogOpen(false);
+  };
+
+  const onFormSuccess = async () => {
+    setActiveRow(undefined);
+    setDrawerOpen(false);
+    await refetchFeedbacks();
+  };
+
   const getQuickFiltersData = useCallback(() => {
     const quickFiltersWatch = methods.watch("config.quickFilters");
 
@@ -229,6 +253,21 @@ const Feedbacks = () => {
     return quickFiltersData;
   }, [methods]);
 
+  const handleSubmit = useCallback(async () => {
+    const quickFiltersData = getQuickFiltersData();
+    const filters = [...methods.watch("config.filters"), ...quickFiltersData];
+
+    const filteredAdditionalFilters = filters.filter(
+      (i: any) => i.type !== null
+    );
+    const data = {
+      ...methods.watch("config"),
+      filters: filteredAdditionalFilters,
+    };
+    delete data.quickFilters;
+    await dispatch(GetFeedbacks(data));
+  }, [dispatch, methods, getQuickFiltersData]);
+
   const refetchFeedbacks = useCallback(async () => {
     await dispatch(setTableLoading(true));
     await dispatch(setButtonLoading(true));
@@ -303,6 +342,106 @@ const Feedbacks = () => {
     await refetchFeedbacks();
     setFiltersOpen(false);
   }, [refetchFeedbacks]);
+
+  // const openAssignFeedbackDrawer = () => {
+  //   const selectedFeedbackList = feedbacks.displayData.filter((feedback) =>
+  //     selectedFeedbackIDs.includes(feedback.id)
+  //   );
+  //   const hasAssignedUser = selectedFeedbackList.find(
+  //     (feedback) => !!feedback.assignedTo.trim()
+  //   );
+  //   setActiveRow({ hasAssignedUser: !!hasAssignedUser });
+  //   setAssignDrawerOpen(true);
+  // };
+
+  // const assignFeedbackSubmitCb = async () => {
+  //   await refetchFeedbacks();
+  //   setActiveRow(undefined);
+  //   setAssignDrawerOpen(false);
+  // };
+
+  // const onExportFeedbacks = useCallback(async () => {
+  //   const dateQuickFiltersWatch = methods.watch("config.quickFilters.range");
+  //   const dateFilters = [
+  //     {
+  //       dateId: 1,
+  //       key: feedbackFilterTypesKeys.DATE,
+  //       queryCondition: 4,
+  //       value: dateQuickFiltersWatch?.[0].format("MM/DD/YYYY"),
+  //     },
+  //     {
+  //       dateId: 1,
+  //       key: feedbackFilterTypesKeys.DATE,
+  //       queryCondition: 5,
+  //       value: dateQuickFiltersWatch?.[1].format("MM/DD/YYYY"),
+  //     },
+  //   ];
+
+  //   const formData = {
+  //     conditionMatch: 1,
+  //     filters: dateFilters,
+  //     scoreFilter: [],
+  //   };
+  //   const { meta, payload } = await dispatch(ExportFeedbacks(formData));
+  //   if (meta.requestStatus !== ERequestStatus.FULFILLED) {
+  //     return;
+  //   }
+  //   const fileUrl = EBaseUrl.BaseURL + payload;
+  //   window.open(fileUrl, "_blank", "noopener,noreferrer");
+  // }, [dispatch, methods]);
+
+  // const tableCustomActions = useCallback(() => {
+  //   return (
+  //     <Box display="flex" gap={3} justifyContent="flex-end">
+  //       {hasAssignPermission && (
+  //         <Button
+  //           variant="contained"
+  //           onClick={openAssignFeedbackDrawer}
+  //           startIcon={<AssignIcon height={24} width={24} />}
+  //           disabled={!selectedFeedbackIDs?.length}
+  //         >
+  //           <Typography>Assign</Typography>
+  //         </Button>
+  //       )}
+
+  //       {hasExportPermission && (
+  //         <Button
+  //           variant="contained"
+  //           onClick={onExportFeedbacks}
+  //           startIcon={<ExportIcon height={24} width={24} />}
+  //           disabled={
+  //             !methods.watch("config.quickFilters.range")?.every((i) => !!i)
+  //           }
+  //         >
+  //           <Typography>Export</Typography>
+  //         </Button>
+  //       )}
+  //     </Box>
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedFeedbackIDs, methods, onExportFeedbacks]);
+
+  const init = useCallback(async () => {
+    await dispatch(setTableLoading(true));
+    await dispatch(
+      GetFeedbacks({
+        ...defaultFilterValues,
+        filters: [
+          ...(hasQuickFilterByUserVisibilityPermission
+            ? [defaultUserVisibility]
+            : []),
+        ],
+      })
+    );
+    await dispatch(GetFeedbackCauseAndMoodCategoriesList());
+    // await dispatch(GetUserManagers());
+    await dispatch(setTableLoading(false));
+  }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
+
+  const FiltersWrapper = useCallback(
+    () => <QuickFilters handleSubmit={handleSubmit} methods={methods} />,
+    [handleSubmit, methods]
+  );
 
   const feedbackColumns = useMemo(() => {
     return [
@@ -463,145 +602,6 @@ const Feedbacks = () => {
     refetchFeedbacks,
     hasEditFeedbackStatusPermission,
   ]);
-
-  const handleSubmit = useCallback(async () => {
-    const quickFiltersData = getQuickFiltersData();
-    const filters = [...methods.watch("config.filters"), ...quickFiltersData];
-
-    const filteredAdditionalFilters = filters.filter(
-      (i: any) => i.type !== null
-    );
-    const data = {
-      ...methods.watch("config"),
-      filters: filteredAdditionalFilters,
-    };
-    delete data.quickFilters;
-    await dispatch(GetFeedbacks(data));
-  }, [dispatch, methods, getQuickFiltersData]);
-
-  const handleChangeSelected = (ids: number[]) => {
-    // setSelectedFeedbackIDs(ids);
-  };
-
-  const handleViewFeedback = (id: number) => {
-    const url = `${window.location.origin}/admin/response/${id}`;
-    window.open(url, "_blank");
-  };
-
-  const handleClose = () => {
-    setActiveRow(undefined);
-  };
-
-  const handleCloseCommentDialog = () => {
-    setSelectedFeedbackId(null);
-    setCommentDialogOpen(false);
-  };
-
-  const onFormSuccess = async () => {
-    setActiveRow(undefined);
-    setDrawerOpen(false);
-    await refetchFeedbacks();
-  };
-
-  // const openAssignFeedbackDrawer = () => {
-  //   const selectedFeedbackList = feedbacks.displayData.filter((feedback) =>
-  //     selectedFeedbackIDs.includes(feedback.id)
-  //   );
-  //   const hasAssignedUser = selectedFeedbackList.find(
-  //     (feedback) => !!feedback.assignedTo.trim()
-  //   );
-  //   setActiveRow({ hasAssignedUser: !!hasAssignedUser });
-  //   setAssignDrawerOpen(true);
-  // };
-
-  // const assignFeedbackSubmitCb = async () => {
-  //   await refetchFeedbacks();
-  //   setActiveRow(undefined);
-  //   setAssignDrawerOpen(false);
-  // };
-
-  // const onExportFeedbacks = useCallback(async () => {
-  //   const dateQuickFiltersWatch = methods.watch("config.quickFilters.range");
-  //   const dateFilters = [
-  //     {
-  //       dateId: 1,
-  //       key: feedbackFilterTypesKeys.DATE,
-  //       queryCondition: 4,
-  //       value: dateQuickFiltersWatch?.[0].format("MM/DD/YYYY"),
-  //     },
-  //     {
-  //       dateId: 1,
-  //       key: feedbackFilterTypesKeys.DATE,
-  //       queryCondition: 5,
-  //       value: dateQuickFiltersWatch?.[1].format("MM/DD/YYYY"),
-  //     },
-  //   ];
-
-  //   const formData = {
-  //     conditionMatch: 1,
-  //     filters: dateFilters,
-  //     scoreFilter: [],
-  //   };
-  //   const { meta, payload } = await dispatch(ExportFeedbacks(formData));
-  //   if (meta.requestStatus !== ERequestStatus.FULFILLED) {
-  //     return;
-  //   }
-  //   const fileUrl = EBaseUrl.BaseURL + payload;
-  //   window.open(fileUrl, "_blank", "noopener,noreferrer");
-  // }, [dispatch, methods]);
-
-  // const tableCustomActions = useCallback(() => {
-  //   return (
-  //     <Box display="flex" gap={3} justifyContent="flex-end">
-  //       {hasAssignPermission && (
-  //         <Button
-  //           variant="contained"
-  //           onClick={openAssignFeedbackDrawer}
-  //           startIcon={<AssignIcon height={24} width={24} />}
-  //           disabled={!selectedFeedbackIDs?.length}
-  //         >
-  //           <Typography>Assign</Typography>
-  //         </Button>
-  //       )}
-
-  //       {hasExportPermission && (
-  //         <Button
-  //           variant="contained"
-  //           onClick={onExportFeedbacks}
-  //           startIcon={<ExportIcon height={24} width={24} />}
-  //           disabled={
-  //             !methods.watch("config.quickFilters.range")?.every((i) => !!i)
-  //           }
-  //         >
-  //           <Typography>Export</Typography>
-  //         </Button>
-  //       )}
-  //     </Box>
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedFeedbackIDs, methods, onExportFeedbacks]);
-
-  const init = useCallback(async () => {
-    await dispatch(setTableLoading(true));
-    await dispatch(
-      GetFeedbacks({
-        ...defaultFilterValues,
-        filters: [
-          ...(hasQuickFilterByUserVisibilityPermission
-            ? [defaultUserVisibility]
-            : []),
-        ],
-      })
-    );
-    await dispatch(GetFeedbackCauseAndMoodCategoriesList());
-    // await dispatch(GetUserManagers());
-    await dispatch(setTableLoading(false));
-  }, [dispatch, hasQuickFilterByUserVisibilityPermission]);
-
-  const FiltersWrapper = useCallback(
-    () => <QuickFilters handleSubmit={handleSubmit} methods={methods} />,
-    [handleSubmit, methods]
-  );
 
   useEffect(() => {
     init();
