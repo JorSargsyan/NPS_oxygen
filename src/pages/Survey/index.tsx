@@ -37,6 +37,9 @@ import { createSurveyTheme } from "theme/idBankTemplate";
 import { ThemeProvider } from "@mui/material/styles";
 import Not_available from "assets/icons/not_available.svg";
 import Completed from "assets/icons/completed.svg";
+import { ERoutes } from "routes/constants";
+
+const ErrMessage = "bk_error_feedback_not_found";
 
 const SurveyPreview = () => {
   const [status, setStatus] = useState("");
@@ -176,8 +179,13 @@ const SurveyPreview = () => {
 
   const getQuestionConfig = useCallback(
     async (hash: string) => {
-      const { meta, payload } = await dispatch(GetQuestionConfiguration(hash));
-
+      const { meta, payload, error } = await dispatch(
+        GetQuestionConfiguration(hash)
+      );
+      if (error?.status === 404 && error?.data?.error?.message === ErrMessage) {
+        navigate(ERoutes.LOGIN);
+        return;
+      }
       if (
         meta.requestStatus !== ERequestStatus.FULFILLED ||
         payload.isFinished
@@ -189,6 +197,7 @@ const SurveyPreview = () => {
         hash,
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch, getQuestionData]
   );
 

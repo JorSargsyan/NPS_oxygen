@@ -16,7 +16,6 @@ import {
 import { ICustomer } from "store/interfaces/customers";
 import { ERequestStatus } from "store/enums/index.enum";
 import Filters from "./components/Filters";
-import { EBaseUrl } from "store/config/constants";
 import { setTableLoading } from "store/slicers/common";
 import usePermission from "shared/helpers/hooks/usePermission";
 import { ECustomersPermissions } from "resources/permissions/permissions.enum";
@@ -98,16 +97,11 @@ const Customers = () => {
   }, [t, hasEditPermission, handleChangeStatus]);
 
   const handleExport = async (selected: number[]) => {
-    const { meta, payload } = await dispatch(
-      ExportCustomers({ customerIDs: selected })
-    );
+    const { meta } = await dispatch(ExportCustomers({ customerIDs: selected }));
 
     if (meta.requestStatus !== ERequestStatus.FULFILLED) {
       return;
     }
-    const fileUrl = EBaseUrl.BaseURL + payload;
-
-    window.open(fileUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleChangeSelected = (ids: number[]) => {};
